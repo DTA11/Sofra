@@ -74,7 +74,7 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
     return true;
   });
   if (!cands.length) return relax < 2 ? pick(pool, ctx, usedIds, kindCount, relax + 1) : null;
-  // First pick a style (domaća / italijanska / francuska / JNA) by its weight, so a small
+  // First pick a style (domaća / tjestenina / evropska / vojnička) by its weight, so a small
   // kitchen still shows up as often as asked; then the best-scoring dish of that style.
   const W = [0, 1, 3, 8];
   const styles = [...new Set(cands.map((r) => r.style))];

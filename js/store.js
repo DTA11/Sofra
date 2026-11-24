@@ -9,7 +9,7 @@ export function defaults() {
     v: 1,
     lang: (navigator.language || 'bs').toLowerCase().startsWith('en') ? 'en' : 'bs',
     household: 4,
-    styles: { domaca: 3, italian: 1, french: 1, jna: 0 },
+    styles: { domaca: 3, tjestenina: 1, evropska: 1, vojnicka: 0 },
     rules: { beef: 2, chicken: 3, lamb: 1, pork: 1, fish: 2 },
     noRepeatWeeks: 2,
     weekdayMax: 90,
@@ -41,6 +41,11 @@ function migrate(d) {
     const c = d.cuisines;
     const home = Math.max(0, ...['bosanska', 'balkan', 'srpska', 'hrvatska', 'slovenska', 'bugarska', 'svakodnevno'].map((k) => Number(c[k]) || 0));
     d.styles = { domaca: home || 3, italian: Number(c.italian) || 0, french: Number(c.french) || 0, jna: Number(c.jna) || 0 };
+  }
+  const y = d && d.styles;
+  if (y && ('italian' in y || 'french' in y || 'jna' in y)) { // first style names → dish types
+    const it = Number(y.italian) || 0, fr = Number(y.french) || 0;
+    d.styles = { domaca: Number(y.domaca) || 0, tjestenina: it, evropska: Math.max(it, fr), vojnicka: Number(y.jna) || 0 };
   }
   if (d) delete d.cuisines;
   return d;

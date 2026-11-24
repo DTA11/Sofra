@@ -415,7 +415,7 @@ export const BOOK_RECIPES = [
   {
     id: 'jna-pileca-supa', cu: 'jna', type: 'soup', main: 'chicken', time: 210, big: 1,
     serves: 1, eqOpt: ['kazan'], kid: 1,
-    bs: 'Pileća supa (JNA)', en: 'Chicken soup (JNA)',
+    bs: 'Pileća supa (vojnička)', en: 'Chicken soup (army style)',
     ing: [
       ['chicken_giblets', 30, 'g', n('glava, vrat, krilca i sl.', 'necks, wings and the like')],
       ['soup_pasta', 10, 'g'],
@@ -433,14 +433,14 @@ export const BOOK_RECIPES = [
       ['Kad meso i korijenje omekšaju, dolij toplu vodu toliko da bude 3 dl po osobi. Kad ponovo provri, dodaj prženu mrkvu, uložak i so i kuhaj dok uložak ne bude gotov.', 'When meat and roots are soft, top up with hot water to 3 dl per person. When it boils again, add the fried carrot, the soup pasta and salt and cook until the pasta is done.'],
       ['Na kraju dodaj sitan peršunov list i mljeveni biber, probaj so i isključi.', 'Finish with chopped parsley and ground pepper, check the salt and take off the heat.'],
     ],
-    story: ['JNA recepture su pisane za kazane, ali s količinom po jednom vojniku — zato ih je lako svesti na kućnu mjeru. Jedna porcija je kutlača od 3 dl.',
-      'The JNA recipes were written for field kettles but with amounts per soldier, which makes them easy to scale down. One serving is a 3 dl ladle.'],
+    story: ['Vojničke recepture su pisane za kazane, ali s količinom po jednom vojniku — zato ih je lako svesti na kućnu mjeru. Jedna porcija je kutlača od 3 dl.',
+      'The army recipes were written for field kettles but with amounts per soldier, which makes them easy to scale down. One serving is a 3 dl ladle.'],
     src: { b: 'jna', n: 1, p: '25' },
   },
   {
     id: 'jna-janjeca-corba', cu: 'jna', type: 'soup', main: 'lamb', time: 120, tApprox: 1, big: 1,
     serves: 1, eqOpt: ['kazan'],
-    bs: 'Janjeća kisela čorba (JNA)', en: 'Sour lamb soup (JNA)',
+    bs: 'Janjeća kisela čorba (vojnička)', en: 'Sour lamb soup (army style)',
     ing: [
       ['lamb_offal', 30, 'g', n('sirovo meso: glava, iznutrice, ostaci', 'raw meat: head, offal, trimmings')],
       ['flour', 5, 'g'],
@@ -472,7 +472,7 @@ export const BOOK_RECIPES = [
   {
     id: 'jna-paradajz-corba', cu: 'jna', type: 'soup', main: 'veg', time: 60, tApprox: 1, big: 1,
     serves: 1, eqOpt: ['kazan'], kid: 1,
-    bs: 'Paradajz čorba (JNA)', en: 'Tomato soup (JNA)',
+    bs: 'Paradajz čorba (vojnička)', en: 'Tomato soup (army style)',
     ing: [
       ['tomato_paste', 9, 'g', n('koncentrat 28–30 %', '28–30 % concentrate')],
       ['lard_or_oil', 10, 'g'],
@@ -501,7 +501,7 @@ export const BOOK_RECIPES = [
   {
     id: 'jna-corba-krompir', cu: 'jna', type: 'soup', main: 'potato', time: 60, tApprox: 1, big: 1,
     serves: 1, eqOpt: ['kazan'], kid: 1,
-    bs: 'Čorba od krompira (JNA)', en: 'Potato soup (JNA)',
+    bs: 'Čorba od krompira (vojnička)', en: 'Potato soup (army style)',
     ing: [
       ['potato', 80, 'g', { max: 100 }],
       ['flour', 5, 'g'],
@@ -529,7 +529,7 @@ export const BOOK_RECIPES = [
   {
     id: 'jna-kisela-corba', cu: 'jna', type: 'soup', main: 'veg', time: 60, tApprox: 1, big: 1,
     serves: 1, eqOpt: ['kazan'],
-    bs: 'Kisela čorba (JNA)', en: 'Sour vegetable soup (JNA)',
+    bs: 'Kisela čorba (vojnička)', en: 'Sour vegetable soup (army style)',
     ing: [
       ['flour', 5, 'g'],
       ['rice', 10, 'g'],
@@ -560,7 +560,7 @@ export const BOOK_RECIPES = [
   {
     id: 'jna-corba-povrce', cu: 'jna', type: 'soup', main: 'veg', time: 60, tApprox: 1, big: 1,
     serves: 1, eqOpt: ['kazan'], kid: 1,
-    bs: 'Čorba od povrća (JNA)', en: 'Vegetable soup (JNA)',
+    bs: 'Čorba od povrća (vojnička)', en: 'Vegetable soup (army style)',
     ing: [
       ['flour', 5, 'g'],
       ['tomato_paste', 4, 'g', n('koncentrat 28–30 %', '28–30 % concentrate')],
@@ -589,7 +589,7 @@ export const BOOK_RECIPES = [
   {
     id: 'jna-corba-grasak', cu: 'jna', type: 'soup', main: 'veg', time: 60, tApprox: 1, big: 1,
     serves: 1, eqOpt: ['kazan'],
-    bs: 'Čorba od graška (JNA)', en: 'Pea soup (JNA)',
+    bs: 'Čorba od graška (vojnička)', en: 'Pea soup (army style)',
     ing: [
       ['peas_fresh', 80, 'g', { max: 100 }],
       ['flour', 5, 'g'],

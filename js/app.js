@@ -66,7 +66,7 @@ function defaultServ(r) {
 
 // ───────── routing ─────────
 const routes = {
-  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, holidays: viewHolidays,
+  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, vojnicka: viewJNA, holidays: viewHolidays,
   pantry: viewPantry, shop: viewShop, settings: viewSettings, cook: viewCook,
 };
 function route() {
@@ -75,8 +75,8 @@ function route() {
   stopWake();
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
-  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
-  const navKey = ['recipe', 'jna'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
+  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
+  const navKey = ['recipe', 'jna', 'vojnicka'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
   syncInstallButtons();
   if (name === 'cook') startCook(arg);
@@ -119,7 +119,7 @@ function viewHome() {
     </section>
     <section class="home-sec privacy"><h3>${ICON.check} ${t('privacyTitle')}</h3><p>${t('privacyText')}</p></section>
     <footer class="sitefoot"><p><b>Sofra</b> — ${t('footer').replace(/^Sofra — /, '')}</p>
-      <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/jna">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
+      <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/vojnicka">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
 }
 
 // "Prijedlog za danas": a random dish, the same all day, new one on tap
@@ -321,7 +321,7 @@ function viewRecipes() {
   const list = RECIPES.filter((r) => r.type !== 'dessert').filter((r) => matches(r, ui.filters));
   return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert').length} ${t('dishes')}</p></section>
     <div class="feature-row">
-      <a class="feature jna" href="#/jna">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
+      <a class="feature jna" href="#/vojnicka">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
       <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
     </div>
     ${searchBar()}${filterPanel()}

@@ -7,7 +7,7 @@ Bosanski (ijekavica) prvo, engleski kao prekidač.
 pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvezi (JSON)* / *Uvezi*.
 
 ## Šta radi
-- Sedmični plan: u postavkama „Šta kuhamo“ biraš koliko često dolaze domaća (balkanska), italijanska (tjestenina, rižoto), francuska i JNA jela. Porijeklo jela (država/regija) postoji samo u podacima, ne prikazuje se.
+- Sedmični plan: u postavkama „Šta kuhamo“ biraš koliko često dolaze domaća jela, tjestenina i rižoto, evropska klasika i vojnička kuhinja. Porijeklo jela (država/regija) postoji samo u podacima i nigdje se ne prikazuje.
 - Pravila: npr. junetina najviše 2× sedmično, bez ponavljanja 2–3 sedmice, sezonsko povrće, planirani ostaci,
   zamjena dana jednim dodirom, porcije za broj ukućana, posni dani, „bez svinjetine“, prednost dječijim jelima
 - Ostava + zimnica (tegle); plan koristi ono što imaš i ponovo koristi iste svježe namirnice kroz sedmicu
@@ -18,13 +18,13 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Način kuhanja: veliki koraci, tajmeri, ekran ostaje upaljen (Wake Lock)
 - Omiljena jela, kratka priča svakog jela
 - **Slatko**: kolači, torte, sitni kolači, orijentalni slatkiši, preračunavanje kalupa
-- **JNA kuhinja**: kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
+- **Vojnička kuhinja** (#/vojnicka): kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
 
 ## Struktura
 ```
 index.html            app shell
 css/app.css           stil (svijetla + tamna tema, print/PDF)
-js/app.js             UI i rute (#/plan, #/recipes, #/recipe/:id, #/cook/:id, #/sweets, #/jna, #/holidays, #/pantry, #/shop, #/settings)
+js/app.js             UI i rute (#/plan, #/recipes, #/recipe/:id, #/cook/:id, #/sweets, #/vojnicka, #/holidays, #/pantry, #/shop, #/settings)
 js/planner.js         planer, zamjena dana, spisak za kupovinu, skaliranje
 js/store.js           localStorage, backup/uvoz
 js/i18n.js            bs / en tekstovi

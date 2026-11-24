@@ -16,8 +16,8 @@ export const SOURCES = {
     en: 'Recepture za pripremanje jela u JNA (Ebesede, Ljubljana 2011). Per-person amounts and times as printed; method rewritten.',
   },
   jnaStyle: {
-    bs: 'Kućni recept u duhu vojničke kuhinje, napisan za Sofru (nije iz JNA knjige).',
-    en: 'Home recipe in the spirit of army cooking, written for Sofra (not from the JNA book).',
+    bs: 'Kućni recept u duhu vojničke kuhinje, napisan za Sofru (nije iz vojničke knjige).',
+    en: 'Home recipe in the spirit of army cooking, written for Sofra (not from the army recipe book).',
   },
   trad: {
     bs: 'Tradicionalno jelo — recept i tekst napisani za Sofru.',
@@ -26,8 +26,13 @@ export const SOURCES = {
 };
 
 // Planner styles: the plan mixes kitchens by style, not by country.
-export const STYLES = ['domaca', 'italian', 'french', 'jna'];
-const styleOf = (cu) => (cu === 'italian' || cu === 'french' || cu === 'jna' ? cu : 'domaca');
+export const STYLES = ['domaca', 'tjestenina', 'evropska', 'vojnicka'];
+const PASTA = ['spaghetti', 'pasta_short', 'tagliatelle', 'lasagne', 'arborio', 'gnocchi'];
+function styleOf(r) {
+  if (r.cu === 'jna') return 'vojnicka';
+  if (r.cu === 'italian' || r.cu === 'french') return r.ing.some((i) => PASTA.includes(i[0])) ? 'tjestenina' : 'evropska';
+  return 'domaca';
+}
 
 // Derived flags so filters never drift from the ingredient list.
 function derive(r) {
@@ -62,7 +67,7 @@ function derive(r) {
     ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].filter((m) => seasonal.filter((g) => g.m.includes(m)).length >= Math.ceil(seasonal.length * 0.6))
     : null;
   r.source = r.src.b;
-  r.style = styleOf(r.cu);
+  r.style = styleOf(r);
   return r;
 }
 

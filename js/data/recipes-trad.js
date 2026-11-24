@@ -229,7 +229,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
 
-  // ───────── JNA stil (vlastiti recepti, nisu iz knjige) ─────────
+  // ───────── vojnički stil (vlastiti recepti, nisu iz knjige) ─────────
   {
     id: 'vojnicki-grah', cu: 'jna', type: 'main', main: 'beans', time: 180, serves: 4, big: 1, eqOpt: ['kazan', 'pressure'], left: 1,
     bs: 'Vojnički grah', en: 'Army bean stew',
@@ -240,7 +240,7 @@ export const TRAD_RECIPES = [
       ['Dodaj krupno isječen luk i mrkvu. Napravi zapršku od ulja, brašna, aleve paprike i paradajz-pirea pa je umiješaj.', 'Add coarsely chopped onion and carrot. Make a roux with oil, flour, paprika and tomato paste and stir it in.'],
       ['Kuhaj još 30 minuta da se zgusne, posoli na kraju.', 'Simmer 30 more minutes until thick; salt at the end.', 30],
     ],
-    story: ['Grah iz kazana je postao simbol cijele jedne generacije — i danas se kuha na sajmovima i susretima „iz vojske“. Ovo je kućna verzija napisana za Sofru, ne recept iz JNA knjige.', 'Bean stew from the field kettle became a symbol for a whole generation — still cooked at fairs and army reunions. This is a home version written for Sofra, not a recipe from the JNA book.'],
+    story: ['Grah iz kazana je postao simbol cijele jedne generacije — i danas se kuha na sajmovima i susretima „iz vojske“. Ovo je kućna verzija napisana za Sofru, ne recept iz vojničke knjige.', 'Bean stew from the field kettle became a symbol for a whole generation — still cooked at fairs and army reunions. This is a home version written for Sofra, not a recipe from the army recipe book.'],
     src: { b: 'jnaStyle' },
   },
   {
