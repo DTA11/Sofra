@@ -4,7 +4,7 @@ import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTH
 import * as store from './store.js';
 import { dishArt, ICON, KILIM } from './art.js';
 import { nutrition, GRADE_COLORS } from './nutrition.js';
-import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
+import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, shopParts, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -55,6 +55,7 @@ const ui = {
   serv: {},      // recipe id -> servings
   pan: {},       // recipe id -> {shape,w,h,d}
   pantryQ: '',
+  shopPart: null, // month plan: 'big' or 'w0'…'w3'
   installEvt: null,
 };
 
@@ -119,6 +120,46 @@ function route() {
   renderChrome();
 }
 const go = (h) => { if (location.hash === h) route(); else location.hash = h; };
+
+// ───────── plan length & first-steps guide ─────────
+const RANGE_KEYS = [['dish', 'rDish'], ['day', 'rDay'], ['week', 'rWeek'], ['month', 'rMonth']];
+const planRange = () => (S().plan && S().plan.range) || 'week';
+/** "Za koliko?" sheet: one dish, one day, a week or a month. */
+function askRange(after) {
+  const cur = S().range || 'week';
+  const m = $('#modal');
+  m.innerHTML = `<div class="sheet"><h3>${t('rangeQ')}</h3><div class="rangepick">${RANGE_KEYS.map(([k, l]) => `<button class="rbtn ${k === cur ? 'on' : ''}" data-range="${k}"><b>${t(l)}</b><small>${t(l + 'D')}</small></button>`).join('')}</div>
+    <button class="btn" data-range="x">${t('cancel')}</button></div>`;
+  m.classList.add('open');
+  m.onclick = (e) => {
+    const b = e.target.closest('[data-range]');
+    if (!b && e.target !== m) return;
+    m.classList.remove('open'); m.onclick = null;
+    if (!b || b.dataset.range === 'x') return;
+    generatePlan(new Date(), b.dataset.range);
+    ui.shopPart = null;
+    if (after) after(); else route();
+  };
+}
+function guideCard() {
+  const st = S(); const g = st.guide || {};
+  if (g.done) return '';
+  const steps = [
+    { ok: g.pantry, n: 1, tt: 'g1t', d: 'g1d', btn: `<a class="btn sm {P}" href="#/pantry">${ICON.pantry} ${t('g1b')}</a>` },
+    { ok: !!st.plan, n: 2, tt: 'g2t', d: 'g2d', btn: `<button class="btn sm {P}" data-act="newplan">${ICON.plan} ${t('g2b')}</button>` },
+    { ok: g.shop, n: 3, tt: 'g3t', d: 'g3d', btn: `<a class="btn sm {P}" href="#/shop">${ICON.shop} ${t('g3b')}</a>` },
+  ];
+  const all = steps.every((x) => x.ok);
+  const next = steps.findIndex((x) => !x.ok); // only the next step to do is highlighted
+  steps.forEach((x, k) => { x.btn = x.btn.replace('{P}', k === next ? 'primary' : ''); });
+  return `<section class="guide"><h2>${t('guideTitle')}</h2><p class="muted small">${t('guideLede')}</p>
+    <ol class="gsteps">${steps.map((x) => `<li class="${x.ok ? 'ok' : ''}"><span class="gno">${x.ok ? ICON.check : x.n}</span><div><b>${t(x.tt)}</b><p>${t(x.d)}</p>${x.btn}</div></li>`).join('')}</ol>
+    <button class="btn ${all ? 'primary' : 'ghost'} sm" data-act="guidedone">${all ? t('guideDone') : t('guideSkip')}</button></section>`;
+}
+// Quick-start pantry list: what most kitchens have
+const STARTER = ['onion', 'garlic', 'potato', 'carrot', 'flour', 'rice', 'sugar', 'salt', 'pepper_black', 'paprika_sweet', 'bay_leaf', 'vegeta', 'oil', 'olive_oil', 'vinegar', 'tomato_paste',
+  'eggs', 'milk', 'butter', 'yogurt', 'sour_cream', 'feta', 'bread', 'lemon', 'pasta_short', 'spaghetti', 'beans', 'lentils', 'semolina', 'cornmeal', 'breadcrumbs', 'yeast', 'baking_powder',
+  'vanilla_sugar', 'stock_cube', 'tomato_can', 'cinnamon', 'oregano', 'paprika_hot', 'walnuts', 'mustard', 'mayonnaise', 'pickles', 'honey', 'tea', 'coffee_ground'].filter((id) => ING[id]);
 
 function renderChrome() {
   $('#langBtn').textContent = getLang() === 'bs' ? 'EN' : 'BS';
@@ -223,13 +264,17 @@ function viewPlan() {
   if (!st.plan) {
     return `<section class="band hero-band"><p class="eyebrow">${dateTxt}</p><h1 class="display">Sofra</h1><p class="lede">${t('appTagline')}</p>
       <div class="hero-plate">${dishArt(R['bosanski-lonac'], 'big')}</div></section>
+      ${guideCard()}
       ${st.mode === 'ramazan' ? `<div class="banner">${ICON.moon} ${t('ramazanNote')}</div>` : ''}
       <div class="empty">${t('emptyPlan')}</div>${actions}
       <div class="row gap"><a class="btn" href="#/settings">${ICON.gear} ${t('planSettings')}</a></div>${season}`;
   }
   const start = parseISO(st.plan.start);
   const ti = Math.floor((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - start) / DAYMS);
-  const todayIdx = ti >= 0 && ti < 7 ? ti : 0;
+  const nDays = st.plan.days.length;
+  const todayIdx = ti >= 0 && ti < nDays ? ti : 0;
+  const rng = planRange();
+  const wa = Math.floor(todayIdx / 7) * 7; // a month shows the strip of the current week
   const tMain = st.plan.days[todayIdx].dishes.find((x) => x.role === 'main') || st.plan.days[todayIdx].dishes[0];
   const tr = tMain && R[tMain.id];
   const others = st.plan.days[todayIdx].dishes.filter((x) => x !== tMain).map((x) => `<span class="also-i"><b>${esc(roleLabel(x))}:</b> ${esc(name(R[x.id]))}</span>`).join('');
@@ -248,14 +293,15 @@ function viewPlan() {
           </div>
         </div>
       </div>
-      <div class="week">${st.plan.days.map((d, i) => {
+      ${nDays > 1 ? `<div class="week">${st.plan.days.map((d, i) => {
+        if (nDays > 7 && (i < wa || i >= wa + 7)) return '';
         const dl = dayLabel(start, i);
         const m = d.dishes.find((x) => x.role === 'main');
         const r = m && R[m.id];
         return `<button class="wday ${i === todayIdx ? 'on' : ''} ${d.cooked ? 'done' : ''}" data-act="jump" data-i="${i}">
           <small>${dl.name.slice(0, 3)}</small><b>${new Date(start.getTime() + i * DAYMS).getDate()}</b>
           ${r ? dishArt(r, 'mini') : ''}<span>${r ? esc(name(r)) : '—'}</span></button>`;
-      }).join('')}</div>
+      }).join('')}</div>` : ''}
     </section>` : '';
   const days = st.plan.days.map((d, i) => {
     const dl = dayLabel(start, i);
@@ -275,15 +321,17 @@ function viewPlan() {
       </li>`;
     }).join('');
     const kc = d.dishes.reduce((a, x) => { const r = R[x.id]; return r && perPortion(r) ? a + nutrition(r).serv.kcal : a; }, 0);
-    return `<article class="day ${i === todayIdx ? 'today' : ''} ${d.cooked ? 'cooked' : ''}" id="day-${i}">
+    const wh = nDays > 7 && i % 7 === 0 ? `<h3 class="weekhead">${i / 7 + 1}. ${t('weekN')}</h3>` : '';
+    return `${wh}<article class="day ${i === todayIdx ? 'today' : ''} ${d.cooked ? 'cooked' : ''}" id="day-${i}">
       <header><div><b>${dl.name}</b><span class="muted"> ${dl.date}</span>${kc ? `<span class="daykcal">≈ ${nf(Math.round(kc / 10) * 10)} kcal ${t('dayKcal')}</span>` : ''}</div>
         <button class="cookbtn ${d.cooked ? 'on' : ''}" data-act="cooked" data-i="${i}">${ICON.check}<span>${t('cooked')}</span></button></header>
       <ul>${dishes || `<li class="muted">${t('noMatch')}</li>`}</ul>
     </article>`;
   }).join('');
-  return `${hero}${st.mode === 'ramazan' ? `<div class="banner">${ICON.moon} ${t('ramazanNote')}</div>` : ''}
+  const secT = { dish: 'tDish', day: 'tDay', week: 'thisWeek', month: 'tMonth' }[rng];
+  return `${guideCard()}${hero}${st.mode === 'ramazan' ? `<div class="banner">${ICON.moon} ${t('ramazanNote')}</div>` : ''}
     ${actions}
-    <h2 class="sec-title">${t('thisWeek')}</h2>
+    <h2 class="sec-title">${t(secT)}</h2>
     <div class="days">${days}</div>${season}`;
 }
 
@@ -538,7 +586,13 @@ function viewPantry() {
     return `<div class="zitem ${n ? 'on' : ''}"><span>🫙 ${esc(iname(g.id))}</span>
       <span class="jar"><button class="round sm" data-act="jar" data-id="${g.id}" data-d="-1">−</button><b>${n}</b><button class="round sm" data-act="jar" data-id="${g.id}" data-d="1">+</button></span></div>`;
   };
+  const g = st.guide || {};
+  const starter = q ? '' : `<details class="psec starter" ${g.pantry ? '' : 'open'}><summary><h3>${t('starterTitle')}</h3></summary>
+      <p class="small muted">${t('starterLede')}</p>
+      <div class="pgrid">${STARTER.map((id) => row(ING[id])).join('')}</div>
+      <div class="row gap wrap"><button class="btn" data-act="starterall">${ICON.check} ${t('starterAll')}</button><button class="btn primary" data-act="starterdone">${t('starterDone')} →</button></div></details>`;
   return `<section class="band page-band"><h1 class="display">${t('tabPantry')}</h1><p class="lede">${t('pantryIntro')}</p></section>
+    ${starter}
     <div class="searchbar"><input type="search" id="pq" placeholder="${t('search')}" value="${esc(ui.pantryQ)}"></div>
     ${zim.length ? `<section class="psec zim"><h3>${t('zimnica')} <small class="muted">(${t('jars')})</small></h3>${zim.map(zrow).join('')}</section>` : ''}
     ${prod.length ? `<section class="psec prod"><h3>${t('prodTitle')} <small class="muted">(${t('prodHint')})</small></h3>
@@ -557,10 +611,12 @@ function qtyText(it) {
   const u = unitLabel(a.u, a.n);
   return `${s}${u ? ' ' + u : ''}${it.unknown ? ' +' : ''}`;
 }
+function curPart() { const ps = shopParts(); return ps.includes(ui.shopPart) ? ui.shopPart : ps[0]; }
+function partLabel(p) { return p === 'big' ? t('bigShop') : p[0] === 'w' ? `${Number(p.slice(1)) + 1}. ${t('weekN')}` : ''; }
 function shopText() {
-  const { sections } = shoppingList();
+  const { sections } = shoppingList(curPart());
   const st = S();
-  const lines = [`🛒 Sofra — ${t('printShop')}`];
+  const lines = [`🛒 Sofra — ${t('printShop')}${partLabel(curPart()) ? ' · ' + partLabel(curPart()) : ''}`];
   sections.forEach((s) => {
     const items = s.items.filter((it) => !st.shop.checked[it.key]);
     if (!items.length) return;
@@ -574,13 +630,19 @@ function shopText() {
 function viewShop() {
   const st = S();
   if (!st.plan) return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1></section><div class="empty">${t('emptyPlan')}</div>`;
-  const { sections, have } = shoppingList();
+  const part = curPart();
+  const { sections, have } = shoppingList(part);
+  const rng = planRange();
+  if (!(st.guide || {}).shop) { st.guide = { ...st.guide, shop: true }; store.save(); }
+  const tabs = part === 'all' ? '' : `<div class="chips parts">${shopParts().map((p) => `<button class="chip ${p === part ? 'on' : ''}" data-act="shoppart" data-v="${p}">${esc(partLabel(p))}</button>`).join('')}</div>`;
+  const intro = { dish: 'shopIntroDish', day: 'shopIntroDay', week: 'shopIntro', month: 'shopIntroMonth' }[rng];
   const item = (it) => {
     const on = !!st.shop.checked[it.key];
     return `<label class="sitem ${on ? 'on' : ''}"><input type="checkbox" data-act="buy" data-key="${esc(it.key)}" data-id="${it.id}" ${on ? 'checked' : ''}>
       <span class="n">${esc(iname(it.id))}${it.opt ? ` <small>(${t('optional')})</small>` : ''}</span><span class="q">${esc(qtyText(it))}</span></label>`;
   };
-  return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1><p class="lede">${t('shopIntro')}</p></section>
+  return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1><p class="lede">${t(intro)}</p></section>
+    ${tabs}
     <div class="row gap wrap share">
       <button class="btn wa" data-act="wa">WhatsApp</button>
       <button class="btn vb" data-act="viber">Viber</button>
@@ -588,6 +650,7 @@ function viewShop() {
       <button class="btn" data-act="copy">${ICON.copy} ${t('copy')}</button>
       <button class="btn" data-act="print" data-kind="shop">${ICON.doc} ${t('pdf')}</button>
     </div>
+    ${!sections.length ? `<div class="empty">✓ ${t('youHave')}</div>` : ''}
     ${sections.map((s) => `<section class="ssec"><h3>${esc(L('sec', s.sec))}</h3>${s.items.map(item).join('')}</section>`).join('')}
     <section class="ssec"><h3>${esc(L('sec', 'other'))}</h3>
       ${st.shop.extra.map((e, k) => `<label class="sitem ${e.done ? 'on' : ''}"><input type="checkbox" data-act="xdone" data-k="${k}" ${e.done ? 'checked' : ''}><span class="n">${esc(e.text)}</span><button class="icon" data-act="xdel" data-k="${k}">✕</button></label>`).join('')}
@@ -631,6 +694,7 @@ function viewSettings() {
     </section>
     <section class="set"><h3>${t('posnoDays')}</h3><div class="chips">${daysChips}</div></section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
+    <section class="set"><button class="btn" data-act="guideshow">${ICON.check} ${t('guideShow')}</button></section>
     <section class="set"><h3>${t('backup')}</h3><div class="row gap wrap">
       <button class="btn" data-act="export">⬇ ${t('exportData')}</button>
       <label class="btn">⬆ ${t('importData')}<input type="file" accept="application/json,.json" data-act="import" hidden></label>
@@ -669,9 +733,9 @@ function recipeBlocks(r, f, servTxt, page = false) {
     { t: 'ol', items: r.st.map((s) => [['R', tx(s)], ['B', stepTime(s)]]) },
   ];
 }
-function shopBlocks() {
+function shopBlocks(part = curPart(), withExtra = true) {
   const st = S();
-  const { sections } = shoppingList();
+  const { sections } = shoppingList(part);
   const out = [];
   sections.forEach((sec) => {
     const items = sec.items.filter((it) => !st.shop.checked[it.key]);
@@ -679,7 +743,7 @@ function shopBlocks() {
     out.push({ t: 'h3', text: L('sec', sec.sec) });
     out.push({ t: 'grid', box: 1, items: items.map((it) => [null, [['R', iname(it.id) + '  '], ['B', qtyText(it)], ...(it.opt ? [['I', ` (${t('optional')})`]] : [])]]) });
   });
-  const extra = st.shop.extra.filter((e) => !e.done);
+  const extra = withExtra ? st.shop.extra.filter((e) => !e.done) : [];
   if (extra.length) { out.push({ t: 'h3', text: L('sec', 'other') }); out.push({ t: 'grid', box: 1, items: extra.map((e) => [null, e.text]) }); }
   return out;
 }
@@ -696,16 +760,23 @@ function exportDoc(kind, id) {
   }
   if (!st.plan) return null;
   const start = parseISO(st.plan.start);
-  const week = `${t('weekOf')} ${dayLabel(start, 0).date}`;
+  const n = st.plan.days.length, rng = planRange();
+  const week = n === 1 ? `${dayLabel(start, 0).name}, ${dayLabel(start, 0).date}` : `${dayLabel(start, 0).date} – ${dayLabel(start, n - 1).date}`;
   if (kind === 'shop') {
-    return { blocks: [{ t: 'title', text: t('printShop'), sub: `Sofra · ${week}` }, ...shopBlocks()], title: `${t('printShop')} — ${week}`, file: `sofra-kupovina-${day}.pdf` };
+    const pl = partLabel(curPart());
+    return { blocks: [{ t: 'title', text: t('printShop') + (pl ? ' · ' + pl : ''), sub: `Sofra · ${week}` }, ...shopBlocks()], title: `${t('printShop')} — ${week}`, file: `sofra-kupovina-${day}${pl ? '-' + curPart() : ''}.pdf` };
   }
   const blocks = [{ t: 'title', text: `Sofra — ${week}`, sub: t('appTagline') }, { t: 'h2', text: t('printPlan') }];
   st.plan.days.forEach((d, i) => {
     const dl = dayLabel(start, i);
+    if (n > 7 && i % 7 === 0) blocks.push({ t: 'h3', text: `${i / 7 + 1}. ${t('weekN')}` });
     blocks.push({ t: 'kv', k: dl.name, k2: dl.date, v: d.dishes.map((x) => [['B', roleLabel(x) + ': '], ['R', name(R[x.id])], ...(x.left || x.fixed ? [] : [['I', ` (${x.serv} ${t('persons')})`]])]) });
   });
-  blocks.push({ t: 'h2', text: t('printShop'), page: true }, ...shopBlocks());
+  blocks.push({ t: 'h2', text: t('printShop'), page: true });
+  if (rng === 'month') shopParts().forEach((p, k) => { const b = shopBlocks(p, k === 0); if (b.length) blocks.push({ t: 'h2', text: partLabel(p), page: k > 0 }, ...b); });
+  else blocks.push(...shopBlocks('all'));
+  // a month would be a book: its PDF has the menu and lists; each recipe has its own PDF
+  if (rng === 'month') return { blocks, title: `Sofra — ${week}`, file: `sofra-jelovnik-${st.plan.start}.pdf` };
   const seen = new Set();
   st.plan.days.flatMap((d) => d.dishes.filter((x) => !x.left)).filter((x) => (seen.has(x.id) ? false : seen.add(x.id))).forEach((x, k) => {
     const r = R[x.id]; const f = x.fixed ? 1 : x.serv / r.serves;
@@ -751,7 +822,7 @@ function openExport(kind, id) {
   const doc = exportDoc(kind, id);
   if (!doc) { toast(t('emptyPlan')); return; }
   const m = $('#modal');
-  const head = kind === 'recipe' ? name(R[id]) : kind === 'shop' ? t('printShop') : t('pdfWeek');
+  const head = kind === 'recipe' ? name(R[id]) : kind === 'shop' ? t('printShop') : planRange() === 'month' ? `${t('printPlan')} · ${t('printShop')}` : t('pdfWeek');
   m.innerHTML = `<div class="sheet exp"><h3>${ICON.doc} ${esc(head)}</h3><p class="muted small" data-exp-status>${t('pdfMaking')}</p>
     <div class="exp-btns">
       <button class="btn primary" data-exp="share" hidden>${ICON.share} ${t('pdfShare')}</button>
@@ -812,7 +883,12 @@ document.addEventListener('click', (e) => {
   const a = el.dataset.act;
   const rer = () => route();
   switch (a) {
-    case 'newplan': generatePlan(); rer(); break;
+    case 'newplan': askRange(); break;
+    case 'guidedone': st.guide = { ...st.guide, done: true }; store.save(); rer(); break;
+    case 'guideshow': st.guide = { done: false, pantry: false, shop: false }; store.save(); toast(t('guideShown')); go('#/plan'); break;
+    case 'starterall': STARTER.forEach((id) => store.setHave(id, true)); store.save(); rer(); break;
+    case 'starterdone': st.guide = { ...st.guide, pantry: true }; store.save(); go('#/plan'); break;
+    case 'shoppart': ui.shopPart = el.dataset.v; rer(); break;
     case 'jump': document.getElementById('day-' + el.dataset.i)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); break;
     case 'swapdish': swapDish(Number(el.dataset.i), Number(el.dataset.k)); rer(); break;
     case 'swap': swapDay(Number(el.dataset.i)); rer(); break;
@@ -862,7 +938,7 @@ document.addEventListener('click', (e) => {
     case 'copy': navigator.clipboard?.writeText(shopText()).then(() => toast(t('copied'))); break;
     case 'xdel': st.shop.extra.splice(Number(el.dataset.k), 1); store.save(); rer(); break;
     case 'clearbought': {
-      const { sections } = shoppingList();
+      const { sections } = shoppingList(curPart());
       sections.forEach((s) => s.items.forEach((it) => { if (st.shop.checked[it.key]) delete st.shop.checked[it.key]; }));
       st.shop.extra = st.shop.extra.filter((x) => !x.done); store.save(); rer(); break;
     }
@@ -878,7 +954,7 @@ document.addEventListener('click', (e) => {
     case 'reset': if (confirm(t('resetQ'))) { store.resetAll(); setLang(S().lang); go('#/plan'); } break;
     case 'install': doInstall(); break;
     case 'repick': { const n = pickPool().length; if (n > 1) { let k; do { k = Math.floor(Math.random() * n); } while (k === ui.pickIdx % n); ui.pickIdx = k; } rer(); break; }
-    case 'homeplan': generatePlan(); go('#/plan'); break;
+    case 'homeplan': if (!(st.guide || {}).done && !(st.guide || {}).pantry) go('#/plan'); else askRange(() => go('#/plan')); break;
     default: break;
   }
 });
@@ -887,7 +963,10 @@ document.addEventListener('change', (e) => {
   const el = e.target; const a = el.dataset.act; if (!a) return;
   const st = S();
   switch (a) {
-    case 'have': store.setHave(el.dataset.id, el.checked); store.save(); el.closest('.pitem')?.classList.toggle('on', el.checked); break;
+    case 'have': store.setHave(el.dataset.id, el.checked); store.save();
+      // the same item can be in the quick-start list and further down: keep both in step
+      document.querySelectorAll(`input[data-act="have"][data-id="${el.dataset.id}"]`).forEach((x) => { x.checked = el.checked; x.closest('.pitem')?.classList.toggle('on', el.checked); });
+      break;
     case 'buy': {
       st.shop.checked[el.dataset.key] = el.checked ? 1 : 0;
       if (!el.checked) delete st.shop.checked[el.dataset.key];

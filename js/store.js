@@ -28,6 +28,8 @@ export function defaults() {
     healthier: false,
     equipment: { oven: 1, pressure: 1, sac: 0, kazan: 0, grill: 0 },
     mode: 'normal',
+    range: 'week',     // plan length: dish | day | week | month
+    guide: { done: false, pantry: false, shop: false }, // first-steps guide
     pantry,            // id -> 1 (have) ; zimnica: number of jars
     favs: [],
     plan: null,        // { id, start: 'YYYY-MM-DD', days: [{ dishes:[{id, role, serv, left}], cooked }] }
@@ -56,6 +58,8 @@ function fill(d) {
   const s = { ...defaults(), ...migrate(d) };
   s.meals = { ...defaults().meals, ...(d.meals || {}) };
   s.styles = { ...defaults().styles, ...(d.styles || {}) };
+  // people who already had a plan before the guide existed don't need it
+  s.guide = { ...defaults().guide, ...(d.guide || (d.plan ? { done: true, pantry: true, shop: true } : {})) };
   return s;
 }
 export function load() {

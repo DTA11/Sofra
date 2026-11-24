@@ -95,6 +95,12 @@ const COMBOS = () => RECIPES.filter((r) => r.type === 'combo');
 const DINNERS = () => RECIPES.filter((r) => r.meal.includes('dinner') && r.type !== 'dessert' && (r.light || ['pie', 'salad', 'soup'].includes(r.type)));
 const SNACKS = () => RECIPES.filter((r) => r.type === 'snack');
 export const ROLE_ORDER = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
+// Plan length: one dish, one day, one week or a month (4 weeks).
+export const RANGES = { dish: 1, day: 1, week: 7, month: 28 };
+/** Days outside the 7-day block of day i become null, so weekly rules work inside a month. */
+const wk = (days, i) => { const a = Math.floor(i / 7) * 7; return days.map((d, k) => (k >= a && k < a + 7 ? d : null)); };
+/** Fresh food that goes off within a week: bought weekly in a month plan. Everything else is the big shop. */
+export const isFresh = (g) => !!g && (!!g.p || (!!g.prod && ['veg', 'bakery', 'dairy', 'deli'].includes(g.sec)));
 const sortDishes = (d) => d.dishes.sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
 const SOUPS = () => RECIPES.filter((r) => r.type === 'soup');
 const DESSERTS = () => RECIPES.filter((r) => r.type === 'dessert' && r.serves >= 4 && r.serves <= 16);
@@ -123,7 +129,7 @@ function ctxFor(start, i, days, planId) {
   return {
     date, weekday: wd, month: date.getMonth() + 1,
     posno: st.mode !== 'ramazan' && st.posnoDays.includes(wd),
-    weekIngs: weekIngredients(days), recent: recentIds(planId), ...weekShape(days, i),
+    weekIngs: weekIngredients(wk(days, i)), recent: recentIds(planId), ...weekShape(wk(days, i), i),
   };
 }
 
@@ -131,17 +137,19 @@ function fillDay(days, i, start, planId, opts = {}) {
   const st = S();
   const ctx = ctxFor(start, i, days, planId);
   const used = usedSet(days, i);
-  const kc = kindCounts(days, i);
+  const kc = kindCounts(wk(days, i), i);
   const hh = st.household;
   const day = { dishes: [], cooked: false };
+  const n = days.length;
   const ramazan = st.mode === 'ramazan';
-  if (ramazan || st.soupDaily) {
-    const soup = pick(SOUPS(), ctx, used, {}, 0);
+  if ((ramazan || st.soupDaily) && !opts.only) {
+    const soup = pick(SOUPS(), ctx, used, {}, 0) || pick(SOUPS(), ctx, usedSet(wk(days, i), i), {}, 0);
     if (soup) { day.dishes.push({ id: soup.id, role: 'soup', serv: hh }); used.add(soup.id); }
   }
-  const main = pick(MAINS(), ctx, used, kc);
+  // a month has more days than some kitchens have dishes: then repeat dishes from other weeks
+  const main = pick(MAINS(), ctx, used, kc) || pick(MAINS(), ctx, usedSet(wk(days, i), i), kc);
   if (main) {
-    const makeLeft = st.leftovers && main.left && opts.allowLeft && i < 6;
+    const makeLeft = st.leftovers && main.left && opts.allowLeft && i < n - 1;
     day.dishes.push({ id: main.id, role: 'main', serv: makeLeft ? hh * 2 : hh });
     day.makesLeft = !!makeLeft;
   }
@@ -152,13 +160,16 @@ function addDesserts(days, start) {
   const st = S();
   const n = Math.min(7, st.dessertsPerWeek);
   if (!n) return;
-  // weekend first, then spread
+  // weekend first, then spread — counted per 7-day block
   const order = [6, 5, 3, 1, 4, 2, 0];
   const idx = [];
-  for (const wd of order) {
-    const i = days.findIndex((_, k) => weekday(new Date(start.getTime() + k * DAY)) === wd);
-    if (i >= 0) idx.push(i);
-    if (idx.length >= n) break;
+  for (let a = 0; a < days.length; a += 7) {
+    const block = [];
+    for (const wd of order.slice(0, n)) {
+      const i = days.findIndex((_, k) => k >= a && k < a + 7 && weekday(new Date(start.getTime() + k * DAY)) === wd);
+      if (i >= 0) block.push(i);
+    }
+    idx.push(...block);
   }
   const used = usedSet(days);
   idx.forEach((i) => {
@@ -175,7 +186,7 @@ function pickMeal(role, days, i, start, planId, exclude) {
   const ctx = ctxFor(start, i, days, planId);
   const wd = ctx.weekday;
   const roleIds = (k) => new Set((days[k] ? days[k].dishes : []).filter((x) => x.role === role).map((x) => x.id));
-  const weekUsed = new Set(days.flatMap((d, k) => (d && k !== i ? d.dishes.filter((x) => x.role === role).map((x) => x.id) : [])));
+  const weekUsed = new Set(wk(days, i).flatMap((d, k) => (d && k !== i ? d.dishes.filter((x) => x.role === role).map((x) => x.id) : [])));
   const yesterday = i > 0 ? roleIds(i - 1) : new Set();
   if (exclude) { weekUsed.add(exclude); yesterday.add(exclude); }
   const lunchR = days[i].dishes.find((x) => x.role === 'main');
@@ -194,8 +205,9 @@ function pickMeal(role, days, i, start, planId, exclude) {
   const lunch = days[i].dishes.find((x) => x.role === 'main');
   const mains = {}; if (lunch) mains[R[lunch.id].main] = 2;
   Object.assign(ctx, { mains, pies: 0, maxTime: st.dinnerMax });
-  const used = usedSet(days); weekUsed.forEach((x) => used.add(x));
-  return pick(DINNERS(), ctx, used, kindCounts(days)) || pick(DINNERS(), ctx, yesterday, kindCounts(days));
+  const used = usedSet(wk(days, i)); weekUsed.forEach((x) => used.add(x));
+  const kc = kindCounts(wk(days, i));
+  return pick(DINNERS(), ctx, used, kc) || pick(DINNERS(), ctx, yesterday, kc);
 }
 
 /** Assembled (no-cook) breakfast: no repeats this week if possible, never two days running. */
@@ -254,7 +266,7 @@ export function swapDish(i, k) {
     const pool = x.role === 'soup' ? SOUPS() : x.role === 'dessert' ? DESSERTS() : RECIPES.filter((q) => q.type === R[x.id].type);
     const ctx = ctxFor(start, i, st.plan.days, st.plan.id);
     const used = usedSet(st.plan.days); used.add(x.id);
-    r = pick(pool, ctx, used, {});
+    r = pick(pool, ctx, used, {}) || pick(pool, ctx, new Set([...usedSet(wk(st.plan.days, i)), x.id]), {});
     if (r) d.dishes[k] = { ...x, id: r.id, serv: x.fixed ? r.serves : x.serv };
   }
   d.cooked = false;
@@ -262,23 +274,37 @@ export function swapDish(i, k) {
   save();
 }
 
-export function generatePlan(startDate = new Date()) {
+export function generatePlan(startDate = new Date(), range = S().range || 'week') {
   const st = S();
+  if (!RANGES[range]) range = 'week';
+  st.range = range;
   const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
   const planId = 'p' + Date.now();
-  const days = new Array(7).fill(null);
-  for (let i = 0; i < 7; i++) {
+  const n = RANGES[range];
+  const days = new Array(n).fill(null);
+  if (range === 'dish') {
+    // just one dish: today's main, nothing else
+    days[0] = fillDay(days, 0, start, planId, { only: true });
+    delete days[0].makesLeft;
+    days[0].dishes.forEach((x) => { x.serv = st.household; });
+    st.plan = { id: planId, start: iso(start), range, days };
+    recordHistory();
+    st.shop.checked = {};
+    save();
+    return st.plan;
+  }
+  for (let i = 0; i < n; i++) {
     if (days[i]) continue;
     const d = fillDay(days, i, start, planId, { allowLeft: true });
     days[i] = d;
-    if (d.makesLeft && i + 1 < 7) {
+    if (d.makesLeft && i + 1 < n) {
       const m = d.dishes.find((x) => x.role === 'main');
       const next = { dishes: [{ id: m.id, role: 'main', serv: st.household, left: true }], cooked: false };
       const ctxN = ctxFor(start, i + 1, days, planId);
       const r = R[m.id];
       if (!ctxN.posno || (st.posnoFish ? r.posnoFish : r.posno)) {
         if (st.mode === 'ramazan' || st.soupDaily) {
-          const soup = pick(SOUPS(), ctxN, usedSet(days), {}, 0);
+          const soup = pick(SOUPS(), ctxN, usedSet(days), {}, 0) || pick(SOUPS(), ctxN, usedSet(wk(days, i + 1)), {}, 0);
           if (soup) next.dishes.unshift({ id: soup.id, role: 'soup', serv: st.household });
         }
         days[i + 1] = next;
@@ -288,7 +314,7 @@ export function generatePlan(startDate = new Date()) {
   addDesserts(days, start);
   days.forEach((d) => delete d.makesLeft);
   addMeals(days, start, planId);
-  st.plan = { id: planId, start: iso(start), days };
+  st.plan = { id: planId, start: iso(start), range, days };
   recordHistory();
   st.shop.checked = {};
   save();
@@ -316,26 +342,27 @@ export function swapDay(i) {
   const old = days[i];
   const oldMain = old.dishes.find((x) => x.role === 'main');
   // if this day was the source of leftovers, the next day becomes free too
-  if (oldMain && !oldMain.left && i + 1 < 7) {
+  const n = days.length;
+  if (oldMain && !oldMain.left && i + 1 < n) {
     const nx = days[i + 1].dishes.find((x) => x.role === 'main' && x.left && x.id === oldMain.id);
     if (nx) { days[i + 1].dishes = days[i + 1].dishes.filter((x) => x !== nx); }
   }
   const ctx = ctxFor(start, i, days, plan.id);
   const used = usedSet(days, i);
   if (oldMain) used.add(oldMain.id);
-  const kc = kindCounts(days, i);
-  const pickR = pick(MAINS(), ctx, used, kc);
+  const kc = kindCounts(wk(days, i), i);
+  const pickR = pick(MAINS(), ctx, used, kc) || pick(MAINS(), ctx, new Set([...usedSet(wk(days, i), i), ...(oldMain ? [oldMain.id] : [])]), kc);
   old.dishes = old.dishes.filter((x) => x.role !== 'main');
   if (pickR) {
-    const left = st.leftovers && pickR.left && i + 1 < 7 && !days[i + 1].dishes.some((x) => x.role === 'main');
+    const left = plan.range !== 'dish' && st.leftovers && pickR.left && i + 1 < n && !days[i + 1].dishes.some((x) => x.role === 'main');
     old.dishes.splice(old.dishes.findIndex((x) => x.role === 'dessert') >= 0 ? old.dishes.findIndex((x) => x.role === 'dessert') : old.dishes.length, 0,
       { id: pickR.id, role: 'main', serv: left ? st.household * 2 : st.household });
     if (left) days[i + 1].dishes.unshift({ id: pickR.id, role: 'main', serv: st.household, left: true });
   }
   // a day that lost its leftover main gets a fresh dish
-  if (i + 1 < 7 && !days[i + 1].dishes.some((x) => x.role === 'main')) {
+  if (i + 1 < n && !days[i + 1].dishes.some((x) => x.role === 'main')) {
     const ctxN = ctxFor(start, i + 1, days, plan.id);
-    const r2 = pick(MAINS(), ctxN, usedSet(days), kindCounts(days));
+    const r2 = pick(MAINS(), ctxN, usedSet(days), kindCounts(wk(days, i + 1))) || pick(MAINS(), ctxN, usedSet(wk(days, i + 1)), kindCounts(wk(days, i + 1)));
     if (r2) days[i + 1].dishes.splice(days[i + 1].dishes.some((x) => x.role === 'soup') ? 1 : 0, 0, { id: r2.id, role: 'main', serv: st.household });
   }
   old.cooked = false;
@@ -397,9 +424,19 @@ export const panArea = (p) => (p.shape === 'round' ? Math.PI * ((p.d || 26) / 2)
 // ───────── shopping list ─────────
 const TO_BASE = { kg: ['g', 1000], g: ['g', 1], l: ['ml', 1000], dl: ['ml', 100], ml: ['ml', 1] };
 
-export function shoppingList() {
+/** Shopping parts of the current plan: a month has a big shop (long-life) and one fresh list per week. */
+export function shopParts() {
+  const st = S();
+  if (!st.plan || st.plan.range !== 'month') return ['all'];
+  return ['big', ...Array.from({ length: Math.ceil(st.plan.days.length / 7) }, (_, w) => 'w' + w)];
+}
+
+export function shoppingList(part = 'all') {
   const st = S();
   if (!st.plan) return { sections: [], have: [] };
+  if (!shopParts().includes(part)) part = shopParts()[0];
+  const w = part[0] === 'w' ? Number(part.slice(1)) : -1;
+  const keep = (id) => (part === 'all' ? true : part === 'big' ? !isFresh(ING[id]) : isFresh(ING[id]));
   const map = new Map();
   const add = (id, q, unit, opt, max) => {
     const [bu, mul] = TO_BASE[unit] || [unit, 1];
@@ -409,15 +446,17 @@ export function shoppingList() {
     cur.opt = cur.opt && !!opt;
     map.set(key, cur);
   };
-  st.plan.days.forEach((d) => d.dishes.forEach((x) => {
+  st.plan.days.forEach((d, di) => d.dishes.forEach((x) => {
     if (x.left) return;
+    if (w >= 0 && Math.floor(di / 7) !== w) return;
     const r = R[x.id];
     if (!r) return;
     const f = x.fixed ? 1 : x.serv / r.serves;
-    r.ing.forEach(([id, q, unit, ex]) => add(id, q == null ? null : q * f, unit, ex && ex.opt, ex && ex.max != null ? ex.max * f : null));
+    r.ing.forEach(([id, q, unit, ex]) => keep(id) && add(id, q == null ? null : q * f, unit, ex && ex.opt, ex && ex.max != null ? ex.max * f : null));
   }));
-  if (st.mode === 'ramazan') add('dates', 25 * st.household * 7, 'g'); // ~3 hurme po osobi dnevno
-  const items = [...map.values()].map((it) => ({ ...it, key: it.id + '|' + it.unit, haveId: haveOrSub(it.id) }));
+  if (st.mode === 'ramazan' && keep('dates')) add('dates', 25 * st.household * st.plan.days.length, 'g'); // ~3 hurme po osobi dnevno
+  const pre = part === 'all' ? '' : part + ':';
+  const items = [...map.values()].map((it) => ({ ...it, key: pre + it.id + '|' + it.unit, haveId: haveOrSub(it.id) }));
   const need = items.filter((it) => !it.haveId);
   const have = items.filter((it) => it.haveId);
   const sections = SECTIONS.map((sec) => ({ sec, items: need.filter((it) => ING[it.id].sec === sec).sort((a, b) => ING[a.id].bs.localeCompare(ING[b.id].bs)) }))
