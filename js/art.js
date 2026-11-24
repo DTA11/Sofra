@@ -1,10 +1,10 @@
 // Hand-drawn style SVG illustrations, generated per dish (no image files, works offline).
 export const CU_COLORS = {
-  bosanska: ['#9b2318', '#f2d9c4'],
-  balkan: ['#24366b', '#d8def0'],
-  italian: ['#4f6b1f', '#e1e9cc'],
-  french: ['#6d2f5c', '#eedbe7'],
-  jna: ['#4d5530', '#e3e4cf'],
+  bosanska: ['#9f1d20', '#f4ece6'],
+  balkan: ['#2c3e6b', '#eceef3'],
+  italian: ['#55702a', '#eef1e6'],
+  french: ['#74365f', '#f3ecf0'],
+  jna: ['#545b36', '#eeeee6'],
 };
 const COPPER = ['#b8642f', '#d88b4f', '#7c3d1a'];
 
@@ -114,7 +114,7 @@ export function dishArt(r, cls = '') {
     else if (['spaghetti', 'pasta_short', 'tagliatelle', 'arborio'].some(has)) key = 'pasta';
     else if (r.eq.includes('oven')) key = 'oven';
   }
-  const motif = `<g opacity=".22" fill="${c}">${[[14, 14], [146, 14], [14, 86], [146, 86]].map(([x, y]) => `<path d="M${x} ${y - 7}l7 7-7 7-7-7z"/>`).join('')}</g>`;
+  const motif = `<g opacity=".07" fill="${c}">${[[14, 14], [146, 14], [14, 86], [146, 86]].map(([x, y]) => `<path d="M${x} ${y - 7}l7 7-7 7-7-7z"/>`).join('')}</g>`;
   return `<svg class="art ${cls}" viewBox="0 0 160 100" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
     <rect width="160" height="100" fill="${bg}"/>${motif}${SHAPES[key](c)}</svg>`;
 }

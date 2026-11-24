@@ -108,13 +108,14 @@ function viewHome() {
   const feats = [['plan', 'f1'], ['pantry', 'f2'], ['shop', 'f3'], ['timer', 'f4'], ['moon', 'f5'], ['sweets', 'f6']];
   return `<section class="band home-hero">
       <div class="hh-txt">
-        <p class="eyebrow">Sofra · ${esc(L('cu', 'bosanska'))} · ${esc(L('cu', 'balkan'))} · ${esc(L('cu', 'italian'))} · ${esc(L('cu', 'french'))}</p>
+        <p class="eyebrow">${getLang() === 'bs' ? 'Domaća kuhinja · Sedmični jelovnik' : 'Home cooking · Weekly menu'}</p>
         <h1 class="display xl">${t('homeTitle')}</h1>
         <p class="lede">${t('homeLede')}</p>
         <div class="row gap wrap cta">
           ${st.plan ? `<a class="btn light" href="#/plan">${ICON.plan} ${t('homeOpen')}</a>` : `<button class="btn light" data-act="homeplan">${ICON.plan} ${t('homeCta')}</button>`}
           <button class="btn ghost" data-act="install" data-install-cta hidden>${ICON.share} ${t('homeInstall')}</button>
         </div>
+        <div class="trust"><span>${ICON.check}${RECIPES.length} ${t('dishes')}</span><span>${ICON.check}${getLang() === 'bs' ? 'Bez registracije' : 'No sign-up'}</span><span>${ICON.check}${getLang() === 'bs' ? 'Radi i bez interneta' : 'Works offline'}</span></div>
       </div>
       <div class="hh-art">
         <div class="tile t1">${dishArt(R['bosanski-lonac'])}</div>
@@ -137,12 +138,12 @@ function viewHome() {
       <button class="btn primary" data-act="install" data-install-cta hidden>${ICON.share} ${t('homeInstall')}</button>
     </section>
     <section class="home-sec privacy"><h3>${ICON.check} ${t('privacyTitle')}</h3><p>${t('privacyText')}</p></section>
-    <footer class="sitefoot">${KILIM}<p><b>Sofra</b> — ${t('footer').replace(/^Sofra — /, '')}</p>
+    <footer class="sitefoot"><p><b>Sofra</b> — ${t('footer').replace(/^Sofra — /, '')}</p>
       <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/jna">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
 }
 
 // ───────── install button (same behaviour as Baby Card Printables) ─────────
-const install = { ask: null, ios: /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) };
+const install = { ask: window.__bip || null, ios: /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) };
 function installAvailable() { return !isStandalone() && (install.ask || install.ios); }
 function syncInstallButtons() {
   document.querySelectorAll('[data-install-btn],[data-install-cta]').forEach((b) => { b.hidden = !installAvailable(); });
@@ -324,7 +325,7 @@ function viewSweets() {
 }
 function viewJNA() {
   const list = RECIPES.filter((r) => r.cu === 'jna');
-  return `<section class="band page-band" style="background:#4d5530"><a class="backlink" style="color:#fff" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('jnaTitle')}</h1><p class="lede">${t('jnaIntro')}</p></section>
+  return `<section class="band page-band"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('jnaTitle')}</h1><p class="lede">${t('jnaIntro')}</p></section>
     <div class="grid">${list.map(card).join('')}</div>
     <p class="small muted">${esc(SOURCES.jna[getLang()])}</p>`;
 }
@@ -456,7 +457,7 @@ function menuItems(m) {
   return m.items.map(([id, role, alt]) => [noPork && alt && !R[id].noPork ? alt : id, role]);
 }
 function viewHolidays() {
-  return `<section class="band page-band" style="background:#9b6a12"><a class="backlink" style="color:#fff" href="#/plan">${ICON.back} ${t('tabPlan')}</a><h1 class="display">${t('holidays')}</h1></section>
+  return `<section class="band page-band"><a class="backlink" href="#/plan">${ICON.back} ${t('tabPlan')}</a><h1 class="display">${t('holidays')}</h1></section>
     ${MENUS.map((m) => `<article class="menu">
       <h3>${esc(getLang() === 'bs' ? m.bs : m.en)}</h3>
       <ul>${menuItems(m).map(([id, role]) => `<li><span class="role">${t(role)}</span> <a href="#/recipe/${id}">${esc(name(R[id]))}</a></li>`).join('')}</ul>
@@ -477,7 +478,7 @@ function viewPantry() {
     return `<div class="zitem ${n ? 'on' : ''}"><span>🫙 ${esc(iname(g.id))}</span>
       <span class="jar"><button class="round sm" data-act="jar" data-id="${g.id}" data-d="-1">−</button><b>${n}</b><button class="round sm" data-act="jar" data-id="${g.id}" data-d="1">+</button></span></div>`;
   };
-  return `<section class="band page-band" style="background:#4f6b1f"><h1 class="display">${t('tabPantry')}</h1><p class="lede">${t('pantryIntro')}</p></section>
+  return `<section class="band page-band"><h1 class="display">${t('tabPantry')}</h1><p class="lede">${t('pantryIntro')}</p></section>
     <div class="searchbar"><input type="search" id="pq" placeholder="${t('search')}" value="${esc(ui.pantryQ)}"></div>
     ${zim.length ? `<section class="psec zim"><h3>${t('zimnica')} <small class="muted">(${t('jars')})</small></h3>${zim.map(zrow).join('')}</section>` : ''}
     ${secs.map((s) => `<section class="psec"><h3>${esc(L('sec', s.sec))}</h3><div class="pgrid">${s.items.map(row).join('')}</div></section>`).join('')}`;
@@ -750,10 +751,16 @@ window.addEventListener('hashchange', route);
 store.load();
 setLang(S().lang);
 document.querySelectorAll('.tabbar a').forEach((a) => { a.querySelector('span').innerHTML = ICON[a.dataset.tab] || ''; });
-$('#kilim').innerHTML = KILIM;
 $('#gearBtn').innerHTML = ICON.gear;
 document.body.classList.toggle('standalone', isStandalone());
 $('[data-install-btn]').addEventListener('click', doInstall);
+// hamburger menu
+const menu = $('#menu'), burger = $('#burger');
+const setMenu = (open) => { menu.hidden = !open; burger.setAttribute('aria-expanded', String(open)); document.body.classList.toggle('menu-open', open); };
+burger.addEventListener('click', () => setMenu(menu.hidden));
+menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+window.addEventListener('hashchange', () => setMenu(false));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 route();
 if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./sw.js').catch(() => {});
 window.__sofra = { R, RECIPES, kindOf, store };

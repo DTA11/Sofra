@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Sofra — sedmični jelovnik</title>
   <meta name="description" content="Sofra: sedmični jelovnik iz bosanske, balkanske, italijanske i francuske kuhinje — ostava, zimnica, spisak za kupovinu. Radi offline, bez računa.">
-  <meta name="theme-color" content="#7a2e1f">
+  <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.webmanifest">
+  <script>/* catch the browser install offer early, before the app script loads */window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__bip=e;document.documentElement.classList.add("can-install");});</script>
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,31 +19,42 @@
 </head>
 <body>
   <header class="topbar">
-    <a href="#/home" class="brand"><img src="icons/icon.svg" alt="" width="30" height="30"> Sofra</a>
-    <nav class="sitenav" aria-label="Glavni meni">
-      <a href="#/home" data-nav="home" data-i18n="navHome">Početna</a>
-      <a href="#/plan" data-nav="plan" data-i18n="tabPlan">Plan</a>
-      <a href="#/recipes" data-nav="recipes" data-i18n="tabRecipes">Recepti</a>
-      <a href="#/sweets" data-nav="sweets" data-i18n="tabSweets">Slatko</a>
-      <a href="#/pantry" data-nav="pantry" data-i18n="tabPantry">Ostava</a>
-      <a href="#/shop" data-nav="shop" data-i18n="tabShop">Kupovina</a>
-    </nav>
-    <div class="topbar-r">
-      <button type="button" class="app-btn" data-install-btn hidden>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span data-i18n="getApp">Instaliraj</span></button>
-      <button id="langBtn" class="pill" aria-label="Language">EN</button>
-      <a href="#/settings" class="pill icon-pill" id="gearBtn" aria-label="Settings"></a>
+    <div class="topbar-in">
+      <a href="#/home" class="brand" aria-label="Sofra"><img src="icons/icon.svg" alt="" width="34" height="34"><span>Sofra</span></a>
+      <nav class="sitenav" aria-label="Glavni meni">
+        <a href="#/home" data-nav="home" data-i18n="navHome">Početna</a>
+        <a href="#/plan" data-nav="plan" data-i18n="tabPlan">Plan</a>
+        <a href="#/recipes" data-nav="recipes" data-i18n="tabRecipes">Recepti</a>
+        <a href="#/sweets" data-nav="sweets" data-i18n="tabSweets">Slatko</a>
+        <a href="#/pantry" data-nav="pantry" data-i18n="tabPantry">Ostava</a>
+        <a href="#/shop" data-nav="shop" data-i18n="tabShop">Kupovina</a>
+      </nav>
+      <div class="topbar-r">
+        <button type="button" class="app-btn" data-install-btn hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span data-i18n="getApp">Instaliraj</span></button>
+        <button id="langBtn" class="tb-btn lang" aria-label="Language">EN</button>
+        <a href="#/settings" class="tb-btn desk-only" id="gearBtn" aria-label="Postavke"></a>
+        <button type="button" class="tb-btn burger" id="burger" aria-label="Meni" aria-expanded="false" aria-controls="menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path class="b1" d="M4 7h16"/><path class="b2" d="M4 12h16"/><path class="b3" d="M4 17h16"/></svg>
+        </button>
+      </div>
     </div>
   </header>
-  <div id="kilim" class="kilim-wrap"></div>
-  <nav class="mobnav" aria-label="Meni">
-    <a href="#/home" data-nav="home" data-i18n="navHome">Početna</a>
-    <a href="#/plan" data-nav="plan" data-i18n="tabPlan">Plan</a>
-    <a href="#/recipes" data-nav="recipes" data-i18n="tabRecipes">Recepti</a>
-    <a href="#/sweets" data-nav="sweets" data-i18n="tabSweets">Slatko</a>
-    <a href="#/pantry" data-nav="pantry" data-i18n="tabPantry">Ostava</a>
-    <a href="#/shop" data-nav="shop" data-i18n="tabShop">Kupovina</a>
-  </nav>
+  <div class="menu-panel" id="menu" hidden>
+    <nav aria-label="Meni">
+      <a href="#/home" data-nav="home"><span data-i18n="navHome">Početna</span></a>
+      <a href="#/plan" data-nav="plan"><span data-i18n="tabPlan">Plan</span></a>
+      <a href="#/recipes" data-nav="recipes"><span data-i18n="tabRecipes">Recepti</span></a>
+      <a href="#/sweets" data-nav="sweets"><span data-i18n="tabSweets">Slatko</span></a>
+      <a href="#/jna" data-nav="jna"><span data-i18n="jnaTitle">JNA kuhinja</span></a>
+      <a href="#/holidays" data-nav="holidays"><span data-i18n="holidays">Praznični meniji</span></a>
+      <a href="#/pantry" data-nav="pantry"><span data-i18n="tabPantry">Ostava</span></a>
+      <a href="#/shop" data-nav="shop"><span data-i18n="tabShop">Kupovina</span></a>
+      <a href="#/settings" data-nav="settings"><span data-i18n="settings">Postavke</span></a>
+    </nav>
+    <button type="button" class="btn primary block" data-install-cta data-act="install" hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span data-i18n="homeInstall">Instaliraj na telefon</span></button>
+  </div>
 
   <dialog class="app-steps" data-install-steps>
     <p class="app-steps-title" data-i18n="iosTitle">Dodaj Sofru na početni ekran</p>
