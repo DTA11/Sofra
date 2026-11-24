@@ -1,7 +1,10 @@
 // Hand-drawn style SVG illustrations, generated per dish (no image files, works offline).
 export const CU_COLORS = {
   bosanska: ['#9b2318', '#f2d9c4'],
-  balkan: ['#24366b', '#d8def0'],
+  srpska: ['#24366b', '#d8def0'],
+  hrvatska: ['#1d5a80', '#d6e6f0'],
+  bugarska: ['#7a3e14', '#f0dcc8'],
+  svakodnevno: ['#8a6416', '#f3e6c4'],
   italian: ['#4f6b1f', '#e1e9cc'],
   french: ['#6d2f5c', '#eedbe7'],
   jna: ['#4d5530', '#e3e4cf'],
@@ -116,7 +119,7 @@ const SHAPES = {
 
 /** Illustration for a recipe. size: 'card' | 'hero' */
 export function dishArt(r, cls = '') {
-  const [c, bg] = CU_COLORS[r.cu] || CU_COLORS.balkan;
+  const [c, bg] = CU_COLORS[r.cu] || CU_COLORS.svakodnevno;
   const has = (id) => r.ing.some((i) => i[0] === id);
   let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : 'main';
   if (r.type === 'breakfast' || r.type === 'snack') {

@@ -5,7 +5,7 @@ const T = { b: 'trad' };
 export const SLO_RECIPES = [
   // ───────── Glavna jela i čorbe ─────────
   {
-    id: 'jota', cu: 'slovenska', type: 'main', main: 'beans', time: 120, serves: 6, left: 1, eqOpt: ['pressure'],
+    id: 'jota', cu: 'slovenska', reg: 'primorska', type: 'main', main: 'beans', time: 120, serves: 6, left: 1, eqOpt: ['pressure'],
     bs: 'Jota (grah s kiselim kupusom)', en: 'Jota (beans with sauerkraut)',
     ing: [['beans', 300, 'g', n('namočen preko noći', 'soaked overnight')], ['sauerkraut_shred', 500, 'g'], ['potato', 400, 'g'], ['smoked_ribs', 400, 'g', n('ili kranjska kobasica', 'or Carniolan sausage')], ['garlic', 3, 'cen'], ['flour', 2, 'kasika'], ['lard_or_oil', 2, 'kasika'], ['bay_leaf', 2, 'list'], ['paprika_sweet', 1, 'kasicica'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -32,7 +32,7 @@ export const SLO_RECIPES = [
     src: T,
   },
   {
-    id: 'kranjska-zelje', cu: 'slovenska', type: 'main', main: 'pork', time: 50, serves: 4, kid: 1,
+    id: 'kranjska-zelje', cu: 'slovenska', reg: 'gorenjska', type: 'main', main: 'pork', time: 50, serves: 4, kid: 1,
     bs: 'Kranjska kobasica s kiselim kupusom', en: 'Carniolan sausage with sauerkraut',
     ing: [['kranjska', 4, 'kom'], ['sauerkraut_shred', 800, 'g'], ['onion', 1, 'glavica'], ['lard_or_oil', 2, 'kasika'], ['bay_leaf', 1, 'list'], ['caraway', 1, 'kasicica'], ['pepper_black', 5, 'zrno'], ['potato', 1, 'kg', { opt: 1, note: ['za pire, po želji', 'for mash, optional'] }], ['mustard', 2, 'kasika', { opt: 1 }], ['horseradish', 2, 'kasika', { opt: 1 }]],
     st: [
@@ -45,7 +45,7 @@ export const SLO_RECIPES = [
     src: T,
   },
   {
-    id: 'idrijski-zlikrofi', cu: 'slovenska', type: 'main', main: 'potato', time: 90, serves: 4, kid: 1,
+    id: 'idrijski-zlikrofi', cu: 'slovenska', reg: 'primorska', type: 'main', main: 'potato', time: 90, serves: 4, kid: 1,
     bs: 'Idrijski žlikrofi', en: 'Idrija žlikrofi (potato dumplings)',
     ing: [['flour', 400, 'g'], ['eggs', 2, 'kom'], ['potato', 600, 'g'], ['onion', 1, 'glavica'], ['bacon', 80, 'g', n('ili 2 kašike ulja za posnu varijantu', 'or 2 tbsp oil for a meat-free version')], ['marjoram', 1, 'kasicica'], ['chives', 1, 'sop', { opt: 1 }], ['butter', 40, 'g'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -60,7 +60,7 @@ export const SLO_RECIPES = [
     src: T,
   },
   {
-    id: 'bograc', cu: 'slovenska', type: 'main', main: 'beef', time: 150, serves: 6, left: 1,
+    id: 'bograc', cu: 'slovenska', reg: 'prekmurje', type: 'main', main: 'beef', time: 150, serves: 6, left: 1,
     bs: 'Bograč (prekomurski gulaš od tri mesa)', en: 'Bograč (Prekmurje three-meat goulash)',
     ing: [['beef', 500, 'g'], ['pork_shoulder', 500, 'g'], ['venison_or_beef', 300, 'g', n('divljač ili još junetine', 'venison or more beef')], ['onion', 800, 'g'], ['lard_or_oil', 4, 'kasika'], ['paprika_sweet', 2, 'kasika'], ['paprika_hot', 1, 'kasicica'], ['tomato_paste', 2, 'kasika'], ['pepper', 2, 'kom', { opt: 1 }], ['potato', 800, 'g'], ['garlic', 3, 'cen'], ['wine_red', 250, 'ml'], ['bay_leaf', 2, 'list'], ['caraway', 1, 'kasicica'], ['salt', null, '']],
     st: [
@@ -153,7 +153,7 @@ export const SLO_RECIPES = [
     src: T,
   },
   {
-    id: 'solata-bucno-olje', cu: 'slovenska', type: 'salad', main: 'veg', time: 15, serves: 4, light: 1,
+    id: 'solata-bucno-olje', cu: 'slovenska', reg: 'stajerska', type: 'salad', main: 'veg', time: 15, serves: 4, light: 1,
     bs: 'Zelena salata s krompirom i bučinim uljem', en: 'Green salad with potatoes and pumpkin seed oil',
     ing: [['lettuce', 1, 'glavica'], ['potato', 400, 'g'], ['pumpkin_oil', 3, 'kasika'], ['vinegar', 2, 'kasika', n('jabukovo', 'cider')], ['garlic', 1, 'cen', { opt: 1 }], ['salt', null, '']],
     st: [
@@ -167,7 +167,7 @@ export const SLO_RECIPES = [
 
   // ───────── Slatko ─────────
   {
-    id: 'prekmurska-gibanica', cu: 'slovenska', type: 'dessert', sub: 'kolac', main: 'dessert', time: 150, serves: 16, eq: ['oven'], occ: ['bozic', 'novagodina', 'rodjendan'],
+    id: 'prekmurska-gibanica', cu: 'slovenska', reg: 'prekmurje', type: 'dessert', sub: 'kolac', main: 'dessert', time: 150, serves: 16, eq: ['oven'], occ: ['bozic', 'novagodina', 'rodjendan'],
     pan: { shape: 'rect', w: 32, h: 24 },
     bs: 'Prekomurska gibanica', en: 'Prekmurska gibanica (layered cake)',
     ing: [['flour', 250, 'g', n('za podlogu (prhko tijesto)', 'for the shortcrust base')], ['butter', 250, 'g'], ['phyllo', 500, 'g'], ['poppy', 250, 'g'], ['cottage', 1, 'kg'], ['walnuts', 250, 'g', n('mljeveni', 'ground')], ['apple', 1, 'kg'], ['sugar', 400, 'g'], ['eggs', 4, 'kom'], ['sour_cream', 500, 'g'], ['vanilla_sugar', 2, 'kesica'], ['cinnamon', 1, 'kasicica'], ['salt', 1, 'prst']],
@@ -199,7 +199,7 @@ export const SLO_RECIPES = [
     src: T,
   },
   {
-    id: 'blejska-kremsnita', cu: 'slovenska', type: 'dessert', sub: 'kolac', main: 'dessert', time: 90, serves: 12, eq: ['oven'], occ: ['rodjendan'],
+    id: 'blejska-kremsnita', cu: 'slovenska', reg: 'gorenjska', type: 'dessert', sub: 'kolac', main: 'dessert', time: 90, serves: 12, eq: ['oven'], occ: ['rodjendan'],
     pan: { shape: 'rect', w: 30, h: 20 },
     bs: 'Kremšnita (blejska)', en: 'Bled cream slice (kremšnita)',
     ing: [['puff_pastry', 500, 'g', n('2 lista', '2 sheets')], ['milk', 1, 'l'], ['eggs', 6, 'kom', n('odvojiti', 'separated')], ['sugar', 200, 'g'], ['starch', 80, 'g'], ['vanilla_sugar', 2, 'kesica'], ['cream', 400, 'ml'], ['powder_sugar', 3, 'kasika']],

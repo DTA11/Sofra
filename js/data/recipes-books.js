@@ -12,7 +12,7 @@ const n = (bs, en) => ({ note: [bs, en] });
 export const BOOK_RECIPES = [
   // ───────────── Alija Lakišić, Bosanski kuhar (6. izd., Svjetlost 1999) ─────────────
   {
-    id: 'begova-corba', cu: 'bosanska', type: 'soup', main: 'chicken', time: 90, tApprox: 1,
+    id: 'begova-corba', cu: 'bosanska', reg: 'sarajevo', type: 'soup', main: 'chicken', time: 90, tApprox: 1,
     serves: 5, occ: ['bajram', 'iftar'],
     bs: 'Begova čorba', en: 'Bey’s soup (begova čorba)',
     ing: [
@@ -148,7 +148,7 @@ export const BOOK_RECIPES = [
     src: { b: 'lakisic', p: '228' },
   },
   {
-    id: 'krompirusa', cu: 'bosanska', type: 'pie', main: 'potato', time: 90, tApprox: 1,
+    id: 'krompirusa', cu: 'bosanska', reg: 'sarajevo', type: 'pie', main: 'potato', time: 90, tApprox: 1,
     serves: 4, sApprox: 1, eq: ['oven'], kid: 1,
     bs: 'Krompiruša s kajmakom (čevljanovička)', en: 'Potato pie with kajmak (Čevljanovići style)',
     ing: [
@@ -382,7 +382,7 @@ export const BOOK_RECIPES = [
     src: { b: 'lakisic', p: '361' },
   },
   {
-    id: 'baklava-sarajevska', cu: 'bosanska', type: 'dessert', sub: 'orijentalni', main: 'dessert', time: 180, tApprox: 1,
+    id: 'baklava-sarajevska', cu: 'bosanska', reg: 'sarajevo', type: 'dessert', sub: 'orijentalni', main: 'dessert', time: 180, tApprox: 1,
     serves: 1, eq: ['oven'], occ: ['bajram'], pan: { shape: 'round', d: 70 },
     yieldNote: ['1 tepsija promjera oko 70 cm', '1 round tray, about 70 cm across'],
     bs: 'Sarajevska baklava', en: 'Sarajevo baklava',

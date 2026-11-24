@@ -4,7 +4,7 @@ const T = { b: 'trad' };
 
 export const SWEET_RECIPES = [
   {
-    id: 'palacinke', cu: 'balkan', type: 'dessert', sub: 'kolac', main: 'dessert', time: 30, serves: 4, kid: 1, meal: ['breakfast', 'dessert'],
+    id: 'palacinke', cu: 'svakodnevno', type: 'dessert', sub: 'kolac', main: 'dessert', time: 30, serves: 4, kid: 1, meal: ['breakfast', 'dessert'],
     yieldNote: ['oko 12 palačinki', 'about 12 pancakes'],
     bs: 'Palačinke s pekmezom ili džemom', en: 'Palačinke with plum butter or jam',
     ing: [['flour', 250, 'g'], ['milk', 500, 'ml'], ['eggs', 3, 'kom'], ['sugar', 1, 'kasika'], ['salt', 1, 'prst'], ['oil', 3, 'kasika'], ['pekmez', 300, 'g', n('ili džem', 'or jam')], ['walnuts', 80, 'g', { opt: 1 }]],
@@ -17,7 +17,7 @@ export const SWEET_RECIPES = [
     src: T,
   },
   {
-    id: 'tiramisu', cu: 'italian', type: 'dessert', sub: 'torta', main: 'dessert', time: 30, serves: 8, occ: ['novagodina', 'rodjendan'],
+    id: 'tiramisu', cu: 'italian', reg: 'veneto', type: 'dessert', sub: 'torta', main: 'dessert', time: 30, serves: 8, occ: ['novagodina', 'rodjendan'],
     pan: { shape: 'rect', w: 30, h: 20 },
     bs: 'Tiramisu', en: 'Tiramisù',
     ing: [['mascarpone', 500, 'g'], ['eggs', 4, 'kom'], ['sugar', 100, 'g'], ['ladyfingers', 300, 'g'], ['coffee', 300, 'ml', n('ohlađen espresso', 'cooled espresso')], ['cocoa', 2, 'kasika']],
@@ -31,7 +31,7 @@ export const SWEET_RECIPES = [
     src: T,
   },
   {
-    id: 'vanilice', cu: 'balkan', type: 'dessert', sub: 'sitni', main: 'dessert', time: 75, serves: 60, eq: ['oven'], occ: ['bozic', 'novagodina', 'bajram'],
+    id: 'vanilice', cu: 'srpska', type: 'dessert', sub: 'sitni', main: 'dessert', time: 75, serves: 60, eq: ['oven'], occ: ['bozic', 'novagodina', 'bajram'],
     yieldNote: ['oko 60 komada', 'about 60 pieces'],
     bs: 'Vanilice', en: 'Vanilice (jam-filled walnut cookies)',
     ing: [['flour', 500, 'g'], ['butter', 250, 'g'], ['sugar', 150, 'g'], ['walnuts', 100, 'g', n('mljeveni', 'ground')], ['eggs', 1, 'kom', n('žumanjak', 'yolk')], ['lemon', 1, 'kom', n('korica', 'zest')], ['dzem', 200, 'g', n('kiseliji', 'tart jam')], ['powder_sugar', 100, 'g'], ['vanilla_sugar', 2, 'kesica']],
@@ -45,7 +45,7 @@ export const SWEET_RECIPES = [
     src: T,
   },
   {
-    id: 'sampita', cu: 'balkan', type: 'dessert', sub: 'kolac', main: 'dessert', time: 75, serves: 16, eq: ['oven'], occ: ['novagodina', 'rodjendan'],
+    id: 'sampita', cu: 'srpska', type: 'dessert', sub: 'kolac', main: 'dessert', time: 75, serves: 16, eq: ['oven'], occ: ['novagodina', 'rodjendan'],
     pan: { shape: 'rect', w: 35, h: 25 },
     bs: 'Šampita', en: 'Šampita (meringue slice)',
     ing: [['puff_pastry', 500, 'g'], ['eggs', 8, 'kom', n('samo bjelanjci', 'whites only')], ['sugar', 400, 'g'], ['lemon', 0.5, 'kom', n('sok', 'juice')], ['powder_sugar', 2, 'kasika']],
@@ -59,7 +59,7 @@ export const SWEET_RECIPES = [
     src: T,
   },
   {
-    id: 'posna-pita-jabuke', cu: 'balkan', type: 'dessert', sub: 'kolac', main: 'dessert', time: 70, serves: 12, eq: ['oven'], occ: ['bozic', 'posno'], kid: 1,
+    id: 'posna-pita-jabuke', cu: 'svakodnevno', type: 'dessert', sub: 'kolac', main: 'dessert', time: 70, serves: 12, eq: ['oven'], occ: ['bozic', 'posno'], kid: 1,
     pan: { shape: 'rect', w: 30, h: 20 },
     bs: 'Posni kolač s jabukama', en: 'Vegan apple cake (posni)',
     ing: [['flour', 400, 'g'], ['oil', 120, 'ml'], ['sugar', 150, 'g'], ['baking_powder', 1, 'kesica'], ['apple', 1, 'kg'], ['cinnamon', 1, 'kasicica'], ['walnuts', 100, 'g', { opt: 1 }], ['powder_sugar', 2, 'kasika']],
@@ -73,7 +73,7 @@ export const SWEET_RECIPES = [
     src: T,
   },
   {
-    id: 'reform-torta', cu: 'balkan', type: 'dessert', sub: 'torta', main: 'dessert', time: 150, serves: 12, eq: ['oven'], occ: ['novagodina', 'rodjendan'],
+    id: 'reform-torta', cu: 'srpska', reg: 'beograd', type: 'dessert', sub: 'torta', main: 'dessert', time: 150, serves: 12, eq: ['oven'], occ: ['novagodina', 'rodjendan'],
     pan: { shape: 'round', d: 26 },
     bs: 'Reform torta', en: 'Reform torte',
     ing: [['eggs', 8, 'kom'], ['sugar', 400, 'g'], ['walnuts', 200, 'g', n('mljeveni', 'ground')], ['flour', 30, 'g'], ['chocolate', 200, 'g'], ['butter', 250, 'g']],
@@ -88,7 +88,7 @@ export const SWEET_RECIPES = [
     src: T,
   },
   {
-    id: 'tarte-tatin', cu: 'french', type: 'dessert', sub: 'kolac', main: 'dessert', time: 75, serves: 8, eq: ['oven'],
+    id: 'tarte-tatin', cu: 'french', reg: 'loire', type: 'dessert', sub: 'kolac', main: 'dessert', time: 75, serves: 8, eq: ['oven'],
     pan: { shape: 'round', d: 24 },
     bs: 'Tarte Tatin', en: 'Tarte Tatin',
     ing: [['apple', 1.2, 'kg'], ['sugar', 150, 'g'], ['butter', 200, 'g', n('100 g za karamel, 100 g za tijesto', '100 g for the caramel, 100 g for the pastry')], ['flour', 200, 'g'], ['salt', 1, 'prst']],

@@ -1,6 +1,6 @@
 import { RECIPES, R, MENUS, SOURCES } from './data/index.js';
 import { ING } from './data/ingredients.js';
-import { t, L, keys, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
+import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
 import { dishArt, ICON, KILIM } from './art.js';
 import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
@@ -14,7 +14,7 @@ const DAYMS = 86400000;
 
 // ───────── UI state (not persisted) ─────────
 const ui = {
-  filters: { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '' },
+  filters: { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '' },
   showFilters: false,
   serv: {},      // recipe id -> servings
   pan: {},       // recipe id -> {shape,w,h,d}
@@ -138,7 +138,7 @@ function todayPick() {
       <div class="pick-txt">
         <span class="label">${getLang() === 'bs' ? 'Prijedlog za danas' : 'Today’s idea'}</span>
         <a class="pick-name" href="#/recipe/${r.id}">${esc(name(r))}</a>
-        <p class="meta-row">${ICON.clock}${fmtTime(r)} <span class="dot"></span>${esc(L('cu', r.cu))}</p>
+        <p class="meta-row">${ICON.clock}${fmtTime(r)} <span class="dot"></span>${esc(origin(r))}</p>
         <div class="row gap wrap">
           <a class="btn light sm" href="#/cook/${r.id}?s=${st.household}">${ICON.play} ${t('cook')}</a>
           <button class="btn ghost sm" data-act="repick">${ICON.refresh} ${getLang() === 'bs' ? 'Drugi prijedlog' : 'Another idea'}</button>
@@ -255,6 +255,7 @@ function viewPlan() {
 function matches(r, f) {
   if (f.q) { const q = f.q.toLowerCase(); if (!(`${r.bs} ${r.en} ${r.ing.map((i) => iname(i[0])).join(' ')}`.toLowerCase().includes(q))) return false; }
   if (f.cu.size && !f.cu.has(r.cu)) return false;
+  if (f.reg && r.reg !== f.reg) return false;
   if (f.type && r.type !== f.type) return false;
   if (f.sub && r.sub !== f.sub) return false;
   if (f.main && r.main !== f.main) return false;
@@ -284,7 +285,7 @@ function card(r) {
   return `<a class="card" href="#/recipe/${r.id}">
     ${dishArt(r, 'cardart')}
     <div class="card-body">
-      <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('cu', r.cu))}</span><span class="time">${ICON.clock}${fmtTime(r)}</span></div>
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(r.reg ? L('reg', r.reg) : shortCu(r.cu))}</span><span class="time">${ICON.clock}${fmtTime(r)}</span></div>
       <b>${esc(name(r))}</b>
       <div class="tags">${badges(r)}${fav ? `<span class="tag fav">★</span>` : ''}</div>
     </div>
@@ -294,6 +295,7 @@ function filterPanel(extra = '') {
   const f = ui.filters;
   return `<div class="filters ${ui.showFilters ? 'open' : ''}">
     ${chipGroup(t('fCuisine'), 'cu', keys('cu').map((k) => [k, L('cu', k)]), true)}
+    ${regionChips()}
     ${extra || chipGroup(t('fType'), 'type', ['breakfast', 'main', 'soup', 'pie', 'salad', 'snack'].map((k) => [k, L('type', k)]))}
     ${chipGroup(t('fMain'), 'main', ['beef', 'chicken', 'lamb', 'fish', 'eggs', 'cheese', 'beans', 'potato', 'broccoli', 'spinach', 'veg', 'pasta', 'rice', 'pork'].map((k) => [k, L('main', k)]))}
     ${chipGroup(t('fMeal'), 'meal', ['breakfast', 'lunch', 'dinner', 'snack', 'iftar'].map((k) => [k, L('meal', k)]))}
@@ -308,6 +310,16 @@ function filterPanel(extra = '') {
     </div></div>
   </div>`;
 }
+// Region chips only for the chosen countries, and only regions that have dishes.
+function regionChips() {
+  const f = ui.filters;
+  if (!f.cu.size) return '';
+  const used = new Set(RECIPES.filter((r) => r.reg && f.cu.has(r.cu)).map((r) => r.reg));
+  const regs = keys('reg').filter((k) => used.has(k) && f.cu.has(regionCountry(k)));
+  return regs.length ? chipGroup(t('fRegion'), 'reg', regs.map((k) => [k, L('reg', k)])) : '';
+}
+const shortCu = (cu) => (cu === 'bosanska' ? 'BiH' : cu === 'svakodnevno' ? (getLang() === 'bs' ? 'Svakodnevno' : 'Everyday') : L('cu', cu));
+const origin = (r) => L('cu', r.cu) + (r.reg ? ' · ' + L('reg', r.reg) : '');
 function searchBar() {
   const n = activeFilterCount();
   return `<div class="searchbar"><input type="search" id="q" placeholder="${t('search')}" value="${esc(ui.filters.q)}">
@@ -315,11 +327,11 @@ function searchBar() {
 }
 function activeFilterCount() {
   const f = ui.filters;
-  return f.cu.size + f.diet.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0);
+  return f.cu.size + f.diet.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0);
 }
 function viewRecipes() {
   const list = RECIPES.filter((r) => r.type !== 'dessert').filter((r) => matches(r, ui.filters));
-  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert').length} ${t('dishes')} · ${keys('cu').map((c) => L('cu', c)).join(' · ')}</p></section>
+  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert').length} ${t('dishes')} · ${keys('cu').length - 2} ${getLang() === 'bs' ? 'zemalja, po regijama' : 'countries, by region'}</p></section>
     <div class="feature-row">
       <a class="feature jna" href="#/jna">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
       <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
@@ -381,7 +393,7 @@ function viewRecipe(id) {
   const servParam = r.pan ? '' : `?s=${ui.serv[r.id] ?? defaultServ(r)}`;
   return `<article class="recipe">
       <div class="rhero">${dishArt(r, 'big')}<a class="backfab" href="javascript:history.back()" aria-label="${t('back')}">${ICON.back}</a></div>
-      <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('cu', r.cu))}</span><span class="muted">${esc(L('type', r.type))} · ${fmtTime(r)}</span></div>
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(origin(r))}</span><span class="muted">${esc(L('type', r.type))} · ${fmtTime(r)}</span></div>
       <h1 class="rtitle">${esc(name(r))}</h1>
       <div class="tags">${badges(r)}${occ}${eq}</div>
       <div class="row gap wrap actions">
@@ -610,7 +622,7 @@ function ingParts(ing, f) {
 const stepTime = (s) => (s[2] ? ` (${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'})` : '');
 function recipeBlocks(r, f, servTxt, page = false) {
   return [
-    { t: 'h2', text: name(r), page, sub: `${L('cu', r.cu)} · ${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''}` },
+    { t: 'h2', text: name(r), page, sub: `${origin(r)} · ${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''}` },
     { t: 'p', text: tx(r.story), font: 'I', muted: 1, after: 6 },
     { t: 'h3', text: t('ingredients') },
     { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
@@ -772,10 +784,11 @@ document.addEventListener('click', (e) => {
     case 'filter': {
       const k = el.dataset.k, v = el.dataset.v;
       if (el.dataset.m === '1') { const s = ui.filters[k]; s.has(v) ? s.delete(v) : s.add(v); } else ui.filters[k] = ui.filters[k] === v ? '' : v;
+      if (ui.filters.reg && !ui.filters.cu.has(regionCountry(ui.filters.reg))) ui.filters.reg = '';
       rer(); break;
     }
     case 'ftoggle': ui.filters[el.dataset.k] = !ui.filters[el.dataset.k]; rer(); break;
-    case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '' }; rer(); break;
+    case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '' }; rer(); break;
     case 'fav': store.toggleFav(el.dataset.id); rer(); break;
     case 'serv': { const r = R[el.dataset.id]; const cur = ui.serv[r.id] ?? defaultServ(r); ui.serv[r.id] = Math.max(1, cur + Number(el.dataset.d)); rer(); break; }
     case 'setserv': ui.serv[el.dataset.id] = Number(el.dataset.v); rer(); break;

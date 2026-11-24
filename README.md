@@ -7,7 +7,7 @@ Bosanski (ijekavica) prvo, engleski kao prekidač.
 pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvezi (JSON)* / *Uvezi*.
 
 ## Šta radi
-- Sedmični plan iz odabrane mješavine kuhinja (stara bosanska, balkanska, slovenska, italijanska, francuska, JNA)
+- Sedmični plan iz odabrane mješavine kuhinja po državama i regijama (BiH, Srbija, Hrvatska, Slovenija, Bugarska, Italija, Francuska, Svakodnevno, JNA); regija samo za jela koja stvarno pripadaju jednom kraju (npr. Sarajevo, Vojvodina, Dalmacija, Prekmurje)
 - Pravila: npr. junetina najviše 2× sedmično, bez ponavljanja 2–3 sedmice, sezonsko povrće, planirani ostaci,
   zamjena dana jednim dodirom, porcije za broj ukućana, posni dani, „bez svinjetine“, prednost dječijim jelima
 - Ostava + zimnica (tegle); plan koristi ono što imaš i ponovo koristi iste svježe namirnice kroz sedmicu

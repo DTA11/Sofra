@@ -5,7 +5,7 @@ const T = { b: 'trad' };
 export const MEAL_RECIPES = [
   // ───────── Doručak ─────────
   {
-    id: 'kajgana', cu: 'balkan', type: 'breakfast', main: 'eggs', time: 10, serves: 4, kid: 1, light: 1, meal: ['breakfast', 'dinner'],
+    id: 'kajgana', cu: 'svakodnevno', type: 'breakfast', main: 'eggs', time: 10, serves: 4, kid: 1, light: 1, meal: ['breakfast', 'dinner'],
     bs: 'Kajgana s mladim lukom', en: 'Scrambled eggs with spring onion',
     ing: [['eggs', 8, 'kom'], ['spring_onion', 1, 'sop', { opt: 1 }], ['butter', 30, 'g'], ['milk', 3, 'kasika'], ['salt', null, ''], ['pepper_black', null, ''], ['bread', 4, 'kriska']],
     st: [
@@ -42,7 +42,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'ustipci', cu: 'balkan', type: 'breakfast', main: 'dessert', time: 75, serves: 6, kid: 1,
+    id: 'ustipci', cu: 'svakodnevno', type: 'breakfast', main: 'dessert', time: 75, serves: 6, kid: 1,
     bs: 'Uštipci', en: 'Uštipci (fried dough puffs)',
     ing: [['flour', 500, 'g'], ['yeast', 1, 'kesica', n('suhi, 7 g', 'dried, 7 g')], ['milk', 300, 'ml', n('mlako', 'lukewarm')], ['eggs', 1, 'kom'], ['sugar', 1, 'kasicica'], ['salt', 1, 'kasicica'], ['oil', 500, 'ml', n('za prženje', 'for frying')], ['kajmak', 150, 'g', { opt: 1 }], ['pekmez', 200, 'g', { opt: 1 }]],
     st: [
@@ -80,7 +80,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'zobena-kasa', cu: 'balkan', type: 'breakfast', main: 'veg', time: 10, serves: 4, kid: 1, light: 1,
+    id: 'zobena-kasa', cu: 'svakodnevno', type: 'breakfast', main: 'veg', time: 10, serves: 4, kid: 1, light: 1,
     bs: 'Zobena kaša s jabukom i orasima', en: 'Porridge with apple and walnuts',
     ing: [['oats', 200, 'g'], ['milk', 800, 'ml'], ['apple', 2, 'kom'], ['walnuts', 60, 'g'], ['honey', 3, 'kasika'], ['cinnamon', 1, 'prst']],
     st: [
@@ -92,7 +92,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'hljeb-kajmak-ajvar', cu: 'balkan', type: 'breakfast', main: 'veg', time: 5, serves: 4, light: 1, meal: ['breakfast', 'dinner'],
+    id: 'hljeb-kajmak-ajvar', cu: 'srpska', type: 'breakfast', main: 'veg', time: 5, serves: 4, light: 1, meal: ['breakfast', 'dinner'],
     bs: 'Hljeb s kajmakom i ajvarom', en: 'Bread with kajmak and ajvar',
     ing: [['bread', 8, 'kriska'], ['kajmak', 150, 'g'], ['ajvar', 200, 'g'], ['feta', 100, 'g', { opt: 1 }], ['tomato', 2, 'kom', { opt: 1 }]],
     st: [
@@ -103,7 +103,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'griz-mlijeko', cu: 'balkan', type: 'breakfast', main: 'dessert', time: 15, serves: 4, kid: 1, light: 1,
+    id: 'griz-mlijeko', cu: 'svakodnevno', type: 'breakfast', main: 'dessert', time: 15, serves: 4, kid: 1, light: 1,
     bs: 'Griz na mlijeku', en: 'Semolina pudding',
     ing: [['semolina', 120, 'g'], ['milk', 1, 'l'], ['sugar', 80, 'g'], ['butter', 20, 'g'], ['cocoa', 2, 'kasika', { opt: 1 }], ['salt', 1, 'prst']],
     st: [
@@ -153,7 +153,7 @@ export const MEAL_RECIPES = [
 
   // ───────── Lagana večera ─────────
   {
-    id: 'satras', cu: 'balkan', type: 'main', main: 'veg', time: 35, serves: 4, light: 1, meal: ['lunch', 'dinner'],
+    id: 'satras', cu: 'srpska', reg: 'vojvodina', type: 'main', main: 'veg', time: 35, serves: 4, light: 1, meal: ['lunch', 'dinner'],
     bs: 'Sataraš s jajima', en: 'Sataraš with eggs',
     ing: [['pepper', 6, 'kom'], ['tomato', 4, 'kom'], ['onion', 2, 'glavica'], ['oil', 80, 'ml'], ['eggs', 4, 'kom', { opt: 1 }], ['paprika_sweet', 1, 'kasicica'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -165,7 +165,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'pohovane-tikvice', cu: 'balkan', type: 'main', main: 'veg', time: 35, serves: 4, kid: 1, light: 1, meal: ['dinner'],
+    id: 'pohovane-tikvice', cu: 'svakodnevno', type: 'main', main: 'veg', time: 35, serves: 4, kid: 1, light: 1, meal: ['dinner'],
     bs: 'Pohovane tikvice s umakom od jogurta', en: 'Breaded courgettes with yoghurt dip',
     ing: [['zucchini', 3, 'kom'], ['eggs', 2, 'kom'], ['flour', 80, 'g'], ['breadcrumbs', 100, 'g'], ['oil', 200, 'ml'], ['yogurt', 250, 'g'], ['garlic', 2, 'cen'], ['dill', null, ''], ['salt', null, '']],
     st: [
@@ -177,7 +177,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'grah-salata', cu: 'balkan', type: 'salad', main: 'beans', time: 15, serves: 4, light: 1, meal: ['dinner'],
+    id: 'grah-salata', cu: 'svakodnevno', type: 'salad', main: 'beans', time: 15, serves: 4, light: 1, meal: ['dinner'],
     bs: 'Salata od graha', en: 'Bean salad',
     ing: [['beans', 250, 'g', n('kuhan ili 2 konzerve', 'cooked, or 2 tins')], ['onion', 1, 'glavica', n('crveni', 'red')], ['oil', 4, 'kasika'], ['vinegar', 2, 'kasika'], ['parsley', null, ''], ['paprika_sweet', 1, 'prst'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -189,7 +189,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'tuna-salata', cu: 'balkan', type: 'salad', main: 'fish', time: 25, serves: 4, light: 1, meal: ['dinner'],
+    id: 'tuna-salata', cu: 'svakodnevno', type: 'salad', main: 'fish', time: 25, serves: 4, light: 1, meal: ['dinner'],
     bs: 'Salata s tunjevinom i krompirom', en: 'Tuna and potato salad',
     ing: [['tuna', 2, 'kom', n('konzerve od 160 g', '160 g tins')], ['potato', 600, 'g'], ['onion', 1, 'glavica'], ['eggs', 2, 'kom'], ['olive_oil', 4, 'kasika'], ['vinegar', 1, 'kasika'], ['parsley', null, ''], ['salt', null, '']],
     st: [
@@ -212,7 +212,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'tost-sir', cu: 'balkan', type: 'main', main: 'cheese', time: 10, serves: 4, kid: 1, light: 1, meal: ['dinner', 'breakfast'],
+    id: 'tost-sir', cu: 'svakodnevno', type: 'main', main: 'cheese', time: 10, serves: 4, kid: 1, light: 1, meal: ['dinner', 'breakfast'],
     bs: 'Topli sendvič sa sirom i paradajzom', en: 'Toasted cheese and tomato sandwich',
     ing: [['bread', 8, 'kriska'], ['gruyere', 160, 'g', n('ili gauda', 'or gouda')], ['tomato', 2, 'kom'], ['butter', 30, 'g'], ['oregano', 1, 'prst']],
     st: [
@@ -223,7 +223,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'caprese', cu: 'italian', type: 'salad', main: 'cheese', time: 10, serves: 4, light: 1, meal: ['dinner'],
+    id: 'caprese', cu: 'italian', reg: 'kampanija', type: 'salad', main: 'cheese', time: 10, serves: 4, light: 1, meal: ['dinner'],
     bs: 'Caprese salata', en: 'Caprese salad',
     ing: [['tomato', 4, 'kom'], ['mozzarella', 250, 'g'], ['basil', 1, 'sop'], ['olive_oil', 4, 'kasika'], ['salt', null, ''], ['pepper_black', null, ''], ['bread', 4, 'kriska']],
     st: [
@@ -236,7 +236,7 @@ export const MEAL_RECIPES = [
 
   // ───────── Užina ─────────
   {
-    id: 'jogurt-med', cu: 'balkan', type: 'snack', main: 'dessert', time: 5, serves: 4, kid: 1,
+    id: 'jogurt-med', cu: 'svakodnevno', type: 'snack', main: 'dessert', time: 5, serves: 4, kid: 1,
     bs: 'Jogurt s medom i orasima', en: 'Yoghurt with honey and walnuts',
     ing: [['yogurt', 500, 'g'], ['honey', 4, 'kasika'], ['walnuts', 60, 'g']],
     st: [['Jogurt razlij u čaše, prelij medom i pospi grubo sjeckanim orasima.', 'Spoon the yoghurt into glasses, drizzle with honey and scatter with chopped walnuts.']],
@@ -244,7 +244,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'pecene-jabuke', cu: 'balkan', type: 'snack', main: 'dessert', time: 35, serves: 4, kid: 1, eq: ['oven'],
+    id: 'pecene-jabuke', cu: 'svakodnevno', type: 'snack', main: 'dessert', time: 35, serves: 4, kid: 1, eq: ['oven'],
     bs: 'Pečene jabuke s orasima', en: 'Baked apples with walnuts',
     ing: [['apple', 4, 'kom'], ['walnuts', 60, 'g'], ['honey', 3, 'kasika'], ['cinnamon', 1, 'kasicica'], ['butter', 20, 'g']],
     st: [
@@ -255,7 +255,7 @@ export const MEAL_RECIPES = [
     src: T,
   },
   {
-    id: 'hljeb-pekmez', cu: 'balkan', type: 'snack', main: 'dessert', time: 5, serves: 4, kid: 1,
+    id: 'hljeb-pekmez', cu: 'svakodnevno', type: 'snack', main: 'dessert', time: 5, serves: 4, kid: 1,
     bs: 'Hljeb s maslacem i pekmezom', en: 'Bread with butter and plum butter',
     ing: [['bread', 4, 'kriska'], ['butter', 40, 'g'], ['pekmez', 120, 'g', n('ili džem', 'or jam')]],
     st: [['Namaži kriške maslacem, pa debelo pekmezom.', 'Spread the slices with butter, then thickly with plum butter.']],

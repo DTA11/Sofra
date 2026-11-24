@@ -5,7 +5,7 @@ const T = { b: 'trad' };
 export const TRAD_RECIPES = [
   // ───────── Bosanska ─────────
   {
-    id: 'cevapi', cu: 'bosanska', type: 'main', main: 'beef', time: 40, serves: 4, eq: ['grill'], kid: 1,
+    id: 'cevapi', cu: 'bosanska', reg: 'sarajevo', type: 'main', main: 'beef', time: 40, serves: 4, eq: ['grill'], kid: 1,
     bs: 'Ćevapi', en: 'Ćevapi',
     ing: [['beef_mince', 800, 'g', n('masnije, 20 % masti', 'with about 20 % fat')], ['garlic', 2, 'cen'], ['salt', 2, 'kasicica'], ['pepper_black', 1, 'kasicica'], ['bread', 4, 'kom', n('somuni / lepinje', 'flatbreads (somun)')], ['onion', 2, 'glavica'], ['kajmak', 150, 'g', { opt: 1 }]],
     st: [
@@ -75,7 +75,7 @@ export const TRAD_RECIPES = [
 
   // ───────── Balkan ─────────
   {
-    id: 'prebranac', cu: 'balkan', type: 'main', main: 'beans', time: 150, serves: 6, eq: ['oven'], left: 1, occ: ['bozic'],
+    id: 'prebranac', cu: 'srpska', type: 'main', main: 'beans', time: 150, serves: 6, eq: ['oven'], left: 1, occ: ['bozic'],
     bs: 'Prebranac', en: 'Prebranac (baked beans with onions)',
     ing: [['beans', 500, 'g'], ['onion', 1, 'kg'], ['oil', 150, 'ml'], ['paprika_sweet', 2, 'kasika'], ['paprika_hot', 0.5, 'kasicica', { opt: 1 }], ['bay_leaf', 2, 'list'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -88,7 +88,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'djuvec', cu: 'balkan', type: 'main', main: 'veg', time: 80, serves: 4, eq: ['oven'], left: 1,
+    id: 'djuvec', cu: 'srpska', type: 'main', main: 'veg', time: 80, serves: 4, eq: ['oven'], left: 1,
     bs: 'Đuveč od povrća', en: 'Đuveč (baked vegetables with rice)',
     ing: [['rice', 150, 'g'], ['pepper', 3, 'kom'], ['tomato', 4, 'kom'], ['eggplant', 1, 'kom'], ['zucchini', 1, 'kom'], ['green_beans', 200, 'g'], ['onion', 2, 'glavica'], ['carrot', 1, 'kom'], ['oil', 100, 'ml'], ['paprika_sweet', 1, 'kasicica'], ['parsley', 1, 'sop'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -101,7 +101,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'pileci-paprikas', cu: 'balkan', type: 'main', main: 'chicken', time: 70, serves: 4, kid: 1, left: 1,
+    id: 'pileci-paprikas', cu: 'srpska', reg: 'vojvodina', type: 'main', main: 'chicken', time: 70, serves: 4, kid: 1, left: 1,
     bs: 'Pileći paprikaš', en: 'Chicken paprikash',
     ing: [['chicken_legs', 1, 'kg'], ['onion', 3, 'glavica'], ['pepper', 2, 'kom'], ['tomato', 2, 'kom'], ['paprika_sweet', 2, 'kasika'], ['oil', 3, 'kasika'], ['sour_cream', 150, 'g', { opt: 1 }], ['pasta_short', 400, 'g', n('ili galuške', 'or dumplings')], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -114,7 +114,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'bakalar-bijelo', cu: 'balkan', type: 'main', main: 'fish', time: 90, serves: 4, occ: ['bozic'],
+    id: 'bakalar-bijelo', cu: 'hrvatska', reg: 'dalmacija', type: 'main', main: 'fish', time: 90, serves: 4, occ: ['bozic'],
     bs: 'Bakalar na bijelo', en: 'Salt cod with potatoes (na bijelo)',
     ing: [['cod_dried', 600, 'g', n('natopljen 24–48 h', 'soaked for 24–48 h')], ['potato', 800, 'g'], ['garlic', 6, 'cen'], ['olive_oil', 150, 'ml'], ['parsley', 1, 'sop'], ['wine_white', 100, 'ml'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -127,7 +127,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'pecena-piletina', cu: 'balkan', type: 'main', main: 'chicken', time: 100, serves: 4, eq: ['oven'], eqOpt: ['sac'], kid: 1, occ: ['novagodina'],
+    id: 'pecena-piletina', cu: 'svakodnevno', type: 'main', main: 'chicken', time: 100, serves: 4, eq: ['oven'], eqOpt: ['sac'], kid: 1, occ: ['novagodina'],
     bs: 'Pečena piletina s krompirom', en: 'Roast chicken with potatoes',
     ing: [['chicken', 1.5, 'kg'], ['potato', 1, 'kg'], ['garlic', 4, 'cen'], ['onion', 1, 'glavica'], ['rosemary', 1, 'kasicica'], ['paprika_sweet', 1, 'kasicica'], ['oil', 4, 'kasika'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -140,7 +140,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'gulas', cu: 'balkan', type: 'main', main: 'beef', time: 150, serves: 6, eqOpt: ['pressure'], left: 1,
+    id: 'gulas', cu: 'svakodnevno', type: 'main', main: 'beef', time: 150, serves: 6, eqOpt: ['pressure'], left: 1,
     bs: 'Goveđi gulaš', en: 'Beef goulash',
     ing: [['beef', 1, 'kg', n('but ili plećka', 'shin or shoulder')], ['onion', 800, 'g'], ['paprika_sweet', 2, 'kasika'], ['tomato_paste', 2, 'kasika'], ['garlic', 3, 'cen'], ['bay_leaf', 2, 'list'], ['wine_red', 200, 'ml', { opt: 1 }], ['oil', 4, 'kasika'], ['flour', 1, 'kasika'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -153,7 +153,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'ruska-salata', cu: 'balkan', type: 'salad', main: 'veg', time: 60, serves: 8, occ: ['novagodina'], kid: 1,
+    id: 'ruska-salata', cu: 'svakodnevno', type: 'salad', main: 'veg', time: 60, serves: 8, occ: ['novagodina'], kid: 1,
     bs: 'Ruska salata', en: 'Russian salad',
     ing: [['potato', 600, 'g'], ['carrot', 2, 'kom'], ['peas', 200, 'g'], ['pickles', 6, 'kom'], ['eggs', 4, 'kom'], ['chicken_breast', 300, 'g'], ['mayonnaise', 250, 'g'], ['yogurt', 150, 'g'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -166,7 +166,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'sopska', cu: 'balkan', type: 'salad', main: 'veg', time: 15, serves: 4, kid: 1,
+    id: 'sopska', cu: 'bugarska', type: 'salad', main: 'veg', time: 15, serves: 4, kid: 1,
     bs: 'Šopska salata', en: 'Shopska salad',
     ing: [['tomato', 4, 'kom'], ['cucumber', 2, 'kom'], ['pepper', 2, 'kom'], ['onion', 1, 'glavica'], ['feta', 200, 'g'], ['oil', 3, 'kasika'], ['vinegar', 1, 'kasika'], ['parsley', null, ''], ['salt', null, '']],
     st: [
@@ -178,7 +178,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'gibanica', cu: 'balkan', type: 'pie', main: 'cheese', time: 70, serves: 8, eq: ['oven'], kid: 1, occ: ['bozic', 'novagodina'],
+    id: 'gibanica', cu: 'srpska', type: 'pie', main: 'cheese', time: 70, serves: 8, eq: ['oven'], kid: 1, occ: ['bozic', 'novagodina'],
     bs: 'Gibanica', en: 'Gibanica (cheese pie)',
     ing: [['phyllo', 500, 'g'], ['cottage', 500, 'g'], ['feta', 200, 'g'], ['eggs', 5, 'kom'], ['sour_cream', 200, 'g'], ['milk', 300, 'ml'], ['oil', 100, 'ml'], ['baking_powder', 1, 'kesica'], ['salt', 1, 'kasicica']],
     st: [
@@ -191,7 +191,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'pastrmka-blitva', cu: 'balkan', type: 'main', main: 'fish', time: 45, serves: 4,
+    id: 'pastrmka-blitva', cu: 'hrvatska', reg: 'dalmacija', type: 'main', main: 'fish', time: 45, serves: 4,
     bs: 'Pastrmka s blitvom i krompirom', en: 'Trout with chard and potatoes',
     ing: [['trout', 4, 'kom'], ['potato', 800, 'g'], ['chard', 600, 'g'], ['garlic', 4, 'cen'], ['lemon', 1, 'kom'], ['olive_oil', 6, 'kasika'], ['flour', 3, 'kasika'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -204,7 +204,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'svinjsko-pecenje', cu: 'balkan', type: 'main', main: 'pork', time: 180, serves: 6, eq: ['oven'], occ: ['bozic', 'novagodina'], left: 1,
+    id: 'svinjsko-pecenje', cu: 'srpska', type: 'main', main: 'pork', time: 180, serves: 6, eq: ['oven'], occ: ['bozic', 'novagodina'], left: 1,
     bs: 'Svinjsko pečenje', en: 'Roast pork',
     ing: [['pork_shoulder', 1.5, 'kg'], ['garlic', 6, 'cen'], ['potato', 1, 'kg'], ['onion', 2, 'glavica'], ['wine_white', 200, 'ml'], ['paprika_sweet', 1, 'kasicica'], ['bay_leaf', 2, 'list'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -217,7 +217,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'krem-brokula', cu: 'balkan', type: 'soup', main: 'broccoli', time: 35, serves: 4, kid: 1,
+    id: 'krem-brokula', cu: 'svakodnevno', type: 'soup', main: 'broccoli', time: 35, serves: 4, kid: 1,
     bs: 'Krem čorba od brokule', en: 'Cream of broccoli soup',
     ing: [['broccoli', 600, 'g'], ['potato', 300, 'g'], ['onion', 1, 'glavica'], ['garlic', 2, 'cen'], ['butter', 30, 'g'], ['cream', 150, 'ml'], ['stock_cube', 1, 'l'], ['nutmeg', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -259,7 +259,7 @@ export const TRAD_RECIPES = [
 
   // ───────── Italian ─────────
   {
-    id: 'aglio-olio', cu: 'italian', type: 'main', main: 'pasta', time: 15, serves: 4,
+    id: 'aglio-olio', cu: 'italian', reg: 'kampanija', type: 'main', main: 'pasta', time: 15, serves: 4,
     bs: 'Špageti aglio, olio e peperoncino', en: 'Spaghetti aglio, olio e peperoncino',
     ing: [['spaghetti', 400, 'g'], ['garlic', 4, 'cen'], ['olive_oil', 100, 'ml'], ['chili', 1, 'kom'], ['parsley', 1, 'sop'], ['salt', null, '']],
     st: [
@@ -271,7 +271,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'tagliatelle-ragu', cu: 'italian', type: 'main', main: 'beef', time: 180, serves: 4, left: 1, kid: 1,
+    id: 'tagliatelle-ragu', cu: 'italian', reg: 'emilija', type: 'main', main: 'beef', time: 180, serves: 4, left: 1, kid: 1,
     bs: 'Tagliatelle s ragùom (bez svinjetine)', en: 'Tagliatelle al ragù (pork-free)',
     ing: [['beef_mince', 500, 'g'], ['carrot', 1, 'kom'], ['celery_stalk', 1, 'kom'], ['onion', 1, 'glavica'], ['tomato_can', 400, 'g'], ['tomato_paste', 1, 'kasika'], ['wine_white', 150, 'ml'], ['milk', 150, 'ml'], ['olive_oil', 3, 'kasika'], ['butter', 20, 'g'], ['tagliatelle', 400, 'g'], ['parmesan', 60, 'g'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -284,7 +284,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'risotto-milanese', cu: 'italian', type: 'main', main: 'rice', time: 35, serves: 4,
+    id: 'risotto-milanese', cu: 'italian', reg: 'lombardija', type: 'main', main: 'rice', time: 35, serves: 4,
     bs: 'Rižoto alla milanese', en: 'Risotto alla milanese',
     ing: [['arborio', 320, 'g'], ['onion', 1, 'glavica'], ['butter', 60, 'g'], ['wine_white', 100, 'ml'], ['stock_cube', 1.2, 'l', n('goveđi temeljac', 'beef stock')], ['saffron', 1, 'kesica'], ['parmesan', 60, 'g'], ['salt', null, '']],
     st: [
@@ -322,7 +322,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'lasagne', cu: 'italian', type: 'main', main: 'beef', time: 180, serves: 6, eq: ['oven'], kid: 1, left: 1, occ: ['novagodina'],
+    id: 'lasagne', cu: 'italian', reg: 'emilija', type: 'main', main: 'beef', time: 180, serves: 6, eq: ['oven'], kid: 1, left: 1, occ: ['novagodina'],
     bs: 'Lazanje', en: 'Lasagne',
     ing: [['lasagne', 250, 'g'], ['beef_mince', 500, 'g'], ['carrot', 1, 'kom'], ['celery_stalk', 1, 'kom'], ['onion', 1, 'glavica'], ['tomato_can', 400, 'g'], ['wine_red', 100, 'ml'], ['milk', 1, 'l'], ['butter', 80, 'g'], ['flour', 80, 'g'], ['nutmeg', null, ''], ['parmesan', 100, 'g'], ['olive_oil', 2, 'kasika'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -347,7 +347,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'carbonara', cu: 'italian', type: 'main', main: 'pork', time: 20, serves: 4,
+    id: 'carbonara', cu: 'italian', reg: 'lacio', type: 'main', main: 'pork', time: 20, serves: 4,
     bs: 'Špageti carbonara', en: 'Spaghetti carbonara',
     ing: [['spaghetti', 400, 'g'], ['guanciale', 150, 'g'], ['eggs', 5, 'kom', n('4 žumanjka + 1 jaje', '4 yolks + 1 whole egg')], ['parmesan', 80, 'g', n('ili pecorino', 'or pecorino')], ['pepper_black', 1, 'kasicica'], ['salt', null, '']],
     st: [
@@ -373,7 +373,7 @@ export const TRAD_RECIPES = [
 
   // ───────── French ─────────
   {
-    id: 'boeuf-bourguignon', cu: 'french', type: 'main', main: 'beef', time: 210, serves: 6, eq: ['oven'], left: 1,
+    id: 'boeuf-bourguignon', cu: 'french', reg: 'burgundija', type: 'main', main: 'beef', time: 210, serves: 6, eq: ['oven'], left: 1,
     bs: 'Bœuf bourguignon', en: 'Bœuf bourguignon',
     ing: [['beef', 1.2, 'kg'], ['bacon', 150, 'g'], ['wine_red', 750, 'ml'], ['carrot', 2, 'kom'], ['onion', 2, 'glavica'], ['garlic', 2, 'cen'], ['mushrooms', 250, 'g'], ['flour', 2, 'kasika'], ['butter', 40, 'g'], ['tomato_paste', 1, 'kasika'], ['thyme', 1, 'kasicica'], ['bay_leaf', 2, 'list'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -386,7 +386,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'soupe-oignon', cu: 'french', type: 'soup', main: 'veg', time: 90, serves: 4, eq: ['oven'],
+    id: 'soupe-oignon', cu: 'french', reg: 'pariz', type: 'soup', main: 'veg', time: 90, serves: 4, eq: ['oven'],
     bs: 'Francuska čorba od luka', en: 'French onion soup',
     ing: [['onion', 1, 'kg'], ['butter', 60, 'g'], ['flour', 1, 'kasika'], ['wine_white', 150, 'ml'], ['stock_cube', 1.5, 'l', n('goveđi temeljac', 'beef stock')], ['bread', 8, 'kriska'], ['gruyere', 150, 'g'], ['thyme', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -398,7 +398,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'ratatouille', cu: 'french', type: 'main', main: 'veg', time: 75, serves: 4, left: 1,
+    id: 'ratatouille', cu: 'french', reg: 'provansa', type: 'main', main: 'veg', time: 75, serves: 4, left: 1,
     bs: 'Ratatouille', en: 'Ratatouille',
     ing: [['eggplant', 1, 'kom'], ['zucchini', 2, 'kom'], ['pepper', 2, 'kom'], ['tomato', 4, 'kom'], ['onion', 2, 'glavica'], ['garlic', 3, 'cen'], ['olive_oil', 100, 'ml'], ['thyme', 1, 'kasicica'], ['basil', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
@@ -410,7 +410,7 @@ export const TRAD_RECIPES = [
     src: T,
   },
   {
-    id: 'quiche-lorraine', cu: 'french', type: 'pie', main: 'pork', time: 90, serves: 6, eq: ['oven'],
+    id: 'quiche-lorraine', cu: 'french', reg: 'lorena', type: 'pie', main: 'pork', time: 90, serves: 6, eq: ['oven'],
     bs: 'Quiche lorraine', en: 'Quiche lorraine',
     ing: [['flour', 200, 'g'], ['butter', 100, 'g'], ['eggs', 4, 'kom'], ['cream', 300, 'ml'], ['bacon', 200, 'g'], ['nutmeg', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [

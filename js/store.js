@@ -9,7 +9,7 @@ export function defaults() {
     v: 1,
     lang: (navigator.language || 'bs').toLowerCase().startsWith('en') ? 'en' : 'bs',
     household: 4,
-    cuisines: { bosanska: 3, balkan: 2, slovenska: 2, italian: 1, french: 1, jna: 0 },
+    cuisines: { bosanska: 3, srpska: 2, hrvatska: 2, slovenska: 2, bugarska: 1, italian: 1, french: 1, svakodnevno: 2, jna: 0 },
     rules: { beef: 2, chicken: 3, lamb: 1, pork: 1, fish: 2 },
     noRepeatWeeks: 2,
     weekdayMax: 90,
@@ -41,7 +41,12 @@ export function load() {
     state = raw ? { ...defaults(), ...JSON.parse(raw) } : defaults();
     state.meals = { ...defaults().meals, ...(state.meals || {}) };
     // cuisines added later get their default weight once
-    state.cuisines = { ...defaults().cuisines, ...(state.cuisines || {}) };
+    const cu = { ...(state.cuisines || {}) };
+    if ('balkan' in cu) { // old "Balkanska" split into countries + everyday dishes
+      ['srpska', 'hrvatska', 'bugarska', 'svakodnevno'].forEach((k) => { if (cu[k] == null) cu[k] = cu.balkan; });
+      delete cu.balkan;
+    }
+    state.cuisines = { ...defaults().cuisines, ...cu };
   } catch { state = defaults(); }
   return state;
 }
