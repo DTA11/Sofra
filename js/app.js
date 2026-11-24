@@ -1,4 +1,4 @@
-import { RECIPES, R, MENUS, SOURCES } from './data/index.js';
+import { RECIPES, R, MENUS } from './data/index.js';
 import { ING, SECTIONS } from './data/ingredients.js';
 import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
@@ -77,7 +77,6 @@ function badges(r) {
   else if (r.veg) b.push(`<span class="tag">${t('veg')}</span>`);
   if (r.kid) b.push(`<span class="tag">${t('kid')}</span>`);
   if (!r.noPork) b.push(`<span class="tag tag-pork">🐖</span>`);
-  if (r.source === 'lakisic' || r.source === 'jna') b.push(`<span class="tag tag-book">📖</span>`);
   return b.join('');
 }
 
@@ -379,15 +378,13 @@ function viewSweets() {
 function viewJNA() {
   const list = RECIPES.filter((r) => r.cu === 'jna');
   return `<section class="band page-band"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('jnaTitle')}</h1><p class="lede">${t('jnaIntro')}</p></section>
-    <div class="grid">${list.map(card).join('')}</div>
-    <p class="small muted">${esc(SOURCES.jna[getLang()])}</p>`;
+    <div class="grid">${list.map(card).join('')}</div>`;
 }
 function viewCombos() {
   const list = RECIPES.filter((r) => r.type === 'combo');
   return `<section class="band page-band"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('combosTitle')}</h1><p class="lede">${t('combosIntro')}</p></section>
     <div class="banner"><span>${t('noCookHint')}</span> <a href="#/settings">${t('settings')} →</a></div>
-    <div class="grid">${list.map(card).join('')}</div>
-    <p class="small muted">${esc(SOURCES.sofra[getLang()])}</p>`;
+    <div class="grid">${list.map(card).join('')}</div>`;
 }
 
 // ───────── RECIPE DETAIL ─────────
@@ -444,7 +441,6 @@ function viewRecipe(id) {
       <h3>${t('steps')}</h3>
       <ol class="steps">${r.st.map((s) => `<li>${esc(tx(s))}${s[2] ? ` <span class="tmr">⏱ ${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'}</span>` : ''}</li>`).join('')}</ol>
       ${nutBox(r)}
-      <p class="source"><b>${t('source')}:</b> ${esc(SOURCES[r.source][getLang()])}${r.src.p ? ` — str. ${esc(r.src.p)}` : ''}${r.src.n ? `, br. ${r.src.n}` : ''}</p>
     </article>`;
 }
 
@@ -642,7 +638,7 @@ function viewSettings() {
     <section class="set"><h3>${t('install')}</h3>
       ${installAvailable() ? `<button class="btn primary" data-act="install">${ICON.share} ${t('install')}</button>` : `<p class="muted small">${t('installHint')}</p>`}</section>
     <section class="set"><h3>${t('about')}</h3><p class="muted small">${t('aboutText')}</p>
-      <h4>${t('sourcesTitle')}</h4><ul class="small muted">${Object.values(SOURCES).map((s) => `<li>${esc(s[getLang()])}</li>`).join('')}</ul></section>`;
+</section>`;
 }
 
 // ───────── EXPORT: real PDF file (download / share), print only on request ─────────
@@ -669,7 +665,6 @@ function recipeBlocks(r, f, servTxt, page = false) {
     { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
     { t: 'h3', text: t('steps') },
     { t: 'ol', items: r.st.map((s) => [['R', tx(s)], ['B', stepTime(s)]]) },
-    { t: 'p', text: `${t('source')}: ${SOURCES[r.source][getLang()]}${r.src.p ? ' — str. ' + r.src.p : ''}`, size: 8.5, muted: 1, after: 4 },
   ];
 }
 function shopBlocks() {
