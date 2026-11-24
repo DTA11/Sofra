@@ -182,6 +182,12 @@ const list = [
   ['ljutenica', 'Ljutenica', 'Ljutenica', 'jar', { z: 1 }],
   ['pindjur', 'Pinđur', 'Pinđur', 'jar', { z: 1 }],
   ['sok_sipak', 'Sok od šipka / zove', 'Rosehip or elderflower syrup', 'jar', { z: 1 }],
+  // Mahunarke i povrće za nove recepte
+  ['lentils', 'Leća (crvena ili smeđa)', 'Lentils (red or brown)', 'dry', {}],
+  ['chickpeas', 'Slanutak (leblebija)', 'Chickpeas', 'dry', {}],
+  ['pumpkin', 'Bundeva', 'Pumpkin', 'veg', { p: 1, m: [9, 10, 11, 12, 1] }],
+  ['beetroot', 'Cvekla', 'Beetroot', 'veg', { p: 1 }],
+  ['sour_cherries', 'Višnje (bez koštica, smrznute ili iz tegle)', 'Sour cherries (pitted, frozen or jarred)', 'frozen', {}],
   // Kupovni proizvodi — prod: dugotrajna zaliha (ostaje u ostavi dok je ne skineš)
   // mt: mesni proizvod izvan odjeljka mesa · dy: sadrži mlijeko (za posno)
   // Namazi

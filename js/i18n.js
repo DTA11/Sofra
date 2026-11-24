@@ -147,7 +147,7 @@ const S = {
 const LISTS = {
   cu: {
     bosanska: ['Bosna i Hercegovina', 'Bosnia & Herzegovina'], srpska: ['Srbija', 'Serbia'], hrvatska: ['Hrvatska', 'Croatia'],
-    slovenska: ['Slovenija', 'Slovenia'], bugarska: ['Bugarska', 'Bulgaria'], italian: ['Italija', 'Italy'], french: ['Francuska', 'France'],
+    slovenska: ['Slovenija', 'Slovenia'], bugarska: ['Bugarska', 'Bulgaria'], madjarska: ['Mađarska', 'Hungary'], grcka: ['Grčka', 'Greece'], turska: ['Turska', 'Turkey'], italian: ['Italija', 'Italy'], french: ['Francuska', 'France'],
     svakodnevno: ['Svakodnevno (cijeli Balkan)', 'Everyday (all Balkans)'], jna: ['Vojnička kuhinja', 'Army kitchen'],
   },
   style: {

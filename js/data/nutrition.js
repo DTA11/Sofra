@@ -65,6 +65,8 @@ export const NUT = {
   dzem: [250, 0.4, 0.1, 0, 62, 55, 1, 0, 0], sauerkraut: [19, 0.9, 0.1, 0, 4.3, 1.8, 2.9, 0.8, 1], sauerkraut_shred: [19, 0.9, 0.1, 0, 4.3, 1.8, 2.9, 1.2, 1],
   kisela_paprika: [25, 1, 0.2, 0, 5, 3, 2, 2, 1], domaci_sos: [30, 1.4, 0.2, 0, 6, 4, 1.5, 0.1, 1], kompot: [70, 0.2, 0, 0, 17, 16, 1, 0, 0],
   ljutenica: [90, 1.5, 6, 0.8, 8, 7, 2.5, 1.2, 1], pindjur: [80, 1.5, 5, 0.7, 8, 6, 2.5, 1.2, 1], sok_sipak: [250, 0, 0, 0, 62, 60, 0, 0, 0],
+  lentils: [352, 24.6, 1.1, 0.2, 63, 2, 10.7, 0.01, 1], chickpeas: [364, 19, 6, 0.6, 61, 11, 17, 0.02, 1],
+  pumpkin: [26, 1, 0.1, 0.05, 6.5, 2.8, 0.5, 0, 1], beetroot: [43, 1.6, 0.2, 0, 9.6, 6.8, 2.8, 0.2, 1], sour_cherries: [50, 1, 0.3, 0.1, 12, 8.5, 1.6, 0, 1],
   // store-bought products (typical label values for the generic product)
   // spreads
   marmalade: [250, 0.4, 0.1, 0, 61, 58, 1, 0.03, 0], maslo: [895, 0.3, 99.5, 62, 0, 0, 0, 0, 0], margarine: [540, 0.2, 60, 17, 0.5, 0.5, 0, 0.8, 0],
@@ -91,7 +93,7 @@ export const PIECE = {
   eggs: 55, tomato: 120, carrot: 80, pepper: 150, zucchini: 250, lemon: 40, eggplant: 300, celery_stalk: 40, celery: 300, potato: 150,
   trout: 300, chili: 1, prunes: 10, pickles: 50, kranjska: 180, cucumber: 300, cloves: 0.1, bread: 200, apple: 180, tuna: 130,
   vanilla_sugar: 3, onion: 120, garlic: 5, lettuce: 300, cabbage: 1000, dates: 8,
-  banana: 120, orange: 150, mandarin: 70, pear: 170, hot_dogs: 50, cheese_spread: 17, // edible part; one processed-cheese portion
+  banana: 120, orange: 150, mandarin: 70, pear: 170, hot_dogs: 50, cheese_spread: 17, beetroot: 200, pumpkin: 2000, // edible part; one processed-cheese portion
 };
 // grams for a spoon / bunch / packet etc.
 export const UNIT_G = {
@@ -106,7 +108,7 @@ export const BUNCH = { spring_onion: 100, dill: 30, chives: 20, basil: 30, parsl
 export const HEAD = { lettuce: 300, cabbage: 1000, garlic: 40 };
 // cooked weight / raw weight (water taken up or lost)
 export const YIELD = {
-  rice: 2.5, arborio: 3, spaghetti: 2.2, pasta_short: 2.2, tagliatelle: 2.2, lasagne: 2, soup_pasta: 2.5, beans: 2.4, barley: 2.8,
+  rice: 2.5, arborio: 3, spaghetti: 2.2, pasta_short: 2.2, tagliatelle: 2.2, lasagne: 2, soup_pasta: 2.5, beans: 2.4, lentils: 2.5, chickpeas: 2.2, barley: 2.8,
   buckwheat: 2.5, cornmeal: 4, buckwheat_flour: 4, flour: 1.3,
 };
 // edible share of what is bought (bones, heads, skin)

@@ -1,5 +1,5 @@
 // Sofra service worker — offline app shell. Bump VERSION on every deploy that changes files.
-const VERSION = 'sofra-v20';
+const VERSION = 'sofra-v21';
 const FILES = [
   './',
   'index.html',
@@ -21,6 +21,7 @@ const FILES = [
   'js/data/recipes-slo.js',
   'js/data/recipes-more.js',
   'js/data/recipes-combo.js',
+  'js/data/recipes-extra.js',
   'js/pdf.js',
   'js/nutrition.js',
   'js/data/nutrition.js',
