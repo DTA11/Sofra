@@ -1,6 +1,7 @@
 // Ingredient catalogue.
 // sec: store section · st: staple (pre-ticked in pantry) · z: zimnica · p: perishable (planner tries to reuse it)
 // kind: meat/protein group used by planner rules · m: months in season (1–12)
+// prod: store-bought product (long-life stock) · mt: meat product outside 'meat' · dy: contains dairy · drink: tea/coffee
 const SUMMER = [6, 7, 8, 9];
 const LATE = [7, 8, 9, 10];
 const WINTER = [10, 11, 12, 1, 2, 3];
@@ -16,7 +17,7 @@ const list = [
   ['chicken_legs', 'Pileći batci', 'Chicken legs', 'meat', { p: 1, kind: 'chicken' }],
   ['chicken_breast', 'Pileća prsa', 'Chicken breast', 'meat', { p: 1, kind: 'chicken' }],
   ['turkey', 'Puretina', 'Turkey', 'meat', { p: 1, kind: 'chicken' }],
-  ['smoked_beef', 'Suho goveđe meso', 'Smoked dried beef', 'meat', { kind: 'beef' }],
+  ['smoked_beef', 'Suho goveđe meso', 'Smoked dried beef', 'deli', { kind: 'beef', mt: 1, prod: 1 }],
   ['pork', 'Svinjetina', 'Pork', 'meat', { p: 1, kind: 'pork', pork: 1 }],
   ['pork_shoulder', 'Svinjska plećka', 'Pork shoulder', 'meat', { p: 1, kind: 'pork', pork: 1 }],
   ['bacon', 'Slanina', 'Bacon / lardons', 'meat', { kind: 'pork', pork: 1 }],
@@ -24,8 +25,8 @@ const list = [
   ['trout', 'Pastrmka', 'Trout', 'meat', { p: 1, kind: 'fish' }],
   ['cod_dried', 'Bakalar (sušeni)', 'Salt cod', 'meat', { kind: 'fish' }],
   ['fish_white', 'Bijela riba', 'White fish', 'meat', { p: 1, kind: 'fish' }],
-  ['sudzuk', 'Goveđi sudžuk', 'Beef sujuk sausage', 'meat', { kind: 'beef' }],
-  ['tuna', 'Tunjevina (konzerva)', 'Tinned tuna', 'jar', { kind: 'fish' }],
+  ['sudzuk', 'Goveđi sudžuk', 'Beef sujuk sausage', 'deli', { kind: 'beef', mt: 1, prod: 1 }],
+  ['tuna', 'Tunjevina (konzerva)', 'Tinned tuna', 'cans', { kind: 'fish', prod: 1 }],
   ['bones_beef', 'Goveđe kosti', 'Beef bones', 'meat', { p: 1 }],
   ['chicken_giblets', 'Pileća sitnež (vratovi, krilca)', 'Chicken necks & wings', 'meat', { p: 1, kind: 'chicken' }],
   ['lamb_offal', 'Janjeća glava i iznutrice', 'Lamb head & offal', 'meat', { p: 1, kind: 'lamb' }],
@@ -33,7 +34,7 @@ const list = [
   ['kranjska', 'Kranjska kobasica', 'Carniolan sausage (kranjska)', 'meat', { kind: 'pork', pork: 1 }],
   ['smoked_ribs', 'Suha svinjska rebra', 'Smoked pork ribs', 'meat', { kind: 'pork', pork: 1 }],
   ['cracklings', 'Čvarci', 'Pork cracklings', 'meat', { pork: 1 }],
-  ['ham', 'Pršut ili šunka', 'Prosciutto or ham', 'meat', { kind: 'pork', pork: 1 }],
+  ['ham', 'Pršut ili šunka', 'Prosciutto or ham', 'deli', { kind: 'pork', pork: 1, mt: 1, prod: 1 }],
   ['venison_or_beef', 'Divljač (srnetina) ili junetina', 'Venison or beef', 'meat', { p: 1, kind: 'beef' }],
 
   // Voće i povrće
@@ -121,7 +122,7 @@ const list = [
   ['vanilla_sugar', 'Vanilin šećer', 'Vanilla sugar', 'dry', {}],
   ['baking_powder', 'Prašak za pecivo', 'Baking powder', 'dry', {}],
   ['yeast', 'Kvasac', 'Yeast', 'dry', {}],
-  ['honey', 'Med', 'Honey', 'dry', {}],
+  ['honey', 'Med', 'Honey', 'spreads', { prod: 1 }],
   ['cocoa', 'Kakao', 'Cocoa', 'dry', {}],
   ['chocolate', 'Čokolada za kuhanje', 'Dark chocolate', 'dry', {}],
   ['coffee', 'Kafa (espresso)', 'Espresso', 'dry', {}],
@@ -158,21 +159,21 @@ const list = [
   ['marjoram', 'Mažuran', 'Marjoram', 'spice', {}],
 
   // Konzerve i tegle
-  ['tomato_can', 'Pelat / paradajz u konzervi', 'Tinned tomatoes', 'jar', {}],
+  ['tomato_can', 'Pelat / paradajz u konzervi', 'Tinned tomatoes', 'cans', {}],
   ['tomato_paste', 'Paradajz pire (koncentrat)', 'Tomato paste', 'jar', { st: 1 }],
   ['mayonnaise', 'Majoneza', 'Mayonnaise', 'jar', {}],
   ['peas', 'Grašak', 'Peas', 'frozen', {}],
-  ['corn', 'Kukuruz šećerac', 'Sweetcorn', 'frozen', {}],
+  ['corn', 'Kukuruz šećerac (konzerva)', 'Sweetcorn (tinned)', 'cans', { prod: 1 }],
   ['pickles', 'Kiseli krastavci', 'Pickled gherkins', 'jar', {}],
-  ['olives', 'Masline', 'Olives', 'jar', {}],
+  ['olives', 'Masline', 'Olives', 'cans', { prod: 1 }],
   ['mustard', 'Senf', 'Mustard', 'jar', {}],
   ['horseradish', 'Ren (rendani)', 'Grated horseradish', 'jar', {}],
 
   // Zimnica
-  ['ajvar', 'Ajvar', 'Ajvar', 'jar', { z: 1 }],
+  ['ajvar', 'Ajvar', 'Ajvar', 'spreads', { z: 1 }],
   ['tursija', 'Turšija (miješana)', 'Turšija (mixed pickles)', 'jar', { z: 1 }],
-  ['pekmez', 'Pekmez od šljiva', 'Plum butter (pekmez)', 'jar', { z: 1 }],
-  ['dzem', 'Džem / slatko', 'Jam', 'jar', { z: 1 }],
+  ['pekmez', 'Pekmez od šljiva', 'Plum butter (pekmez)', 'spreads', { z: 1 }],
+  ['dzem', 'Džem / slatko', 'Jam', 'spreads', { z: 1 }],
   ['sauerkraut', 'Kiseli kupus (glavice)', 'Sauerkraut (whole heads)', 'jar', { z: 1 }],
   ['sauerkraut_shred', 'Kiseli kupus (ribani)', 'Shredded sauerkraut', 'jar', { z: 1 }],
   ['kisela_paprika', 'Kisela paprika', 'Pickled peppers', 'jar', { z: 1 }],
@@ -181,6 +182,42 @@ const list = [
   ['ljutenica', 'Ljutenica', 'Ljutenica', 'jar', { z: 1 }],
   ['pindjur', 'Pinđur', 'Pinđur', 'jar', { z: 1 }],
   ['sok_sipak', 'Sok od šipka / zove', 'Rosehip or elderflower syrup', 'jar', { z: 1 }],
+  // Kupovni proizvodi — prod: dugotrajna zaliha (ostaje u ostavi dok je ne skineš)
+  // mt: mesni proizvod izvan odjeljka mesa · dy: sadrži mlijeko (za posno)
+  // Namazi
+  ['marmalade', 'Marmelada', 'Marmalade', 'spreads', { prod: 1 }],
+  ['maslo', 'Maslo (pročišćeni maslac)', 'Clarified butter', 'spreads', { prod: 1, dy: 1 }],
+  ['margarine', 'Margarin', 'Margarine', 'spreads', { prod: 1 }],
+  ['peanut_butter', 'Maslac od kikirikija', 'Peanut butter', 'spreads', { prod: 1 }],
+  ['speculoos_spread', 'Zimski namaz sa spekulatiusom', 'Spiced biscuit spread', 'spreads', { prod: 1 }],
+  ['choc_spread', 'Čokoladni namaz s lješnjacima', 'Chocolate hazelnut spread', 'spreads', { prod: 1, dy: 1 }],
+  ['pate', 'Pašteta (jetrena ili pileća)', 'Pâté (liver or chicken)', 'spreads', { prod: 1, mt: 1 }],
+  ['cheese_spread', 'Topljeni sir', 'Processed cheese', 'dairy', { prod: 1 }],
+  // Delikatesa
+  ['kulen', 'Kulen', 'Kulen (spicy cured sausage)', 'deli', { prod: 1, mt: 1, kind: 'pork', pork: 1 }],
+  ['chicken_salami', 'Pileća salama (tanka)', 'Chicken salami', 'deli', { prod: 1, mt: 1, kind: 'chicken' }],
+  ['parizer', 'Parizer (pileći)', 'Chicken luncheon sausage', 'deli', { prod: 1, mt: 1, kind: 'chicken' }],
+  ['mortadela', 'Mortadela (goveđa ili pileća)', 'Mortadella (beef or chicken)', 'deli', { prod: 1, mt: 1, kind: 'beef' }],
+  ['tea_sausage', 'Čajna kobasica', 'Dry tea sausage', 'deli', { prod: 1, mt: 1, kind: 'pork', pork: 1 }],
+  ['hot_dogs', 'Hrenovke (pileće)', 'Chicken frankfurters', 'deli', { prod: 1, mt: 1, kind: 'chicken' }],
+  // Konzerve
+  ['sardines', 'Sardine (konzerva)', 'Tinned sardines', 'cans', { prod: 1, kind: 'fish' }],
+  ['luncheon', 'Mesni doručak (konzerva)', 'Tinned luncheon meat', 'cans', { prod: 1, mt: 1, kind: 'pork', pork: 1 }],
+  ['beans_can', 'Grah (konzerva, kuhani)', 'Tinned cooked beans', 'cans', { prod: 1 }],
+  // Mliječno
+  ['cheese_semi', 'Polutvrdi sir (narezani)', 'Sliced semi-hard cheese', 'dairy', { prod: 1 }],
+  ['sour_milk', 'Kiselo mlijeko', 'Soured milk (kefir-style)', 'dairy', { prod: 1 }],
+  // Pekara
+  ['bread_whole', 'Integralni hljeb', 'Wholegrain bread', 'bakery', { prod: 1 }],
+  // Voće
+  ['banana', 'Banane', 'Bananas', 'veg', { prod: 1 }],
+  ['orange', 'Narandže', 'Oranges', 'veg', { prod: 1 }],
+  ['mandarin', 'Mandarine', 'Mandarins', 'veg', { prod: 1, m: [11, 12, 1, 2] }],
+  ['pear', 'Kruške', 'Pears', 'veg', { prod: 1, m: [8, 9, 10, 11, 12, 1] }],
+  ['grapes', 'Grožđe', 'Grapes', 'veg', { prod: 1, m: [8, 9, 10] }],
+  // Čaj i kafa
+  ['tea', 'Čaj (u kesicama)', 'Tea (bags)', 'dry', { prod: 1, drink: 1 }],
+  ['coffee_ground', 'Mljevena kafa', 'Ground coffee', 'dry', { prod: 1, drink: 1 }],
 ];
 
 // Which zimnica jar can stand in for which shop ingredient.
@@ -188,12 +225,18 @@ export const SUBSTITUTES = {
   tomato_can: ['domaci_sos'],
   tomato_paste: ['domaci_sos'],
   pickles: ['tursija'],
-  dzem: ['pekmez'],
+  dzem: ['pekmez', 'marmalade'],
+  marmalade: ['dzem'],
+  maslo: ['butter'],
+  bread_whole: ['bread'],
+  sour_milk: ['yogurt'],
+  cheese_semi: ['gruyere'],
   sauerkraut_shred: ['sauerkraut'],
   ajvar: ['ljutenica', 'pindjur'],
 };
 
-export const SECTIONS = ['meat', 'veg', 'dairy', 'bakery', 'dry', 'spice', 'jar', 'frozen', 'other'];
+// Order = a walk through the shop.
+export const SECTIONS = ['veg', 'bakery', 'dairy', 'deli', 'meat', 'spreads', 'cans', 'jar', 'dry', 'spice', 'frozen', 'other'];
 
 export const ING = Object.fromEntries(
   list.map(([id, bs, en, sec, f]) => [id, { id, bs, en, sec, ...f }])

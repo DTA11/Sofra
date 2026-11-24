@@ -65,6 +65,23 @@ export const NUT = {
   dzem: [250, 0.4, 0.1, 0, 62, 55, 1, 0, 0], sauerkraut: [19, 0.9, 0.1, 0, 4.3, 1.8, 2.9, 0.8, 1], sauerkraut_shred: [19, 0.9, 0.1, 0, 4.3, 1.8, 2.9, 1.2, 1],
   kisela_paprika: [25, 1, 0.2, 0, 5, 3, 2, 2, 1], domaci_sos: [30, 1.4, 0.2, 0, 6, 4, 1.5, 0.1, 1], kompot: [70, 0.2, 0, 0, 17, 16, 1, 0, 0],
   ljutenica: [90, 1.5, 6, 0.8, 8, 7, 2.5, 1.2, 1], pindjur: [80, 1.5, 5, 0.7, 8, 6, 2.5, 1.2, 1], sok_sipak: [250, 0, 0, 0, 62, 60, 0, 0, 0],
+  // store-bought products (typical label values for the generic product)
+  // spreads
+  marmalade: [250, 0.4, 0.1, 0, 61, 58, 1, 0.03, 0], maslo: [895, 0.3, 99.5, 62, 0, 0, 0, 0, 0], margarine: [540, 0.2, 60, 17, 0.5, 0.5, 0, 0.8, 0],
+  peanut_butter: [600, 25, 50, 9, 14, 6, 7, 0.9, 0], speculoos_spread: [585, 1.5, 38, 7.5, 57, 37, 1, 0.7, 0], choc_spread: [540, 6.3, 31, 10.6, 57, 56, 3.4, 0.1, 0],
+  pate: [300, 12, 27, 9, 3, 0.5, 0, 1.6, 0], cheese_spread: [250, 11, 20, 13, 5, 5, 0, 2.5, 0],
+  // deli
+  kulen: [450, 25, 38, 14, 1, 0.5, 0, 4.5, 0], chicken_salami: [230, 13, 19, 5.5, 2, 1, 0, 2.3, 0], parizer: [250, 11, 22, 7, 3, 1, 0, 2.2, 0],
+  mortadela: [290, 13, 25, 9, 2, 1, 0, 2.3, 0], tea_sausage: [480, 24, 42, 16, 1, 0.5, 0, 4.5, 0], hot_dogs: [250, 12, 22, 7, 2, 1, 0, 2.2, 0],
+  // tins
+  sardines: [210, 24, 12, 3, 0, 0, 0, 1, 0], luncheon: [270, 13, 23, 8.5, 3, 0.5, 0, 2.2, 0], beans_can: [95, 6, 0.5, 0.1, 13, 1, 6, 0.6, 1],
+  // dairy, bakery
+  cheese_semi: [356, 25, 27, 17, 1, 0.5, 0, 1.8, 0], sour_milk: [62, 3.3, 3.2, 2.1, 4.5, 4.5, 0, 0.1, 0], bread_whole: [245, 9.5, 3.5, 0.7, 41, 4, 7, 1.1, 0],
+  // fruit
+  banana: [89, 1.1, 0.3, 0.1, 23, 12, 2.6, 0, 1], orange: [47, 0.9, 0.1, 0, 12, 9, 2.4, 0, 1], mandarin: [53, 0.8, 0.3, 0, 13, 10.6, 1.8, 0, 1],
+  pear: [57, 0.4, 0.1, 0, 15, 10, 3.1, 0, 1], grapes: [69, 0.7, 0.2, 0.1, 18, 16, 0.9, 0, 1],
+  // tea & coffee: what ends up in the cup per 100 g of bags / ground coffee is close to nothing
+  tea: [0, 0, 0, 0, 0, 0, 0, 0, 0], coffee_ground: [30, 1.5, 0.5, 0.2, 4, 0, 0, 0, 0],
 };
 // ready stock (when a recipe gives stock_cube in l/ml/dl)
 export const STOCK = [7, 0.5, 0.3, 0.1, 0.5, 0.3, 0, 0.6, 0];
@@ -74,15 +91,17 @@ export const PIECE = {
   eggs: 55, tomato: 120, carrot: 80, pepper: 150, zucchini: 250, lemon: 40, eggplant: 300, celery_stalk: 40, celery: 300, potato: 150,
   trout: 300, chili: 1, prunes: 10, pickles: 50, kranjska: 180, cucumber: 300, cloves: 0.1, bread: 200, apple: 180, tuna: 130,
   vanilla_sugar: 3, onion: 120, garlic: 5, lettuce: 300, cabbage: 1000, dates: 8,
+  banana: 120, orange: 150, mandarin: 70, pear: 170, hot_dogs: 50, cheese_spread: 17, // edible part; one processed-cheese portion
 };
 // grams for a spoon / bunch / packet etc.
 export const UNIT_G = {
   g: 1, kg: 1000, ml: 1, l: 1000, dl: 100, kasika: 12, kasicica: 4, prst: 0.5, cen: 5, glavica: 120, sop: 50, list: 0.2, zrno: 0.05,
   saka: 30, kesica: 10, kriska: 35, jufka: 25,
 };
-export const SPOON = { flour: 10, cornmeal: 10, starch: 10, breadcrumbs: 8, powder_sugar: 8, cocoa: 7, paprika_sweet: 7, honey: 21, tomato_paste: 16, oil: 13, olive_oil: 13, lard_or_oil: 13, pumpkin_oil: 13, mustard: 15, horseradish: 15, milk: 15, vinegar: 15 };
-export const TEASPOON = { salt: 6, sugar: 4, paprika_sweet: 2.5, paprika_hot: 2.5, pepper_black: 2.5, cinnamon: 2.5 };
-export const PACKET = { baking_powder: 12, yeast: 7, vanilla_sugar: 10, saffron: 0.1, pudding: 40 };
+export const SPOON = { flour: 10, cornmeal: 10, starch: 10, breadcrumbs: 8, powder_sugar: 8, cocoa: 7, paprika_sweet: 7, honey: 21, tomato_paste: 16, oil: 13, olive_oil: 13, lard_or_oil: 13, pumpkin_oil: 13, mustard: 15, horseradish: 15, milk: 15, vinegar: 15,
+  dzem: 20, marmalade: 20, pekmez: 20, choc_spread: 15, speculoos_spread: 15, peanut_butter: 16, maslo: 12, butter: 12, margarine: 12, kajmak: 15, ajvar: 15, pate: 15 };
+export const TEASPOON = { salt: 6, sugar: 4, honey: 7, paprika_sweet: 2.5, paprika_hot: 2.5, pepper_black: 2.5, cinnamon: 2.5 };
+export const PACKET = { tea: 2, baking_powder: 12, yeast: 7, vanilla_sugar: 10, saffron: 0.1, pudding: 40 };
 export const BUNCH = { spring_onion: 100, dill: 30, chives: 20, basil: 30, parsley: 50 };
 export const HEAD = { lettuce: 300, cabbage: 1000, garlic: 40 };
 // cooked weight / raw weight (water taken up or lost)

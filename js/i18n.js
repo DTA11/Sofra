@@ -66,6 +66,10 @@ const S = {
     nutNote: 'Procjena iz sastojaka, nije službena oznaka. Količine iz knjiga (i soli) ostavljene su kako su napisane — so možeš smanjiti po ukusu.',
     fGrade: 'Ocjena', healthier: 'Prednost zdravijim jelima (ocjena A–B)', dayKcal: 'po osobi',
     printPlan: 'Jelovnik', printShop: 'Spisak za kupovinu', printRecipes: 'Recepti',
+    noCookBreakfast: 'Doručak bez kuhanja radnim danom', noCookHint: 'Ponedjeljak–petak složeni doručak od kupovnih proizvoda, vikendom kuhani doručak.',
+    combosTitle: 'Doručak bez kuhanja', combosIntro: 'Složeni doručci od kupovnih proizvoda — hljeb, namazi, delikatesa, mliječno i voće. Količine su po osobi; kcal i ocjena A–E po porciji.',
+    combos: 'složenih doručaka', assemble: 'Složi', perPersonKcal: 'kcal po osobi',
+    prodTitle: 'Kupovni proizvodi', prodHint: 'dugo traju — ostaju u ostavi dok ih ne skineš',
   },
   en: {
     appTagline: 'A weekly menu from the home kitchen',
@@ -133,6 +137,10 @@ const S = {
     nutNote: 'Estimated from the ingredients, not an official label. Book amounts (salt included) are kept as printed — use less salt if you like.',
     fGrade: 'Grade', healthier: 'Prefer healthier dishes (grade A–B)', dayKcal: 'per person',
     printPlan: 'Menu', printShop: 'Shopping list', printRecipes: 'Recipes',
+    noCookBreakfast: 'No-cook breakfast on weekdays', noCookHint: 'Monday–Friday an assembled breakfast from shop products, a cooked breakfast at the weekend.',
+    combosTitle: 'No-cook breakfast', combosIntro: 'Assembled breakfasts from shop products — bread, spreads, deli, dairy and fruit. Amounts are per person; kcal and the A–E grade per serving.',
+    combos: 'assembled breakfasts', assemble: 'Assemble', perPersonKcal: 'kcal per person',
+    prodTitle: 'Shop products', prodHint: 'long-life — they stay in the pantry until you untick them',
   },
 };
 
@@ -157,7 +165,7 @@ const LISTS = {
   },
   type: {
     main: ['Glavno jelo', 'Main'], soup: ['Čorba / supa', 'Soup'], pie: ['Pita', 'Savoury pie'], salad: ['Salata', 'Salad'],
-    dessert: ['Slatko', 'Sweet'], breakfast: ['Doručak', 'Breakfast'], snack: ['Užina', 'Snack'],
+    dessert: ['Slatko', 'Sweet'], breakfast: ['Doručak', 'Breakfast'], snack: ['Užina', 'Snack'], combo: ['Složeni doručak', 'Assembled breakfast'],
   },
   sub: {
     kolac: ['Kolači', 'Cakes & slices'], torta: ['Torte', 'Tortes'], sitni: ['Sitni kolači', 'Small cookies'],
@@ -176,7 +184,8 @@ const LISTS = {
   },
   sec: {
     meat: ['Meso i riba', 'Meat & fish'], veg: ['Voće i povrće', 'Fruit & veg'], dairy: ['Mliječno i jaja', 'Dairy & eggs'],
-    bakery: ['Pekara', 'Bakery'], dry: ['Suha roba', 'Dry goods'], spice: ['Začini', 'Spices'], jar: ['Tegle i konzerve', 'Jars & tins'],
+    bakery: ['Pekara', 'Bakery'], deli: ['Delikatesa', 'Deli counter'], spreads: ['Namazi', 'Spreads'], cans: ['Konzerve', 'Tins'],
+    dry: ['Suha roba, čaj i kafa', 'Dry goods, tea & coffee'], spice: ['Začini', 'Spices'], jar: ['Tegle i umaci', 'Jars & condiments'],
     frozen: ['Smrznuto', 'Frozen'], other: ['Ostalo', 'Other'],
   },
   kind: { beef: ['Junetina', 'Beef'], chicken: ['Piletina/puretina', 'Chicken/turkey'], lamb: ['Janjetina', 'Lamb'], pork: ['Svinjetina', 'Pork'], fish: ['Riba', 'Fish'] },

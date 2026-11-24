@@ -122,7 +122,9 @@ export function dishArt(r, cls = '') {
   const [c, bg] = CU_COLORS[r.cu] || CU_COLORS.svakodnevno;
   const has = (id) => r.ing.some((i) => i[0] === id);
   let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : 'main';
-  if (r.type === 'breakfast' || r.type === 'snack') {
+  if (r.type === 'combo') {
+    key = r.main === 'fish' ? 'fish' : !r.ing.some((i) => ['bread', 'bread_whole'].includes(i[0])) ? 'kasika' : 'bread';
+  } else if (r.type === 'breakfast' || r.type === 'snack') {
     key = r.main === 'eggs' ? 'eggs' : ['popara', 'pura-kiselo', 'zobena-kasa', 'griz-mlijeko', 'jogurt-med'].includes(r.id) ? 'kasika'
       : ['hljeb-kajmak-ajvar', 'pain-perdu', 'tost-sir', 'hljeb-pekmez'].includes(r.id) ? 'bread' : r.id === 'pecene-jabuke' ? 'kasika' : r.id === 'cicvara' ? 'eggs' : 'sitni';
   } else if (key === 'main') {

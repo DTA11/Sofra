@@ -17,6 +17,8 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Filteri: kuhinja, glavni sastojak, vrsta jela, obrok, vrijeme, oprema (sač/peka, ekspres lonac, rerna, kazan, roštilj), posno, za djecu…
 - Ramazanski / iftar način, praznični meniji (Bajram, iftar, Badnji dan, Božić, Nova godina)
 - Način kuhanja: veliki koraci, tajmeri, ekran ostaje upaljen (Wake Lock)
+- **Doručak bez kuhanja** (#/dorucci): 20 složenih doručaka od kupovnih proizvoda (js/data/recipes-combo.js, vrsta `combo`, količine po osobi); postavka „Doručak bez kuhanja radnim danom“ (pon–pet složeni, vikendom kuhani)
+- Kupovni proizvodi (`prod` u ingredients.js): namazi, delikatesa, konzerve, mliječno, pekara, voće, čaj i kafa — dugotrajna zaliha u ostavi; spisak po odjeljcima prodavnice
 - Omiljena jela, kratka priča svakog jela
 - **Slatko**: kolači, torte, sitni kolači, orijentalni slatkiši, preračunavanje kalupa
 - **Vojnička kuhinja** (#/vojnicka): kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
@@ -35,6 +37,7 @@ js/data/recipes-trad.js   ostala jela (tekst i količine napisani za Sofru)
 js/data/recipes-sweet.js  slatko
 js/data/recipes-slo.js    slovenska kuhinja (tekst i količine napisani za Sofru)
 js/data/recipes-more.js   Hrvatska, Crna Gora, Sjeverna Makedonija, Albanija i Kosovo
+js/data/recipes-combo.js  složeni doručci bez kuhanja (po osobi)
 js/data/index.js      izvedeni filteri (posno, bez svinjetine…), izvori, praznični meniji
 sw.js                 offline keš (povećaj VERSION pri svakoj promjeni)
 manifest.webmanifest  PWA manifest

@@ -18,6 +18,7 @@ export function defaults() {
     meals: { breakfast: true, lunch: true, dinner: true, snack: false },
     dinnerLeft: false,
     breakfastMax: 20,
+    noCookBreakfast: false, // weekdays: assembled breakfast from shop products
     dinnerMax: 45,
     dessertsPerWeek: 2,
     posnoDays: [],

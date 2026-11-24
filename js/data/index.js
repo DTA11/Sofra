@@ -5,6 +5,7 @@ import { SWEET_RECIPES } from './recipes-sweet.js';
 import { MEAL_RECIPES } from './recipes-meals.js';
 import { SLO_RECIPES } from './recipes-slo.js';
 import { MORE_RECIPES } from './recipes-more.js';
+import { COMBO_RECIPES } from './recipes-combo.js';
 
 export const SOURCES = {
   lakisic: {
@@ -23,6 +24,10 @@ export const SOURCES = {
     bs: 'Tradicionalno jelo — recept i tekst napisani za Sofru.',
     en: 'Traditional dish — recipe and text written for Sofra.',
   },
+  sofra: {
+    bs: 'Složeni doručak od kupovnih proizvoda — sastavljeno za Sofru. Nutritivne vrijednosti po tipičnim deklaracijama.',
+    en: 'Assembled breakfast from shop products — put together for Sofra. Nutrition from typical product labels.',
+  },
 };
 
 // Planner styles: the plan mixes kitchens by style, not by country.
@@ -39,11 +44,12 @@ function derive(r) {
   const real = r.ing.filter((i) => !(i[3] && i[3].opt)).map((i) => ING[i[0]]);
   const missing = r.ing.filter((i) => !ING[i[0]]).map((i) => i[0]);
   if (missing.length) console.warn('Unknown ingredient(s) in', r.id, missing);
-  const hasMeat = real.some((g) => g && g.sec === 'meat' && g.kind !== 'fish');
+  const isMeat = (g) => g && (g.sec === 'meat' || g.mt);
+  const hasMeat = real.some((g) => isMeat(g) && g.kind !== 'fish');
   const hasFish = real.some((g) => g && g.kind === 'fish');
-  const dairyOrEgg = real.some((g) => g && g.sec === 'dairy');
+  const dairyOrEgg = real.some((g) => g && (g.sec === 'dairy' || g.dy));
   r.noPork = !r.ing.some((i) => ING[i[0]] && ING[i[0]].pork && !(i[3] && i[3].opt));
-  r.veg = !hasMeat && !hasFish && r.ing.every((i) => !ING[i[0]] || ING[i[0]].sec !== 'meat');
+  r.veg = !hasMeat && !hasFish && r.ing.every((i) => !isMeat(ING[i[0]]));
   r.posno = r.veg && !dairyOrEgg;
   r.posnoFish = !hasMeat && !dairyOrEgg;
   r.eq = r.eq || [];
@@ -54,7 +60,7 @@ function derive(r) {
   const meal = new Set(r.meal || []);
   if (!r.meal) {
     if (r.type === 'pie') ['breakfast', 'lunch', 'dinner'].forEach((m) => meal.add(m));
-    else if (r.type === 'breakfast') meal.add('breakfast');
+    else if (r.type === 'breakfast' || r.type === 'combo') meal.add('breakfast');
     else if (r.type === 'dessert') meal.add('dessert');
     else if (r.type === 'snack') meal.add('snack');
     else ['lunch', 'dinner'].forEach((m) => meal.add(m));
@@ -71,7 +77,7 @@ function derive(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES].map(derive);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...COMBO_RECIPES].map(derive);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

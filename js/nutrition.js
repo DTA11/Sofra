@@ -55,11 +55,14 @@ export function nutrition(r) {
     if (!v) continue;
     const eat = g * (EDIBLE[id] ?? 1);
     KEYS.forEach((k, i) => { tot[k] += (v[i] * eat) / 100; });
-    let cooked = eat * (YIELD[id] ?? 1);
-    const sec = ING[id]?.sec;
-    if (sec === 'meat') cooked *= 0.75;
-    else if (v[8] && id !== 'beans') cooked *= 0.85;
-    if (id === 'salt' || id === 'bones_beef') cooked = 0;
+    const g0 = ING[id] || {};
+    let cooked = eat;
+    if (r.type !== 'combo') { // assembled breakfasts are eaten as bought — nothing cooks down
+      cooked *= YIELD[id] ?? 1;
+      if (g0.sec === 'meat' || g0.mt) cooked *= 0.75;
+      else if (v[8] && id !== 'beans') cooked *= 0.85;
+    }
+    if (id === 'salt' || id === 'bones_beef' || g0.drink) cooked = 0; // tea/coffee: the water does not count for the grade
     mass += cooked;
     if (v[8]) fvlMass += cooked;
   }

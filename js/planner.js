@@ -90,7 +90,8 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
 }
 
 const MAINS = () => RECIPES.filter((r) => r.type === 'main' || r.type === 'pie');
-const BREAKFASTS = () => RECIPES.filter((r) => r.meal.includes('breakfast'));
+const BREAKFASTS = () => RECIPES.filter((r) => r.meal.includes('breakfast') && r.type !== 'combo');
+const COMBOS = () => RECIPES.filter((r) => r.type === 'combo');
 const DINNERS = () => RECIPES.filter((r) => r.meal.includes('dinner') && r.type !== 'dessert' && (r.light || ['pie', 'salad', 'soup'].includes(r.type)));
 const SNACKS = () => RECIPES.filter((r) => r.type === 'snack');
 export const ROLE_ORDER = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
@@ -180,6 +181,8 @@ function pickMeal(role, days, i, start, planId, exclude) {
   const lunchR = days[i].dishes.find((x) => x.role === 'main');
   const lunchPie = lunchR && R[lunchR.id].type === 'pie';
   if (role === 'breakfast') {
+    // "Doručak bez kuhanja radnim danom": Mon–Fri an assembled breakfast, weekends a cooked one
+    if (st.noCookBreakfast && wd < 5) { const c = pickCombo(ctx, weekUsed, yesterday); if (c) return c; }
     Object.assign(ctx, { recent: new Set(), mains: {}, pies: lunchPie ? 2 : 0, maxTime: st.breakfastMax });
     return pick(BREAKFASTS(), ctx, weekUsed, {}) || pick(BREAKFASTS(), ctx, yesterday, {});
   }
@@ -193,6 +196,28 @@ function pickMeal(role, days, i, start, planId, exclude) {
   Object.assign(ctx, { mains, pies: 0, maxTime: st.dinnerMax });
   const used = usedSet(days); weekUsed.forEach((x) => used.add(x));
   return pick(DINNERS(), ctx, used, kindCounts(days)) || pick(DINNERS(), ctx, yesterday, kindCounts(days));
+}
+
+/** Assembled (no-cook) breakfast: no repeats this week if possible, never two days running. */
+function pickCombo(ctx, weekUsed, yesterday) {
+  const st = S();
+  const pool = COMBOS().filter((r) => eligible(r, ctx));
+  const fresh = pool.filter((r) => !weekUsed.has(r.id));
+  const notYday = pool.filter((r) => !yesterday.has(r.id));
+  const cands = fresh.length ? fresh : notYday.length ? notYday : pool;
+  let best = null, bs = -1;
+  for (const r of cands) {
+    let s = 1;
+    const real = r.ing.filter((i) => ING[i[0]] && !ING[i[0]].st && !(i[3] && i[3].opt));
+    if (real.length) s += 2 * (real.filter((i) => haveOrSub(i[0])).length / real.length);
+    if (r.months) { if (r.months.includes(ctx.month)) s += 0.5; else s *= 0.35; }
+    if (st.favs.includes(r.id)) s += 0.8;
+    if (st.preferKid && r.kid) s += 1;
+    if (st.healthier) s *= { A: 1.7, B: 1.35, C: 1, D: 0.7, E: 0.5 }[nutrition(r).grade];
+    s *= 0.55 + Math.random() * 0.9;
+    if (s > bs) { bs = s; best = r; }
+  }
+  return best;
 }
 
 function addMeals(days, start, planId) {
@@ -326,7 +351,8 @@ export function setDayDishes(i, dishes) {
   save();
 }
 
-/** Mark a day cooked: remove perishable fresh ingredients from pantry, use one jar of each zimnica. */
+/** Mark a day cooked: remove perishable fresh ingredients from pantry, use one jar of each zimnica.
+ *  Store products (prod) are long-life stock and stay. */
 export function markCooked(i) {
   const st = S();
   const d = st.plan.days[i];
@@ -336,6 +362,8 @@ export function markCooked(i) {
       const h = haveOrSub(id);
       if (!h) return;
       const g = ING[h];
+      if (g.prod) return; // store products are long-life stock: they stay until you untick them
+      if (g.z && R[x.id].type === 'combo') return; // a spoon of ajvar or jam doesn't empty a jar
       if (g.z) { st.pantry[h] = Math.max(0, (Number(st.pantry[h]) || 1) - 1); if (!st.pantry[h]) delete st.pantry[h]; }
       else if (g.p) delete st.pantry[h];
     }));

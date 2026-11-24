@@ -459,3 +459,12 @@ body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 .also { display: flex; flex-direction: column; gap: 2px; }
 .also-i b { font-weight: 700; opacity: .85; }
 .dish.role-breakfast .role, .dish.role-dinner .role, .dish.role-snack .role { color: var(--accent); }
+
+/* ── no-cook breakfasts & shop products ── */
+.feature.nocook { grid-column: 1 / -1; min-height: 84px; background: #1f2a44; color: #fff; }
+.feature.nocook svg { color: #e8a33d; }
+.feature.nocook small { color: #f1e7da; }
+.banner:has(> a) { flex-wrap: wrap; }
+.banner a { margin-left: auto; color: var(--accent); font-weight: 600; text-decoration: none; }
+.psec.prod { border-color: #e8a33d; }
+.psec.prod h4 { margin: 14px 0 6px; font: 700 .78rem var(--ui); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
