@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="bs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sofra — sedmični jelovnik</title>
+  <meta name="description" content="Sofra: sedmični jelovnik iz bosanske, balkanske, italijanske i francuske kuhinje — ostava, zimnica, spisak za kupovinu. Radi offline, bez računa.">
+  <meta name="theme-color" content="#7a2e1f">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Sofra">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="#/plan" class="brand"><img src="icons/icon.svg" alt="" width="28" height="28"> Sofra</a>
+    <div class="topbar-r">
+      <button id="langBtn" class="pill" aria-label="Language">EN</button>
+      <a href="#/settings" class="pill" aria-label="Settings">⚙</a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap"></main>
+
+  <nav class="tabbar">
+    <a href="#/plan" data-tab="plan"><span>📅</span><small data-i18n="tabPlan">Plan</small></a>
+    <a href="#/recipes" data-tab="recipes"><span>🍲</span><small data-i18n="tabRecipes">Recepti</small></a>
+    <a href="#/sweets" data-tab="sweets"><span>🍯</span><small data-i18n="tabSweets">Slatko</small></a>
+    <a href="#/pantry" data-tab="pantry"><span>🫙</span><small data-i18n="tabPantry">Ostava</small></a>
+    <a href="#/shop" data-tab="shop"><span>🛒</span><small data-i18n="tabShop">Kupovina</small></a>
+  </nav>
+
+  <div id="modal" class="modal"></div>
+  <div id="toast" class="toast" role="status"></div>
+  <div id="print" class="print-only"></div>
+
+  <noscript>Sofra treba JavaScript. / Sofra needs JavaScript.</noscript>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+// Ingredient catalogue.
+// sec: store section · st: staple (pre-ticked in pantry) · z: zimnica · p: perishable (planner tries to reuse it)
+// kind: meat/protein group used by planner rules · m: months in season (1–12)
+const SUMMER = [6, 7, 8, 9];
+const LATE = [7, 8, 9, 10];
+const WINTER = [10, 11, 12, 1, 2, 3];
+const ALL = null;
+
+const list = [
+  // Meso i riba
+  ['beef', 'Junetina', 'Beef', 'meat', { p: 1, kind: 'beef' }],
+  ['beef_mince', 'Mljevena junetina', 'Minced beef', 'meat', { p: 1, kind: 'beef' }],
+  ['veal', 'Teletina', 'Veal', 'meat', { p: 1, kind: 'beef' }],
+  ['lamb', 'Janjetina', 'Lamb', 'meat', { p: 1, kind: 'lamb' }],
+  ['chicken', 'Piletina (cijelo pile)', 'Whole chicken', 'meat', { p: 1, kind: 'chicken' }],
+  ['chicken_legs', 'Pileći batci', 'Chicken legs', 'meat', { p: 1, kind: 'chicken' }],
+  ['chicken_breast', 'Pileća prsa', 'Chicken breast', 'meat', { p: 1, kind: 'chicken' }],
+  ['turkey', 'Puretina', 'Turkey', 'meat', { p: 1, kind: 'chicken' }],
+  ['smoked_beef', 'Suho goveđe meso', 'Smoked dried beef', 'meat', { kind: 'beef' }],
+  ['pork', 'Svinjetina', 'Pork', 'meat', { p: 1, kind: 'pork', pork: 1 }],
+  ['pork_shoulder', 'Svinjska plećka', 'Pork shoulder', 'meat', { p: 1, kind: 'pork', pork: 1 }],
+  ['bacon', 'Slanina', 'Bacon / lardons', 'meat', { kind: 'pork', pork: 1 }],
+  ['guanciale', 'Guanciale ili pančeta', 'Guanciale or pancetta', 'meat', { kind: 'pork', pork: 1 }],
+  ['trout', 'Pastrmka', 'Trout', 'meat', { p: 1, kind: 'fish' }],
+  ['cod_dried', 'Bakalar (sušeni)', 'Salt cod', 'meat', { kind: 'fish' }],
+  ['fish_white', 'Bijela riba', 'White fish', 'meat', { p: 1, kind: 'fish' }],
+  ['bones_beef', 'Goveđe kosti', 'Beef bones', 'meat', { p: 1 }],
+  ['chicken_giblets', 'Pileća sitnež (vratovi, krilca)', 'Chicken necks & wings', 'meat', { p: 1, kind: 'chicken' }],
+  ['lamb_offal', 'Janjeća glava i iznutrice', 'Lamb head & offal', 'meat', { p: 1, kind: 'lamb' }],
+  ['mixed_mince', 'Mljeveno miješano meso (bez svinjetine)', 'Mixed minced meat (no pork)', 'meat', { p: 1, kind: 'beef' }],
+
+  // Voće i povrće
+  ['onion', 'Crveni luk', 'Onion', 'veg', { st: 1 }],
+  ['garlic', 'Bijeli luk', 'Garlic', 'veg', { st: 1 }],
+  ['spring_onion', 'Mladi luk', 'Spring onion', 'veg', { p: 1, m: [3, 4, 5, 6] }],
+  ['potato', 'Krompir', 'Potatoes', 'veg', { st: 1 }],
+  ['carrot', 'Mrkva', 'Carrot', 'veg', { p: 1 }],
+  ['parsnip', 'Paškanat', 'Parsnip', 'veg', { p: 1, m: WINTER }],
+  ['celery', 'Celer (korijen)', 'Celeriac', 'veg', { p: 1, m: WINTER }],
+  ['celery_stalk', 'Celer (stabljika)', 'Celery stalk', 'veg', { p: 1 }],
+  ['leek', 'Praziluk', 'Leek', 'veg', { p: 1, m: WINTER }],
+  ['pepper', 'Paprika (svježa)', 'Bell pepper', 'veg', { p: 1, m: SUMMER }],
+  ['tomato', 'Paradajz', 'Tomatoes', 'veg', { p: 1, m: SUMMER }],
+  ['zucchini', 'Tikvica', 'Zucchini', 'veg', { p: 1, m: SUMMER }],
+  ['eggplant', 'Patlidžan', 'Eggplant', 'veg', { p: 1, m: LATE }],
+  ['cucumber', 'Krastavac', 'Cucumber', 'veg', { p: 1, m: SUMMER }],
+  ['green_beans', 'Mahune (boranija)', 'Green beans', 'veg', { p: 1, m: SUMMER }],
+  ['okra', 'Bamija', 'Okra', 'veg', { p: 1, m: LATE }],
+  ['cabbage', 'Kupus (svježi)', 'Cabbage', 'veg', { p: 1, m: [8, 9, 10, 11, 12, 1, 2] }],
+  ['spinach', 'Špinat', 'Spinach', 'veg', { p: 1, m: [3, 4, 5, 9, 10] }],
+  ['chard', 'Blitva', 'Swiss chard', 'veg', { p: 1, m: [4, 5, 6, 9, 10] }],
+  ['broccoli', 'Brokula', 'Broccoli', 'veg', { p: 1, m: [9, 10, 11, 12, 3, 4] }],
+  ['mushrooms', 'Šampinjoni', 'Mushrooms', 'veg', { p: 1 }],
+  ['parsley', 'Peršun (list)', 'Parsley', 'veg', { p: 1 }],
+  ['root_mix', 'Korjenasto povrće (mrkva, celer, peršun)', 'Root veg (carrot, celeriac, parsley root)', 'veg', { p: 1 }],
+  ['parsley_root', 'Peršun (korijen i list)', 'Parsley root & leaves', 'veg', { p: 1 }],
+  ['peas_fresh', 'Mladi grašak (svježi)', 'Fresh peas', 'veg', { p: 1, m: [5, 6] }],
+  ['dill', 'Mirođija', 'Dill', 'veg', { p: 1 }],
+  ['lettuce', 'Zelena salata', 'Lettuce', 'veg', { p: 1, m: [4, 5, 6, 9, 10] }],
+  ['vine_leaves', 'Listovi vinove loze', 'Vine leaves', 'veg', { p: 1, m: [5, 6] }],
+  ['lemon', 'Limun', 'Lemon', 'veg', { p: 1 }],
+  ['apple', 'Jabuke', 'Apples', 'veg', { p: 1, m: [8, 9, 10, 11, 12, 1, 2] }],
+  ['walnuts', 'Orasi', 'Walnuts', 'dry', {}],
+  ['almonds', 'Bademi', 'Almonds', 'dry', {}],
+  ['dates', 'Hurme', 'Dates', 'dry', {}],
+
+  // Mliječni proizvodi i jaja
+  ['eggs', 'Jaja', 'Eggs', 'dairy', { p: 1 }],
+  ['milk', 'Mlijeko', 'Milk', 'dairy', { p: 1 }],
+  ['butter', 'Maslac', 'Butter', 'dairy', { p: 1 }],
+  ['kajmak', 'Kajmak', 'Kajmak', 'dairy', { p: 1 }],
+  ['sour_cream', 'Pavlaka', 'Sour cream', 'dairy', { p: 1 }],
+  ['yogurt', 'Jogurt', 'Yoghurt', 'dairy', { p: 1 }],
+  ['cream', 'Slatko vrhnje', 'Cream', 'dairy', { p: 1 }],
+  ['feta', 'Bijeli sir (feta)', 'White cheese (feta)', 'dairy', { p: 1 }],
+  ['cottage', 'Mladi sir', 'Fresh cottage cheese', 'dairy', { p: 1 }],
+  ['parmesan', 'Parmezan', 'Parmesan', 'dairy', {}],
+  ['gruyere', 'Gruyère / tvrdi sir', 'Gruyère / hard cheese', 'dairy', {}],
+  ['mascarpone', 'Mascarpone', 'Mascarpone', 'dairy', { p: 1 }],
+
+  // Pekara
+  ['bread', 'Hljeb', 'Bread', 'bakery', { p: 1 }],
+  ['phyllo', 'Jufke (kore za pitu)', 'Phyllo sheets', 'bakery', { p: 1 }],
+  ['ladyfingers', 'Piškote', 'Ladyfingers', 'bakery', {}],
+  ['puff_pastry', 'Lisnato tijesto', 'Puff pastry', 'frozen', {}],
+
+  // Suha roba
+  ['flour', 'Brašno (meko)', 'Plain flour', 'dry', { st: 1 }],
+  ['semolina', 'Griz', 'Semolina', 'dry', {}],
+  ['rice', 'Riža', 'Rice', 'dry', { st: 1 }],
+  ['soup_pasta', 'Uložak za supu (rezanci, riža, griz)', 'Soup pasta / rice / semolina', 'dry', {}],
+  ['arborio', 'Riža za rižoto', 'Risotto rice', 'dry', {}],
+  ['spaghetti', 'Špageti', 'Spaghetti', 'dry', {}],
+  ['pasta_short', 'Kratka tjestenina', 'Short pasta', 'dry', {}],
+  ['tagliatelle', 'Tagliatelle / široki rezanci', 'Tagliatelle', 'dry', {}],
+  ['lasagne', 'Kore za lazanje', 'Lasagne sheets', 'dry', {}],
+  ['beans', 'Grah (suhi, tetovac ili zrno)', 'Dried white beans', 'dry', {}],
+  ['sugar', 'Šećer', 'Sugar', 'dry', { st: 1 }],
+  ['powder_sugar', 'Šećer u prahu', 'Icing sugar', 'dry', {}],
+  ['vanilla_sugar', 'Vanilin šećer', 'Vanilla sugar', 'dry', {}],
+  ['baking_powder', 'Prašak za pecivo', 'Baking powder', 'dry', {}],
+  ['yeast', 'Kvasac', 'Yeast', 'dry', {}],
+  ['honey', 'Med', 'Honey', 'dry', {}],
+  ['cocoa', 'Kakao', 'Cocoa', 'dry', {}],
+  ['chocolate', 'Čokolada za kuhanje', 'Dark chocolate', 'dry', {}],
+  ['coffee', 'Kafa (espresso)', 'Espresso', 'dry', {}],
+  ['breadcrumbs', 'Prezle', 'Breadcrumbs', 'dry', {}],
+  ['starch', 'Gustin (kukuruzni škrob)', 'Cornflour', 'dry', {}],
+  ['pudding', 'Puding od vanilije', 'Vanilla pudding powder', 'dry', {}],
+  ['oil', 'Ulje', 'Oil', 'dry', { st: 1 }],
+  ['olive_oil', 'Maslinovo ulje', 'Olive oil', 'dry', { st: 1 }],
+  ['lard_or_oil', 'Mast ili ulje', 'Lard or oil', 'dry', { st: 1 }],
+  ['wine_red', 'Crno vino', 'Red wine', 'other', {}],
+  ['wine_white', 'Bijelo vino', 'White wine', 'other', {}],
+  ['vinegar', 'Sirće', 'Vinegar', 'dry', { st: 1 }],
+  ['stock_cube', 'Domaći temeljac ili kocka', 'Stock (or cube)', 'dry', {}],
+
+  // Začini
+  ['salt', 'So', 'Salt', 'spice', { st: 1 }],
+  ['pepper_black', 'Biber', 'Black pepper', 'spice', { st: 1 }],
+  ['paprika_sweet', 'Aleva paprika (slatka)', 'Sweet paprika', 'spice', { st: 1 }],
+  ['paprika_hot', 'Ljuta paprika (mljevena)', 'Hot paprika', 'spice', {}],
+  ['bay_leaf', 'Lovorov list', 'Bay leaf', 'spice', { st: 1 }],
+  ['vegeta', 'Začin za jela', 'All-purpose seasoning', 'spice', { st: 1 }],
+  ['cinnamon', 'Cimet', 'Cinnamon', 'spice', {}],
+  ['cloves', 'Klinčići', 'Cloves', 'spice', {}],
+  ['nutmeg', 'Muškatni oraščić', 'Nutmeg', 'spice', {}],
+  ['oregano', 'Origano', 'Oregano', 'spice', {}],
+  ['thyme', 'Majčina dušica', 'Thyme', 'spice', {}],
+  ['basil', 'Bosiljak', 'Basil', 'spice', {}],
+  ['rosemary', 'Ruzmarin', 'Rosemary', 'spice', {}],
+  ['saffron', 'Šafran', 'Saffron', 'spice', {}],
+  ['chili', 'Čili (sušeni)', 'Dried chilli', 'spice', {}],
+  ['mint_dry', 'Nana (sušena)', 'Dried mint', 'spice', {}],
+
+  // Konzerve i tegle
+  ['tomato_can', 'Pelat / paradajz u konzervi', 'Tinned tomatoes', 'jar', {}],
+  ['tomato_paste', 'Paradajz pire (koncentrat)', 'Tomato paste', 'jar', { st: 1 }],
+  ['mayonnaise', 'Majoneza', 'Mayonnaise', 'jar', {}],
+  ['peas', 'Grašak', 'Peas', 'frozen', {}],
+  ['pickles', 'Kiseli krastavci', 'Pickled gherkins', 'jar', {}],
+  ['olives', 'Masline', 'Olives', 'jar', {}],
+
+  // Zimnica
+  ['ajvar', 'Ajvar', 'Ajvar', 'jar', { z: 1 }],
+  ['tursija', 'Turšija (miješana)', 'Turšija (mixed pickles)', 'jar', { z: 1 }],
+  ['pekmez', 'Pekmez od šljiva', 'Plum butter (pekmez)', 'jar', { z: 1 }],
+  ['dzem', 'Džem / slatko', 'Jam', 'jar', { z: 1 }],
+  ['sauerkraut', 'Kiseli kupus (glavice)', 'Sauerkraut (whole heads)', 'jar', { z: 1 }],
+  ['kisela_paprika', 'Kisela paprika', 'Pickled peppers', 'jar', { z: 1 }],
+  ['domaci_sos', 'Domaći paradajz sos', 'Home-made tomato passata', 'jar', { z: 1 }],
+  ['kompot', 'Kompot', 'Compote', 'jar', { z: 1 }],
+  ['ljutenica', 'Ljutenica', 'Ljutenica', 'jar', { z: 1 }],
+  ['pindjur', 'Pinđur', 'Pinđur', 'jar', { z: 1 }],
+  ['sok_sipak', 'Sok od šipka / zove', 'Rosehip or elderflower syrup', 'jar', { z: 1 }],
+];
+
+// Which zimnica jar can stand in for which shop ingredient.
+export const SUBSTITUTES = {
+  tomato_can: ['domaci_sos'],
+  tomato_paste: ['domaci_sos'],
+  pickles: ['tursija'],
+  dzem: ['pekmez'],
+  ajvar: ['ljutenica', 'pindjur'],
+};
+
+export const SECTIONS = ['meat', 'veg', 'dairy', 'bakery', 'dry', 'spice', 'jar', 'frozen', 'other'];
+
+export const ING = Object.fromEntries(
+  list.map(([id, bs, en, sec, f]) => [id, { id, bs, en, sec, ...f }])
+);

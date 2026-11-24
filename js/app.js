@@ -1,0 +1,658 @@
+import { RECIPES, R, MENUS, SOURCES } from './data/index.js';
+import { ING } from './data/ingredients.js';
+import { t, L, keys, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
+import * as store from './store.js';
+import { generatePlan, swapDay, markCooked, setDayDishes, shoppingList, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const S = () => store.S();
+const name = (r) => (getLang() === 'bs' ? r.bs : r.en);
+const iname = (id) => { const g = ING[id]; return g ? (getLang() === 'bs' ? g.bs : g.en) : id; };
+const DAYMS = 86400000;
+
+// ───────── UI state (not persisted) ─────────
+const ui = {
+  filters: { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '' },
+  showFilters: false,
+  serv: {},      // recipe id -> servings
+  pan: {},       // recipe id -> {shape,w,h,d}
+  pantryQ: '',
+  installEvt: null,
+};
+
+// ───────── helpers ─────────
+function toast(msg) {
+  const el = $('#toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove('show'), 2600);
+}
+function fmtTime(r) { return (r.tApprox ? '≈ ' : '') + (r.time >= 60 ? `${Math.floor(r.time / 60)} h${r.time % 60 ? ' ' + (r.time % 60) + ' min' : ''}` : `${r.time} min`); }
+function dayLabel(start, i) {
+  const d = new Date(start.getTime() + i * DAYMS);
+  const wd = (d.getDay() + 6) % 7;
+  const today = new Date(); const isToday = d.toDateString() === today.toDateString();
+  return { name: DAYS[getLang()][wd], date: `${d.getDate()}. ${MONTHS[getLang()][d.getMonth()].slice(0, 3)}${getLang() === 'bs' ? '' : ''}`, isToday, wd };
+}
+function badges(r) {
+  const b = [];
+  if (r.posno) b.push(`<span class="tag tag-posno">${t('posno')}</span>`);
+  else if (r.veg) b.push(`<span class="tag">${t('veg')}</span>`);
+  if (r.kid) b.push(`<span class="tag">${t('kid')}</span>`);
+  if (!r.noPork) b.push(`<span class="tag tag-pork">🐖</span>`);
+  if (r.source === 'lakisic' || r.source === 'jna') b.push(`<span class="tag tag-book">📖</span>`);
+  return b.join('');
+}
+
+/** One formatted ingredient line. f = scale factor. */
+function ingLine(ing, f) {
+  const [id, q, unit, ex = {}] = ing;
+  const note = ex.note ? tx(ex.note) : '';
+  let qty = '';
+  if (q != null) {
+    const a = niceQ(q * f, unit);
+    let txt = a.s;
+    if (ex.max != null) { const b = niceQ(ex.max * f, unit); txt = `${a.s}–${b.s}`; }
+    const ul = unitLabel(a.u, a.n);
+    qty = `${txt}${ul ? ' ' + ul : ''}`;
+  }
+  const tail = [note, ex.opt ? t('optional') : '', q == null && !note ? t('toTaste') : ''].filter(Boolean).join(', ');
+  return `<li><span class="q">${esc(qty)}</span><span class="n">${esc(iname(id))}${tail ? ` <small>(${esc(tail)})</small>` : ''}</span></li>`;
+}
+
+function scaleFor(r) {
+  if (r.pan) {
+    const mine = ui.pan[r.id];
+    return mine ? panArea(mine) / panArea(r.pan) : 1;
+  }
+  const s = ui.serv[r.id] ?? defaultServ(r);
+  return s / r.serves;
+}
+function defaultServ(r) {
+  if (r.type === 'dessert') return r.serves;
+  return S().household;
+}
+
+// ───────── routing ─────────
+const routes = {
+  plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, holidays: viewHolidays,
+  pantry: viewPantry, shop: viewShop, settings: viewSettings, cook: viewCook,
+};
+function route() {
+  const [name, arg] = (location.hash.replace(/^#\/?/, '') || 'plan').split('/');
+  const fn = routes[name] || viewPlan;
+  stopWake();
+  document.body.classList.toggle('cooking', name === 'cook');
+  $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
+  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
+  if (name === 'cook') startCook(arg);
+  if (name !== 'recipe' || !location.hash.includes('#keep')) window.scrollTo(0, 0);
+  renderChrome();
+}
+const go = (h) => { if (location.hash === h) route(); else location.hash = h; };
+
+function renderChrome() {
+  $('#langBtn').textContent = getLang() === 'bs' ? 'EN' : 'BS';
+  document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+}
+
+// ───────── PLAN ─────────
+function viewPlan() {
+  const st = S();
+  const sez = seasonalNow().slice(0, 10).map((g) => `<span class="chip chip-static">${esc(iname(g.id))}</span>`).join('');
+  const top = `
+    <section class="hero">
+      <div>
+        <h1>Sofra</h1>
+        <p class="muted">${t('appTagline')}</p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn primary" data-act="newplan">↻ ${st.plan ? t('regen') : t('newPlan')}</button>
+      </div>
+    </section>
+    ${st.mode === 'ramazan' ? `<div class="banner">🌙 ${t('ramazanNote')}</div>` : ''}`;
+  if (!st.plan) {
+    return top + `<div class="empty">${t('emptyPlan')}</div>
+      <div class="row gap"><a class="btn" href="#/settings">⚙ ${t('planSettings')}</a><a class="btn" href="#/holidays">🎉 ${t('holidays')}</a></div>
+      <h3>${t('seasonNow')}</h3><div class="chips">${sez}</div>`;
+  }
+  const start = parseISO(st.plan.start);
+  const days = st.plan.days.map((d, i) => {
+    const dl = dayLabel(start, i);
+    const dishes = d.dishes.map((x, k) => {
+      const r = R[x.id]; if (!r) return '';
+      const role = x.left ? t('leftover') : x.role === 'main' && st.mode === 'ramazan' ? t('iftar') : t(x.role);
+      const serv = x.fixed ? (r.yieldNote ? tx(r.yieldNote) : '') : `${x.serv} ${t('persons')}`;
+      return `<li class="dish ${x.left ? 'is-left' : ''}">
+        <span class="role">${esc(role)}</span>
+        <a href="#/recipe/${r.id}" class="dname">${esc(name(r))}</a>
+        <span class="meta">${esc(serv)}${x.left ? '' : ' · ' + fmtTime(r)}</span>
+        ${x.role === 'main' && !x.left ? `<button class="icon" title="${t('swap')}" data-act="swap" data-i="${i}">⇄</button>` : ''}
+        ${!x.left ? `<a class="icon" title="${t('cook')}" href="#/cook/${r.id}?s=${x.serv}&f=${x.fixed ? 1 : 0}">▶</a>` : ''}
+      </li>`;
+    }).join('');
+    return `<article class="day ${dl.isToday ? 'today' : ''} ${d.cooked ? 'cooked' : ''}">
+      <header><b>${dl.name}</b><span class="muted">${dl.date}${dl.isToday ? ' · ' + t('today') : ''}</span>
+        <button class="cookbtn ${d.cooked ? 'on' : ''}" data-act="cooked" data-i="${i}">✓ ${t('cooked')}</button></header>
+      <ul>${dishes || `<li class="muted">${t('noMatch')}</li>`}</ul>
+    </article>`;
+  }).join('');
+  return top + `
+    <div class="row gap wrap">
+      <a class="btn" href="#/shop">🛒 ${t('tabShop')}</a>
+      <button class="btn" data-act="print">📄 ${t('pdf')}</button>
+      <a class="btn" href="#/holidays">🎉 ${t('holidays')}</a>
+    </div>
+    <div class="days">${days}</div>
+    <h3>${t('seasonNow')} · ${MONTHS[getLang()][new Date().getMonth()]}</h3><div class="chips">${sez}</div>`;
+}
+
+// ───────── RECIPES ─────────
+function matches(r, f) {
+  if (f.q) { const q = f.q.toLowerCase(); if (!(`${r.bs} ${r.en} ${r.ing.map((i) => iname(i[0])).join(' ')}`.toLowerCase().includes(q))) return false; }
+  if (f.cu.size && !f.cu.has(r.cu)) return false;
+  if (f.type && r.type !== f.type) return false;
+  if (f.sub && r.sub !== f.sub) return false;
+  if (f.main && r.main !== f.main) return false;
+  if (f.meal && !r.meal.includes(f.meal)) return false;
+  if (f.time === 't30' && r.time > 30) return false;
+  if (f.time === 't60' && r.time > 60) return false;
+  if (f.time === 't60p' && r.time <= 60) return false;
+  if (f.eq && !(r.eq.includes(f.eq) || r.eqOpt.includes(f.eq))) return false;
+  if (f.diet.has('noPork') && !r.noPork) return false;
+  if (f.diet.has('posno') && !r.posno) return false;
+  if (f.diet.has('kid') && !r.kid) return false;
+  if (f.diet.has('veg') && !r.veg) return false;
+  if (f.occ && !r.occ.includes(f.occ)) return false;
+  if (f.season && r.months && !r.months.includes(new Date().getMonth() + 1)) return false;
+  if (f.fav && !S().favs.includes(r.id)) return false;
+  return true;
+}
+function chipGroup(label, key, opts, multi = false) {
+  const f = ui.filters;
+  return `<div class="fgroup"><span class="flabel">${label}</span><div class="chips">${opts.map(([v, txt]) => {
+    const on = multi ? f[key].has(v) : f[key] === v;
+    return `<button class="chip ${on ? 'on' : ''}" data-act="filter" data-k="${key}" data-v="${v}" data-m="${multi ? 1 : 0}">${esc(txt)}</button>`;
+  }).join('')}</div></div>`;
+}
+function card(r) {
+  const fav = S().favs.includes(r.id);
+  return `<a class="card" href="#/recipe/${r.id}">
+    <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('cu', r.cu))}</span><span class="muted">${fmtTime(r)}</span></div>
+    <b>${esc(name(r))}</b>
+    <div class="tags">${badges(r)}${fav ? '<span class="tag">★</span>' : ''}</div>
+  </a>`;
+}
+function filterPanel(extra = '') {
+  const f = ui.filters;
+  return `<div class="filters ${ui.showFilters ? 'open' : ''}">
+    ${chipGroup(t('fCuisine'), 'cu', keys('cu').map((k) => [k, L('cu', k)]), true)}
+    ${extra || chipGroup(t('fType'), 'type', ['main', 'soup', 'pie', 'salad', 'dessert'].map((k) => [k, L('type', k)]))}
+    ${chipGroup(t('fMain'), 'main', ['beef', 'chicken', 'lamb', 'fish', 'beans', 'potato', 'broccoli', 'spinach', 'veg', 'pasta', 'rice', 'pork'].map((k) => [k, L('main', k)]))}
+    ${chipGroup(t('fMeal'), 'meal', ['breakfast', 'lunch', 'dinner', 'iftar'].map((k) => [k, L('meal', k)]))}
+    ${chipGroup(t('fTime'), 'time', [['t30', t('t30')], ['t60', t('t60')], ['t60p', t('t60p')]])}
+    ${chipGroup(t('fEquip'), 'eq', keys('eq').map((k) => [k, L('eq', k)]))}
+    ${chipGroup(t('fDiet'), 'diet', [['noPork', t('noPork')], ['posno', t('posno')], ['veg', t('veg')], ['kid', t('kid')]], true)}
+    ${chipGroup(t('fOcc'), 'occ', keys('occ').map((k) => [k, L('occ', k)]))}
+    <div class="fgroup"><div class="chips">
+      <button class="chip ${f.season ? 'on' : ''}" data-act="ftoggle" data-k="season">🌱 ${t('fSeason')}</button>
+      <button class="chip ${f.fav ? 'on' : ''}" data-act="ftoggle" data-k="fav">★ ${t('favs')}</button>
+      <button class="chip" data-act="fclear">✕ ${t('clear')}</button>
+    </div></div>
+  </div>`;
+}
+function searchBar() {
+  const n = activeFilterCount();
+  return `<div class="searchbar"><input type="search" id="q" placeholder="${t('search')}" value="${esc(ui.filters.q)}">
+    <button class="btn ${n ? 'primary' : ''}" data-act="togglefilters">☰ ${t('filters')}${n ? ` (${n})` : ''}</button></div>`;
+}
+function activeFilterCount() {
+  const f = ui.filters;
+  return f.cu.size + f.diet.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0);
+}
+function viewRecipes() {
+  const list = RECIPES.filter((r) => r.type !== 'dessert').filter((r) => matches(r, ui.filters));
+  return `<h2>${t('tabRecipes')}</h2>
+    <div class="row gap wrap"><a class="btn" href="#/jna">🎖 ${t('jnaTitle')}</a><a class="btn" href="#/holidays">🎉 ${t('holidays')}</a></div>
+    ${searchBar()}${filterPanel()}
+    <p class="muted small">${list.length} ${t('results')}</p>
+    <div class="grid" id="results">${list.map(card).join('')}</div>`;
+}
+function viewSweets() {
+  const list = RECIPES.filter((r) => r.type === 'dessert').filter((r) => matches(r, ui.filters));
+  const subs = chipGroup(t('fType'), 'sub', keys('sub').map((k) => [k, L('sub', k)]));
+  return `<h2>${t('tabSweets')}</h2><p class="muted">${t('sweetsIntro')}</p>
+    ${searchBar()}${filterPanel(subs)}
+    <p class="muted small">${list.length} ${t('results')}</p>
+    <div class="grid" id="results">${list.map(card).join('')}</div>`;
+}
+function viewJNA() {
+  const list = RECIPES.filter((r) => r.cu === 'jna');
+  return `<a class="backlink" href="#/recipes">← ${t('tabRecipes')}</a>
+    <h2>🎖 ${t('jnaTitle')}</h2><p class="muted">${t('jnaIntro')}</p>
+    <div class="grid">${list.map(card).join('')}</div>
+    <p class="small muted">${esc(SOURCES.jna[getLang()])}</p>`;
+}
+
+// ───────── RECIPE DETAIL ─────────
+function viewRecipe(id) {
+  const r = R[id];
+  if (!r) return `<p>404</p>`;
+  const st = S();
+  const f = scaleFor(r);
+  const fav = st.favs.includes(r.id);
+  let scaler;
+  if (r.pan) {
+    const mine = ui.pan[r.id] || { ...r.pan };
+    const origTxt = r.pan.shape === 'round' ? `Ø ${r.pan.d} cm` : `${r.pan.w} × ${r.pan.h} cm`;
+    scaler = `<div class="scaler pan">
+      <div><span class="muted">${t('panOrig')}:</span> <b>${origTxt}</b></div>
+      <div class="row gap wrap"><span class="muted">${t('panMine')}:</span>
+        <select data-act="panshape" data-id="${r.id}"><option value="rect" ${mine.shape === 'rect' ? 'selected' : ''}>${t('rect')}</option><option value="round" ${mine.shape === 'round' ? 'selected' : ''}>${t('round')}</option></select>
+        ${mine.shape === 'round'
+          ? `Ø <input type="number" inputmode="numeric" class="num" data-act="pandim" data-id="${r.id}" data-k="d" value="${mine.d || 26}"> cm`
+          : `<input type="number" inputmode="numeric" class="num" data-act="pandim" data-id="${r.id}" data-k="w" value="${mine.w || 30}"> × <input type="number" inputmode="numeric" class="num" data-act="pandim" data-id="${r.id}" data-k="h" value="${mine.h || 20}"> cm`}
+      </div>
+      <div class="factor">${t('factor')} <b>${f.toFixed(2).replace('.', ',')}</b></div>
+    </div>`;
+  } else {
+    const s = ui.serv[r.id] ?? defaultServ(r);
+    scaler = `<div class="scaler">
+      <span>${r.type === 'dessert' && r.yieldNote ? esc(tx(r.yieldNote)) + ' · ' : ''}${t('servings')}</span>
+      <button class="round" data-act="serv" data-id="${r.id}" data-d="-1">−</button><b class="sv">${s}</b><button class="round" data-act="serv" data-id="${r.id}" data-d="1">+</button>
+      ${r.sApprox ? `<small class="muted">(${t('estimate')})</small>` : ''}
+    </div>
+    ${r.big ? `<div class="row gap wrap jna-btns">
+      <button class="btn" data-act="setserv" data-id="${r.id}" data-v="${st.household}">🏠 ${t('homeSize')}</button>
+      <button class="btn primary" data-act="setserv" data-id="${r.id}" data-v="100">🎖 ${t('forCompany')} (100)</button></div>
+      ${s >= 30 ? `<p class="hint">🍲 ${t('kazanHint')} ${Math.ceil((s * (r.type === 'soup' ? 0.3 : 0.45) * 1.25) / 10) * 10} ${t('liters')}.</p>` : ''}` : ''}`;
+  }
+  const occ = r.occ.filter((o) => o !== 'posno').map((o) => `<span class="tag">${esc(L('occ', o))}</span>`).join('');
+  const eq = [...r.eq, ...r.eqOpt].map((e) => `<span class="tag">${esc(L('eq', e))}${r.eq.includes(e) ? '' : '?'}</span>`).join('');
+  const servParam = r.pan ? '' : `?s=${ui.serv[r.id] ?? defaultServ(r)}`;
+  return `<a class="backlink" href="javascript:history.back()">← ${t('back')}</a>
+    <article class="recipe">
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('cu', r.cu))}</span><span class="muted">${esc(L('type', r.type))} · ${fmtTime(r)}</span></div>
+      <h1>${esc(name(r))}</h1>
+      <div class="tags">${badges(r)}${occ}${eq}</div>
+      <div class="row gap wrap actions">
+        <a class="btn primary" href="#/cook/${r.id}${servParam}${r.pan ? '?p=1' : ''}">▶ ${t('cook')}</a>
+        <button class="btn" data-act="fav" data-id="${r.id}">${fav ? '★' : '☆'} ${t('fav')}</button>
+        <button class="btn" data-act="addplan" data-id="${r.id}">＋ ${t('addToPlan')}</button>
+      </div>
+      <blockquote class="story">${esc(tx(r.story))}</blockquote>
+      ${scaler}
+      <h3>${t('ingredients')}</h3>
+      <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
+      <h3>${t('steps')}</h3>
+      <ol class="steps">${r.st.map((s) => `<li>${esc(tx(s))}${s[2] ? ` <span class="tmr">⏱ ${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'}</span>` : ''}</li>`).join('')}</ol>
+      <p class="source"><b>${t('source')}:</b> ${esc(SOURCES[r.source][getLang()])}${r.src.p ? ` — str. ${esc(r.src.p)}` : ''}${r.src.n ? `, br. ${r.src.n}` : ''}</p>
+    </article>`;
+}
+
+// ───────── COOK MODE ─────────
+let cook = null;
+let wakeLock = null;
+async function startWake() {
+  try { if ('wakeLock' in navigator) { wakeLock = await navigator.wakeLock.request('screen'); updWake(true); wakeLock.addEventListener?.('release', () => updWake(false)); } else updWake(false); }
+  catch { updWake(false); }
+}
+function stopWake() { try { wakeLock && wakeLock.release(); } catch { /* ignore */ } wakeLock = null; }
+function updWake(on) { const el = $('#wake'); if (el) el.textContent = on ? '💡 ' + t('wakeOn') : '🌙 ' + t('wakeOff'); }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && cook) startWake(); });
+
+function viewCook(arg) {
+  const id = arg.split('?')[0];
+  const r = R[id];
+  if (!r) return '';
+  const params = new URLSearchParams(location.hash.split('?')[1] || '');
+  let f = 1;
+  if (r.pan && params.get('p')) f = scaleFor(r);
+  else if (params.get('f') === '1') f = 1;
+  else if (params.get('s')) f = Number(params.get('s')) / r.serves;
+  else f = scaleFor(r);
+  cook = cook && cook.id === id ? cook : { id, i: 0, timers: cook ? cook.timers : [] };
+  cook.f = f;
+  return `<div class="cook">
+    <header><a class="icon" href="javascript:history.back()">✕</a><b>${esc(name(r))}</b><span id="wake" class="small"></span></header>
+    <div id="timers" class="timers"></div>
+    <div class="cook-body" id="cookBody"></div>
+    <details class="cook-ings"><summary>${t('ingredients')}</summary><ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul></details>
+    <footer><button class="btn big" data-act="cprev">← ${t('prev')}</button><button class="btn big primary" data-act="cnext">${t('next')} →</button></footer>
+  </div>`;
+}
+function startCook() { renderCookStep(); startWake(); tickTimers(); }
+function renderCookStep() {
+  if (!cook) return;
+  const r = R[cook.id];
+  const s = r.st[cook.i];
+  const body = $('#cookBody'); if (!body) return;
+  body.innerHTML = `<div class="stepno">${t('step')} ${cook.i + 1} ${t('of')} ${r.st.length}</div>
+    <p class="bigstep">${esc(tx(s))}</p>
+    ${s[2] ? `<button class="btn primary big" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">⏱ ${t('timer')} ${s[2]} min</button>` : ''}`;
+  const nx = $('[data-act="cnext"]');
+  if (nx) nx.textContent = cook.i === r.st.length - 1 ? `✓ ${t('done')}` : `${t('next')} →`;
+}
+function tickTimers() {
+  clearInterval(tickTimers._h);
+  const draw = () => {
+    const el = $('#timers'); if (!el || !cook) return;
+    const now = Date.now();
+    el.innerHTML = cook.timers.map((tm, k) => {
+      const left = Math.max(0, Math.round((tm.end - now) / 1000));
+      if (left === 0 && !tm.rang) { tm.rang = true; ring(); toast(`⏱ ${tm.label}: ${t('timerDone')}`); }
+      const mm = String(Math.floor(left / 60)).padStart(2, '0'), ss = String(left % 60).padStart(2, '0');
+      return `<button class="timer ${left === 0 ? 'done' : ''}" data-act="tdel" data-k="${k}">${esc(tm.label)} · ${mm}:${ss} ✕</button>`;
+    }).join('');
+  };
+  draw(); tickTimers._h = setInterval(draw, 1000);
+}
+function ring() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.35, 0.7].forEach((d) => { const o = ctx.createOscillator(); const g = ctx.createGain(); o.frequency.value = 880; o.connect(g); g.connect(ctx.destination); g.gain.setValueAtTime(0.25, ctx.currentTime + d); o.start(ctx.currentTime + d); o.stop(ctx.currentTime + d + 0.25); });
+  } catch { /* no audio */ }
+  navigator.vibrate?.([300, 150, 300, 150, 300]);
+}
+
+// ───────── HOLIDAYS ─────────
+function menuItems(m) {
+  const noPork = S().noPork || S().mode === 'ramazan';
+  return m.items.map(([id, role, alt]) => [noPork && alt && !R[id].noPork ? alt : id, role]);
+}
+function viewHolidays() {
+  return `<a class="backlink" href="#/plan">← ${t('tabPlan')}</a><h2>🎉 ${t('holidays')}</h2>
+    ${MENUS.map((m) => `<article class="menu">
+      <h3>${esc(getLang() === 'bs' ? m.bs : m.en)}</h3>
+      <ul>${menuItems(m).map(([id, role]) => `<li><span class="role">${t(role)}</span> <a href="#/recipe/${id}">${esc(name(R[id]))}</a></li>`).join('')}</ul>
+      <button class="btn primary" data-act="menuday" data-m="${m.id}">📅 ${t('setOnDay')}</button>
+    </article>`).join('')}`;
+}
+
+// ───────── PANTRY ─────────
+function viewPantry() {
+  const st = S();
+  const q = ui.pantryQ.toLowerCase();
+  const all = Object.values(ING).filter((g) => !q || `${g.bs} ${g.en}`.toLowerCase().includes(q));
+  const zim = all.filter((g) => g.z);
+  const secs = keys('sec').map((sec) => ({ sec, items: all.filter((g) => g.sec === sec && !g.z) })).filter((s) => s.items.length);
+  const row = (g) => `<label class="pitem ${st.pantry[g.id] ? 'on' : ''}"><input type="checkbox" data-act="have" data-id="${g.id}" ${st.pantry[g.id] ? 'checked' : ''}><span>${esc(iname(g.id))}</span></label>`;
+  const zrow = (g) => {
+    const n = Number(st.pantry[g.id]) || 0;
+    return `<div class="zitem ${n ? 'on' : ''}"><span>🫙 ${esc(iname(g.id))}</span>
+      <span class="jar"><button class="round sm" data-act="jar" data-id="${g.id}" data-d="-1">−</button><b>${n}</b><button class="round sm" data-act="jar" data-id="${g.id}" data-d="1">+</button></span></div>`;
+  };
+  return `<h2>${t('tabPantry')}</h2><p class="muted">${t('pantryIntro')}</p>
+    <div class="searchbar"><input type="search" id="pq" placeholder="${t('search')}" value="${esc(ui.pantryQ)}"></div>
+    ${zim.length ? `<section class="psec zim"><h3>${t('zimnica')} <small class="muted">(${t('jars')})</small></h3>${zim.map(zrow).join('')}</section>` : ''}
+    ${secs.map((s) => `<section class="psec"><h3>${esc(L('sec', s.sec))}</h3><div class="pgrid">${s.items.map(row).join('')}</div></section>`).join('')}`;
+}
+
+// ───────── SHOPPING ─────────
+function qtyText(it) {
+  if (it.unknown && !it.q) return '';
+  const COUNT = ['kom', 'glavica', 'cen', 'kesica', 'jufka', 'kriska', 'sop', 'list', 'zrno'];
+  if (COUNT.includes(it.unit)) { it = { ...it, q: Math.ceil(it.q - 0.05), qmax: Math.ceil(it.qmax - 0.05) }; }
+  const a = niceQ(it.q, it.unit);
+  let s = a.s;
+  if (it.qmax > it.q + 1e-6) s += '–' + niceQ(it.qmax, it.unit).s;
+  const u = unitLabel(a.u, a.n);
+  return `${s}${u ? ' ' + u : ''}${it.unknown ? ' +' : ''}`;
+}
+function shopText() {
+  const { sections } = shoppingList();
+  const st = S();
+  const lines = [`🛒 Sofra — ${t('printShop')}`];
+  sections.forEach((s) => {
+    const items = s.items.filter((it) => !st.shop.checked[it.key]);
+    if (!items.length) return;
+    lines.push('', `*${L('sec', s.sec)}*`);
+    items.forEach((it) => lines.push(`• ${iname(it.id)}${qtyText(it) ? ' — ' + qtyText(it) : ''}${it.opt ? ` (${t('optional')})` : ''}`));
+  });
+  const extra = st.shop.extra.filter((e) => !e.done);
+  if (extra.length) { lines.push('', `*${L('sec', 'other')}*`); extra.forEach((e) => lines.push('• ' + e.text)); }
+  return lines.join('\n');
+}
+function viewShop() {
+  const st = S();
+  if (!st.plan) return `<h2>${t('tabShop')}</h2><div class="empty">${t('emptyPlan')}</div>`;
+  const { sections, have } = shoppingList();
+  const item = (it) => {
+    const on = !!st.shop.checked[it.key];
+    return `<label class="sitem ${on ? 'on' : ''}"><input type="checkbox" data-act="buy" data-key="${esc(it.key)}" data-id="${it.id}" ${on ? 'checked' : ''}>
+      <span class="n">${esc(iname(it.id))}${it.opt ? ` <small>(${t('optional')})</small>` : ''}</span><span class="q">${esc(qtyText(it))}</span></label>`;
+  };
+  return `<h2>${t('tabShop')}</h2><p class="muted">${t('shopIntro')}</p>
+    <div class="row gap wrap share">
+      <button class="btn wa" data-act="wa">WhatsApp</button>
+      <button class="btn vb" data-act="viber">Viber</button>
+      ${navigator.share ? `<button class="btn" data-act="nshare">↗ ${t('share')}</button>` : ''}
+      <button class="btn" data-act="copy">⧉ ${t('copy')}</button>
+      <button class="btn" data-act="print">📄 ${t('pdf')}</button>
+    </div>
+    ${sections.map((s) => `<section class="ssec"><h3>${esc(L('sec', s.sec))}</h3>${s.items.map(item).join('')}</section>`).join('')}
+    <section class="ssec"><h3>${esc(L('sec', 'other'))}</h3>
+      ${st.shop.extra.map((e, k) => `<label class="sitem ${e.done ? 'on' : ''}"><input type="checkbox" data-act="xdone" data-k="${k}" ${e.done ? 'checked' : ''}><span class="n">${esc(e.text)}</span><button class="icon" data-act="xdel" data-k="${k}">✕</button></label>`).join('')}
+      <form class="row gap" data-act="xadd"><input id="xtext" placeholder="${t('extra')}"><button class="btn">＋</button></form>
+    </section>
+    <button class="btn" data-act="clearbought">${t('clearBought')}</button>
+    ${have.length ? `<details class="have"><summary>✓ ${t('youHave')} (${have.length})</summary><ul>${have.map((it) => `<li>${esc(iname(it.haveId))}${it.haveId !== it.id ? ` <small>(${esc(iname(it.id))})</small>` : ''} <span class="muted">${esc(qtyText(it))}</span></li>`).join('')}</ul></details>` : ''}`;
+}
+
+// ───────── SETTINGS ─────────
+function viewSettings() {
+  const st = S();
+  const lvl = [t('never'), t('rarely'), t('often'), t('mostly')];
+  const daysChips = DAYS[getLang()].map((d, i) => `<button class="chip ${st.posnoDays.includes(i) ? 'on' : ''}" data-act="posnoday" data-i="${i}">${d.slice(0, 3)}</button>`).join('');
+  const num = (k, v, min, max, step = 1) => `<input type="number" class="num" inputmode="numeric" data-act="setnum" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${v}">`;
+  const tog = (k, label) => `<label class="toggle"><input type="checkbox" data-act="settog" data-k="${k}" ${st[k] ? 'checked' : ''}><span>${label}</span></label>`;
+  return `<h2>⚙ ${t('settings')}</h2>
+    <section class="set"><h3>${t('language')}</h3><div class="chips">
+      <button class="chip ${getLang() === 'bs' ? 'on' : ''}" data-act="lang" data-v="bs">Bosanski</button>
+      <button class="chip ${getLang() === 'en' ? 'on' : ''}" data-act="lang" data-v="en">English</button></div></section>
+    <section class="set"><h3>${t('mode')}</h3><div class="chips">
+      <button class="chip ${st.mode === 'normal' ? 'on' : ''}" data-act="mode" data-v="normal">${t('modeNormal')}</button>
+      <button class="chip ${st.mode === 'ramazan' ? 'on' : ''}" data-act="mode" data-v="ramazan">🌙 ${t('modeRamazan')}</button></div></section>
+    <section class="set"><h3>${t('household')}</h3>${num('household', st.household, 1, 20)}</section>
+    <section class="set"><h3>${t('cuisineMix')}</h3>
+      ${keys('cu').map((c) => `<div class="mix"><span>${esc(L('cu', c))}</span><input type="range" min="0" max="3" step="1" value="${st.cuisines[c] || 0}" data-act="mix" data-k="${c}"><small>${lvl[st.cuisines[c] || 0]}</small></div>`).join('')}
+    </section>
+    <section class="set"><h3>${t('rules')}</h3>
+      ${keys('kind').map((k) => `<div class="mix"><span>${esc(L('kind', k))}</span><input type="number" class="num" min="0" max="7" data-act="rule" data-k="${k}" value="${st.rules[k] ?? 7}"><small>× / 7</small></div>`).join('')}
+    </section>
+    <section class="set">
+      <div class="mix"><span>${t('noRepeat')}</span>${num('noRepeatWeeks', st.noRepeatWeeks, 0, 6)}<small>${t('weeks')}</small></div>
+      <div class="mix"><span>${t('weekdayMax')}</span>${num('weekdayMax', st.weekdayMax, 15, 300, 15)}<small>min</small></div>
+      <div class="mix"><span>${t('dessertsWeek')}</span>${num('dessertsPerWeek', st.dessertsPerWeek, 0, 7)}</div>
+      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}${tog('posnoFish', t('posnoFish'))}
+    </section>
+    <section class="set"><h3>${t('posnoDays')}</h3><div class="chips">${daysChips}</div></section>
+    <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
+    <section class="set"><h3>${t('backup')}</h3><div class="row gap wrap">
+      <button class="btn" data-act="export">⬇ ${t('exportData')}</button>
+      <label class="btn">⬆ ${t('importData')}<input type="file" accept="application/json,.json" data-act="import" hidden></label>
+      <button class="btn danger" data-act="reset">${t('reset')}</button></div></section>
+    <section class="set"><h3>${t('install')}</h3>
+      ${ui.installEvt ? `<button class="btn primary" data-act="install">📲 ${t('install')}</button>` : `<p class="muted small">${t('installHint')}</p>`}</section>
+    <section class="set"><h3>${t('about')}</h3><p class="muted small">${t('aboutText')}</p>
+      <h4>${t('sourcesTitle')}</h4><ul class="small muted">${Object.values(SOURCES).map((s) => `<li>${esc(s[getLang()])}</li>`).join('')}</ul></section>`;
+}
+
+// ───────── PRINT / PDF ─────────
+function printAll() {
+  const st = S();
+  if (!st.plan) { toast(t('emptyPlan')); return; }
+  const start = parseISO(st.plan.start);
+  const plan = st.plan.days.map((d, i) => {
+    const dl = dayLabel(start, i);
+    return `<tr><th>${dl.name}<br><small>${dl.date}</small></th><td>${d.dishes.map((x) => `${x.left ? t('leftover') + ': ' : ''}${esc(name(R[x.id]))}${x.left || x.fixed ? '' : ` <small>(${x.serv} ${t('persons')})</small>`}`).join('<br>')}</td></tr>`;
+  }).join('');
+  const { sections } = shoppingList();
+  const shop = sections.map((s) => `<h3>${esc(L('sec', s.sec))}</h3><ul class="cols">${s.items.map((it) => `<li>☐ ${esc(iname(it.id))} <small>${esc(qtyText(it))}</small></li>`).join('')}</ul>`).join('')
+    + (st.shop.extra.length ? `<h3>${esc(L('sec', 'other'))}</h3><ul class="cols">${st.shop.extra.map((e) => `<li>☐ ${esc(e.text)}</li>`).join('')}</ul>` : '');
+  const seen = new Set();
+  const recs = st.plan.days.flatMap((d) => d.dishes.filter((x) => !x.left)).filter((x) => (seen.has(x.id) ? false : seen.add(x.id))).map((x) => {
+    const r = R[x.id]; const f = x.fixed ? 1 : x.serv / r.serves;
+    return `<section class="prec"><h2>${esc(name(r))}</h2><p><i>${esc(tx(r.story))}</i></p>
+      <p><b>${x.fixed ? (r.yieldNote ? tx(r.yieldNote) : '') : x.serv + ' ' + t('persons')}</b> · ${fmtTime(r)}</p>
+      <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
+      <ol>${r.st.map((s) => `<li>${esc(tx(s))}</li>`).join('')}</ol>
+      <p class="small">${t('source')}: ${esc(SOURCES[r.source][getLang()])}${r.src.p ? ' — str. ' + esc(r.src.p) : ''}</p></section>`;
+  }).join('');
+  $('#print').innerHTML = `<h1>Sofra — ${t('weekOf')} ${dayLabel(start, 0).date}</h1>
+    <h2>${t('printPlan')}</h2><table class="ptable">${plan}</table>
+    <h2 class="pb">${t('printShop')}</h2>${shop}
+    <h2 class="pb">${t('printRecipes')}</h2>${recs}`;
+  toast(t('pdfHint'));
+  setTimeout(() => window.print(), 300);
+}
+
+// ───────── day picker modal ─────────
+function pickDay(cb) {
+  const st = S();
+  if (!st.plan) generatePlan();
+  const start = parseISO(S().plan.start);
+  const m = $('#modal');
+  m.innerHTML = `<div class="sheet"><h3>${t('pickDay')}</h3><div class="daypick">${S().plan.days.map((_, i) => { const dl = dayLabel(start, i); return `<button class="btn" data-pick="${i}">${dl.name}<br><small>${dl.date}</small></button>`; }).join('')}</div><button class="btn" data-pick="x">${t('cancel')}</button></div>`;
+  m.classList.add('open');
+  m.onclick = (e) => {
+    const b = e.target.closest('[data-pick]');
+    if (!b && e.target !== m) return;
+    m.classList.remove('open'); m.onclick = null;
+    if (b && b.dataset.pick !== 'x') cb(Number(b.dataset.pick));
+  };
+}
+
+// ───────── events ─────────
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-act]');
+  if (!el || el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'FORM') return;
+  const st = S();
+  const a = el.dataset.act;
+  const rer = () => route();
+  switch (a) {
+    case 'newplan': generatePlan(); rer(); break;
+    case 'swap': swapDay(Number(el.dataset.i)); rer(); break;
+    case 'cooked': markCooked(Number(el.dataset.i)); if (st.plan.days[el.dataset.i].cooked) toast(t('cookedQ')); rer(); break;
+    case 'print': printAll(); break;
+    case 'togglefilters': ui.showFilters = !ui.showFilters; rer(); break;
+    case 'filter': {
+      const k = el.dataset.k, v = el.dataset.v;
+      if (el.dataset.m === '1') { const s = ui.filters[k]; s.has(v) ? s.delete(v) : s.add(v); } else ui.filters[k] = ui.filters[k] === v ? '' : v;
+      rer(); break;
+    }
+    case 'ftoggle': ui.filters[el.dataset.k] = !ui.filters[el.dataset.k]; rer(); break;
+    case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '' }; rer(); break;
+    case 'fav': store.toggleFav(el.dataset.id); rer(); break;
+    case 'serv': { const r = R[el.dataset.id]; const cur = ui.serv[r.id] ?? defaultServ(r); ui.serv[r.id] = Math.max(1, cur + Number(el.dataset.d)); rer(); break; }
+    case 'setserv': ui.serv[el.dataset.id] = Number(el.dataset.v); rer(); break;
+    case 'addplan': {
+      const r = R[el.dataset.id];
+      pickDay((i) => {
+        const d = S().plan.days[i];
+        const role = r.type === 'soup' ? 'soup' : r.type === 'dessert' ? 'dessert' : r.type === 'salad' ? 'side' : 'main';
+        const keep = d.dishes.filter((x) => x.role !== role || role === 'side');
+        const dish = { id: r.id, role, serv: role === 'dessert' ? r.serves : S().household, ...(role === 'dessert' ? { fixed: 1 } : {}) };
+        const order = { soup: 0, main: 1, side: 2, dessert: 3 };
+        setDayDishes(i, [...keep, dish].sort((x, y) => order[x.role] - order[y.role]));
+        go('#/plan');
+      });
+      break;
+    }
+    case 'menuday': {
+      const m = MENUS.find((x) => x.id === el.dataset.m);
+      pickDay((i) => {
+        setDayDishes(i, menuItems(m).map(([id, role]) => (role === 'dessert' ? { id, role, serv: R[id].serves, fixed: 1 } : { id, role, serv: S().household })));
+        go('#/plan');
+      });
+      break;
+    }
+    case 'cnext': { const r = R[cook.id]; if (cook.i < r.st.length - 1) { cook.i++; renderCookStep(); } else { history.back(); } break; }
+    case 'cprev': if (cook.i > 0) { cook.i--; renderCookStep(); } break;
+    case 'timer': cook.timers.push({ label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
+    case 'tdel': cook.timers.splice(Number(el.dataset.k), 1); tickTimers(); break;
+    case 'jar': { const id = el.dataset.id; const n = Math.max(0, (Number(st.pantry[id]) || 0) + Number(el.dataset.d)); if (n) st.pantry[id] = n; else delete st.pantry[id]; store.save(); rer(); break; }
+    case 'wa': window.open('https://wa.me/?text=' + encodeURIComponent(shopText()), '_blank'); break;
+    case 'viber': location.href = 'viber://forward?text=' + encodeURIComponent(shopText()); break;
+    case 'nshare': navigator.share({ title: 'Sofra', text: shopText() }).catch(() => {}); break;
+    case 'copy': navigator.clipboard?.writeText(shopText()).then(() => toast(t('copied'))); break;
+    case 'xdel': st.shop.extra.splice(Number(el.dataset.k), 1); store.save(); rer(); break;
+    case 'clearbought': {
+      const { sections } = shoppingList();
+      sections.forEach((s) => s.items.forEach((it) => { if (st.shop.checked[it.key]) delete st.shop.checked[it.key]; }));
+      st.shop.extra = st.shop.extra.filter((x) => !x.done); store.save(); rer(); break;
+    }
+    case 'lang': st.lang = el.dataset.v; setLang(st.lang); store.save(); rer(); break;
+    case 'mode': st.mode = el.dataset.v; store.save(); rer(); break;
+    case 'posnoday': { const i = Number(el.dataset.i); st.posnoDays = st.posnoDays.includes(i) ? st.posnoDays.filter((x) => x !== i) : [...st.posnoDays, i]; store.save(); rer(); break; }
+    case 'equip': st.equipment[el.dataset.k] = st.equipment[el.dataset.k] ? 0 : 1; store.save(); rer(); break;
+    case 'export': {
+      const blob = new Blob([store.exportJSON()], { type: 'application/json' });
+      const aEl = document.createElement('a'); aEl.href = URL.createObjectURL(blob); aEl.download = `sofra-backup-${new Date().toISOString().slice(0, 10)}.json`; aEl.click();
+      setTimeout(() => URL.revokeObjectURL(aEl.href), 1000); break;
+    }
+    case 'reset': if (confirm(t('resetQ'))) { store.resetAll(); setLang(S().lang); go('#/plan'); } break;
+    case 'install': ui.installEvt?.prompt(); ui.installEvt = null; break;
+    default: break;
+  }
+});
+
+document.addEventListener('change', (e) => {
+  const el = e.target; const a = el.dataset.act; if (!a) return;
+  const st = S();
+  switch (a) {
+    case 'have': store.setHave(el.dataset.id, el.checked); store.save(); el.closest('.pitem')?.classList.toggle('on', el.checked); break;
+    case 'buy': {
+      st.shop.checked[el.dataset.key] = el.checked ? 1 : 0;
+      if (!el.checked) delete st.shop.checked[el.dataset.key];
+      if (el.checked) store.setHave(el.dataset.id, true);
+      store.save(); el.closest('.sitem')?.classList.toggle('on', el.checked); break;
+    }
+    case 'xdone': st.shop.extra[Number(el.dataset.k)].done = el.checked; store.save(); el.closest('.sitem')?.classList.toggle('on', el.checked); break;
+    case 'setnum': { const v = Number(el.value); if (!Number.isNaN(v)) { st[el.dataset.k] = v; store.save(); } break; }
+    case 'settog': st[el.dataset.k] = el.checked; store.save(); break;
+    case 'mix': st.cuisines[el.dataset.k] = Number(el.value); store.save(); route(); break;
+    case 'rule': st.rules[el.dataset.k] = Number(el.value); store.save(); break;
+    case 'panshape': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, shape: el.value }; route(); break; }
+    case 'pandim': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, [el.dataset.k]: Math.max(5, Number(el.value) || 0) }; route(); break; }
+    case 'import': {
+      const file = el.files[0]; if (!file) return;
+      file.text().then((txt) => { try { store.importJSON(txt); setLang(S().lang); toast(t('importOk')); route(); } catch { toast(t('importBad')); } });
+      break;
+    }
+    default: break;
+  }
+});
+
+document.addEventListener('submit', (e) => {
+  const f = e.target; if (f.dataset.act !== 'xadd') return;
+  e.preventDefault();
+  const v = $('#xtext').value.trim(); if (!v) return;
+  S().shop.extra.push({ text: v, done: false }); store.save(); route();
+});
+
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'q') {
+    ui.filters.q = e.target.value;
+    const isSweet = location.hash.startsWith('#/sweets');
+    const list = RECIPES.filter((r) => (isSweet ? r.type === 'dessert' : r.type !== 'dessert')).filter((r) => matches(r, ui.filters));
+    $('#results').innerHTML = list.map(card).join('');
+  }
+  if (e.target.id === 'pq') {
+    ui.pantryQ = e.target.value;
+    const pos = e.target.selectionStart;
+    route();
+    const inp = $('#pq'); inp.focus(); inp.setSelectionRange(pos, pos);
+  }
+});
+
+$('#langBtn').addEventListener('click', () => { const st = S(); st.lang = getLang() === 'bs' ? 'en' : 'bs'; setLang(st.lang); store.save(); route(); });
+window.addEventListener('hashchange', route);
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); ui.installEvt = e; });
+
+// ───────── boot ─────────
+store.load();
+setLang(S().lang);
+route();
+if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./sw.js').catch(() => {});
+window.__sofra = { R, RECIPES, kindOf, store };
