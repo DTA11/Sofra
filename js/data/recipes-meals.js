@@ -230,7 +230,7 @@ export const MEAL_RECIPES = [
       ['Paradajz i mozzarellu isijeci na kriške i slaži naizmjenično.', 'Slice the tomatoes and mozzarella and arrange them alternately.'],
       ['Dodaj listove bosiljka, posoli, pobiberi i prelij maslinovim uljem. Služi s hljebom.', 'Add basil leaves, season and drizzle with olive oil. Serve with bread.'],
     ],
-    story: ['Sa Capri — u bojama italijanske zastave. Najbolja je u avgustu, kad je paradajz najslađi.', 'From Capri — in the colours of the Italian flag. Best in August, when tomatoes are sweetest.'],
+    story: ['S Caprija — u bojama italijanske zastave. Najbolja je u augustu, kad je paradajz najslađi.', 'From Capri — in the colours of the Italian flag. Best in August, when tomatoes are sweetest.'],
     src: T,
   },
 

@@ -12,7 +12,7 @@ export const EXTRA_RECIPES = [
     st: [
       ['Listove raštana operi, odreži tvrde žile i prelij ih ključalom vodom da omekšaju.', 'Wash the collard leaves, trim the tough ribs and pour boiling water over them to soften.', 3],
       ['Pola luka sitno isijeci i izmiješaj s mesom, rižom, alevom paprikom, solju i biberom.', 'Finely chop half the onion and mix it with the mince, rice, paprika, salt and pepper.'],
-      ['Na svaki list stavi kašiku nadjeva i zamotaj čvrsto, uvući krajeve.', 'Put a spoonful of filling on each leaf and roll tightly, tucking in the sides.'],
+      ['Na svaki list stavi kašiku nadjeva i zamotaj čvrsto, uvlačeći krajeve.', 'Put a spoonful of filling on each leaf and roll tightly, tucking in the sides.'],
       ['Na dno lonca stavi ostatak luka i suho meso, poslaži japrake, dodaj ulje, koncentrat i toliko vode da budu pokriveni.', 'Lay the remaining onion and smoked meat in the pot, pack in the rolls, add the oil, tomato paste and water to cover.'],
       ['Pritisni tanjirom i kuhaj poklopljeno na tihoj vatri 90 minuta.', 'Weigh down with a plate and simmer covered on low heat for 90 minutes.', 90],
     ],
@@ -77,7 +77,7 @@ export const EXTRA_RECIPES = [
     ing: [['leek', 1, 'kg'], ['rice', 200, 'g'], ['tomato_paste', 1, 'kasika'], ['paprika_sweet', 1, 'kasicica'], ['olive_oil', 6, 'kasika'], ['lemon', 0.5, 'kom'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Praziluk isijeci na kolutove od 2 cm i pirjaj na ulju 10 minuta.', 'Cut the leeks into 2 cm rounds and cook them in the oil for 10 minutes.', 10],
-      ['Dodaj rižu, papriku i koncentrat, posoli i popapri, pa sve prebaci u tepsiju.', 'Add the rice, paprika and tomato paste, season and tip everything into a baking dish.'],
+      ['Dodaj rižu, papriku i koncentrat, posoli i pobiberi, pa sve prebaci u tepsiju.', 'Add the rice, paprika and tomato paste, season and tip everything into a baking dish.'],
       ['Nalij 600 ml vruće vode i peci na 190 °C 35 minuta, dok riža ne upije tečnost.', 'Pour in 600 ml hot water and bake at 190 °C for 35 minutes, until the rice has absorbed the liquid.', 35],
       ['Pokapaj limunom prije služenja.', 'Squeeze over the lemon before serving.'],
     ],
@@ -90,7 +90,7 @@ export const EXTRA_RECIPES = [
     bs: 'Hladna čorba od kiselog mlijeka i krastavca', en: 'Cold yoghurt and cucumber soup',
     ing: [['yogurt', 800, 'g'], ['cucumber', 2, 'kom'], ['walnuts', 60, 'g'], ['garlic', 2, 'cen'], ['dill', 1, 'sop'], ['oil', 2, 'kasika'], ['salt', null, '']],
     st: [
-      ['Krastavce sitno isijeci ili krupno izrendaj, bijeli luk zgnječi, orahe sitno sjeckaj.', 'Finely dice or coarsely grate the cucumbers, crush the garlic, chop the walnuts.'],
+      ['Krastavce sitno isijeci ili krupno izrendaj, bijeli luk zgnječi, orahe sitno isjeckaj.', 'Finely dice or coarsely grate the cucumbers, crush the garlic, chop the walnuts.'],
       ['Jogurt razrijedi s 300 ml hladne vode, umiješaj sve ostalo i posoli.', 'Thin the yoghurt with 300 ml cold water, stir in everything else and season.'],
       ['Ohladi u frižideru najmanje 30 minuta.', 'Chill in the fridge for at least 30 minutes.', 30],
     ],
@@ -115,7 +115,7 @@ export const EXTRA_RECIPES = [
     ing: [['yogurt', 500, 'g', n('ocijeđen preko noći kroz gazu', 'strained overnight through muslin')], ['cucumber', 2, 'kom'], ['walnuts', 50, 'g'], ['garlic', 2, 'cen'], ['dill', 0.5, 'sop'], ['olive_oil', 1, 'kasika'], ['salt', null, '']],
     st: [
       ['Krastavce sitno isijeci i lagano posoli, pa ocijedi tečnost.', 'Dice the cucumbers finely, salt lightly and squeeze out the liquid.'],
-      ['Umiješaj u gusti jogurt sa zgnječenim bijelim lukom, koprom i orasima.', 'Fold into the thick yoghurt with the crushed garlic, dill and walnuts.'],
+      ['Umiješaj u gusti jogurt sa zgnječenim bijelim lukom, mirođijom i orasima.', 'Fold into the thick yoghurt with the crushed garlic, dill and walnuts.'],
       ['Pokapaj uljem i služi hladno, uz meso s roštilja ili hljeb.', 'Drizzle with oil and serve cold, with grilled meat or bread.'],
     ],
     story: ['Bijela salata kojom se počinje svaki ljetni ručak.', 'The white salad every summer lunch starts with.'],
@@ -254,7 +254,7 @@ export const EXTRA_RECIPES = [
     bs: 'Slojeviti krompir s jajima, kobasicom i pavlakom', en: 'Layered potato bake with eggs, sausage and sour cream',
     ing: [['potato', 1.2, 'kg'], ['eggs', 6, 'kom'], ['kranjska', 250, 'g'], ['sour_cream', 400, 'g'], ['butter', 40, 'g'], ['paprika_sweet', 1, 'kasicica'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
-      ['Krompir u ljusci skuhaj 25 minuta, a jaja 10 minuta. Ogulji i isijeci na kolutove.', 'Boil the potatoes in their skins for 25 minutes and the eggs for 10. Peel and slice both.', 25],
+      ['Krompir u ljusci skuhaj 25 minuta, a jaja 10 minuta. Oguli i isijeci na kolutove.', 'Boil the potatoes in their skins for 25 minutes and the eggs for 10. Peel and slice both.', 25],
       ['U namašćenu tepsiju slaži redom krompir, jaja i kobasicu, svaki red posoli i premaži pavlakom.', 'Layer potatoes, eggs and sausage in a buttered dish, salting each layer and spreading it with sour cream.'],
       ['Završi krompirom i pavlakom, pospi alevom paprikom i listićima maslaca. Peci na 200 °C 30 minuta.', 'Finish with potatoes and sour cream, sprinkle with paprika and dot with butter. Bake at 200 °C for 30 minutes.', 30],
     ],
@@ -289,11 +289,11 @@ export const EXTRA_RECIPES = [
   },
   {
     id: 'spinat-riza-kopar', cu: 'grcka', type: 'main', main: 'spinach', time: 40, serves: 4, light: 1,
-    bs: 'Špinat s rižom, koprom i limunom', en: 'Spinach with rice, dill and lemon',
+    bs: 'Špinat s rižom, mirođijom i limunom', en: 'Spinach with rice, dill and lemon',
     ing: [['spinach', 1, 'kg'], ['rice', 200, 'g'], ['spring_onion', 1, 'sop'], ['dill', 1, 'sop'], ['olive_oil', 80, 'ml'], ['lemon', 1, 'kom'], ['feta', 150, 'g', O], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Mladi luk pirjaj na ulju 5 minuta, dodaj rižu i prži još 2 minute.', 'Cook the spring onions in the oil for 5 minutes, add the rice and fry 2 minutes more.', 5],
-      ['Dodaj krupno sjeckan špinat i kopar, 500 ml vruće vode i so.', 'Add the roughly chopped spinach and dill, 500 ml hot water and salt.'],
+      ['Dodaj krupno sjeckan špinat i mirođiju, 500 ml vruće vode i so.', 'Add the roughly chopped spinach and dill, 500 ml hot water and salt.'],
       ['Kuhaj poklopljeno 20 minuta dok riža ne omekša. Prelij limunovim sokom; po želji služi s bijelim sirom.', 'Cook covered for 20 minutes until the rice is tender. Squeeze over the lemon; serve with white cheese if you like.', 20],
     ],
     story: ['Proljetno posno jelo — zeleno, kiselkasto i lagano.', 'A spring fasting dish — green, tangy and light.'],
@@ -358,7 +358,7 @@ export const EXTRA_RECIPES = [
     ing: [['beetroot', 4, 'kom'], ['garlic', 2, 'cen'], ['vinegar', 3, 'kasika'], ['oil', 2, 'kasika'], ['caraway', 1, 'prst', O], ['salt', null, '']],
     st: [
       ['Cveklu skuhaj u ljusci oko 50 minuta dok ne omekša.', 'Boil the beetroot in their skins for about 50 minutes until tender.', 50],
-      ['Ogulji je, isijeci na tanke kriške ili izrendaj.', 'Peel and slice thinly or grate.'],
+      ['Oguli je, isijeci na tanke kriške ili izrendaj.', 'Peel and slice thinly or grate.'],
       ['Začini sirćetom, uljem, zgnječenim bijelim lukom i solju. Ostavi bar sat u frižideru.', 'Dress with the vinegar, oil, crushed garlic and salt. Leave for at least an hour in the fridge.', 60],
     ],
     story: ['Zimska salata uz pečenje i grah — sutradan je još ukusnija.', 'A winter salad for roasts and beans — even tastier the next day.'],

@@ -6,7 +6,7 @@ const O = { opt: 1 };
 const C = { b: 'sofra' };
 const base = { cu: 'svakodnevno', type: 'combo', serves: 1, time: 5, light: 1, meal: ['breakfast'], src: C };
 const tea = ['tea', 1, 'kesica', n('šolja čaja', 'a cup of tea')];
-const teaStep = ['Skuhaj čaj — vodu samo prokuhaj i preli kesicu, 3 minute.', 'Make the tea — just boil the water and pour it over the bag, 3 minutes.'];
+const teaStep = ['Skuhaj čaj — vodu samo prokuhaj i prelij kesicu, 3 minute.', 'Make the tea — just boil the water and pour it over the bag, 3 minutes.'];
 const coffee = ['coffee_ground', 7, 'g', { opt: 1, note: ['za odrasle, šolja kafe', 'for adults, a cup of coffee'] }];
 
 const list = [

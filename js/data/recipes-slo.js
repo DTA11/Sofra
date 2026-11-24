@@ -15,7 +15,7 @@ export const SLO_RECIPES = [
       ['Na masti kratko zaprži brašno sa zgnječenim bijelim lukom i alevom paprikom, razrijedi kutlačom čorbe i vrati u lonac.', 'Fry the flour briefly in the lard with crushed garlic and paprika, loosen with a ladle of broth and stir back into the pot.'],
       ['Ulij kupus s tekućinom, posoli, pobiberi i kuhaj zajedno 10 minuta. Meso isijeci i vrati u jelo.', 'Add the sauerkraut with its liquid, season and simmer together for 10 minutes. Slice the meat and return it to the pot.', 10],
     ],
-    story: ['Jelo s Krasa i iz Trsta — gusto, kiselo i zasitno. Kao i grah, sutradan je još bolja.', 'A dish of the Karst and Trieste — thick, sour and filling. Like any bean pot, it is even better the next day.'],
+    story: ['Jelo s Krasa i iz Trsta — gusto, kiselo i zasitno. Kao i grah, sutradan je još bolje.', 'A dish of the Karst and Trieste — thick, sour and filling. Like any bean pot, it is even better the next day.'],
     src: T,
   },
   {
@@ -123,12 +123,12 @@ export const SLO_RECIPES = [
       ['Razmućena jaja ulij u tankom mlazu u čorbu koja ključa i promiješaj vilicom.', 'Pour the beaten eggs in a thin stream into the boiling soup and stir with a fork.'],
       ['Služi s prepečenim kockicama hljeba.', 'Serve with toasted bread cubes.'],
     ],
-    story: ['Najskromnija slovenska čorba — brašno, voda, kim i jaje. Stari je govorio da vraća snagu poslije duge noći.', 'The humblest Slovenian soup — flour, water, caraway and an egg. The old folks said it brings you back after a long night.'],
+    story: ['Najskromnija slovenska čorba — brašno, voda, kim i jaje. Stari su govorili da vraća snagu poslije duge noći.', 'The humblest Slovenian soup — flour, water, caraway and an egg. The old folks said it brings you back after a long night.'],
     src: T,
   },
   {
     id: 'gobova-juha', cu: 'slovenska', type: 'soup', main: 'veg', time: 40, serves: 4,
-    bs: 'Gljivarska čorba (gobova juha)', en: 'Mushroom soup (gobova juha)',
+    bs: 'Čorba od gljiva (gobova juha)', en: 'Mushroom soup (gobova juha)',
     ing: [['mushrooms', 400, 'g'], ['porcini', 20, 'g', n('suhi vrganji', 'dried porcini')], ['potato', 2, 'kom'], ['onion', 1, 'glavica'], ['butter', 30, 'g'], ['flour', 2, 'kasika'], ['sour_cream', 150, 'g'], ['vinegar', 1, 'kasika'], ['bay_leaf', 1, 'list'], ['marjoram', 1, 'kasicica'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Vrganje namoči u 300 ml tople vode na 15 minuta.', 'Soak the porcini in 300 ml warm water for 15 minutes.', 15],
@@ -205,7 +205,7 @@ export const SLO_RECIPES = [
     ing: [['puff_pastry', 500, 'g', n('2 lista', '2 sheets')], ['milk', 1, 'l'], ['eggs', 6, 'kom', n('odvojiti', 'separated')], ['sugar', 200, 'g'], ['starch', 80, 'g'], ['vanilla_sugar', 2, 'kesica'], ['cream', 400, 'ml'], ['powder_sugar', 3, 'kasika']],
     st: [
       ['Lisnato tijesto razvij na veličinu kalupa, izbockaj vilicom i peci dvije kore na 200 °C po 15 minuta. Ohladi.', 'Roll the puff pastry to the size of the tin, prick with a fork and bake the two sheets at 200 °C for 15 minutes each. Let cool.', 15],
-      ['Žumanjke umuti s pola šećera, gustinom i vanilin šećerom i s malo hladnog mlijeka. Ostatak mlijeka zakuhaj.', 'Whisk the yolks with half the sugar, the cornflour, vanilla sugar and a little cold milk. Bring the rest of the milk to the boil.'],
+      ['Žumanjke umuti s pola šećera, škrobom i vanilin šećerom i s malo hladnog mlijeka. Ostatak mlijeka zakuhaj.', 'Whisk the yolks with half the sugar, the cornflour, vanilla sugar and a little cold milk. Bring the rest of the milk to the boil.'],
       ['U mlijeko koje ključa umiješaj smjesu žumanjaka i kuhaj uz stalno miješanje 2 minute dok ne zgusne.', 'Whisk the yolk mixture into the boiling milk and cook, stirring all the time, for 2 minutes until thick.', 2],
       ['Bjelanjke umuti s ostatkom šećera u čvrst snijeg i odmah ga umiješaj u vruću kremu.', 'Beat the whites with the remaining sugar to stiff peaks and fold straight into the hot custard.'],
       ['Jednu koru stavi u kalup, prelij kremom i ostavi da se ohladi, pa u frižider na 3 sata.', 'Put one sheet in the tin, pour the custard over and let it cool, then chill for 3 hours.', 180],

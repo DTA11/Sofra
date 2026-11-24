@@ -10,8 +10,8 @@ export const MORE_RECIPES = [
     bs: 'Pašticada s njokima', en: 'Pašticada with gnocchi',
     ing: [['beef', 1.2, 'kg', n('frikando ili ruža, u komadu', 'topside or silverside, in one piece')], ['bacon', 80, 'g', n('za protkivanje', 'for larding')], ['garlic', 4, 'cen'], ['vinegar', 250, 'ml', n('vinsko, za mariniranje', 'wine vinegar, for the marinade')], ['onion', 2, 'glavica'], ['root_mix', 300, 'g'], ['prunes', 8, 'kom'], ['tomato_paste', 2, 'kasika'], ['wine_red', 500, 'ml'], ['cloves', 3, 'kom'], ['nutmeg', 1, 'prst'], ['bay_leaf', 2, 'list'], ['olive_oil', 4, 'kasika'], ['salt', null, ''], ['pepper_black', null, ''], ['gnocchi', 1, 'kg']],
     st: [
-      ['Meso noću ranije protkaj trakicama slanine i režnjevima bijelog luka, prelij sirćetom razrijeđenim s istom količinom vode i ostavi u frižideru preko noći.', 'The night before, lard the meat with strips of bacon and slivers of garlic, cover with the vinegar mixed with the same amount of water and leave in the fridge overnight.', 720],
-      ['Meso osuši, posoli i popapri pa ga na maslinovom ulju zapeci sa svih strana. Izvadi ga.', 'Pat the meat dry, season and brown it on all sides in the olive oil. Lift it out.'],
+      ['Večer ranije meso protkaj trakicama slanine i režnjevima bijelog luka, prelij sirćetom razrijeđenim s istom količinom vode i ostavi u frižideru preko noći.', 'The night before, lard the meat with strips of bacon and slivers of garlic, cover with the vinegar mixed with the same amount of water and leave in the fridge overnight.', 720],
+      ['Meso osuši, posoli i pobiberi pa ga na maslinovom ulju zapeci sa svih strana. Izvadi ga.', 'Pat the meat dry, season and brown it on all sides in the olive oil. Lift it out.'],
       ['U istoj masnoći pirjaj luk i korjenasto povrće 15 minuta, dodaj suhe šljive, klinčiće, lovor i paradajz koncentrat.', 'In the same fat cook the onion and root vegetables for 15 minutes, then add the prunes, cloves, bay leaves and tomato paste.', 15],
       ['Vrati meso, ulij vino i 300 ml vode. Pirjaj poklopljeno na tihoj vatri 3 sata, okrećući meso i podlijevajući po potrebi.', 'Return the meat, pour in the wine and 300 ml water. Braise covered on low heat for 3 hours, turning the meat and adding water when needed.', 180],
       ['Meso izvadi i isijeci na šnite. Umak propasiraj ili izmiksaj, začini muškatnim oraščićem i vrati meso u umak.', 'Lift out the meat and slice it. Pass or blend the sauce, season with nutmeg and return the slices to the sauce.'],
@@ -27,7 +27,7 @@ export const MORE_RECIPES = [
     st: [
       ['Na maslinovom ulju polako pirjaj luk isječen na polukrugove 10 minuta.', 'Gently cook the sliced onion in the olive oil for 10 minutes.', 10],
       ['Dodaj bijeli luk i paradajz, kuhaj 5 minuta pa poslaži ribu, krupnije komade dolje.', 'Add the garlic and tomatoes, cook 5 minutes, then lay in the fish, larger pieces at the bottom.', 5],
-      ['Ulij vino, sirće i toliko vode da riba bude skoro pokrivena. Posoli i popapri.', 'Pour in the wine, vinegar and enough water to nearly cover the fish. Season.'],
+      ['Ulij vino, sirće i toliko vode da riba bude skoro pokrivena. Posoli i pobiberi.', 'Pour in the wine, vinegar and enough water to nearly cover the fish. Season.'],
       ['Kuhaj na tihoj vatri 30 minuta bez miješanja — samo protresi lonac povremeno.', 'Simmer for 30 minutes without stirring — just shake the pot now and then.', 30],
       ['U međuvremenu skuhaj palentu: kukuruzno brašno umiješaj u 1 l slane vode koja ključa i kuhaj 20 minuta uz miješanje.', 'Meanwhile make the polenta: whisk the cornmeal into 1 l boiling salted water and cook for 20 minutes, stirring.', 20],
       ['Pospi brodet peršunom i služi uz palentu.', 'Sprinkle the brodet with parsley and serve with the polenta.'],
@@ -55,7 +55,7 @@ export const MORE_RECIPES = [
     st: [
       ['Od brašna, 1 jajeta, ulja, prstohvata soli i oko 200 ml mlake vode zamijesi mekano tijesto. Premaži uljem i ostavi 30 minuta.', 'Knead the flour, 1 egg, the oil, a pinch of salt and about 200 ml lukewarm water into a soft dough. Brush with oil and rest 30 minutes.', 30],
       ['Sir izmiješaj s 3 jajeta, 200 g pavlake i solju.', 'Mix the cottage cheese with 3 eggs, 200 g of the sour cream and salt.'],
-      ['Tijesto razvuci na stolnjaku vrlo tanko, rasporedi nadjev po cijeloj površini i zarolaj. Rubom tanjira režu se komadi od 8 cm.', 'Stretch the dough very thin on a cloth, spread the filling over it and roll up. Cut 8 cm pieces with the rim of a plate.'],
+      ['Tijesto razvuci na stolnjaku vrlo tanko, rasporedi nadjev po cijeloj površini i zarolaj. Rubom tanjira izreži komade od 8 cm.', 'Stretch the dough very thin on a cloth, spread the filling over it and roll up. Cut 8 cm pieces with the rim of a plate.'],
       ['Štrukle skuhaj u slanoj vodi 10 minuta, ocijedi i složi u namašćenu tepsiju.', 'Boil the štrukli in salted water for 10 minutes, drain and lay them in a buttered dish.', 10],
       ['Prelij vrhnjem pomiješanim s ostatkom pavlake, dodaj listiće maslaca i peci na 200 °C oko 30 minuta, dok ne porumene.', 'Pour over the cream mixed with the rest of the sour cream, dot with butter and bake at 200 °C for about 30 minutes until golden.', 30],
     ],
@@ -110,7 +110,7 @@ export const MORE_RECIPES = [
     bs: 'Popeci (punjeni pohovani odresci)', en: 'Popeci (stuffed breaded veal rolls)',
     ing: [['veal', 600, 'g', n('4 tanka odreska', '4 thin escalopes')], ['ham', 120, 'g', n('pršut ili šunka', 'prosciutto or ham')], ['gruyere', 120, 'g', n('ili kajmak', 'or kajmak')], ['flour', 80, 'g'], ['eggs', 2, 'kom'], ['breadcrumbs', 120, 'g'], ['oil', 300, 'ml', n('za prženje', 'for frying')], ['salt', null, ''], ['pepper_black', null, ''], ['lemon', 1, 'kom', { opt: 1 }]],
     st: [
-      ['Odreske istuci što tanje, posoli i popapri.', 'Pound the escalopes as thin as you can and season.'],
+      ['Odreske istuci što tanje, posoli i pobiberi.', 'Pound the escalopes as thin as you can and season.'],
       ['Na svaki stavi pršut i sir, čvrsto zarolaj i učvrsti čačkalicom.', 'Lay prosciutto and cheese on each, roll up tightly and secure with a toothpick.'],
       ['Uvaljaj u brašno, razmućena jaja pa prezle.', 'Coat in flour, then beaten egg, then breadcrumbs.'],
       ['Prži u vrelom ulju na srednjoj vatri oko 12 minuta, okrećući, dok ne budu zlatni sa svih strana.', 'Fry in hot oil over medium heat for about 12 minutes, turning, until golden all over.', 12],
@@ -134,7 +134,7 @@ export const MORE_RECIPES = [
   },
   {
     id: 'jagnjetina-mlijeko', cu: 'crnogorska', type: 'main', main: 'lamb', time: 120, serves: 4, occ: ['bajram'],
-    bs: 'Jagnjetina u mlijeku', en: 'Lamb cooked in milk',
+    bs: 'Janjetina u mlijeku', en: 'Lamb cooked in milk',
     ing: [['lamb', 1.2, 'kg', n('plećka ili but, s kostima', 'shoulder or leg, on the bone')], ['milk', 1, 'l'], ['potato', 800, 'g'], ['garlic', 4, 'cen'], ['butter', 40, 'g'], ['rosemary', 1, 'kasicica', { opt: 1 }], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Janjetinu isijeci na veće komade, posoli i stavi u širok lonac s maslacem i bijelim lukom.', 'Cut the lamb into large pieces, salt it and put in a wide pot with the butter and garlic.'],
@@ -153,7 +153,7 @@ export const MORE_RECIPES = [
       ['Suho meso kuhaj u 2 l vode 30 minuta.', 'Simmer the smoked meat in 2 l water for 30 minutes.', 30],
       ['Raštan operi, ukloni tvrde peteljke i krupno isijeci. Krompir oguli i isijeci na četvrtine.', 'Wash the greens, remove the tough stems and chop coarsely. Peel and quarter the potatoes.'],
       ['Dodaj raštan i krompir mesu i kuhaj još 30 minuta.', 'Add the greens and potatoes to the meat and cook another 30 minutes.', 30],
-      ['Ocijedi višak vode, prelij maslinovim uljem sa zgnječenim bijelim lukom, posoli i popapri.', 'Drain off the excess water, dress with olive oil and crushed garlic and season.'],
+      ['Ocijedi višak vode, prelij maslinovim uljem sa zgnječenim bijelim lukom, posoli i pobiberi.', 'Drain off the excess water, dress with olive oil and crushed garlic and season.'],
     ],
     story: ['Zimsko jelo s crnogorskog i hercegovačkog primorja — raštan je najslađi kad ga prvi mraz udari.', 'A winter dish of the Montenegrin and Herzegovinian coast — the greens are sweetest after the first frost.'],
     src: T,
@@ -179,7 +179,7 @@ export const MORE_RECIPES = [
     ing: [['flour', 500, 'g'], ['yeast', 1, 'kesica', n('suhi, 7 g', 'dried, 7 g')], ['sugar', 1, 'kasicica'], ['salt', 1, 'kasicica'], ['pork_shoulder', 400, 'g', n('ili piletina', 'or chicken')], ['eggs', 2, 'kom'], ['butter', 50, 'g'], ['paprika_hot', 1, 'kasicica', { opt: 1 }]],
     st: [
       ['Zamijesi brašno, kvasac, šećer, so i oko 300 ml mlake vode. Ostavi da naraste 60 minuta.', 'Knead the flour, yeast, sugar, salt and about 300 ml lukewarm water. Leave to rise for 60 minutes.', 60],
-      ['Meso isijeci na kockice od 1 cm, posoli i popapri.', 'Cut the meat into 1 cm cubes and season with salt and pepper.'],
+      ['Meso isijeci na kockice od 1 cm, posoli i pobiberi.', 'Cut the meat into 1 cm cubes and season with salt and pepper.'],
       ['Tijesto podijeli na dva dijela i razvuci u duguljaste pogače, rubove podigni i stisni da dobiju oblik čamca.', 'Divide the dough in two and stretch into long ovals, pinching the edges up into a boat shape.'],
       ['Rasporedi meso i peci na 250 °C (najjače) 15 minuta.', 'Spread the meat over and bake at 250 °C (as hot as it goes) for 15 minutes.', 15],
       ['Na sredinu svake razbij jaje, vrati u rernu još 5 minuta, pa premaži maslacem i pospi ljutom paprikom.', 'Crack an egg into the middle of each, bake 5 minutes more, then brush with butter and dust with hot paprika.', 5],
@@ -207,7 +207,7 @@ export const MORE_RECIPES = [
     st: [
       ['Meso isijeci na kocke i zapeci na ulju dok ne porumeni.', 'Cut the meat into cubes and brown it in the oil.'],
       ['Dodaj luk, papriku i šampinjone isječene na trake, pirjaj 10 minuta.', 'Add the onion, peppers and mushrooms in strips and cook for 10 minutes.', 10],
-      ['Umiješaj alevu papriku i origano, ulij vino, posoli i popapri.', 'Stir in the paprika and oregano, pour in the wine and season.'],
+      ['Umiješaj alevu papriku i origano, ulij vino, posoli i pobiberi.', 'Stir in the paprika and oregano, pour in the wine and season.'],
       ['Prebaci u glinenu posudu, poklopi i peci na 180 °C 60 minuta. Po želji pospi sirom zadnjih 10 minuta.', 'Transfer to a clay dish, cover and bake at 180 °C for 60 minutes. Scatter cheese over for the last 10 minutes if you like.', 60],
     ],
     story: ['Kafansko jelo iz cijele Makedonije, služi se u istoj zemljanoj posudi u kojoj je pečeno, da ostane vruće do kraja.', 'A tavern dish from all over North Macedonia, served in the clay dish it was baked in so it stays hot to the last bite.'],
@@ -218,7 +218,7 @@ export const MORE_RECIPES = [
     bs: 'Turlitava (pečeno miješano povrće)', en: 'Turlitava (baked mixed vegetables)',
     ing: [['eggplant', 1, 'kom'], ['zucchini', 2, 'kom'], ['potato', 4, 'kom'], ['pepper', 3, 'kom'], ['tomato', 4, 'kom'], ['onion', 2, 'glavica'], ['green_beans', 200, 'g', { opt: 1 }], ['okra', 150, 'g', { opt: 1 }], ['garlic', 3, 'cen'], ['oil', 100, 'ml'], ['paprika_sweet', 1, 'kasicica'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
-      ['Svo povrće isijeci na krupne komade.', 'Cut all the vegetables into large pieces.'],
+      ['Sve povrće isijeci na krupne komade.', 'Cut all the vegetables into large pieces.'],
       ['Izmiješaj ga u tepsiji s uljem, bijelim lukom, alevom paprikom, solju i biberom. Dodaj 200 ml vode.', 'Toss them in a baking dish with the oil, garlic, paprika, salt and pepper. Add 200 ml water.'],
       ['Pokrij folijom i peci na 200 °C 45 minuta.', 'Cover with foil and bake at 200 °C for 45 minutes.', 45],
       ['Skini foliju i peci još 25 minuta da porumeni. Pospi peršunom.', 'Remove the foil and bake another 25 minutes to brown. Sprinkle with parsley.', 25],
@@ -233,7 +233,7 @@ export const MORE_RECIPES = [
     bs: 'Tavë kosi (janjetina pečena s jogurtom)', en: 'Tavë kosi (lamb baked with yoghurt)',
     ing: [['lamb', 1, 'kg', n('plećka, na komade', 'shoulder, in pieces')], ['rice', 80, 'g'], ['butter', 100, 'g'], ['garlic', 3, 'cen'], ['oregano', 1, 'kasicica'], ['yogurt', 1, 'l', n('gusti, punomasni', 'thick, full-fat')], ['eggs', 4, 'kom'], ['flour', 3, 'kasika'], ['nutmeg', 1, 'prst'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
-      ['Janjetinu posoli, popapri i peci u tepsiji s 40 g maslaca, bijelim lukom, origanom i 200 ml vode na 200 °C 60 minuta.', 'Season the lamb and roast it in a dish with 40 g butter, the garlic, oregano and 200 ml water at 200 °C for 60 minutes.', 60],
+      ['Janjetinu posoli, pobiberi i peci u tepsiji s 40 g maslaca, bijelim lukom, origanom i 200 ml vode na 200 °C 60 minuta.', 'Season the lamb and roast it in a dish with 40 g butter, the garlic, oregano and 200 ml water at 200 °C for 60 minutes.', 60],
       ['Rasporedi rižu oko mesa i podlij s malo vode ako je suho. Peci još 15 minuta.', 'Scatter the rice around the meat and add a splash of water if dry. Roast another 15 minutes.', 15],
       ['Na ostatku maslaca kratko zaprži brašno, skloni s vatre i umiješaj jogurt, jaja, muškatni oraščić i so.', 'Cook the flour briefly in the remaining butter, take off the heat and whisk in the yoghurt, eggs, nutmeg and salt.'],
       ['Prelij preko mesa i peci na 180 °C oko 30 minuta, dok preljev ne stegne i ne dobije zlatne mrlje.', 'Pour over the meat and bake at 180 °C for about 30 minutes, until the topping sets with golden patches.', 30],
@@ -246,7 +246,7 @@ export const MORE_RECIPES = [
     bs: 'Fërgesë (paprike, paradajz i sir)', en: 'Fërgesë (peppers, tomatoes and cheese)',
     ing: [['pepper', 4, 'kom', n('ili ispečene babure iz tegle', 'or roasted peppers from a jar')], ['tomato', 4, 'kom'], ['onion', 1, 'glavica'], ['garlic', 2, 'cen'], ['cottage', 250, 'g'], ['feta', 150, 'g'], ['olive_oil', 4, 'kasika'], ['paprika_hot', 1, 'prst', { opt: 1 }], ['salt', null, ''], ['bread', 4, 'kriska']],
     st: [
-      ['Paprike ispeci na ringli ili u rerni, ogulji i isijeci na trake.', 'Char the peppers over a flame or in the oven, peel and cut into strips.'],
+      ['Paprike ispeci na ringli ili u rerni, oguli i isijeci na trake.', 'Char the peppers over a flame or in the oven, peel and cut into strips.'],
       ['Na maslinovom ulju pirjaj luk 5 minuta, dodaj bijeli luk i paradajz na kockice i kuhaj 10 minuta.', 'Soften the onion in the olive oil for 5 minutes, add the garlic and diced tomatoes and cook for 10 minutes.', 10],
       ['Umiješaj paprike, mladi sir i izmrvljeni bijeli sir. Kuhaj na tihoj vatri 5 minuta dok sir ne postane kremast.', 'Stir in the peppers, the cottage cheese and crumbled feta. Cook on low heat for 5 minutes until creamy.', 5],
       ['Služi u glinenoj posudi s toplim hljebom.', 'Serve in a clay dish with warm bread.'],
@@ -289,7 +289,7 @@ export const MORE_RECIPES = [
     st: [
       ['Jaja umuti sa 150 g šećera 8 minuta dok ne postanu gusta i svijetla. Lagano umiješaj brašno s praškom za pecivo.', 'Whisk the eggs with 150 g sugar for 8 minutes until thick and pale. Gently fold in the flour and baking powder.', 8],
       ['Peci u kalupu obloženom papirom na 180 °C oko 25 minuta.', 'Bake in a lined tin at 180 °C for about 25 minutes.', 25],
-      ['Izmiješaj mlijeko, kondenzovano mlijeko, 200 ml vrhnja i vanilin šećer. Toplim biskvitom izbockanim vilicom prelij smjesu i ostavi da upije.', 'Mix the milk, condensed milk, 200 ml cream and vanilla sugar. Prick the warm sponge with a fork and pour the mixture over to soak in.'],
+      ['Izmiješaj mlijeko, kondenzovano mlijeko, 200 ml vrhnja i vanilin šećer. Topli biskvit izbockaj vilicom, prelij smjesom i ostavi da upije.', 'Mix the milk, condensed milk, 200 ml cream and vanilla sugar. Prick the warm sponge with a fork and pour the mixture over to soak in.'],
       ['100 g šećera otopi u karamel, pa pažljivo ulij 200 ml vrelog vrhnja i kuhaj dok ne postane glatko. Ohladi i prelij kolač.', 'Melt 100 g sugar to a caramel, then carefully pour in 200 ml hot cream and stir until smooth. Cool and pour over the cake.'],
       ['Drži u frižideru najmanje 4 sata.', 'Chill for at least 4 hours.', 240],
     ],
