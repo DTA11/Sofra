@@ -329,7 +329,7 @@ function activeFilterCount() {
 }
 function viewRecipes() {
   const list = RECIPES.filter((r) => r.type !== 'dessert').filter((r) => matches(r, ui.filters));
-  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert').length} ${t('dishes')} · ${keys('cu').length - 2} ${getLang() === 'bs' ? 'zemalja, po regijama' : 'countries, by region'}</p></section>
+  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert').length} ${t('dishes')}</p></section>
     <div class="feature-row">
       <a class="feature jna" href="#/jna">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
       <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
