@@ -752,6 +752,7 @@ store.load();
 setLang(S().lang);
 document.querySelectorAll('.tabbar a').forEach((a) => { a.querySelector('span').innerHTML = ICON[a.dataset.tab] || ''; });
 $('#gearBtn').innerHTML = ICON.gear;
+$('#kilim').innerHTML = KILIM;
 document.body.classList.toggle('standalone', isStandalone());
 $('[data-install-btn]').addEventListener('click', doInstall);
 // hamburger menu
