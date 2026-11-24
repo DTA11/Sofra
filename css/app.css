@@ -400,3 +400,29 @@ body.standalone .tabbar { left: 10px; right: 10px; bottom: calc(10px + env(safe-
 .tabbar a.on { color: #2a1803; background: var(--saffron); }
 body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 @media (prefers-color-scheme: dark) { .feat-ic { background: #3a2a1c; } .feat:nth-child(3n+2) .feat-ic { background: #222c45; } .feat:nth-child(3n) .feat-ic { background: #2b3424; } .zim { background: var(--card); border-color: #5a4720; } .cu { color: #e8735f; } }
+
+/* ═════════ coloured top band under the menu (owner: as in the ćilim version) ═════════ */
+.hero-band, .home-hero, .page-band { margin: 0 -20px; padding: 22px 20px 26px; border-radius: 0 0 28px 28px; color: #fff; position: relative; overflow: hidden; }
+.hero-band, .home-hero { background: #8c1c13; }
+.page-band { background: var(--indigo); }
+.page-band.sweet { background: #6b3a24; }
+.hero-band::after, .home-hero::after { content: ""; position: absolute; inset: auto -40px -60px auto; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(232,163,61,.28), transparent 70%); pointer-events: none; }
+.hero-band .eyebrow, .home-hero .eyebrow, .page-band .eyebrow { color: rgba(255,255,255,.8); }
+.hero-band .lede, .home-hero .lede, .page-band .lede { color: rgba(255,255,255,.88); }
+.page-band .backlink { color: #fff; }
+.home-hero .trust { color: rgba(255,255,255,.85); } .home-hero .trust svg { color: var(--saffron); }
+.home-hero .btn.light { background: #fff; border-color: #fff; color: #8c1c13; }
+.home-hero .btn.ghost, .hero-band .btn.ghost { background: transparent; border-color: rgba(255,255,255,.5); color: #fff; }
+@media (min-width: 860px) { .home-hero { padding: 48px 40px; } }
+.home-hero .hh-art .tile { box-shadow: 0 16px 30px -16px rgba(0,0,0,.7); }
+/* today: picture + text sit on the red band */
+.hero-band .today { background: transparent; border: 0; border-radius: 0; overflow: visible; gap: 16px; }
+.hero-band .today-art { border-radius: 22px; overflow: hidden; box-shadow: 0 14px 30px -14px rgba(0,0,0,.6); }
+.hero-band .today-txt { padding: 0; }
+.hero-band .meta-row, .hero-band .also { color: rgba(255,255,255,.9); }
+.hero-band .btn.light { background: #fff; border-color: #fff; color: #8c1c13; }
+.hero-band .week { margin-top: 20px; }
+.hero-band .wday { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: #fff; }
+.hero-band .wday small, .hero-band .wday span { color: rgba(255,255,255,.85); }
+.hero-band .wday.on { background: #fff; color: #8c1c13; border-color: #fff; }
+.hero-band .wday.on small, .hero-band .wday.on span { color: #8c1c13; }
