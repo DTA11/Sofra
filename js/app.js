@@ -125,7 +125,7 @@ function viewHome() {
 // "Prijedlog za danas": a random dish, the same all day, new one on tap
 function pickPool() {
   const st = S(); const m = new Date().getMonth() + 1;
-  return RECIPES.filter((r) => (r.type === 'main' || r.type === 'pie') && (st.cuisines[r.cu] || 0) > 0
+  return RECIPES.filter((r) => (r.type === 'main' || r.type === 'pie') && (st.styles[r.style] || 0) > 0
     && (!st.noPork && st.mode !== 'ramazan' || r.noPork) && (!r.months || r.months.includes(m)) && !(r.eq || []).some((e) => !st.equipment[e]));
 }
 function todayPick() {
@@ -569,7 +569,7 @@ function viewSettings() {
       <div class="mix"><span>${t('dinnerMax')}</span>${num('dinnerMax', st.dinnerMax, 5, 180, 5)}<small>min</small></div></section>
     <section class="set"><h3>${t('household')}</h3>${num('household', st.household, 1, 20)}</section>
     <section class="set"><h3>${t('cuisineMix')}</h3>
-      ${keys('cu').map((c) => `<div class="mix"><span>${esc(L('cu', c))}</span><input type="range" min="0" max="3" step="1" value="${st.cuisines[c] || 0}" data-act="mix" data-k="${c}"><small>${lvl[st.cuisines[c] || 0]}</small></div>`).join('')}
+      ${keys('style').map((c) => `<div class="mix"><span>${esc(L('style', c))}</span><input type="range" min="0" max="3" step="1" value="${st.styles[c] || 0}" data-act="mix" data-k="${c}"><small>${lvl[st.styles[c] || 0]}</small></div>`).join('')}
     </section>
     <section class="set"><h3>${t('rules')}</h3>
       ${keys('kind').map((k) => `<div class="mix"><span>${esc(L('kind', k))}</span><input type="number" class="num" min="0" max="7" data-act="rule" data-k="${k}" value="${st.rules[k] ?? 7}"><small>× / 7</small></div>`).join('')}
@@ -847,7 +847,7 @@ document.addEventListener('change', (e) => {
     case 'xdone': st.shop.extra[Number(el.dataset.k)].done = el.checked; store.save(); el.closest('.sitem')?.classList.toggle('on', el.checked); break;
     case 'setnum': { const v = Number(el.value); if (!Number.isNaN(v)) { st[el.dataset.k] = v; store.save(); } break; }
     case 'settog': st[el.dataset.k] = el.checked; store.save(); break;
-    case 'mix': st.cuisines[el.dataset.k] = Number(el.value); store.save(); route(); break;
+    case 'mix': st.styles[el.dataset.k] = Number(el.value); store.save(); route(); break;
     case 'rule': st.rules[el.dataset.k] = Number(el.value); store.save(); break;
     case 'panshape': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, shape: el.value }; route(); break; }
     case 'pandim': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, [el.dataset.k]: Math.max(5, Number(el.value) || 0) }; route(); break; }

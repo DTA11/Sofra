@@ -7,7 +7,7 @@ Bosanski (ijekavica) prvo, engleski kao prekidač.
 pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvezi (JSON)* / *Uvezi*.
 
 ## Šta radi
-- Sedmični plan iz odabrane mješavine kuhinja po državama i regijama (BiH, Srbija, Hrvatska, Slovenija, Bugarska, Italija, Francuska, Svakodnevno, JNA); regija samo za jela koja stvarno pripadaju jednom kraju (npr. Sarajevo, Vojvodina, Dalmacija, Prekmurje)
+- Sedmični plan: u postavkama „Šta kuhamo“ biraš koliko često dolaze domaća (balkanska), italijanska (tjestenina, rižoto), francuska i JNA jela. Porijeklo jela (država/regija) postoji samo u podacima, ne prikazuje se.
 - Pravila: npr. junetina najviše 2× sedmično, bez ponavljanja 2–3 sedmice, sezonsko povrće, planirani ostaci,
   zamjena dana jednim dodirom, porcije za broj ukućana, posni dani, „bez svinjetine“, prednost dječijim jelima
 - Ostava + zimnica (tegle); plan koristi ono što imaš i ponovo koristi iste svježe namirnice kroz sedmicu
@@ -33,6 +33,7 @@ js/data/recipes-books.js  recepti po Lakišiću i JNA recepturama (količine i v
 js/data/recipes-trad.js   ostala jela (tekst i količine napisani za Sofru)
 js/data/recipes-sweet.js  slatko
 js/data/recipes-slo.js    slovenska kuhinja (tekst i količine napisani za Sofru)
+js/data/recipes-more.js   Hrvatska, Crna Gora, Sjeverna Makedonija, Albanija i Kosovo
 js/data/index.js      izvedeni filteri (posno, bez svinjetine…), izvori, praznični meniji
 sw.js                 offline keš (povećaj VERSION pri svakoj promjeni)
 manifest.webmanifest  PWA manifest

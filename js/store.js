@@ -9,7 +9,7 @@ export function defaults() {
     v: 1,
     lang: (navigator.language || 'bs').toLowerCase().startsWith('en') ? 'en' : 'bs',
     household: 4,
-    cuisines: { bosanska: 3, srpska: 2, hrvatska: 2, slovenska: 2, bugarska: 1, italian: 1, french: 1, svakodnevno: 2, jna: 0 },
+    styles: { domaca: 3, italian: 1, french: 1, jna: 0 },
     rules: { beef: 2, chicken: 3, lamb: 1, pork: 1, fish: 2 },
     noRepeatWeeks: 2,
     weekdayMax: 90,
@@ -35,18 +35,26 @@ export function defaults() {
 }
 
 let state;
+// older versions stored a weight per country; turn that into planner styles once
+function migrate(d) {
+  if (d && !d.styles && d.cuisines) {
+    const c = d.cuisines;
+    const home = Math.max(0, ...['bosanska', 'balkan', 'srpska', 'hrvatska', 'slovenska', 'bugarska', 'svakodnevno'].map((k) => Number(c[k]) || 0));
+    d.styles = { domaca: home || 3, italian: Number(c.italian) || 0, french: Number(c.french) || 0, jna: Number(c.jna) || 0 };
+  }
+  if (d) delete d.cuisines;
+  return d;
+}
+function fill(d) {
+  const s = { ...defaults(), ...migrate(d) };
+  s.meals = { ...defaults().meals, ...(d.meals || {}) };
+  s.styles = { ...defaults().styles, ...(d.styles || {}) };
+  return s;
+}
 export function load() {
   try {
     const raw = localStorage.getItem(KEY);
-    state = raw ? { ...defaults(), ...JSON.parse(raw) } : defaults();
-    state.meals = { ...defaults().meals, ...(state.meals || {}) };
-    // cuisines added later get their default weight once
-    const cu = { ...(state.cuisines || {}) };
-    if ('balkan' in cu) { // old "Balkanska" split into countries + everyday dishes
-      ['srpska', 'hrvatska', 'bugarska', 'svakodnevno'].forEach((k) => { if (cu[k] == null) cu[k] = cu.balkan; });
-      delete cu.balkan;
-    }
-    state.cuisines = { ...defaults().cuisines, ...cu };
+    state = raw ? fill(JSON.parse(raw)) : defaults();
   } catch { state = defaults(); }
   return state;
 }
@@ -54,7 +62,7 @@ export const S = () => state;
 export function save() {
   try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { console.warn('save failed', e); }
 }
-export function replace(next) { state = { ...defaults(), ...next }; save(); }
+export function replace(next) { state = fill(next); save(); }
 export function exportJSON() { return JSON.stringify({ app: 'sofra', exported: new Date().toISOString(), data: state }, null, 1); }
 export function importJSON(text) {
   const obj = JSON.parse(text);

@@ -4,6 +4,7 @@ import { TRAD_RECIPES } from './recipes-trad.js';
 import { SWEET_RECIPES } from './recipes-sweet.js';
 import { MEAL_RECIPES } from './recipes-meals.js';
 import { SLO_RECIPES } from './recipes-slo.js';
+import { MORE_RECIPES } from './recipes-more.js';
 
 export const SOURCES = {
   lakisic: {
@@ -23,6 +24,10 @@ export const SOURCES = {
     en: 'Traditional dish — recipe and text written for Sofra.',
   },
 };
+
+// Planner styles: the plan mixes kitchens by style, not by country.
+export const STYLES = ['domaca', 'italian', 'french', 'jna'];
+const styleOf = (cu) => (cu === 'italian' || cu === 'french' || cu === 'jna' ? cu : 'domaca');
 
 // Derived flags so filters never drift from the ingredient list.
 function derive(r) {
@@ -57,10 +62,11 @@ function derive(r) {
     ? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].filter((m) => seasonal.filter((g) => g.m.includes(m)).length >= Math.ceil(seasonal.length * 0.6))
     : null;
   r.source = r.src.b;
+  r.style = styleOf(r.cu);
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES].map(derive);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES].map(derive);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

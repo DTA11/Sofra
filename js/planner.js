@@ -30,7 +30,7 @@ function eligible(r, ctx) {
 
 function score(r, ctx) {
   const st = S();
-  const w = st.cuisines[r.cu] || 0;
+  const w = st.styles[r.style] || 0;
   if (!w) return 0;
   let s = w;
   // pantry & zimnica
@@ -66,7 +66,7 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
   const cands = pool.filter((r) => {
     if (!eligible(r, ctx)) return false;
     if (usedIds.has(r.id)) return false;
-    if (relax < 2 && !st.cuisines[r.cu]) return false;
+    if (relax < 2 && !st.styles[r.style]) return false;
     if (relax < 1 && ctx.recent.has(r.id)) return false;
     if (relax < 1 && r.type === 'pie' && ctx.pies >= 2) return false;
     const k = kindOf(r);
@@ -74,8 +74,16 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
     return true;
   });
   if (!cands.length) return relax < 2 ? pick(pool, ctx, usedIds, kindCount, relax + 1) : null;
+  // First pick a style (domaća / italijanska / francuska / JNA) by its weight, so a small
+  // kitchen still shows up as often as asked; then the best-scoring dish of that style.
+  const W = [0, 1, 3, 8];
+  const styles = [...new Set(cands.map((r) => r.style))];
+  const sw = styles.map((x) => W[st.styles[x] || 0] || (relax >= 2 ? 0.2 : 0));
+  let roll = Math.random() * sw.reduce((a, b) => a + b, 0);
+  let style = styles[0];
+  for (let i = 0; i < styles.length; i++) { roll -= sw[i]; if (roll <= 0) { style = styles[i]; break; } }
   let best = null, bs = -1;
-  for (const r of cands) { const sc = score(r, ctx); if (sc > bs) { bs = sc; best = r; } }
+  for (const r of cands) { if (r.style !== style) continue; const sc = score(r, ctx); if (sc > bs) { bs = sc; best = r; } }
   return best;
 }
 
