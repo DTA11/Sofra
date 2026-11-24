@@ -18,13 +18,46 @@
 </head>
 <body>
   <header class="topbar">
-    <a href="#/plan" class="brand"><img src="icons/icon.svg" alt="" width="28" height="28"> Sofra</a>
+    <a href="#/home" class="brand"><img src="icons/icon.svg" alt="" width="30" height="30"> Sofra</a>
+    <nav class="sitenav" aria-label="Glavni meni">
+      <a href="#/home" data-nav="home" data-i18n="navHome">Početna</a>
+      <a href="#/plan" data-nav="plan" data-i18n="tabPlan">Plan</a>
+      <a href="#/recipes" data-nav="recipes" data-i18n="tabRecipes">Recepti</a>
+      <a href="#/sweets" data-nav="sweets" data-i18n="tabSweets">Slatko</a>
+      <a href="#/pantry" data-nav="pantry" data-i18n="tabPantry">Ostava</a>
+      <a href="#/shop" data-nav="shop" data-i18n="tabShop">Kupovina</a>
+    </nav>
     <div class="topbar-r">
+      <button type="button" class="app-btn" data-install-btn hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span data-i18n="getApp">Instaliraj</span></button>
       <button id="langBtn" class="pill" aria-label="Language">EN</button>
       <a href="#/settings" class="pill icon-pill" id="gearBtn" aria-label="Settings"></a>
     </div>
   </header>
   <div id="kilim" class="kilim-wrap"></div>
+  <nav class="mobnav" aria-label="Meni">
+    <a href="#/home" data-nav="home" data-i18n="navHome">Početna</a>
+    <a href="#/plan" data-nav="plan" data-i18n="tabPlan">Plan</a>
+    <a href="#/recipes" data-nav="recipes" data-i18n="tabRecipes">Recepti</a>
+    <a href="#/sweets" data-nav="sweets" data-i18n="tabSweets">Slatko</a>
+    <a href="#/pantry" data-nav="pantry" data-i18n="tabPantry">Ostava</a>
+    <a href="#/shop" data-nav="shop" data-i18n="tabShop">Kupovina</a>
+  </nav>
+
+  <dialog class="app-steps" data-install-steps>
+    <p class="app-steps-title" data-i18n="iosTitle">Dodaj Sofru na početni ekran</p>
+    <ol data-steps-safari>
+      <li><span data-i18n="iosStep1">Dodirni</span> <b data-i18n="iosShare">Podijeli</b> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg> <small data-i18n="iosStep1b">(na novijim iPhoneima u meniju ···)</small></li>
+      <li><span data-i18n="iosStep2">Skrolaj dole i dodirni</span> <b data-i18n="iosAdd">Dodaj na početni ekran</b>.</li>
+      <li><span data-i18n="iosStep3">Dodirni</span> <b data-i18n="iosDone">Dodaj</b>.</li>
+    </ol>
+    <ol data-steps-other hidden>
+      <li><span data-i18n="otherStep1">Otvori meni preglednika, pa</span> <b data-i18n="iosShare">Podijeli</b>.</li>
+      <li><span data-i18n="iosStep3">Dodirni</span> <b data-i18n="iosAdd">Dodaj na početni ekran</b>.</li>
+      <li><span data-i18n="iosStep3">Dodirni</span> <b data-i18n="iosDone">Dodaj</b>.</li>
+    </ol>
+    <form method="dialog"><button class="btn primary">OK</button></form>
+  </dialog>
 
   <main id="main" class="wrap"></main>
 

@@ -76,18 +76,21 @@ function defaultServ(r) {
 
 // ───────── routing ─────────
 const routes = {
-  plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, holidays: viewHolidays,
+  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, holidays: viewHolidays,
   pantry: viewPantry, shop: viewShop, settings: viewSettings, cook: viewCook,
 };
 function route() {
-  const [name, arg] = (location.hash.replace(/^#\/?/, '') || 'plan').split('/');
-  const fn = routes[name] || viewPlan;
+  const [name, arg] = (location.hash.replace(/^#\/?/, '') || (isStandalone() ? 'plan' : 'home')).split('/');
+  const fn = routes[name] || (isStandalone() ? viewPlan : viewHome);
   stopWake();
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
   document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
+  const navKey = ['recipe', 'jna'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
+  document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
+  syncInstallButtons();
   if (name === 'cook') startCook(arg);
-  if (name !== 'recipe' || !location.hash.includes('#keep')) window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
   renderChrome();
 }
 const go = (h) => { if (location.hash === h) route(); else location.hash = h; };
@@ -96,6 +99,64 @@ function renderChrome() {
   $('#langBtn').textContent = getLang() === 'bs' ? 'EN' : 'BS';
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
 }
+
+// ───────── HOME (website landing) ─────────
+const isStandalone = () => (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+function viewHome() {
+  const st = S();
+  const picks = ['begova-corba', 'bosanski-lonac', 'cevapi', 'zeljanica', 'tufahije', 'sac-janjetina', 'pasta-brokula', 'jna-pileca-supa'].map((id) => R[id]).filter(Boolean);
+  const feats = [['plan', 'f1'], ['pantry', 'f2'], ['shop', 'f3'], ['timer', 'f4'], ['moon', 'f5'], ['sweets', 'f6']];
+  return `<section class="band home-hero">
+      <div class="hh-txt">
+        <p class="eyebrow">Sofra · ${esc(L('cu', 'bosanska'))} · ${esc(L('cu', 'balkan'))} · ${esc(L('cu', 'italian'))} · ${esc(L('cu', 'french'))}</p>
+        <h1 class="display xl">${t('homeTitle')}</h1>
+        <p class="lede">${t('homeLede')}</p>
+        <div class="row gap wrap cta">
+          ${st.plan ? `<a class="btn light" href="#/plan">${ICON.plan} ${t('homeOpen')}</a>` : `<button class="btn light" data-act="homeplan">${ICON.plan} ${t('homeCta')}</button>`}
+          <button class="btn ghost" data-act="install" data-install-cta hidden>${ICON.share} ${t('homeInstall')}</button>
+        </div>
+      </div>
+      <div class="hh-art">
+        <div class="tile t1">${dishArt(R['bosanski-lonac'])}</div>
+        <div class="tile t2">${dishArt(R['begova-corba'])}</div>
+        <div class="tile t3">${dishArt(R['baklava-sarajevska'])}</div>
+        <div class="tile t4">${dishArt(R['zeljanica'])}</div>
+      </div>
+    </section>
+    <section class="home-sec">
+      <h2>${t('featTitle')}</h2>
+      <div class="feats">${feats.map(([ic, k]) => `<div class="feat"><span class="feat-ic">${ICON[ic]}</span><b>${t(k + 't')}</b><p>${t(k + 'd')}</p></div>`).join('')}</div>
+    </section>
+    <section class="home-sec">
+      <div class="sec-head"><h2>${t('fromKitchen')}</h2><a href="#/recipes">${t('allRecipes')} →</a></div>
+      <div class="hscroll">${picks.map(card).join('')}</div>
+    </section>
+    <section class="home-sec how">
+      <h2>${t('howTitle')}</h2>
+      <ol class="howlist"><li>${t('how1')}</li><li>${t('how2')}</li><li>${t('how3')}</li></ol>
+      <button class="btn primary" data-act="install" data-install-cta hidden>${ICON.share} ${t('homeInstall')}</button>
+    </section>
+    <section class="home-sec privacy"><h3>${ICON.check} ${t('privacyTitle')}</h3><p>${t('privacyText')}</p></section>
+    <footer class="sitefoot">${KILIM}<p><b>Sofra</b> — ${t('footer').replace(/^Sofra — /, '')}</p>
+      <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/jna">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
+}
+
+// ───────── install button (same behaviour as Baby Card Printables) ─────────
+const install = { ask: null, ios: /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) };
+function installAvailable() { return !isStandalone() && (install.ask || install.ios); }
+function syncInstallButtons() {
+  document.querySelectorAll('[data-install-btn],[data-install-cta]').forEach((b) => { b.hidden = !installAvailable(); });
+}
+function doInstall() {
+  if (install.ask) { install.ask.prompt(); install.ask.userChoice.finally(() => { install.ask = null; syncInstallButtons(); }); return; }
+  const steps = $('[data-install-steps]');
+  if (install.ios && steps) {
+    if (/FxiOS|CriOS|EdgiOS|OPiOS/.test(navigator.userAgent)) { steps.querySelector('[data-steps-safari]').hidden = true; steps.querySelector('[data-steps-other]').hidden = false; }
+    if (steps.showModal) steps.showModal(); else steps.setAttribute('open', '');
+  }
+}
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); install.ask = e; ui.installEvt = e; syncInstallButtons(); });
+window.addEventListener('appinstalled', () => { install.ask = null; syncInstallButtons(); });
 
 // ───────── PLAN ─────────
 function viewPlan() {
@@ -507,7 +568,7 @@ function viewSettings() {
       <label class="btn">⬆ ${t('importData')}<input type="file" accept="application/json,.json" data-act="import" hidden></label>
       <button class="btn danger" data-act="reset">${t('reset')}</button></div></section>
     <section class="set"><h3>${t('install')}</h3>
-      ${ui.installEvt ? `<button class="btn primary" data-act="install">📲 ${t('install')}</button>` : `<p class="muted small">${t('installHint')}</p>`}</section>
+      ${installAvailable() ? `<button class="btn primary" data-act="install">${ICON.share} ${t('install')}</button>` : `<p class="muted small">${t('installHint')}</p>`}</section>
     <section class="set"><h3>${t('about')}</h3><p class="muted small">${t('aboutText')}</p>
       <h4>${t('sourcesTitle')}</h4><ul class="small muted">${Object.values(SOURCES).map((s) => `<li>${esc(s[getLang()])}</li>`).join('')}</ul></section>`;
 }
@@ -627,7 +688,8 @@ document.addEventListener('click', (e) => {
       setTimeout(() => URL.revokeObjectURL(aEl.href), 1000); break;
     }
     case 'reset': if (confirm(t('resetQ'))) { store.resetAll(); setLang(S().lang); go('#/plan'); } break;
-    case 'install': ui.installEvt?.prompt(); ui.installEvt = null; break;
+    case 'install': doInstall(); break;
+    case 'homeplan': generatePlan(); go('#/plan'); break;
     default: break;
   }
 });
@@ -683,7 +745,6 @@ document.addEventListener('input', (e) => {
 
 $('#langBtn').addEventListener('click', () => { const st = S(); st.lang = getLang() === 'bs' ? 'en' : 'bs'; setLang(st.lang); store.save(); route(); });
 window.addEventListener('hashchange', route);
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); ui.installEvt = e; });
 
 // ───────── boot ─────────
 store.load();
@@ -691,6 +752,8 @@ setLang(S().lang);
 document.querySelectorAll('.tabbar a').forEach((a) => { a.querySelector('span').innerHTML = ICON[a.dataset.tab] || ''; });
 $('#kilim').innerHTML = KILIM;
 $('#gearBtn').innerHTML = ICON.gear;
+document.body.classList.toggle('standalone', isStandalone());
+$('[data-install-btn]').addEventListener('click', doInstall);
 route();
 if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./sw.js').catch(() => {});
 window.__sofra = { R, RECIPES, kindOf, store };
