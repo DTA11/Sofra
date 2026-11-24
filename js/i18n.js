@@ -41,6 +41,7 @@ const S = {
     sourcesTitle: 'Izvori', about: 'O aplikaciji',
     aboutText: 'Sofra radi bez računa i bez servera: svi podaci ostaju na ovom telefonu. Napravi sigurnosnu kopiju prije promjene telefona.',
     weekOf: 'Sedmica od', today: 'danas', items: 'stavki', estimate: 'procjena',
+    todayOnTable: 'Danas na sofri', thisWeek: 'Ova sedmica', recipe: 'Recept', greet: 'Prijatno!', dishes: 'jela',
     printPlan: 'Jelovnik', printShop: 'Spisak za kupovinu', printRecipes: 'Recepti',
   },
   en: {
@@ -84,6 +85,7 @@ const S = {
     sourcesTitle: 'Sources', about: 'About',
     aboutText: 'Sofra works without accounts or servers: all data stays on this phone. Make a backup before switching phones.',
     weekOf: 'Week of', today: 'today', items: 'items', estimate: 'estimate',
+    todayOnTable: 'On the table today', thisWeek: 'This week', recipe: 'Recipe', greet: 'Enjoy!', dishes: 'dishes',
     printPlan: 'Menu', printShop: 'Shopping list', printRecipes: 'Recipes',
   },
 };

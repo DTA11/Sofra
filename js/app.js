@@ -2,6 +2,7 @@ import { RECIPES, R, MENUS, SOURCES } from './data/index.js';
 import { ING } from './data/ingredients.js';
 import { t, L, keys, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
+import { dishArt, ICON, KILIM } from './art.js';
 import { generatePlan, swapDay, markCooked, setDayDishes, shoppingList, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -99,52 +100,80 @@ function renderChrome() {
 // ───────── PLAN ─────────
 function viewPlan() {
   const st = S();
-  const sez = seasonalNow().slice(0, 10).map((g) => `<span class="chip chip-static">${esc(iname(g.id))}</span>`).join('');
-  const top = `
-    <section class="hero">
-      <div>
-        <h1>Sofra</h1>
-        <p class="muted">${t('appTagline')}</p>
-      </div>
-      <div class="hero-actions">
-        <button class="btn primary" data-act="newplan">↻ ${st.plan ? t('regen') : t('newPlan')}</button>
-      </div>
-    </section>
-    ${st.mode === 'ramazan' ? `<div class="banner">🌙 ${t('ramazanNote')}</div>` : ''}`;
+  const sez = seasonalNow().slice(0, 12).map((g) => `<span class="chip chip-static">${esc(iname(g.id))}</span>`).join('');
+  const now = new Date();
+  const dateTxt = `${DAYS[getLang()][(now.getDay() + 6) % 7]}, ${now.getDate()}. ${MONTHS[getLang()][now.getMonth()]}`;
+  const actions = `<div class="quick">
+      <button class="qbtn" data-act="newplan">${ICON.refresh}<span>${st.plan ? t('regen') : t('newPlan')}</span></button>
+      <a class="qbtn" href="#/shop">${ICON.shop}<span>${t('tabShop')}</span></a>
+      <button class="qbtn" data-act="print">${ICON.doc}<span>${t('pdf')}</span></button>
+      <a class="qbtn" href="#/holidays">${ICON.party}<span>${t('holidays')}</span></a>
+    </div>`;
+  const season = `<section class="season"><h3>${ICON.leaf} ${t('seasonNow')} · ${MONTHS[getLang()][now.getMonth()]}</h3><div class="chips">${sez}</div></section>`;
   if (!st.plan) {
-    return top + `<div class="empty">${t('emptyPlan')}</div>
-      <div class="row gap"><a class="btn" href="#/settings">⚙ ${t('planSettings')}</a><a class="btn" href="#/holidays">🎉 ${t('holidays')}</a></div>
-      <h3>${t('seasonNow')}</h3><div class="chips">${sez}</div>`;
+    return `<section class="band hero-band"><p class="eyebrow">${dateTxt}</p><h1 class="display">Sofra</h1><p class="lede">${t('appTagline')}</p>
+      <div class="hero-plate">${dishArt(R['bosanski-lonac'], 'big')}</div></section>
+      ${st.mode === 'ramazan' ? `<div class="banner">${ICON.moon} ${t('ramazanNote')}</div>` : ''}
+      <div class="empty">${t('emptyPlan')}</div>${actions}
+      <div class="row gap"><a class="btn" href="#/settings">${ICON.gear} ${t('planSettings')}</a></div>${season}`;
   }
   const start = parseISO(st.plan.start);
+  const ti = Math.floor((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - start) / DAYMS);
+  const todayIdx = ti >= 0 && ti < 7 ? ti : 0;
+  const tMain = st.plan.days[todayIdx].dishes.find((x) => x.role === 'main') || st.plan.days[todayIdx].dishes[0];
+  const tr = tMain && R[tMain.id];
+  const others = st.plan.days[todayIdx].dishes.filter((x) => x !== tMain).map((x) => esc(name(R[x.id]))).join(' · ');
+  const hero = tr ? `<section class="band hero-band">
+      <p class="eyebrow">${dateTxt}</p>
+      <div class="today">
+        <div class="today-art">${dishArt(tr, 'big')}</div>
+        <div class="today-txt">
+          <span class="label">${tMain.left ? t('leftover') : t('todayOnTable')}</span>
+          <h1 class="display">${esc(name(tr))}</h1>
+          <p class="meta-row">${ICON.clock}${fmtTime(tr)} <span class="dot"></span>${ICON.people}${tMain.serv} ${t('persons')}</p>
+          ${others ? `<p class="also">+ ${others}</p>` : ''}
+          <div class="row gap wrap">
+            <a class="btn light" href="#/cook/${tr.id}?s=${tMain.serv}&f=${tMain.fixed ? 1 : 0}">${ICON.play} ${t('cook')}</a>
+            <a class="btn ghost" href="#/recipe/${tr.id}">${t('recipe')}</a>
+          </div>
+        </div>
+      </div>
+      <div class="week">${st.plan.days.map((d, i) => {
+        const dl = dayLabel(start, i);
+        const m = d.dishes.find((x) => x.role === 'main');
+        const r = m && R[m.id];
+        return `<button class="wday ${i === todayIdx ? 'on' : ''} ${d.cooked ? 'done' : ''}" data-act="jump" data-i="${i}">
+          <small>${dl.name.slice(0, 3)}</small><b>${new Date(start.getTime() + i * DAYMS).getDate()}</b>
+          ${r ? dishArt(r, 'mini') : ''}<span>${r ? esc(name(r)) : '—'}</span></button>`;
+      }).join('')}</div>
+    </section>` : '';
   const days = st.plan.days.map((d, i) => {
     const dl = dayLabel(start, i);
-    const dishes = d.dishes.map((x, k) => {
+    const dishes = d.dishes.map((x) => {
       const r = R[x.id]; if (!r) return '';
       const role = x.left ? t('leftover') : x.role === 'main' && st.mode === 'ramazan' ? t('iftar') : t(x.role);
       const serv = x.fixed ? (r.yieldNote ? tx(r.yieldNote) : '') : `${x.serv} ${t('persons')}`;
-      return `<li class="dish ${x.left ? 'is-left' : ''}">
-        <span class="role">${esc(role)}</span>
-        <a href="#/recipe/${r.id}" class="dname">${esc(name(r))}</a>
-        <span class="meta">${esc(serv)}${x.left ? '' : ' · ' + fmtTime(r)}</span>
-        ${x.role === 'main' && !x.left ? `<button class="icon" title="${t('swap')}" data-act="swap" data-i="${i}">⇄</button>` : ''}
-        ${!x.left ? `<a class="icon" title="${t('cook')}" href="#/cook/${r.id}?s=${x.serv}&f=${x.fixed ? 1 : 0}">▶</a>` : ''}
+      return `<li class="dish ${x.left ? 'is-left' : ''} role-${x.role}">
+        <a href="#/recipe/${r.id}" class="thumb">${dishArt(r, 'thumb')}</a>
+        <div class="dtxt"><span class="role">${esc(role)}</span>
+          <a href="#/recipe/${r.id}" class="dname">${esc(name(r))}</a>
+          <span class="meta">${esc(serv)}${x.left ? '' : ' · ' + fmtTime(r)}</span></div>
+        <div class="dact">
+          ${x.role === 'main' && !x.left ? `<button class="icon" aria-label="${t('swap')}" data-act="swap" data-i="${i}">${ICON.swap}</button>` : ''}
+          ${!x.left ? `<a class="icon play" aria-label="${t('cook')}" href="#/cook/${r.id}?s=${x.serv}&f=${x.fixed ? 1 : 0}">${ICON.play}</a>` : ''}
+        </div>
       </li>`;
     }).join('');
-    return `<article class="day ${dl.isToday ? 'today' : ''} ${d.cooked ? 'cooked' : ''}">
-      <header><b>${dl.name}</b><span class="muted">${dl.date}${dl.isToday ? ' · ' + t('today') : ''}</span>
-        <button class="cookbtn ${d.cooked ? 'on' : ''}" data-act="cooked" data-i="${i}">✓ ${t('cooked')}</button></header>
+    return `<article class="day ${i === todayIdx ? 'today' : ''} ${d.cooked ? 'cooked' : ''}" id="day-${i}">
+      <header><div><b>${dl.name}</b><span class="muted"> ${dl.date}</span></div>
+        <button class="cookbtn ${d.cooked ? 'on' : ''}" data-act="cooked" data-i="${i}">${ICON.check}<span>${t('cooked')}</span></button></header>
       <ul>${dishes || `<li class="muted">${t('noMatch')}</li>`}</ul>
     </article>`;
   }).join('');
-  return top + `
-    <div class="row gap wrap">
-      <a class="btn" href="#/shop">🛒 ${t('tabShop')}</a>
-      <button class="btn" data-act="print">📄 ${t('pdf')}</button>
-      <a class="btn" href="#/holidays">🎉 ${t('holidays')}</a>
-    </div>
-    <div class="days">${days}</div>
-    <h3>${t('seasonNow')} · ${MONTHS[getLang()][new Date().getMonth()]}</h3><div class="chips">${sez}</div>`;
+  return `${hero}${st.mode === 'ramazan' ? `<div class="banner">${ICON.moon} ${t('ramazanNote')}</div>` : ''}
+    ${actions}
+    <h2 class="sec-title">${t('thisWeek')}</h2>
+    <div class="days">${days}</div>${season}`;
 }
 
 // ───────── RECIPES ─────────
@@ -178,9 +207,12 @@ function chipGroup(label, key, opts, multi = false) {
 function card(r) {
   const fav = S().favs.includes(r.id);
   return `<a class="card" href="#/recipe/${r.id}">
-    <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('cu', r.cu))}</span><span class="muted">${fmtTime(r)}</span></div>
-    <b>${esc(name(r))}</b>
-    <div class="tags">${badges(r)}${fav ? '<span class="tag">★</span>' : ''}</div>
+    ${dishArt(r, 'cardart')}
+    <div class="card-body">
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('cu', r.cu))}</span><span class="time">${ICON.clock}${fmtTime(r)}</span></div>
+      <b>${esc(name(r))}</b>
+      <div class="tags">${badges(r)}${fav ? `<span class="tag fav">★</span>` : ''}</div>
+    </div>
   </a>`;
 }
 function filterPanel(extra = '') {
@@ -204,7 +236,7 @@ function filterPanel(extra = '') {
 function searchBar() {
   const n = activeFilterCount();
   return `<div class="searchbar"><input type="search" id="q" placeholder="${t('search')}" value="${esc(ui.filters.q)}">
-    <button class="btn ${n ? 'primary' : ''}" data-act="togglefilters">☰ ${t('filters')}${n ? ` (${n})` : ''}</button></div>`;
+    <button class="btn ${n ? 'primary' : ''}" data-act="togglefilters">${ICON.filter} ${t('filters')}${n ? ` (${n})` : ''}</button></div>`;
 }
 function activeFilterCount() {
   const f = ui.filters;
@@ -212,8 +244,11 @@ function activeFilterCount() {
 }
 function viewRecipes() {
   const list = RECIPES.filter((r) => r.type !== 'dessert').filter((r) => matches(r, ui.filters));
-  return `<h2>${t('tabRecipes')}</h2>
-    <div class="row gap wrap"><a class="btn" href="#/jna">🎖 ${t('jnaTitle')}</a><a class="btn" href="#/holidays">🎉 ${t('holidays')}</a></div>
+  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert').length} ${t('dishes')} · ${keys('cu').map((c) => L('cu', c)).join(' · ')}</p></section>
+    <div class="feature-row">
+      <a class="feature jna" href="#/jna">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
+      <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
+    </div>
     ${searchBar()}${filterPanel()}
     <p class="muted small">${list.length} ${t('results')}</p>
     <div class="grid" id="results">${list.map(card).join('')}</div>`;
@@ -221,15 +256,14 @@ function viewRecipes() {
 function viewSweets() {
   const list = RECIPES.filter((r) => r.type === 'dessert').filter((r) => matches(r, ui.filters));
   const subs = chipGroup(t('fType'), 'sub', keys('sub').map((k) => [k, L('sub', k)]));
-  return `<h2>${t('tabSweets')}</h2><p class="muted">${t('sweetsIntro')}</p>
+  return `<section class="band page-band sweet"><h1 class="display">${t('tabSweets')}</h1><p class="lede">${t('sweetsIntro')}</p></section>
     ${searchBar()}${filterPanel(subs)}
     <p class="muted small">${list.length} ${t('results')}</p>
     <div class="grid" id="results">${list.map(card).join('')}</div>`;
 }
 function viewJNA() {
   const list = RECIPES.filter((r) => r.cu === 'jna');
-  return `<a class="backlink" href="#/recipes">← ${t('tabRecipes')}</a>
-    <h2>🎖 ${t('jnaTitle')}</h2><p class="muted">${t('jnaIntro')}</p>
+  return `<section class="band page-band" style="background:#4d5530"><a class="backlink" style="color:#fff" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('jnaTitle')}</h1><p class="lede">${t('jnaIntro')}</p></section>
     <div class="grid">${list.map(card).join('')}</div>
     <p class="small muted">${esc(SOURCES.jna[getLang()])}</p>`;
 }
@@ -270,15 +304,15 @@ function viewRecipe(id) {
   const occ = r.occ.filter((o) => o !== 'posno').map((o) => `<span class="tag">${esc(L('occ', o))}</span>`).join('');
   const eq = [...r.eq, ...r.eqOpt].map((e) => `<span class="tag">${esc(L('eq', e))}${r.eq.includes(e) ? '' : '?'}</span>`).join('');
   const servParam = r.pan ? '' : `?s=${ui.serv[r.id] ?? defaultServ(r)}`;
-  return `<a class="backlink" href="javascript:history.back()">← ${t('back')}</a>
-    <article class="recipe">
+  return `<article class="recipe">
+      <div class="rhero">${dishArt(r, 'big')}<a class="backfab" href="javascript:history.back()" aria-label="${t('back')}">${ICON.back}</a></div>
       <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('cu', r.cu))}</span><span class="muted">${esc(L('type', r.type))} · ${fmtTime(r)}</span></div>
-      <h1>${esc(name(r))}</h1>
+      <h1 class="rtitle">${esc(name(r))}</h1>
       <div class="tags">${badges(r)}${occ}${eq}</div>
       <div class="row gap wrap actions">
-        <a class="btn primary" href="#/cook/${r.id}${servParam}${r.pan ? '?p=1' : ''}">▶ ${t('cook')}</a>
-        <button class="btn" data-act="fav" data-id="${r.id}">${fav ? '★' : '☆'} ${t('fav')}</button>
-        <button class="btn" data-act="addplan" data-id="${r.id}">＋ ${t('addToPlan')}</button>
+        <a class="btn primary" href="#/cook/${r.id}${servParam}${r.pan ? '?p=1' : ''}">${ICON.play} ${t('cook')}</a>
+        <button class="btn ${fav ? 'faved' : ''}" data-act="fav" data-id="${r.id}">${fav ? ICON.starFill : ICON.star} ${t('fav')}</button>
+        <button class="btn" data-act="addplan" data-id="${r.id}">${ICON.plus} ${t('addToPlan')}</button>
       </div>
       <blockquote class="story">${esc(tx(r.story))}</blockquote>
       ${scaler}
@@ -314,7 +348,7 @@ function viewCook(arg) {
   cook = cook && cook.id === id ? cook : { id, i: 0, timers: cook ? cook.timers : [] };
   cook.f = f;
   return `<div class="cook">
-    <header><a class="icon" href="javascript:history.back()">✕</a><b>${esc(name(r))}</b><span id="wake" class="small"></span></header>
+    <header><a class="icon" href="javascript:history.back()" aria-label="${t('close')}">${ICON.close}</a><b>${esc(name(r))}</b><span id="wake" class="small"></span></header>
     <div id="timers" class="timers"></div>
     <div class="cook-body" id="cookBody"></div>
     <details class="cook-ings"><summary>${t('ingredients')}</summary><ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul></details>
@@ -329,7 +363,7 @@ function renderCookStep() {
   const body = $('#cookBody'); if (!body) return;
   body.innerHTML = `<div class="stepno">${t('step')} ${cook.i + 1} ${t('of')} ${r.st.length}</div>
     <p class="bigstep">${esc(tx(s))}</p>
-    ${s[2] ? `<button class="btn primary big" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">⏱ ${t('timer')} ${s[2]} min</button>` : ''}`;
+    ${s[2] ? `<button class="btn primary big" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">${ICON.timer} ${t('timer')} ${s[2]} min</button>` : ''}`;
   const nx = $('[data-act="cnext"]');
   if (nx) nx.textContent = cook.i === r.st.length - 1 ? `✓ ${t('done')}` : `${t('next')} →`;
 }
@@ -361,11 +395,11 @@ function menuItems(m) {
   return m.items.map(([id, role, alt]) => [noPork && alt && !R[id].noPork ? alt : id, role]);
 }
 function viewHolidays() {
-  return `<a class="backlink" href="#/plan">← ${t('tabPlan')}</a><h2>🎉 ${t('holidays')}</h2>
+  return `<section class="band page-band" style="background:#9b6a12"><a class="backlink" style="color:#fff" href="#/plan">${ICON.back} ${t('tabPlan')}</a><h1 class="display">${t('holidays')}</h1></section>
     ${MENUS.map((m) => `<article class="menu">
       <h3>${esc(getLang() === 'bs' ? m.bs : m.en)}</h3>
       <ul>${menuItems(m).map(([id, role]) => `<li><span class="role">${t(role)}</span> <a href="#/recipe/${id}">${esc(name(R[id]))}</a></li>`).join('')}</ul>
-      <button class="btn primary" data-act="menuday" data-m="${m.id}">📅 ${t('setOnDay')}</button>
+      <button class="btn primary" data-act="menuday" data-m="${m.id}">${ICON.plan} ${t('setOnDay')}</button>
     </article>`).join('')}`;
 }
 
@@ -382,7 +416,7 @@ function viewPantry() {
     return `<div class="zitem ${n ? 'on' : ''}"><span>🫙 ${esc(iname(g.id))}</span>
       <span class="jar"><button class="round sm" data-act="jar" data-id="${g.id}" data-d="-1">−</button><b>${n}</b><button class="round sm" data-act="jar" data-id="${g.id}" data-d="1">+</button></span></div>`;
   };
-  return `<h2>${t('tabPantry')}</h2><p class="muted">${t('pantryIntro')}</p>
+  return `<section class="band page-band" style="background:#4f6b1f"><h1 class="display">${t('tabPantry')}</h1><p class="lede">${t('pantryIntro')}</p></section>
     <div class="searchbar"><input type="search" id="pq" placeholder="${t('search')}" value="${esc(ui.pantryQ)}"></div>
     ${zim.length ? `<section class="psec zim"><h3>${t('zimnica')} <small class="muted">(${t('jars')})</small></h3>${zim.map(zrow).join('')}</section>` : ''}
     ${secs.map((s) => `<section class="psec"><h3>${esc(L('sec', s.sec))}</h3><div class="pgrid">${s.items.map(row).join('')}</div></section>`).join('')}`;
@@ -415,20 +449,20 @@ function shopText() {
 }
 function viewShop() {
   const st = S();
-  if (!st.plan) return `<h2>${t('tabShop')}</h2><div class="empty">${t('emptyPlan')}</div>`;
+  if (!st.plan) return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1></section><div class="empty">${t('emptyPlan')}</div>`;
   const { sections, have } = shoppingList();
   const item = (it) => {
     const on = !!st.shop.checked[it.key];
     return `<label class="sitem ${on ? 'on' : ''}"><input type="checkbox" data-act="buy" data-key="${esc(it.key)}" data-id="${it.id}" ${on ? 'checked' : ''}>
       <span class="n">${esc(iname(it.id))}${it.opt ? ` <small>(${t('optional')})</small>` : ''}</span><span class="q">${esc(qtyText(it))}</span></label>`;
   };
-  return `<h2>${t('tabShop')}</h2><p class="muted">${t('shopIntro')}</p>
+  return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1><p class="lede">${t('shopIntro')}</p></section>
     <div class="row gap wrap share">
       <button class="btn wa" data-act="wa">WhatsApp</button>
       <button class="btn vb" data-act="viber">Viber</button>
-      ${navigator.share ? `<button class="btn" data-act="nshare">↗ ${t('share')}</button>` : ''}
-      <button class="btn" data-act="copy">⧉ ${t('copy')}</button>
-      <button class="btn" data-act="print">📄 ${t('pdf')}</button>
+      ${navigator.share ? `<button class="btn" data-act="nshare">${ICON.share} ${t('share')}</button>` : ''}
+      <button class="btn" data-act="copy">${ICON.copy} ${t('copy')}</button>
+      <button class="btn" data-act="print">${ICON.doc} ${t('pdf')}</button>
     </div>
     ${sections.map((s) => `<section class="ssec"><h3>${esc(L('sec', s.sec))}</h3>${s.items.map(item).join('')}</section>`).join('')}
     <section class="ssec"><h3>${esc(L('sec', 'other'))}</h3>
@@ -446,7 +480,7 @@ function viewSettings() {
   const daysChips = DAYS[getLang()].map((d, i) => `<button class="chip ${st.posnoDays.includes(i) ? 'on' : ''}" data-act="posnoday" data-i="${i}">${d.slice(0, 3)}</button>`).join('');
   const num = (k, v, min, max, step = 1) => `<input type="number" class="num" inputmode="numeric" data-act="setnum" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${v}">`;
   const tog = (k, label) => `<label class="toggle"><input type="checkbox" data-act="settog" data-k="${k}" ${st[k] ? 'checked' : ''}><span>${label}</span></label>`;
-  return `<h2>⚙ ${t('settings')}</h2>
+  return `<section class="band page-band"><h1 class="display">${t('settings')}</h1><p class="lede">${t('planSettings')}</p></section>
     <section class="set"><h3>${t('language')}</h3><div class="chips">
       <button class="chip ${getLang() === 'bs' ? 'on' : ''}" data-act="lang" data-v="bs">Bosanski</button>
       <button class="chip ${getLang() === 'en' ? 'on' : ''}" data-act="lang" data-v="en">English</button></div></section>
@@ -532,6 +566,7 @@ document.addEventListener('click', (e) => {
   const rer = () => route();
   switch (a) {
     case 'newplan': generatePlan(); rer(); break;
+    case 'jump': document.getElementById('day-' + el.dataset.i)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); break;
     case 'swap': swapDay(Number(el.dataset.i)); rer(); break;
     case 'cooked': markCooked(Number(el.dataset.i)); if (st.plan.days[el.dataset.i].cooked) toast(t('cookedQ')); rer(); break;
     case 'print': printAll(); break;
@@ -653,6 +688,9 @@ window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); ui.i
 // ───────── boot ─────────
 store.load();
 setLang(S().lang);
+document.querySelectorAll('.tabbar a').forEach((a) => { a.querySelector('span').innerHTML = ICON[a.dataset.tab] || ''; });
+$('#kilim').innerHTML = KILIM;
+$('#gearBtn').innerHTML = ICON.gear;
 route();
 if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./sw.js').catch(() => {});
 window.__sofra = { R, RECIPES, kindOf, store };

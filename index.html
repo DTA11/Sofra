@@ -11,6 +11,9 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Sofra">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -18,18 +21,19 @@
     <a href="#/plan" class="brand"><img src="icons/icon.svg" alt="" width="28" height="28"> Sofra</a>
     <div class="topbar-r">
       <button id="langBtn" class="pill" aria-label="Language">EN</button>
-      <a href="#/settings" class="pill" aria-label="Settings">⚙</a>
+      <a href="#/settings" class="pill icon-pill" id="gearBtn" aria-label="Settings"></a>
     </div>
   </header>
+  <div id="kilim" class="kilim-wrap"></div>
 
   <main id="main" class="wrap"></main>
 
   <nav class="tabbar">
-    <a href="#/plan" data-tab="plan"><span>📅</span><small data-i18n="tabPlan">Plan</small></a>
-    <a href="#/recipes" data-tab="recipes"><span>🍲</span><small data-i18n="tabRecipes">Recepti</small></a>
-    <a href="#/sweets" data-tab="sweets"><span>🍯</span><small data-i18n="tabSweets">Slatko</small></a>
-    <a href="#/pantry" data-tab="pantry"><span>🫙</span><small data-i18n="tabPantry">Ostava</small></a>
-    <a href="#/shop" data-tab="shop"><span>🛒</span><small data-i18n="tabShop">Kupovina</small></a>
+    <a href="#/plan" data-tab="plan"><span></span><small data-i18n="tabPlan">Plan</small></a>
+    <a href="#/recipes" data-tab="recipes"><span></span><small data-i18n="tabRecipes">Recepti</small></a>
+    <a href="#/sweets" data-tab="sweets"><span></span><small data-i18n="tabSweets">Slatko</small></a>
+    <a href="#/pantry" data-tab="pantry"><span></span><small data-i18n="tabPantry">Ostava</small></a>
+    <a href="#/shop" data-tab="shop"><span></span><small data-i18n="tabShop">Kupovina</small></a>
   </nav>
 
   <div id="modal" class="modal"></div>

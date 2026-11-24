@@ -1,5 +1,5 @@
 // Sofra service worker — offline app shell. Bump VERSION on every deploy that changes files.
-const VERSION = 'sofra-v1';
+const VERSION = 'sofra-v2';
 const FILES = [
   './',
   'index.html',
@@ -9,6 +9,7 @@ const FILES = [
   'icons/icon-192.png',
   'icons/icon-512.png',
   'js/store.js',
+  'js/art.js',
   'js/i18n.js',
   'js/app.js',
   'js/planner.js',
@@ -25,7 +26,16 @@ self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
+  if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    // fonts: cache first, so the app keeps its look offline
+    e.respondWith(caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
+      const copy = res.clone(); caches.open(VERSION).then((c) => c.put(e.request, copy)); return res;
+    })));
+    return;
+  }
+  if (url.origin !== location.origin) return;
   // network first (fresh after deploy), cache fallback (offline)
   e.respondWith(
     fetch(e.request).then((res) => {
