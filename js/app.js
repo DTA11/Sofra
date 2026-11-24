@@ -1,5 +1,5 @@
 import { RECIPES, R, MENUS } from './data/index.js';
-import { ING, SECTIONS } from './data/ingredients.js';
+import { ING, SECTIONS, MEAT_ALT } from './data/ingredients.js';
 import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
 import { dishArt, ICON, KILIM } from './art.js';
@@ -82,8 +82,8 @@ function badges(r) {
 
 /** One formatted ingredient line. f = scale factor. */
 function ingLine(ing, f) {
-  const { qty, nm, tail } = ingParts(ing, f);
-  return `<li><span class="q">${esc(qty)}</span><span class="n">${esc(nm)}${tail ? ` <small>(${esc(tail)})</small>` : ''}</span></li>`;
+  const { qty, nm, alt, tail } = ingParts(ing, f);
+  return `<li><span class="q">${esc(qty)}</span><span class="n">${esc(nm)}${alt ? `<span class="alt">${esc(alt)}</span>` : ''}${tail ? ` <small>(${esc(tail)})</small>` : ''}</span></li>`;
 }
 
 function scaleFor(r) {
@@ -654,7 +654,9 @@ function ingParts(ing, f) {
     qty = `${txt}${ul ? ' ' + ul : ''}`;
   }
   const tail = [note, ex.opt ? t('optional') : '', q == null && !note ? t('toTaste') : ''].filter(Boolean).join(', ');
-  return { qty, nm: iname(id), tail };
+  // other meats that work too — skipped when the recipe note already offers an alternative
+  const alt = MEAT_ALT[id] && !/^(ili|or) /i.test(note) ? ` (${t('or')} ${tx(MEAT_ALT[id])})` : '';
+  return { qty, nm: iname(id), alt, tail };
 }
 const stepTime = (s) => (s[2] ? ` (${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'})` : '');
 function recipeBlocks(r, f, servTxt, page = false) {
@@ -662,7 +664,7 @@ function recipeBlocks(r, f, servTxt, page = false) {
     { t: 'h2', text: name(r), page, sub: `${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''} · ${t('fGrade')} ${nutrition(r).grade}${perPortion(r) ? ` · ≈ ${nf(nutrition(r).serv.kcal)} kcal / ${t('nutServ').toLowerCase()}` : ''}` },
     { t: 'p', text: tx(r.story), font: 'I', muted: 1, after: 6 },
     { t: 'h3', text: t('ingredients') },
-    { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
+    { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm + p.alt], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
     { t: 'h3', text: t('steps') },
     { t: 'ol', items: r.st.map((s) => [['R', tx(s)], ['B', stepTime(s)]]) },
   ];

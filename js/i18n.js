@@ -68,7 +68,7 @@ const S = {
     printPlan: 'Jelovnik', printShop: 'Spisak za kupovinu', printRecipes: 'Recepti',
     noCookBreakfast: 'Doručak bez kuhanja radnim danom', noCookHint: 'Ponedjeljak–petak složeni doručak od kupovnih proizvoda, vikendom kuhani doručak.',
     combosTitle: 'Doručak bez kuhanja', combosIntro: 'Složeni doručci od kupovnih proizvoda — hljeb, namazi, delikatesa, mliječno i voće. Količine su po osobi; kcal i ocjena A–E po porciji.',
-    combos: 'složenih doručaka', assemble: 'Složi', perPersonKcal: 'kcal po osobi',
+    combos: 'složenih doručaka', or: 'ili', assemble: 'Složi', perPersonKcal: 'kcal po osobi',
     prodTitle: 'Kupovni proizvodi', prodHint: 'dugo traju — ostaju u ostavi dok ih ne skineš',
   },
   en: {
@@ -139,7 +139,7 @@ const S = {
     printPlan: 'Menu', printShop: 'Shopping list', printRecipes: 'Recipes',
     noCookBreakfast: 'No-cook breakfast on weekdays', noCookHint: 'Monday–Friday an assembled breakfast from shop products, a cooked breakfast at the weekend.',
     combosTitle: 'No-cook breakfast', combosIntro: 'Assembled breakfasts from shop products — bread, spreads, deli, dairy and fruit. Amounts are per person; kcal and the A–E grade per serving.',
-    combos: 'assembled breakfasts', assemble: 'Assemble', perPersonKcal: 'kcal per person',
+    combos: 'assembled breakfasts', or: 'or', assemble: 'Assemble', perPersonKcal: 'kcal per person',
     prodTitle: 'Shop products', prodHint: 'long-life — they stay in the pantry until you untick them',
   },
 };

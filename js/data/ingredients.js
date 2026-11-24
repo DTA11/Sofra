@@ -247,3 +247,21 @@ export const SECTIONS = ['veg', 'bakery', 'dairy', 'deli', 'meat', 'spreads', 'c
 export const ING = Object.fromEntries(
   list.map(([id, bs, en, sec, f]) => [id, { id, bs, en, sec, ...f }])
 );
+
+// Other meats that work in the same dish — shown only in a recipe's ingredient list, "(ili …)".
+// Recipes, nutrition and shopping stay as written.
+export const MEAT_ALT = {
+  beef: ['teletina, janjetina', 'veal, lamb'],
+  beef_mince: ['mljevena teletina, miješano meso', 'minced veal, mixed mince'],
+  veal: ['junetina', 'beef'],
+  lamb: ['junetina, teletina', 'beef, veal'],
+  chicken: ['pileći batci, karabataci', 'chicken legs, thighs'],
+  chicken_legs: ['karabataci, cijelo pile', 'thighs, whole chicken'],
+  chicken_breast: ['puretina', 'turkey'],
+  turkey: ['pileća prsa', 'chicken breast'],
+  pork: ['junetina, piletina', 'beef, chicken'],
+  pork_shoulder: ['juneći vrat, pileći batci', 'beef chuck, chicken legs'],
+  bacon: ['suho goveđe meso', 'smoked dried beef'],
+  smoked_ribs: ['suho goveđe meso', 'smoked dried beef'],
+  kranjska: ['druga dimljena kobasica', 'another smoked sausage'],
+};

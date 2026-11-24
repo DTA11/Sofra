@@ -468,3 +468,4 @@ body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 .banner a { margin-left: auto; color: var(--accent); font-weight: 600; text-decoration: none; }
 .psec.prod { border-color: #e8a33d; }
 .psec.prod h4 { margin: 14px 0 6px; font: 700 .78rem var(--ui); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.ings .alt { color: var(--muted); }
