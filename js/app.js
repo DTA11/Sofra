@@ -294,8 +294,6 @@ function card(r) {
 function filterPanel(extra = '') {
   const f = ui.filters;
   return `<div class="filters ${ui.showFilters ? 'open' : ''}">
-    ${chipGroup(t('fCuisine'), 'cu', keys('cu').map((k) => [k, L('cu', k)]), true)}
-    ${regionChips()}
     ${extra || chipGroup(t('fType'), 'type', ['breakfast', 'main', 'soup', 'pie', 'salad', 'snack'].map((k) => [k, L('type', k)]))}
     ${chipGroup(t('fMain'), 'main', ['beef', 'chicken', 'lamb', 'fish', 'eggs', 'cheese', 'beans', 'potato', 'broccoli', 'spinach', 'veg', 'pasta', 'rice', 'pork'].map((k) => [k, L('main', k)]))}
     ${chipGroup(t('fMeal'), 'meal', ['breakfast', 'lunch', 'dinner', 'snack', 'iftar'].map((k) => [k, L('meal', k)]))}
@@ -309,14 +307,6 @@ function filterPanel(extra = '') {
       <button class="chip" data-act="fclear">✕ ${t('clear')}</button>
     </div></div>
   </div>`;
-}
-// Region chips only for the chosen countries, and only regions that have dishes.
-function regionChips() {
-  const f = ui.filters;
-  if (!f.cu.size) return '';
-  const used = new Set(RECIPES.filter((r) => r.reg && f.cu.has(r.cu)).map((r) => r.reg));
-  const regs = keys('reg').filter((k) => used.has(k) && f.cu.has(regionCountry(k)));
-  return regs.length ? chipGroup(t('fRegion'), 'reg', regs.map((k) => [k, L('reg', k)])) : '';
 }
 function searchBar() {
   const n = activeFilterCount();
