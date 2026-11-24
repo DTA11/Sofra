@@ -105,7 +105,6 @@ const isStandalone = () => (window.matchMedia && matchMedia('(display-mode: stan
 function viewHome() {
   const st = S();
   const picks = ['begova-corba', 'bosanski-lonac', 'cevapi', 'zeljanica', 'tufahije', 'sac-janjetina', 'pasta-brokula', 'jna-pileca-supa'].map((id) => R[id]).filter(Boolean);
-  const feats = [['plan', 'f1'], ['pantry', 'f2'], ['shop', 'f3'], ['timer', 'f4'], ['moon', 'f5'], ['sweets', 'f6']];
   return `<section class="band home-hero">
       <div class="hh-txt">
         <p class="eyebrow">${getLang() === 'bs' ? 'Domaća kuhinja · Sedmični jelovnik' : 'Home cooking · Weekly menu'}</p>
@@ -123,10 +122,6 @@ function viewHome() {
         <div class="tile t3">${dishArt(R['baklava-sarajevska'])}</div>
         <div class="tile t4">${dishArt(R['zeljanica'])}</div>
       </div>
-    </section>
-    <section class="home-sec">
-      <h2>${t('featTitle')}</h2>
-      <div class="feats">${feats.map(([ic, k]) => `<div class="feat"><span class="feat-ic">${ICON[ic]}</span><b>${t(k + 't')}</b><p>${t(k + 'd')}</p></div>`).join('')}</div>
     </section>
     <section class="home-sec">
       <div class="sec-head"><h2>${t('fromKitchen')}</h2><a href="#/recipes">${t('allRecipes')} →</a></div>
