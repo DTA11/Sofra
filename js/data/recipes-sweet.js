@@ -4,7 +4,7 @@ const T = { b: 'trad' };
 
 export const SWEET_RECIPES = [
   {
-    id: 'palacinke', cu: 'balkan', type: 'dessert', sub: 'kolac', main: 'dessert', time: 30, serves: 4, kid: 1,
+    id: 'palacinke', cu: 'balkan', type: 'dessert', sub: 'kolac', main: 'dessert', time: 30, serves: 4, kid: 1, meal: ['breakfast', 'dessert'],
     yieldNote: ['oko 12 palačinki', 'about 12 pancakes'],
     bs: 'Palačinke s pekmezom ili džemom', en: 'Palačinke with plum butter or jam',
     ing: [['flour', 250, 'g'], ['milk', 500, 'ml'], ['eggs', 3, 'kom'], ['sugar', 1, 'kasika'], ['salt', 1, 'prst'], ['oil', 3, 'kasika'], ['pekmez', 300, 'g', n('ili džem', 'or jam')], ['walnuts', 80, 'g', { opt: 1 }]],

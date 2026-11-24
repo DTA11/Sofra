@@ -51,7 +51,7 @@ function score(r, ctx) {
   if (r.months) { if (r.months.includes(m)) s += 1; else s *= 0.3; }
   if (st.favs.includes(r.id)) s += 0.8;
   if (st.preferKid && r.kid) s += 1;
-  if (ctx.weekday < 5 && r.time > st.weekdayMax) s *= 0.15;
+  if (ctx.weekday < 5 && r.time > (ctx.maxTime ?? st.weekdayMax)) s *= 0.15;
   return Math.max(0.01, s) * (0.55 + Math.random() * 0.9);
 }
 
@@ -80,6 +80,11 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
 }
 
 const MAINS = () => RECIPES.filter((r) => r.type === 'main' || r.type === 'pie');
+const BREAKFASTS = () => RECIPES.filter((r) => r.meal.includes('breakfast'));
+const DINNERS = () => RECIPES.filter((r) => r.meal.includes('dinner') && r.type !== 'dessert' && (r.light || ['pie', 'salad', 'soup'].includes(r.type)));
+const SNACKS = () => RECIPES.filter((r) => r.type === 'snack');
+export const ROLE_ORDER = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
+const sortDishes = (d) => d.dishes.sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
 const SOUPS = () => RECIPES.filter((r) => r.type === 'soup');
 const DESSERTS = () => RECIPES.filter((r) => r.type === 'dessert' && r.serves >= 4 && r.serves <= 16);
 
@@ -95,7 +100,7 @@ function weekShape(days, skip) {
 }
 function kindCounts(days, skip = -1) {
   const c = {};
-  days.forEach((d, i) => { if (!d || i === skip) return; d.dishes.forEach((x) => { if (x.role !== 'main') return; const k = kindOf(R[x.id]); if (k) c[k] = (c[k] || 0) + 1; }); });
+  days.forEach((d, i) => { if (!d || i === skip) return; d.dishes.forEach((x) => { if (x.role !== 'main' && x.role !== 'dinner') return; if (x.role === 'dinner' && x.left) return; const k = kindOf(R[x.id]); if (k) c[k] = (c[k] || 0) + 1; }); });
   return c;
 }
 const usedSet = (days, skip = -1) => new Set(days.flatMap((d, i) => (d && i !== skip ? d.dishes.filter((x) => !x.left).map((x) => x.id) : [])));
@@ -152,6 +157,76 @@ function addDesserts(days, start) {
   });
 }
 
+
+/** Breakfast, light dinner and snack for every day (lunch = role 'main'). */
+function pickMeal(role, days, i, start, planId, exclude) {
+  const st = S();
+  const ctx = ctxFor(start, i, days, planId);
+  const wd = ctx.weekday;
+  const roleIds = (k) => new Set((days[k] ? days[k].dishes : []).filter((x) => x.role === role).map((x) => x.id));
+  const weekUsed = new Set(days.flatMap((d, k) => (d && k !== i ? d.dishes.filter((x) => x.role === role).map((x) => x.id) : [])));
+  const yesterday = i > 0 ? roleIds(i - 1) : new Set();
+  if (exclude) { weekUsed.add(exclude); yesterday.add(exclude); }
+  const lunchR = days[i].dishes.find((x) => x.role === 'main');
+  const lunchPie = lunchR && R[lunchR.id].type === 'pie';
+  if (role === 'breakfast') {
+    Object.assign(ctx, { recent: new Set(), mains: {}, pies: lunchPie ? 2 : 0, maxTime: st.breakfastMax });
+    return pick(BREAKFASTS(), ctx, weekUsed, {}) || pick(BREAKFASTS(), ctx, yesterday, {});
+  }
+  if (role === 'snack') {
+    Object.assign(ctx, { recent: new Set(), mains: {}, pies: 0, maxTime: 30 });
+    return pick(SNACKS(), ctx, yesterday, {});
+  }
+  // light dinner: differs from today's lunch, follows the weekly meat rules
+  const lunch = days[i].dishes.find((x) => x.role === 'main');
+  const mains = {}; if (lunch) mains[R[lunch.id].main] = 2;
+  Object.assign(ctx, { mains, pies: 0, maxTime: st.dinnerMax });
+  const used = usedSet(days); weekUsed.forEach((x) => used.add(x));
+  return pick(DINNERS(), ctx, used, kindCounts(days)) || pick(DINNERS(), ctx, yesterday, kindCounts(days));
+}
+
+function addMeals(days, start, planId) {
+  const st = S();
+  const ram = st.mode === 'ramazan';
+  const want = ram ? { breakfast: true, lunch: true, dinner: false, snack: false } : st.meals;
+  days.forEach((d, i) => {
+    const main = d.dishes.find((x) => x.role === 'main');
+    if (want.breakfast) { const r = pickMeal('breakfast', days, i, start, planId); if (r) d.dishes.push({ id: r.id, role: 'breakfast', serv: st.household }); }
+    if (want.lunch && want.dinner) {
+      if (st.dinnerLeft && main && !main.left) { main.serv += st.household; d.dishes.push({ id: main.id, role: 'dinner', serv: st.household, left: true }); }
+      else { const r = pickMeal('dinner', days, i, start, planId); if (r) d.dishes.push({ id: r.id, role: 'dinner', serv: st.household }); }
+    }
+    if (want.snack) { const r = pickMeal('snack', days, i, start, planId); if (r) d.dishes.push({ id: r.id, role: 'snack', serv: st.household }); }
+    sortDishes(d);
+  });
+}
+
+/** One-tap swap of any dish in the plan. */
+export function swapDish(i, k) {
+  const st = S();
+  const d = st.plan.days[i];
+  const x = d.dishes[k];
+  if (!x) return;
+  if (x.role === 'main') { swapDay(i); return; }
+  const start = parseISO(st.plan.start);
+  let r = null;
+  if (['breakfast', 'dinner', 'snack'].includes(x.role)) {
+    const keep = d.dishes.splice(k, 1)[0];
+    r = pickMeal(x.role, st.plan.days, i, start, st.plan.id, keep.id);
+    d.dishes.splice(k, 0, r ? { id: r.id, role: x.role, serv: st.household } : keep);
+    if (keep.left && r) { const m = d.dishes.find((y) => y.role === 'main'); if (m && m.serv > st.household) m.serv -= st.household; }
+  } else {
+    const pool = x.role === 'soup' ? SOUPS() : x.role === 'dessert' ? DESSERTS() : RECIPES.filter((q) => q.type === R[x.id].type);
+    const ctx = ctxFor(start, i, st.plan.days, st.plan.id);
+    const used = usedSet(st.plan.days); used.add(x.id);
+    r = pick(pool, ctx, used, {});
+    if (r) d.dishes[k] = { ...x, id: r.id, serv: x.fixed ? r.serves : x.serv };
+  }
+  d.cooked = false;
+  recordHistory();
+  save();
+}
+
 export function generatePlan(startDate = new Date()) {
   const st = S();
   const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
@@ -177,6 +252,7 @@ export function generatePlan(startDate = new Date()) {
   }
   addDesserts(days, start);
   days.forEach((d) => delete d.makesLeft);
+  addMeals(days, start, planId);
   st.plan = { id: planId, start: iso(start), days };
   recordHistory();
   st.shop.checked = {};

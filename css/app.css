@@ -435,3 +435,6 @@ body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 .pick-name { display: block; color: #fff; text-decoration: none; font: 700 clamp(1.5rem, 5vw, 2rem)/1.1 var(--display); margin: 2px 0 6px; }
 .home-hero .meta-row { color: rgba(255,255,255,.88); }
 .btn.sm { min-height: 42px; padding: 8px 14px; font-size: .9rem; }
+.also { display: flex; flex-direction: column; gap: 2px; }
+.also-i b { font-weight: 700; opacity: .85; }
+.dish.role-breakfast .role, .dish.role-dinner .role, .dish.role-snack .role { color: var(--accent); }

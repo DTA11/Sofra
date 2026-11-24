@@ -24,6 +24,8 @@ const list = [
   ['trout', 'Pastrmka', 'Trout', 'meat', { p: 1, kind: 'fish' }],
   ['cod_dried', 'Bakalar (sušeni)', 'Salt cod', 'meat', { kind: 'fish' }],
   ['fish_white', 'Bijela riba', 'White fish', 'meat', { p: 1, kind: 'fish' }],
+  ['sudzuk', 'Goveđi sudžuk', 'Beef sujuk sausage', 'meat', { kind: 'beef' }],
+  ['tuna', 'Tunjevina (konzerva)', 'Tinned tuna', 'jar', { kind: 'fish' }],
   ['bones_beef', 'Goveđe kosti', 'Beef bones', 'meat', { p: 1 }],
   ['chicken_giblets', 'Pileća sitnež (vratovi, krilca)', 'Chicken necks & wings', 'meat', { p: 1, kind: 'chicken' }],
   ['lamb_offal', 'Janjeća glava i iznutrice', 'Lamb head & offal', 'meat', { p: 1, kind: 'lamb' }],
@@ -76,6 +78,7 @@ const list = [
   ['cottage', 'Mladi sir', 'Fresh cottage cheese', 'dairy', { p: 1 }],
   ['parmesan', 'Parmezan', 'Parmesan', 'dairy', {}],
   ['gruyere', 'Gruyère / tvrdi sir', 'Gruyère / hard cheese', 'dairy', {}],
+  ['mozzarella', 'Mozzarella', 'Mozzarella', 'dairy', { p: 1 }],
   ['mascarpone', 'Mascarpone', 'Mascarpone', 'dairy', { p: 1 }],
 
   // Pekara
@@ -87,6 +90,8 @@ const list = [
   // Suha roba
   ['flour', 'Brašno (meko)', 'Plain flour', 'dry', { st: 1 }],
   ['semolina', 'Griz', 'Semolina', 'dry', {}],
+  ['cornmeal', 'Kukuruzno brašno', 'Cornmeal', 'dry', {}],
+  ['oats', 'Zobene pahuljice', 'Rolled oats', 'dry', {}],
   ['rice', 'Riža', 'Rice', 'dry', { st: 1 }],
   ['soup_pasta', 'Uložak za supu (rezanci, riža, griz)', 'Soup pasta / rice / semolina', 'dry', {}],
   ['arborio', 'Riža za rižoto', 'Risotto rice', 'dry', {}],

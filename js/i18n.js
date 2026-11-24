@@ -55,6 +55,8 @@ const S = {
     howTitle: 'Kao aplikacija, bez app storea', how1: 'Otvori moja-sofra stranicu na telefonu.', how2: 'Dodirni „Instaliraj“ (na iPhoneu: Podijeli → Dodaj na početni ekran).', how3: 'Sofra je na početnom ekranu i radi i bez interneta.',
     privacyTitle: 'Bez računa, bez reklama', privacyText: 'Tvoj plan, ostava i omiljena jela ostaju samo na tvom telefonu. Nema registracije, nema praćenja.',
     footer: 'Sofra — domaća kuhinja za svaki dan.',
+    breakfast: 'Doručak', lunch: 'Ručak', dinner: 'Večera', snack: 'Užina', sehur: 'Sehur', meals: 'Obroci u danu',
+    dinnerLeft: 'Večera od ostataka ručka', breakfastMax: 'Doručak radnim danima najviše', dinnerMax: 'Večera radnim danima najviše', leftLunch: 'Ostaci od ručka',
     todayOnTable: 'Danas na sofri', thisWeek: 'Ova sedmica', recipe: 'Recept', greet: 'Prijatno!', dishes: 'jela',
     printPlan: 'Jelovnik', printShop: 'Spisak za kupovinu', printRecipes: 'Recepti',
   },
@@ -113,6 +115,8 @@ const S = {
     howTitle: 'Like an app, without an app store', how1: 'Open the moja-sofra site on your phone.', how2: 'Tap “Install” (on iPhone: Share → Add to Home Screen).', how3: 'Sofra sits on your home screen and works offline too.',
     privacyTitle: 'No accounts, no ads', privacyText: 'Your plan, pantry and favourites stay on your phone only. No sign-up, no tracking.',
     footer: 'Sofra — home cooking for every day.',
+    breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snack', sehur: 'Suhoor', meals: 'Meals in a day',
+    dinnerLeft: 'Dinner from lunch leftovers', breakfastMax: 'Weekday breakfast at most', dinnerMax: 'Weekday dinner at most', leftLunch: 'Lunch leftovers',
     todayOnTable: 'On the table today', thisWeek: 'This week', recipe: 'Recipe', greet: 'Enjoy!', dishes: 'dishes',
     printPlan: 'Menu', printShop: 'Shopping list', printRecipes: 'Recipes',
   },
@@ -125,7 +129,7 @@ const LISTS = {
   },
   type: {
     main: ['Glavno jelo', 'Main'], soup: ['Čorba / supa', 'Soup'], pie: ['Pita', 'Savoury pie'], salad: ['Salata', 'Salad'],
-    dessert: ['Slatko', 'Sweet'], breakfast: ['Doručak', 'Breakfast'],
+    dessert: ['Slatko', 'Sweet'], breakfast: ['Doručak', 'Breakfast'], snack: ['Užina', 'Snack'],
   },
   sub: {
     kolac: ['Kolači', 'Cakes & slices'], torta: ['Torte', 'Tortes'], sitni: ['Sitni kolači', 'Small cookies'],
@@ -134,9 +138,9 @@ const LISTS = {
   main: {
     beef: ['Junetina', 'Beef'], chicken: ['Piletina', 'Chicken'], lamb: ['Janjetina', 'Lamb'], pork: ['Svinjetina', 'Pork'], fish: ['Riba', 'Fish'],
     beans: ['Grah', 'Beans'], potato: ['Krompir', 'Potato'], broccoli: ['Brokula', 'Broccoli'], spinach: ['Špinat', 'Spinach'],
-    veg: ['Povrće', 'Vegetables'], pasta: ['Tjestenina', 'Pasta'], rice: ['Riža', 'Rice'], cheese: ['Sir', 'Cheese'], dessert: ['Slatko', 'Sweet'],
+    veg: ['Povrće', 'Vegetables'], eggs: ['Jaja', 'Eggs'], pasta: ['Tjestenina', 'Pasta'], rice: ['Riža', 'Rice'], cheese: ['Sir', 'Cheese'], dessert: ['Slatko', 'Sweet'],
   },
-  meal: { breakfast: ['Doručak', 'Breakfast'], lunch: ['Ručak', 'Lunch'], dinner: ['Večera', 'Dinner'], iftar: ['Iftar', 'Iftar'], dessert: ['Desert', 'Dessert'] },
+  meal: { breakfast: ['Doručak', 'Breakfast'], lunch: ['Ručak', 'Lunch'], dinner: ['Večera', 'Dinner'], iftar: ['Iftar', 'Iftar'], dessert: ['Desert', 'Dessert'], snack: ['Užina', 'Snack'] },
   eq: { oven: ['Rerna', 'Oven'], pressure: ['Ekspres lonac', 'Pressure cooker'], sac: ['Sač / peka', 'Sač / peka'], kazan: ['Kazan', 'Field kettle'], grill: ['Roštilj', 'Grill'] },
   occ: {
     bajram: ['Bajram', 'Bajram'], iftar: ['Iftar', 'Iftar'], bozic: ['Božić', 'Christmas'], novagodina: ['Nova godina', 'New Year'],

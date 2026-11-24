@@ -3,7 +3,7 @@ import { ING } from './data/ingredients.js';
 import { t, L, keys, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
 import { dishArt, ICON, KILIM } from './art.js';
-import { generatePlan, swapDay, markCooked, setDayDishes, shoppingList, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
+import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -174,6 +174,14 @@ function doInstall() {
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); install.ask = e; ui.installEvt = e; syncInstallButtons(); });
 window.addEventListener('appinstalled', () => { install.ask = null; syncInstallButtons(); });
 
+function roleLabel(x) {
+  const st = S(); const ram = st.mode === 'ramazan';
+  if (x.left) return x.role === 'dinner' ? t('leftLunch') : t('leftover');
+  if (x.role === 'main') return ram ? t('iftar') : st.meals.lunch === false ? t('dinner') : t('lunch');
+  if (x.role === 'breakfast') return ram ? t('sehur') : t('breakfast');
+  return t(x.role);
+}
+
 // ───────── PLAN ─────────
 function viewPlan() {
   const st = S();
@@ -199,16 +207,16 @@ function viewPlan() {
   const todayIdx = ti >= 0 && ti < 7 ? ti : 0;
   const tMain = st.plan.days[todayIdx].dishes.find((x) => x.role === 'main') || st.plan.days[todayIdx].dishes[0];
   const tr = tMain && R[tMain.id];
-  const others = st.plan.days[todayIdx].dishes.filter((x) => x !== tMain).map((x) => esc(name(R[x.id]))).join(' · ');
+  const others = st.plan.days[todayIdx].dishes.filter((x) => x !== tMain).map((x) => `<span class="also-i"><b>${esc(roleLabel(x))}:</b> ${esc(name(R[x.id]))}</span>`).join('');
   const hero = tr ? `<section class="band hero-band">
       <p class="eyebrow">${dateTxt}</p>
       <div class="today">
         <div class="today-art">${dishArt(tr, 'big')}</div>
         <div class="today-txt">
-          <span class="label">${tMain.left ? t('leftover') : t('todayOnTable')}</span>
+          <span class="label">${t('todayOnTable')} · ${esc(roleLabel(tMain))}</span>
           <h1 class="display">${esc(name(tr))}</h1>
           <p class="meta-row">${ICON.clock}${fmtTime(tr)} <span class="dot"></span>${ICON.people}${tMain.serv} ${t('persons')}</p>
-          ${others ? `<p class="also">+ ${others}</p>` : ''}
+          ${others ? `<p class="also">${others}</p>` : ''}
           <div class="row gap wrap">
             <a class="btn light" href="#/cook/${tr.id}?s=${tMain.serv}&f=${tMain.fixed ? 1 : 0}">${ICON.play} ${t('cook')}</a>
             <a class="btn ghost" href="#/recipe/${tr.id}">${t('recipe')}</a>
@@ -228,7 +236,7 @@ function viewPlan() {
     const dl = dayLabel(start, i);
     const dishes = d.dishes.map((x) => {
       const r = R[x.id]; if (!r) return '';
-      const role = x.left ? t('leftover') : x.role === 'main' && st.mode === 'ramazan' ? t('iftar') : t(x.role);
+      const role = roleLabel(x);
       const serv = x.fixed ? (r.yieldNote ? tx(r.yieldNote) : '') : `${x.serv} ${t('persons')}`;
       return `<li class="dish ${x.left ? 'is-left' : ''} role-${x.role}">
         <a href="#/recipe/${r.id}" class="thumb">${dishArt(r, 'thumb')}</a>
@@ -236,7 +244,7 @@ function viewPlan() {
           <a href="#/recipe/${r.id}" class="dname">${esc(name(r))}</a>
           <span class="meta">${esc(serv)}${x.left ? '' : ' · ' + fmtTime(r)}</span></div>
         <div class="dact">
-          ${x.role === 'main' && !x.left ? `<button class="icon" aria-label="${t('swap')}" data-act="swap" data-i="${i}">${ICON.swap}</button>` : ''}
+          ${!x.left ? `<button class="icon" aria-label="${t('swap')}" data-act="swapdish" data-i="${i}" data-k="${d.dishes.indexOf(x)}">${ICON.swap}</button>` : ''}
           ${!x.left ? `<a class="icon play" aria-label="${t('cook')}" href="#/cook/${r.id}?s=${x.serv}&f=${x.fixed ? 1 : 0}">${ICON.play}</a>` : ''}
         </div>
       </li>`;
@@ -296,9 +304,9 @@ function filterPanel(extra = '') {
   const f = ui.filters;
   return `<div class="filters ${ui.showFilters ? 'open' : ''}">
     ${chipGroup(t('fCuisine'), 'cu', keys('cu').map((k) => [k, L('cu', k)]), true)}
-    ${extra || chipGroup(t('fType'), 'type', ['main', 'soup', 'pie', 'salad', 'dessert'].map((k) => [k, L('type', k)]))}
-    ${chipGroup(t('fMain'), 'main', ['beef', 'chicken', 'lamb', 'fish', 'beans', 'potato', 'broccoli', 'spinach', 'veg', 'pasta', 'rice', 'pork'].map((k) => [k, L('main', k)]))}
-    ${chipGroup(t('fMeal'), 'meal', ['breakfast', 'lunch', 'dinner', 'iftar'].map((k) => [k, L('meal', k)]))}
+    ${extra || chipGroup(t('fType'), 'type', ['breakfast', 'main', 'soup', 'pie', 'salad', 'snack'].map((k) => [k, L('type', k)]))}
+    ${chipGroup(t('fMain'), 'main', ['beef', 'chicken', 'lamb', 'fish', 'eggs', 'cheese', 'beans', 'potato', 'broccoli', 'spinach', 'veg', 'pasta', 'rice', 'pork'].map((k) => [k, L('main', k)]))}
+    ${chipGroup(t('fMeal'), 'meal', ['breakfast', 'lunch', 'dinner', 'snack', 'iftar'].map((k) => [k, L('meal', k)]))}
     ${chipGroup(t('fTime'), 'time', [['t30', t('t30')], ['t60', t('t60')], ['t60p', t('t60p')]])}
     ${chipGroup(t('fEquip'), 'eq', keys('eq').map((k) => [k, L('eq', k)]))}
     ${chipGroup(t('fDiet'), 'diet', [['noPork', t('noPork')], ['posno', t('posno')], ['veg', t('veg')], ['kid', t('kid')]], true)}
@@ -564,6 +572,10 @@ function viewSettings() {
     <section class="set"><h3>${t('mode')}</h3><div class="chips">
       <button class="chip ${st.mode === 'normal' ? 'on' : ''}" data-act="mode" data-v="normal">${t('modeNormal')}</button>
       <button class="chip ${st.mode === 'ramazan' ? 'on' : ''}" data-act="mode" data-v="ramazan">🌙 ${t('modeRamazan')}</button></div></section>
+    <section class="set"><h3>${t('meals')}</h3><div class="chips">${['breakfast', 'lunch', 'dinner', 'snack'].map((m) => `<button class="chip ${st.meals[m] ? 'on' : ''}" data-act="meal" data-k="${m}">${t(m)}</button>`).join('')}</div>
+      ${tog('dinnerLeft', t('dinnerLeft'))}
+      <div class="mix"><span>${t('breakfastMax')}</span>${num('breakfastMax', st.breakfastMax, 5, 120, 5)}<small>min</small></div>
+      <div class="mix"><span>${t('dinnerMax')}</span>${num('dinnerMax', st.dinnerMax, 5, 180, 5)}<small>min</small></div></section>
     <section class="set"><h3>${t('household')}</h3>${num('household', st.household, 1, 20)}</section>
     <section class="set"><h3>${t('cuisineMix')}</h3>
       ${keys('cu').map((c) => `<div class="mix"><span>${esc(L('cu', c))}</span><input type="range" min="0" max="3" step="1" value="${st.cuisines[c] || 0}" data-act="mix" data-k="${c}"><small>${lvl[st.cuisines[c] || 0]}</small></div>`).join('')}
@@ -596,7 +608,7 @@ function printAll() {
   const start = parseISO(st.plan.start);
   const plan = st.plan.days.map((d, i) => {
     const dl = dayLabel(start, i);
-    return `<tr><th>${dl.name}<br><small>${dl.date}</small></th><td>${d.dishes.map((x) => `${x.left ? t('leftover') + ': ' : ''}${esc(name(R[x.id]))}${x.left || x.fixed ? '' : ` <small>(${x.serv} ${t('persons')})</small>`}`).join('<br>')}</td></tr>`;
+    return `<tr><th>${dl.name}<br><small>${dl.date}</small></th><td>${d.dishes.map((x) => `<b>${esc(roleLabel(x))}:</b> ${esc(name(R[x.id]))}${x.left || x.fixed ? '' : ` <small>(${x.serv} ${t('persons')})</small>`}`).join('<br>')}</td></tr>`;
   }).join('');
   const { sections } = shoppingList();
   const shop = sections.map((s) => `<h3>${esc(L('sec', s.sec))}</h3><ul class="cols">${s.items.map((it) => `<li>☐ ${esc(iname(it.id))} <small>${esc(qtyText(it))}</small></li>`).join('')}</ul>`).join('')
@@ -644,6 +656,7 @@ document.addEventListener('click', (e) => {
   switch (a) {
     case 'newplan': generatePlan(); rer(); break;
     case 'jump': document.getElementById('day-' + el.dataset.i)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); break;
+    case 'swapdish': swapDish(Number(el.dataset.i), Number(el.dataset.k)); rer(); break;
     case 'swap': swapDay(Number(el.dataset.i)); rer(); break;
     case 'cooked': markCooked(Number(el.dataset.i)); if (st.plan.days[el.dataset.i].cooked) toast(t('cookedQ')); rer(); break;
     case 'print': printAll(); break;
@@ -662,10 +675,10 @@ document.addEventListener('click', (e) => {
       const r = R[el.dataset.id];
       pickDay((i) => {
         const d = S().plan.days[i];
-        const role = r.type === 'soup' ? 'soup' : r.type === 'dessert' ? 'dessert' : r.type === 'salad' ? 'side' : 'main';
+        const role = r.type === 'soup' ? 'soup' : r.type === 'dessert' ? 'dessert' : r.type === 'salad' ? 'side' : r.type === 'breakfast' ? 'breakfast' : r.type === 'snack' ? 'snack' : 'main';
         const keep = d.dishes.filter((x) => x.role !== role || role === 'side');
         const dish = { id: r.id, role, serv: role === 'dessert' ? r.serves : S().household, ...(role === 'dessert' ? { fixed: 1 } : {}) };
-        const order = { soup: 0, main: 1, side: 2, dessert: 3 };
+        const order = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
         setDayDishes(i, [...keep, dish].sort((x, y) => order[x.role] - order[y.role]));
         go('#/plan');
       });
@@ -697,6 +710,7 @@ document.addEventListener('click', (e) => {
     case 'lang': st.lang = el.dataset.v; setLang(st.lang); store.save(); rer(); break;
     case 'mode': st.mode = el.dataset.v; store.save(); rer(); break;
     case 'posnoday': { const i = Number(el.dataset.i); st.posnoDays = st.posnoDays.includes(i) ? st.posnoDays.filter((x) => x !== i) : [...st.posnoDays, i]; store.save(); rer(); break; }
+    case 'meal': { st.meals[el.dataset.k] = !st.meals[el.dataset.k]; if (!st.meals.lunch && !st.meals.dinner) st.meals.lunch = true; store.save(); rer(); break; }
     case 'equip': st.equipment[el.dataset.k] = st.equipment[el.dataset.k] ? 0 : 1; store.save(); rer(); break;
     case 'export': {
       const blob = new Blob([store.exportJSON()], { type: 'application/json' });

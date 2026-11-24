@@ -15,6 +15,10 @@ export function defaults() {
     weekdayMax: 90,
     leftovers: true,
     soupDaily: false,
+    meals: { breakfast: true, lunch: true, dinner: true, snack: false },
+    dinnerLeft: false,
+    breakfastMax: 20,
+    dinnerMax: 45,
     dessertsPerWeek: 2,
     posnoDays: [],
     posnoFish: true,
@@ -35,6 +39,7 @@ export function load() {
   try {
     const raw = localStorage.getItem(KEY);
     state = raw ? { ...defaults(), ...JSON.parse(raw) } : defaults();
+    state.meals = { ...defaults().meals, ...(state.meals || {}) };
   } catch { state = defaults(); }
   return state;
 }

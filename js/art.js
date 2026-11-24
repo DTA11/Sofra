@@ -70,6 +70,17 @@ const SHAPES = {
     <path d="M42 72c2-20 18-32 38-32" stroke="#6d625c" stroke-width="4" fill="none" stroke-linecap="round"/>
     <rect x="74" y="22" width="12" height="12" rx="4" fill="#2a2421"/>
     <g fill="#f08a2c">${[44, 60, 100, 116].map((x) => `<circle cx="${x}" cy="${76 - Math.abs(80 - x) / 6}" r="3"/>`).join('')}</g>`,
+  eggs: (c) => `${shadow(80, 88, 50)}
+    <circle cx="74" cy="60" r="34" fill="#3b3330"/><circle cx="74" cy="60" r="29" fill="#4a413d"/>
+    <rect x="104" y="56" width="42" height="9" rx="4.5" fill="#2a2421"/>
+    <path d="M56 50c8-10 22-10 26 0s-2 22-14 20-18-10-12-20z" fill="#fffaf2"/><circle cx="66" cy="58" r="7" fill="#f2b632"/>
+    <path d="M78 64c6-8 18-8 20 0s-2 16-12 15-13-8-8-15z" fill="#fffaf2"/><circle cx="86" cy="68" r="6" fill="#f2b632"/>
+    <circle cx="64" cy="56" r="2" fill="#fff" opacity=".7"/>`,
+  bread: (c) => `${shadow(80, 88, 52)}
+    <rect x="30" y="58" width="100" height="22" rx="8" fill="#b46b2a"/>
+    <path d="M38 62c0-14 12-22 26-22s24 8 24 22v16H38z" fill="#e9b868"/><path d="M42 62c0-11 10-18 22-18" stroke="#c98a3d" stroke-width="3" fill="none"/>
+    <path d="M74 64c0-13 11-20 24-20s24 7 24 20v14H74z" fill="#f0c67b"/>
+    <rect x="80" y="58" width="34" height="8" rx="4" fill="#fbf3e1"/><rect x="82" y="64" width="30" height="6" rx="3" fill="${c}"/>`,
   salad: (c) => `${shadow(80, 86, 46)}
     <path d="M34 52h92a46 30 0 0 1-92 0z" fill="#fffaf2"/>
     <path d="M34 52c4 18 22 30 46 30s42-12 46-30" stroke="${c}" stroke-width="4" fill="none"/>
@@ -107,8 +118,13 @@ export function dishArt(r, cls = '') {
   const [c, bg] = CU_COLORS[r.cu] || CU_COLORS.balkan;
   const has = (id) => r.ing.some((i) => i[0] === id);
   let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : 'main';
-  if (key === 'main') {
-    if (r.eq.includes('sac')) key = 'sac';
+  if (r.type === 'breakfast' || r.type === 'snack') {
+    key = r.main === 'eggs' ? 'eggs' : ['popara', 'pura-kiselo', 'zobena-kasa', 'griz-mlijeko', 'jogurt-med'].includes(r.id) ? 'kasika'
+      : ['hljeb-kajmak-ajvar', 'pain-perdu', 'tost-sir', 'hljeb-pekmez'].includes(r.id) ? 'bread' : r.id === 'pecene-jabuke' ? 'kasika' : r.id === 'cicvara' ? 'eggs' : 'sitni';
+  } else if (key === 'main') {
+    if (r.main === 'eggs') key = 'eggs';
+    else if (r.id === 'tost-sir') key = 'bread';
+    else if (r.eq.includes('sac')) key = 'sac';
     else if (r.eq.includes('grill')) key = 'grill';
     else if (r.main === 'fish') key = 'fish';
     else if (['spaghetti', 'pasta_short', 'tagliatelle', 'arborio'].some(has)) key = 'pasta';
