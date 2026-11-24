@@ -495,3 +495,6 @@ body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 .psec.starter[open] summary h3::after { content: '▴'; }
 .psec.starter .row { margin-top: 12px; }
 .chips.parts { margin: 16px 0 4px; }
+/* real dish photos sit where the drawn plates are */
+img.art.photo { object-fit: cover; background: var(--soft); }
+.card img.cardart, .wday img.mini { object-fit: cover; }

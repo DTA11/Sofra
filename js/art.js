@@ -118,7 +118,15 @@ const SHAPES = {
 };
 
 /** Illustration for a recipe. size: 'card' | 'hero' */
+// Recipes with a real photo (photos/<id>-s.webp 480 px, photos/<id>-l.webp 1200 px, 16:10).
+// Not pre-cached: the service worker keeps each photo once it has been seen, so the app stays small.
+export const PHOTOS = new Set(['pasta-fagioli']);
+
 export function dishArt(r, cls = '') {
+  if (PHOTOS.has(r.id)) {
+    const big = cls === 'big';
+    return `<img class="art photo ${cls}" src="photos/${r.id}-${big ? 'l' : 's'}.webp" alt="" loading="${big ? 'eager' : 'lazy'}" decoding="async">`;
+  }
   const [c, bg] = CU_COLORS[r.cu] || CU_COLORS.svakodnevno;
   const has = (id) => r.ing.some((i) => i[0] === id);
   let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : 'main';
