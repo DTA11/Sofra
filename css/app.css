@@ -323,6 +323,24 @@ body.standalone .toast { bottom: calc(92px + env(safe-area-inset-bottom)); }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
 
+/* ═════════ nutrition ═════════ */
+.ns { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; font: 800 .72rem var(--ui); color: #fff; margin-right: 6px; vertical-align: -4px; }
+.ns-A { background: #038141; } .ns-B { background: #85bb2f; } .ns-C { background: #fecb02; color: #3a2f00; } .ns-D { background: #ee8100; } .ns-E { background: #e63e11; }
+.nut { margin: 22px 0 8px; padding: 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--card); }
+.nut h3 { margin-top: 0; }
+.nut-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.nscale { display: inline-flex; padding: 3px; border-radius: 12px; background: #f1ece4; }
+.nscale .ns { width: 30px; height: 30px; margin: 0 1px; font-size: .95rem; opacity: .35; border-radius: 8px; vertical-align: middle; }
+.nscale .ns.on { opacity: 1; transform: scale(1.25); box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0,0,0,.25); position: relative; z-index: 1; margin: 0 6px; }
+.nut-kcal { margin: 6px 0 10px; line-height: 1.6; } .nut-kcal > b { font: 800 1.6rem var(--display); }
+.nutt { width: 100%; border-collapse: collapse; margin: 10px 0 8px; font-size: .95rem; }
+.nutt th, .nutt td { padding: 6px 4px; border-bottom: 1px solid var(--line); text-align: right; }
+.nutt th:first-child { text-align: left; font-weight: 600; } .nutt thead th { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.nutt tr.sub th { font-weight: 400; padding-left: 16px; color: var(--muted); }
+.tag.nt-good { background: #e3f1e5; color: #1d5b2c; } .tag.nt-warn { background: #fbe7dc; color: #8a2f0d; }
+.daykcal { display: block; font-size: .78rem; color: var(--muted); }
+@media (prefers-color-scheme: dark) { .nscale { background: #2a2521; } .nscale .ns.on { box-shadow: 0 0 0 2px #1a1714, 0 2px 6px rgba(0,0,0,.5); } .tag.nt-good { background: #1f3a26; color: #bfe6c8; } .tag.nt-warn { background: #45261a; color: #f6c6ad; } }
+
 /* ═════════ print / PDF ═════════ */
 .print-only { display: none; }
 @page { margin: 14mm; }

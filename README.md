@@ -13,6 +13,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Ostava + zimnica (tegle); plan koristi ono što imaš i ponovo koristi iste svježe namirnice kroz sedmicu
 - Jedan spisak za kupovinu po odjeljcima prodavnice → WhatsApp / Viber / dijeljenje; kupljeno ide u ostavu
 - Pravi PDF fajl (sedmica: plan + spisak + recepti; samo spisak; jedan recept) — preuzmi, podijeli ili otvori; štampa samo na zahtjev. PDF se pravi u pregledniku (js/pdf.js) s ugrađenim DejaVu fontovima (fonts/, licenca u fonts/LICENSE.txt)
+- Zdravlje: procjena kcal, bjelančevina, masti, ugljikohidrata, vlakana i soli po porciji i na 100 g (js/data/nutrition.js + js/nutrition.js), ocjena A–E po pravilima Nutri-Score 2023, oznake (puno povrća, puno soli…), filter po ocjeni, kcal po danu u planu, opcija „Prednost zdravijim jelima“
 - Filteri: kuhinja, glavni sastojak, vrsta jela, obrok, vrijeme, oprema (sač/peka, ekspres lonac, rerna, kazan, roštilj), posno, za djecu…
 - Ramazanski / iftar način, praznični meniji (Bajram, iftar, Badnji dan, Božić, Nova godina)
 - Način kuhanja: veliki koraci, tajmeri, ekran ostaje upaljen (Wake Lock)

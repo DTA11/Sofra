@@ -3,6 +3,7 @@ import { ING } from './data/ingredients.js';
 import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
 import { dishArt, ICON, KILIM } from './art.js';
+import { nutrition, GRADE_COLORS } from './nutrition.js';
 import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -11,10 +12,45 @@ const S = () => store.S();
 const name = (r) => (getLang() === 'bs' ? r.bs : r.en);
 const iname = (id) => { const g = ING[id]; return g ? (getLang() === 'bs' ? g.bs : g.en) : id; };
 const DAYMS = 86400000;
+const nf = (v, d = 0) => (Math.round(v * 10 ** d) / 10 ** d).toLocaleString(getLang() === 'bs' ? 'hr-HR' : 'en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
+const gradeChip = (r) => { const g = nutrition(r).grade; return `<span class="ns ns-${g}" title="${t('nutGrade')}">${g}</span>`; };
+const perPortion = (r) => r.serves > 1 || r.type === 'soup';
+function nutTags(n, pp) {
+  // per serving where a serving exists, otherwise per 100 g (trays of sweets)
+  const s = n.serv, h = n.p100, out = [];
+  const protein = pp ? s.protein >= 20 && s.protein * 4 >= s.kcal * 0.2 : h.protein >= 10;
+  if (protein) out.push(['good', t('tProtein')]);
+  if (pp ? s.fibre >= 6 : h.fibre >= 6) out.push(['good', t('tFibre')]);
+  if (n.fvlPct >= 50) out.push(['good', t('tVeg')]);
+  if (h.kcal < 100 && (!pp || s.kcal < 400)) out.push(['good', t('tLight')]);
+  if (pp ? s.salt >= 2.5 : h.salt >= 1.5) out.push(['warn', t('tSalt')]);
+  if (pp ? s.sat >= 10 : h.sat >= 5) out.push(['warn', t('tSat')]);
+  if (pp ? s.sugar >= 25 : h.sugar >= 22.5) out.push(['warn', t('tSugar')]);
+  return out;
+}
+function nutBox(r) {
+  const n = nutrition(r), pp = perPortion(r);
+  const dens = n.p100.kcal < 150 ? t('densLow') : n.p100.kcal <= 250 ? t('densMid') : t('densHigh');
+  const row = (lbl, k, d, sub) => `<tr class="${sub ? 'sub' : ''}"><th>${lbl}</th>${pp ? `<td>${nf(n.serv[k], d)} g</td>` : ''}<td>${nf(n.p100[k], d)} g</td></tr>`;
+  return `<section class="nut">
+    <h3>${t('nutTitle')}</h3>
+    <div class="nut-top">
+      <div class="nscale" aria-label="${t('nutGrade')} ${n.grade}">${'ABCDE'.split('').map((g) => `<span class="ns ns-${g} ${g === n.grade ? 'on' : ''}">${g}</span>`).join('')}</div>
+      <small class="muted">${t('nutGrade')} · ${t('nutGradeNote')}</small>
+    </div>
+    <div class="nut-kcal">${pp ? `<b>${nf(n.serv.kcal)}</b> ${t('kcal')} / ${t('nutServ').toLowerCase()} <small class="muted">(≈ ${nf(Math.round(n.servG / 10) * 10)} g · ${nf((n.serv.kcal / 2000) * 100)} % ${t('ofDaily')})</small><br>` : ''}
+      <span class="muted">${t('energyDens')}: <b>${nf(n.p100.kcal)} ${t('kcal')}/100 g</b> — ${dens}</span></div>
+    <div class="tags">${nutTags(n, pp).map(([c, l]) => `<span class="tag nt-${c}">${esc(l)}</span>`).join('')}</div>
+    <table class="nutt"><thead><tr><th></th>${pp ? `<th>${t('nutServ')}</th>` : ''}<th>${t('nutPer100')}</th></tr></thead><tbody>
+      ${row(t('nProtein'), 'protein', 0)}${row(t('nFat'), 'fat', 0)}${row(t('nSat'), 'sat', 1, 1)}${row(t('nCarbs'), 'carbs', 0)}${row(t('nSugar'), 'sugar', 1, 1)}${row(t('nFibre'), 'fibre', 1)}${row(t('nSalt'), 'salt', 1)}
+    </tbody></table>
+    <p class="small muted">${t('nutNote')}</p>
+  </section>`;
+}
 
 // ───────── UI state (not persisted) ─────────
 const ui = {
-  filters: { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '' },
+  filters: { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '', grade: new Set() },
   showFilters: false,
   serv: {},      // recipe id -> servings
   pan: {},       // recipe id -> {shape,w,h,d}
@@ -239,8 +275,9 @@ function viewPlan() {
         </div>
       </li>`;
     }).join('');
+    const kc = d.dishes.reduce((a, x) => { const r = R[x.id]; return r && perPortion(r) ? a + nutrition(r).serv.kcal : a; }, 0);
     return `<article class="day ${i === todayIdx ? 'today' : ''} ${d.cooked ? 'cooked' : ''}" id="day-${i}">
-      <header><div><b>${dl.name}</b><span class="muted"> ${dl.date}</span></div>
+      <header><div><b>${dl.name}</b><span class="muted"> ${dl.date}</span>${kc ? `<span class="daykcal">≈ ${nf(Math.round(kc / 10) * 10)} kcal ${t('dayKcal')}</span>` : ''}</div>
         <button class="cookbtn ${d.cooked ? 'on' : ''}" data-act="cooked" data-i="${i}">${ICON.check}<span>${t('cooked')}</span></button></header>
       <ul>${dishes || `<li class="muted">${t('noMatch')}</li>`}</ul>
     </article>`;
@@ -256,6 +293,7 @@ function matches(r, f) {
   if (f.q) { const q = f.q.toLowerCase(); if (!(`${r.bs} ${r.en} ${r.ing.map((i) => iname(i[0])).join(' ')}`.toLowerCase().includes(q))) return false; }
   if (f.cu.size && !f.cu.has(r.cu)) return false;
   if (f.reg && r.reg !== f.reg) return false;
+  if (f.grade.size && !f.grade.has(nutrition(r).grade)) return false;
   if (f.type && r.type !== f.type) return false;
   if (f.sub && r.sub !== f.sub) return false;
   if (f.main && r.main !== f.main) return false;
@@ -285,7 +323,7 @@ function card(r) {
   return `<a class="card" href="#/recipe/${r.id}">
     ${dishArt(r, 'cardart')}
     <div class="card-body">
-      <div class="card-top"><span class="cu cu-${r.cu}">${esc(r.type === 'dessert' && r.sub ? L('sub', r.sub) : L('type', r.type))}</span><span class="time">${ICON.clock}${fmtTime(r)}</span></div>
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(r.type === 'dessert' && r.sub ? L('sub', r.sub) : L('type', r.type))}</span><span class="time">${gradeChip(r)}${ICON.clock}${fmtTime(r)}</span></div>
       <b>${esc(name(r))}</b>
       <div class="tags">${badges(r)}${fav ? `<span class="tag fav">★</span>` : ''}</div>
     </div>
@@ -300,6 +338,7 @@ function filterPanel(extra = '') {
     ${chipGroup(t('fTime'), 'time', [['t30', t('t30')], ['t60', t('t60')], ['t60p', t('t60p')]])}
     ${chipGroup(t('fEquip'), 'eq', keys('eq').map((k) => [k, L('eq', k)]))}
     ${chipGroup(t('fDiet'), 'diet', [['noPork', t('noPork')], ['posno', t('posno')], ['veg', t('veg')], ['kid', t('kid')]], true)}
+    ${chipGroup(t('fGrade'), 'grade', 'ABCDE'.split('').map((g) => [g, g]), true)}
     ${chipGroup(t('fOcc'), 'occ', keys('occ').map((k) => [k, L('occ', k)]))}
     <div class="fgroup"><div class="chips">
       <button class="chip ${f.season ? 'on' : ''}" data-act="ftoggle" data-k="season">🌱 ${t('fSeason')}</button>
@@ -315,7 +354,7 @@ function searchBar() {
 }
 function activeFilterCount() {
   const f = ui.filters;
-  return f.cu.size + f.diet.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0);
+  return f.cu.size + f.diet.size + f.grade.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0);
 }
 function viewRecipes() {
   const list = RECIPES.filter((r) => r.type !== 'dessert').filter((r) => matches(r, ui.filters));
@@ -381,7 +420,7 @@ function viewRecipe(id) {
   const servParam = r.pan ? '' : `?s=${ui.serv[r.id] ?? defaultServ(r)}`;
   return `<article class="recipe">
       <div class="rhero">${dishArt(r, 'big')}<a class="backfab" href="javascript:history.back()" aria-label="${t('back')}">${ICON.back}</a></div>
-      <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('type', r.type))}</span><span class="muted">${fmtTime(r)}</span></div>
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('type', r.type))}</span><span class="muted">${gradeChip(r)} ${fmtTime(r)}</span></div>
       <h1 class="rtitle">${esc(name(r))}</h1>
       <div class="tags">${badges(r)}${occ}${eq}</div>
       <div class="row gap wrap actions">
@@ -396,6 +435,7 @@ function viewRecipe(id) {
       <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
       <h3>${t('steps')}</h3>
       <ol class="steps">${r.st.map((s) => `<li>${esc(tx(s))}${s[2] ? ` <span class="tmr">⏱ ${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'}</span>` : ''}</li>`).join('')}</ol>
+      ${nutBox(r)}
       <p class="source"><b>${t('source')}:</b> ${esc(SOURCES[r.source][getLang()])}${r.src.p ? ` — str. ${esc(r.src.p)}` : ''}${r.src.n ? `, br. ${r.src.n}` : ''}</p>
     </article>`;
 }
@@ -578,7 +618,7 @@ function viewSettings() {
       <div class="mix"><span>${t('noRepeat')}</span>${num('noRepeatWeeks', st.noRepeatWeeks, 0, 6)}<small>${t('weeks')}</small></div>
       <div class="mix"><span>${t('weekdayMax')}</span>${num('weekdayMax', st.weekdayMax, 15, 300, 15)}<small>min</small></div>
       <div class="mix"><span>${t('dessertsWeek')}</span>${num('dessertsPerWeek', st.dessertsPerWeek, 0, 7)}</div>
-      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}${tog('posnoFish', t('posnoFish'))}
+      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}${tog('healthier', t('healthier'))}${tog('posnoFish', t('posnoFish'))}
     </section>
     <section class="set"><h3>${t('posnoDays')}</h3><div class="chips">${daysChips}</div></section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
@@ -610,7 +650,7 @@ function ingParts(ing, f) {
 const stepTime = (s) => (s[2] ? ` (${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'})` : '');
 function recipeBlocks(r, f, servTxt, page = false) {
   return [
-    { t: 'h2', text: name(r), page, sub: `${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''}` },
+    { t: 'h2', text: name(r), page, sub: `${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''} · ${t('fGrade')} ${nutrition(r).grade}${perPortion(r) ? ` · ≈ ${nf(nutrition(r).serv.kcal)} kcal / ${t('nutServ').toLowerCase()}` : ''}` },
     { t: 'p', text: tx(r.story), font: 'I', muted: 1, after: 6 },
     { t: 'h3', text: t('ingredients') },
     { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
@@ -776,7 +816,7 @@ document.addEventListener('click', (e) => {
       rer(); break;
     }
     case 'ftoggle': ui.filters[el.dataset.k] = !ui.filters[el.dataset.k]; rer(); break;
-    case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '' }; rer(); break;
+    case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '', grade: new Set() }; rer(); break;
     case 'fav': store.toggleFav(el.dataset.id); rer(); break;
     case 'serv': { const r = R[el.dataset.id]; const cur = ui.serv[r.id] ?? defaultServ(r); ui.serv[r.id] = Math.max(1, cur + Number(el.dataset.d)); rer(); break; }
     case 'setserv': ui.serv[el.dataset.id] = Number(el.dataset.v); rer(); break;

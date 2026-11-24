@@ -1,3 +1,4 @@
+import { nutrition } from './nutrition.js';
 import { RECIPES, R } from './data/index.js';
 import { ING, SUBSTITUTES, SECTIONS } from './data/ingredients.js';
 import { S, save } from './store.js';
@@ -51,6 +52,7 @@ function score(r, ctx) {
   if (r.months) { if (r.months.includes(m)) s += 1; else s *= 0.3; }
   if (st.favs.includes(r.id)) s += 0.8;
   if (st.preferKid && r.kid) s += 1;
+  if (st.healthier) s *= { A: 1.7, B: 1.35, C: 1, D: 0.7, E: 0.5 }[nutrition(r).grade];
   if (ctx.weekday < 5 && r.time > (ctx.maxTime ?? st.weekdayMax)) s *= 0.15;
   return Math.max(0.01, s) * (0.55 + Math.random() * 0.9);
 }

@@ -24,6 +24,7 @@ export function defaults() {
     posnoFish: true,
     noPork: false,
     preferKid: false,
+    healthier: false,
     equipment: { oven: 1, pressure: 1, sac: 0, kazan: 0, grill: 0 },
     mode: 'normal',
     pantry,            // id -> 1 (have) ; zimnica: number of jars
