@@ -30,6 +30,10 @@ const list = [
   ['chicken_giblets', 'Pileća sitnež (vratovi, krilca)', 'Chicken necks & wings', 'meat', { p: 1, kind: 'chicken' }],
   ['lamb_offal', 'Janjeća glava i iznutrice', 'Lamb head & offal', 'meat', { p: 1, kind: 'lamb' }],
   ['mixed_mince', 'Mljeveno miješano meso (bez svinjetine)', 'Mixed minced meat (no pork)', 'meat', { p: 1, kind: 'beef' }],
+  ['kranjska', 'Kranjska kobasica', 'Carniolan sausage (kranjska)', 'meat', { kind: 'pork', pork: 1 }],
+  ['smoked_ribs', 'Suha svinjska rebra', 'Smoked pork ribs', 'meat', { kind: 'pork', pork: 1 }],
+  ['cracklings', 'Čvarci', 'Pork cracklings', 'meat', { pork: 1 }],
+  ['venison_or_beef', 'Divljač (srnetina) ili junetina', 'Venison or beef', 'meat', { p: 1, kind: 'beef' }],
 
   // Voće i povrće
   ['onion', 'Crveni luk', 'Onion', 'veg', { st: 1 }],
@@ -60,6 +64,7 @@ const list = [
   ['dill', 'Mirođija', 'Dill', 'veg', { p: 1 }],
   ['lettuce', 'Zelena salata', 'Lettuce', 'veg', { p: 1, m: [4, 5, 6, 9, 10] }],
   ['vine_leaves', 'Listovi vinove loze', 'Vine leaves', 'veg', { p: 1, m: [5, 6] }],
+  ['chives', 'Vlasac', 'Chives', 'veg', { p: 1 }],
   ['lemon', 'Limun', 'Lemon', 'veg', { p: 1 }],
   ['apple', 'Jabuke', 'Apples', 'veg', { p: 1, m: [8, 9, 10, 11, 12, 1, 2] }],
   ['walnuts', 'Orasi', 'Walnuts', 'dry', {}],
@@ -100,6 +105,13 @@ const list = [
   ['tagliatelle', 'Tagliatelle / široki rezanci', 'Tagliatelle', 'dry', {}],
   ['lasagne', 'Kore za lazanje', 'Lasagne sheets', 'dry', {}],
   ['beans', 'Grah (suhi, tetovac ili zrno)', 'Dried white beans', 'dry', {}],
+  ['barley', 'Ječam (oljušteni)', 'Pearl barley', 'dry', {}],
+  ['buckwheat', 'Heljda (zrno)', 'Buckwheat groats', 'dry', {}],
+  ['buckwheat_flour', 'Heljdino brašno', 'Buckwheat flour', 'dry', {}],
+  ['porcini', 'Vrganji (suhi)', 'Dried porcini', 'dry', {}],
+  ['poppy', 'Mak (mljeveni)', 'Ground poppy seed', 'dry', {}],
+  ['raisins', 'Grožđice', 'Raisins', 'dry', {}],
+  ['pumpkin_oil', 'Bučino ulje', 'Pumpkin seed oil', 'dry', {}],
   ['sugar', 'Šećer', 'Sugar', 'dry', { st: 1 }],
   ['powder_sugar', 'Šećer u prahu', 'Icing sugar', 'dry', {}],
   ['vanilla_sugar', 'Vanilin šećer', 'Vanilla sugar', 'dry', {}],
@@ -137,6 +149,8 @@ const list = [
   ['saffron', 'Šafran', 'Saffron', 'spice', {}],
   ['chili', 'Čili (sušeni)', 'Dried chilli', 'spice', {}],
   ['mint_dry', 'Nana (sušena)', 'Dried mint', 'spice', {}],
+  ['caraway', 'Kim', 'Caraway', 'spice', {}],
+  ['marjoram', 'Mažuran', 'Marjoram', 'spice', {}],
 
   // Konzerve i tegle
   ['tomato_can', 'Pelat / paradajz u konzervi', 'Tinned tomatoes', 'jar', {}],
@@ -145,6 +159,8 @@ const list = [
   ['peas', 'Grašak', 'Peas', 'frozen', {}],
   ['pickles', 'Kiseli krastavci', 'Pickled gherkins', 'jar', {}],
   ['olives', 'Masline', 'Olives', 'jar', {}],
+  ['mustard', 'Senf', 'Mustard', 'jar', {}],
+  ['horseradish', 'Ren (rendani)', 'Grated horseradish', 'jar', {}],
 
   // Zimnica
   ['ajvar', 'Ajvar', 'Ajvar', 'jar', { z: 1 }],
@@ -152,6 +168,7 @@ const list = [
   ['pekmez', 'Pekmez od šljiva', 'Plum butter (pekmez)', 'jar', { z: 1 }],
   ['dzem', 'Džem / slatko', 'Jam', 'jar', { z: 1 }],
   ['sauerkraut', 'Kiseli kupus (glavice)', 'Sauerkraut (whole heads)', 'jar', { z: 1 }],
+  ['sauerkraut_shred', 'Kiseli kupus (ribani)', 'Shredded sauerkraut', 'jar', { z: 1 }],
   ['kisela_paprika', 'Kisela paprika', 'Pickled peppers', 'jar', { z: 1 }],
   ['domaci_sos', 'Domaći paradajz sos', 'Home-made tomato passata', 'jar', { z: 1 }],
   ['kompot', 'Kompot', 'Compote', 'jar', { z: 1 }],
@@ -166,6 +183,7 @@ export const SUBSTITUTES = {
   tomato_paste: ['domaci_sos'],
   pickles: ['tursija'],
   dzem: ['pekmez'],
+  sauerkraut_shred: ['sauerkraut'],
   ajvar: ['ljutenica', 'pindjur'],
 };
 

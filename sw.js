@@ -1,5 +1,5 @@
 // Sofra service worker — offline app shell. Bump VERSION on every deploy that changes files.
-const VERSION = 'sofra-v9';
+const VERSION = 'sofra-v10';
 const FILES = [
   './',
   'index.html',
@@ -18,6 +18,13 @@ const FILES = [
   'js/data/recipes-sweet.js',
   'js/data/recipes-books.js',
   'js/data/recipes-meals.js',
+  'js/data/recipes-slo.js',
+  'js/pdf.js',
+  'js/pdf-fonts.js',
+  'fonts/DejaVuSans.ttf',
+  'fonts/DejaVuSans-Bold.ttf',
+  'fonts/DejaVuSans-Oblique.ttf',
+  'fonts/DejaVuSerif-Bold.ttf',
   'js/data/index.js'
 ];
 self.addEventListener('install', (e) => {

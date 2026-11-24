@@ -9,7 +9,7 @@ export function defaults() {
     v: 1,
     lang: (navigator.language || 'bs').toLowerCase().startsWith('en') ? 'en' : 'bs',
     household: 4,
-    cuisines: { bosanska: 3, balkan: 2, italian: 1, french: 1, jna: 0 },
+    cuisines: { bosanska: 3, balkan: 2, slovenska: 2, italian: 1, french: 1, jna: 0 },
     rules: { beef: 2, chicken: 3, lamb: 1, pork: 1, fish: 2 },
     noRepeatWeeks: 2,
     weekdayMax: 90,
@@ -40,6 +40,8 @@ export function load() {
     const raw = localStorage.getItem(KEY);
     state = raw ? { ...defaults(), ...JSON.parse(raw) } : defaults();
     state.meals = { ...defaults().meals, ...(state.meals || {}) };
+    // cuisines added later get their default weight once
+    state.cuisines = { ...defaults().cuisines, ...(state.cuisines || {}) };
   } catch { state = defaults(); }
   return state;
 }

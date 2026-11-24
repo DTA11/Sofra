@@ -3,6 +3,7 @@ import { BOOK_RECIPES } from './recipes-books.js';
 import { TRAD_RECIPES } from './recipes-trad.js';
 import { SWEET_RECIPES } from './recipes-sweet.js';
 import { MEAL_RECIPES } from './recipes-meals.js';
+import { SLO_RECIPES } from './recipes-slo.js';
 
 export const SOURCES = {
   lakisic: {
@@ -59,7 +60,7 @@ function derive(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...MEAL_RECIPES].map(derive);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES].map(derive);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.
@@ -83,5 +84,13 @@ export const MENUS = [
   {
     id: 'novagodina', bs: 'Doček Nove godine', en: 'New Year’s Eve',
     items: [['ruska-salata', 'side'], ['sarma-junetina', 'main'], ['svinjsko-pecenje', 'main', 'pecena-piletina'], ['sampita', 'dessert'], ['tiramisu', 'dessert']],
+  },
+  {
+    id: 'slonedjelja', bs: 'Slovenska nedjelja', en: 'Slovenian Sunday lunch',
+    items: [['gobova-juha', 'soup'], ['kranjska-zelje', 'main', 'sirovi-struklji'], ['solata-bucno-olje', 'side'], ['prekmurska-gibanica', 'dessert']],
+  },
+  {
+    id: 'slobozic', bs: 'Slovenski Božić', en: 'Slovenian Christmas',
+    items: [['prezganka', 'soup'], ['bograc', 'main'], ['matevz', 'side'], ['orehova-potica', 'dessert'], ['blejska-kremsnita', 'dessert']],
   },
 ];

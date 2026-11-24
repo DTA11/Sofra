@@ -47,18 +47,8 @@ function badges(r) {
 
 /** One formatted ingredient line. f = scale factor. */
 function ingLine(ing, f) {
-  const [id, q, unit, ex = {}] = ing;
-  const note = ex.note ? tx(ex.note) : '';
-  let qty = '';
-  if (q != null) {
-    const a = niceQ(q * f, unit);
-    let txt = a.s;
-    if (ex.max != null) { const b = niceQ(ex.max * f, unit); txt = `${a.s}–${b.s}`; }
-    const ul = unitLabel(a.u, a.n);
-    qty = `${txt}${ul ? ' ' + ul : ''}`;
-  }
-  const tail = [note, ex.opt ? t('optional') : '', q == null && !note ? t('toTaste') : ''].filter(Boolean).join(', ');
-  return `<li><span class="q">${esc(qty)}</span><span class="n">${esc(iname(id))}${tail ? ` <small>(${esc(tail)})</small>` : ''}</span></li>`;
+  const { qty, nm, tail } = ingParts(ing, f);
+  return `<li><span class="q">${esc(qty)}</span><span class="n">${esc(nm)}${tail ? ` <small>(${esc(tail)})</small>` : ''}</span></li>`;
 }
 
 function scaleFor(r) {
@@ -398,6 +388,7 @@ function viewRecipe(id) {
         <a class="btn primary" href="#/cook/${r.id}${servParam}${r.pan ? '?p=1' : ''}">${ICON.play} ${t('cook')}</a>
         <button class="btn ${fav ? 'faved' : ''}" data-act="fav" data-id="${r.id}">${fav ? ICON.starFill : ICON.star} ${t('fav')}</button>
         <button class="btn" data-act="addplan" data-id="${r.id}">${ICON.plus} ${t('addToPlan')}</button>
+        <button class="btn" data-act="print" data-kind="recipe" data-id="${r.id}">${ICON.doc} ${t('pdf')}</button>
       </div>
       <blockquote class="story">${esc(tx(r.story))}</blockquote>
       ${scaler}
@@ -547,7 +538,7 @@ function viewShop() {
       <button class="btn vb" data-act="viber">Viber</button>
       ${navigator.share ? `<button class="btn" data-act="nshare">${ICON.share} ${t('share')}</button>` : ''}
       <button class="btn" data-act="copy">${ICON.copy} ${t('copy')}</button>
-      <button class="btn" data-act="print">${ICON.doc} ${t('pdf')}</button>
+      <button class="btn" data-act="print" data-kind="shop">${ICON.doc} ${t('pdf')}</button>
     </div>
     ${sections.map((s) => `<section class="ssec"><h3>${esc(L('sec', s.sec))}</h3>${s.items.map(item).join('')}</section>`).join('')}
     <section class="ssec"><h3>${esc(L('sec', 'other'))}</h3>
@@ -601,33 +592,150 @@ function viewSettings() {
       <h4>${t('sourcesTitle')}</h4><ul class="small muted">${Object.values(SOURCES).map((s) => `<li>${esc(s[getLang()])}</li>`).join('')}</ul></section>`;
 }
 
-// ───────── PRINT / PDF ─────────
-function printAll() {
+// ───────── EXPORT: real PDF file (download / share), print only on request ─────────
+function ingParts(ing, f) {
+  const [id, q, unit, ex = {}] = ing;
+  const note = ex.note ? tx(ex.note) : '';
+  let qty = '';
+  if (q != null) {
+    const a = niceQ(q * f, unit);
+    let txt = a.s;
+    if (ex.max != null) txt = `${a.s}–${niceQ(ex.max * f, unit).s}`;
+    const ul = unitLabel(a.u, a.n);
+    qty = `${txt}${ul ? ' ' + ul : ''}`;
+  }
+  const tail = [note, ex.opt ? t('optional') : '', q == null && !note ? t('toTaste') : ''].filter(Boolean).join(', ');
+  return { qty, nm: iname(id), tail };
+}
+const stepTime = (s) => (s[2] ? ` (${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'})` : '');
+function recipeBlocks(r, f, servTxt, page = false) {
+  return [
+    { t: 'h2', text: name(r), page, sub: `${L('cu', r.cu)} · ${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''}` },
+    { t: 'p', text: tx(r.story), font: 'I', muted: 1, after: 6 },
+    { t: 'h3', text: t('ingredients') },
+    { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
+    { t: 'h3', text: t('steps') },
+    { t: 'ol', items: r.st.map((s) => [['R', tx(s)], ['B', stepTime(s)]]) },
+    { t: 'p', text: `${t('source')}: ${SOURCES[r.source][getLang()]}${r.src.p ? ' — str. ' + r.src.p : ''}`, size: 8.5, muted: 1, after: 4 },
+  ];
+}
+function shopBlocks() {
   const st = S();
-  if (!st.plan) { toast(t('emptyPlan')); return; }
-  const start = parseISO(st.plan.start);
-  const plan = st.plan.days.map((d, i) => {
-    const dl = dayLabel(start, i);
-    return `<tr><th>${dl.name}<br><small>${dl.date}</small></th><td>${d.dishes.map((x) => `<b>${esc(roleLabel(x))}:</b> ${esc(name(R[x.id]))}${x.left || x.fixed ? '' : ` <small>(${x.serv} ${t('persons')})</small>`}`).join('<br>')}</td></tr>`;
-  }).join('');
   const { sections } = shoppingList();
-  const shop = sections.map((s) => `<h3>${esc(L('sec', s.sec))}</h3><ul class="cols">${s.items.map((it) => `<li>☐ ${esc(iname(it.id))} <small>${esc(qtyText(it))}</small></li>`).join('')}</ul>`).join('')
-    + (st.shop.extra.length ? `<h3>${esc(L('sec', 'other'))}</h3><ul class="cols">${st.shop.extra.map((e) => `<li>☐ ${esc(e.text)}</li>`).join('')}</ul>` : '');
+  const out = [];
+  sections.forEach((sec) => {
+    const items = sec.items.filter((it) => !st.shop.checked[it.key]);
+    if (!items.length) return;
+    out.push({ t: 'h3', text: L('sec', sec.sec) });
+    out.push({ t: 'grid', box: 1, items: items.map((it) => [null, [['R', iname(it.id) + '  '], ['B', qtyText(it)], ...(it.opt ? [['I', ` (${t('optional')})`]] : [])]]) });
+  });
+  const extra = st.shop.extra.filter((e) => !e.done);
+  if (extra.length) { out.push({ t: 'h3', text: L('sec', 'other') }); out.push({ t: 'grid', box: 1, items: extra.map((e) => [null, e.text]) }); }
+  return out;
+}
+function exportDoc(kind, id) {
+  const st = S();
+  const day = new Date().toISOString().slice(0, 10);
+  if (kind === 'recipe') {
+    const r = R[id];
+    const f = scaleFor(r);
+    const servTxt = r.pan ? '' : `${ui.serv[r.id] ?? defaultServ(r)} ${t('persons')}`;
+    const blocks = recipeBlocks(r, f, servTxt);
+    blocks[0] = { t: 'title', text: name(r), sub: blocks[0].sub };
+    return { blocks, title: name(r), file: `sofra-${r.id}.pdf` };
+  }
+  if (!st.plan) return null;
+  const start = parseISO(st.plan.start);
+  const week = `${t('weekOf')} ${dayLabel(start, 0).date}`;
+  if (kind === 'shop') {
+    return { blocks: [{ t: 'title', text: t('printShop'), sub: `Sofra · ${week}` }, ...shopBlocks()], title: `${t('printShop')} — ${week}`, file: `sofra-kupovina-${day}.pdf` };
+  }
+  const blocks = [{ t: 'title', text: `Sofra — ${week}`, sub: t('appTagline') }, { t: 'h2', text: t('printPlan') }];
+  st.plan.days.forEach((d, i) => {
+    const dl = dayLabel(start, i);
+    blocks.push({ t: 'kv', k: dl.name, k2: dl.date, v: d.dishes.map((x) => [['B', roleLabel(x) + ': '], ['R', name(R[x.id])], ...(x.left || x.fixed ? [] : [['I', ` (${x.serv} ${t('persons')})`]])]) });
+  });
+  blocks.push({ t: 'h2', text: t('printShop'), page: true }, ...shopBlocks());
   const seen = new Set();
-  const recs = st.plan.days.flatMap((d) => d.dishes.filter((x) => !x.left)).filter((x) => (seen.has(x.id) ? false : seen.add(x.id))).map((x) => {
+  st.plan.days.flatMap((d) => d.dishes.filter((x) => !x.left)).filter((x) => (seen.has(x.id) ? false : seen.add(x.id))).forEach((x, k) => {
     const r = R[x.id]; const f = x.fixed ? 1 : x.serv / r.serves;
-    return `<section class="prec"><h2>${esc(name(r))}</h2><p><i>${esc(tx(r.story))}</i></p>
-      <p><b>${x.fixed ? (r.yieldNote ? tx(r.yieldNote) : '') : x.serv + ' ' + t('persons')}</b> · ${fmtTime(r)}</p>
-      <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
-      <ol>${r.st.map((s) => `<li>${esc(tx(s))}</li>`).join('')}</ol>
-      <p class="small">${t('source')}: ${esc(SOURCES[r.source][getLang()])}${r.src.p ? ' — str. ' + esc(r.src.p) : ''}</p></section>`;
+    if (k === 0) blocks.push({ t: 'h2', text: t('printRecipes'), page: true });
+    blocks.push(...recipeBlocks(r, f, x.fixed ? (r.yieldNote ? tx(r.yieldNote) : '') : `${x.serv} ${t('persons')}`));
+    blocks.push({ t: 'rule' });
+  });
+  return { blocks, title: `Sofra — ${week}`, file: `sofra-jelovnik-${st.plan.start}.pdf` };
+}
+// Same blocks as HTML, for the browser print dialog.
+function runsHTML(r) { return typeof r === 'string' ? esc(r) : r.map(([k, s]) => (k === 'B' ? `<b>${esc(s)}</b>` : k === 'I' ? `<i>${esc(s)}</i>` : esc(s))).join(''); }
+function blocksHTML(blocks) {
+  return blocks.map((b) => {
+    switch (b.t) {
+      case 'title': return `<h1>${esc(b.text)}</h1>${b.sub ? `<p>${esc(b.sub)}</p>` : ''}`;
+      case 'h2': return `<h2 class="${b.page ? 'pb' : ''}">${esc(b.text)}</h2>${b.sub ? `<p><small>${esc(b.sub)}</small></p>` : ''}`;
+      case 'h3': return `<h3>${esc(b.text)}</h3>`;
+      case 'p': return `<p class="${b.muted ? 'small' : ''}">${b.font === 'I' ? `<i>${runsHTML(b.text)}</i>` : runsHTML(b.text)}</p>`;
+      case 'kv': return `<table class="ptable"><tr><th>${esc(b.k)}${b.k2 ? `<br><small>${esc(b.k2)}</small>` : ''}</th><td>${b.v.map(runsHTML).join('<br>')}</td></tr></table>`;
+      case 'grid': return `<ul class="cols">${b.items.map((it) => `<li>${b.box ? '☐ ' : ''}${it[0] ? `<b>${esc(it[0])}</b> ` : ''}${runsHTML(it[1])}</li>`).join('')}</ul>`;
+      case 'ol': return `<ol>${b.items.map((it) => `<li>${runsHTML(it)}</li>`).join('')}</ol>`;
+      case 'rule': return '<hr>';
+      default: return '';
+    }
   }).join('');
-  $('#print').innerHTML = `<h1>Sofra — ${t('weekOf')} ${dayLabel(start, 0).date}</h1>
-    <h2>${t('printPlan')}</h2><table class="ptable">${plan}</table>
-    <h2 class="pb">${t('printShop')}</h2>${shop}
-    <h2 class="pb">${t('printRecipes')}</h2>${recs}`;
-  toast(t('pdfHint'));
-  setTimeout(() => window.print(), 300);
+}
+function saveBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+const isIOS = () => install.ios;
+function canShareFile(file) { try { return !!(navigator.canShare && navigator.canShare({ files: [file] })); } catch { return false; } }
+/** Save a file: on an installed iPhone app downloads don't work, so use the share sheet there. */
+function saveFile(blob, filename) {
+  const file = new File([blob], filename, { type: blob.type });
+  if (isIOS() && isStandalone() && canShareFile(file)) { navigator.share({ files: [file], title: filename }).catch(() => {}); return; }
+  saveBlob(blob, filename);
+}
+function openExport(kind, id) {
+  const doc = exportDoc(kind, id);
+  if (!doc) { toast(t('emptyPlan')); return; }
+  const m = $('#modal');
+  const head = kind === 'recipe' ? name(R[id]) : kind === 'shop' ? t('printShop') : t('pdfWeek');
+  m.innerHTML = `<div class="sheet exp"><h3>${ICON.doc} ${esc(head)}</h3><p class="muted small" data-exp-status>${t('pdfMaking')}</p>
+    <div class="exp-btns">
+      <button class="btn primary" data-exp="share" hidden>${ICON.share} ${t('pdfShare')}</button>
+      <button class="btn" data-exp="dl" disabled>⬇ ${t('pdfDownload')}</button>
+      <button class="btn" data-exp="open" disabled>${ICON.doc} ${t('pdfOpen')}</button>
+      <button class="btn" data-exp="print">🖨 ${t('print')}</button>
+      <button class="btn ghost" data-exp="x">${t('close')}</button>
+    </div></div>`;
+  m.classList.add('open');
+  let file = null;
+  const close = () => { m.classList.remove('open'); m.onclick = null; };
+  import('./pdf.js').then(({ buildPDF }) => buildPDF(doc.blocks, { title: doc.title, footer: 'Sofra · moja-sofra.netlify.app' })).then((blob) => {
+    file = new File([blob], doc.file, { type: 'application/pdf' });
+    const stEl = m.querySelector('[data-exp-status]'); if (!stEl) return;
+    stEl.textContent = `${doc.file} · ${Math.max(1, Math.round(blob.size / 1024))} KB`;
+    m.querySelectorAll('[data-exp]').forEach((b) => { b.disabled = false; });
+    const sh = m.querySelector('[data-exp="share"]');
+    if (canShareFile(file)) sh.hidden = false;
+    if (isIOS() && isStandalone() && !sh.hidden) m.querySelector('[data-exp="dl"]').hidden = true;
+  }).catch((err) => {
+    console.warn(err);
+    const stEl = m.querySelector('[data-exp-status]'); if (stEl) stEl.textContent = t('pdfFail');
+  });
+  m.onclick = (e) => {
+    const b = e.target.closest('[data-exp]');
+    if (!b && e.target !== m) return;
+    const a = b ? b.dataset.exp : 'x';
+    if (a === 'x') return close();
+    if (a === 'print') { close(); $('#print').innerHTML = blocksHTML(doc.blocks); setTimeout(() => window.print(), 200); return; }
+    if (!file) return;
+    if (a === 'share') navigator.share({ files: [file], title: doc.title }).then(close).catch(() => {});
+    if (a === 'dl') { saveBlob(file, doc.file); toast(t('pdfSaved')); close(); }
+    if (a === 'open') { const url = URL.createObjectURL(file); window.open(url, '_blank') || (location.href = url); setTimeout(() => URL.revokeObjectURL(url), 120000); close(); }
+  };
 }
 
 // ───────── day picker modal ─────────
@@ -659,7 +767,7 @@ document.addEventListener('click', (e) => {
     case 'swapdish': swapDish(Number(el.dataset.i), Number(el.dataset.k)); rer(); break;
     case 'swap': swapDay(Number(el.dataset.i)); rer(); break;
     case 'cooked': markCooked(Number(el.dataset.i)); if (st.plan.days[el.dataset.i].cooked) toast(t('cookedQ')); rer(); break;
-    case 'print': printAll(); break;
+    case 'print': openExport(el.dataset.kind || 'week', el.dataset.id); break;
     case 'togglefilters': ui.showFilters = !ui.showFilters; rer(); break;
     case 'filter': {
       const k = el.dataset.k, v = el.dataset.v;
@@ -714,8 +822,7 @@ document.addEventListener('click', (e) => {
     case 'equip': st.equipment[el.dataset.k] = st.equipment[el.dataset.k] ? 0 : 1; store.save(); rer(); break;
     case 'export': {
       const blob = new Blob([store.exportJSON()], { type: 'application/json' });
-      const aEl = document.createElement('a'); aEl.href = URL.createObjectURL(blob); aEl.download = `sofra-backup-${new Date().toISOString().slice(0, 10)}.json`; aEl.click();
-      setTimeout(() => URL.revokeObjectURL(aEl.href), 1000); break;
+      saveFile(blob, `sofra-backup-${new Date().toISOString().slice(0, 10)}.json`); break;
     }
     case 'reset': if (confirm(t('resetQ'))) { store.resetAll(); setLang(S().lang); go('#/plan'); } break;
     case 'install': doInstall(); break;

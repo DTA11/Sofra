@@ -18,6 +18,7 @@ const S = {
     youHave: 'Već imaš u ostavi', extra: 'Dodaj stavku…', bought: 'Kupljeno', clearBought: 'Ukloni kupljeno',
     share: 'Podijeli', whatsapp: 'WhatsApp', viber: 'Viber', copy: 'Kopiraj', copied: 'Kopirano',
     pdf: 'PDF', pdfHint: 'U prozoru za štampu odaberi „Sačuvaj kao PDF“.',
+    pdfWeek: 'Jelovnik, spisak i recepti', pdfMaking: 'Pravim PDF…', pdfShare: 'Podijeli / sačuvaj', pdfDownload: 'Preuzmi PDF', pdfOpen: 'Otvori PDF', print: 'Štampaj', pdfFail: 'PDF nije uspio — probaj „Štampaj“.', pdfSaved: 'PDF je preuzet.',
     filters: 'Filteri', clear: 'Očisti', results: 'jela',
     fCuisine: 'Kuhinja', fType: 'Vrsta jela', fMain: 'Glavni sastojak', fMeal: 'Obrok', fTime: 'Vrijeme', fEquip: 'Oprema', fDiet: 'Ishrana', fOcc: 'Prilika', fSeason: 'Sezonsko sada',
     noPork: 'Bez svinjetine', posno: 'Posno', posnoFish: 'Posno (riba dozvoljena)', kid: 'Za djecu', veg: 'Vegetarijansko',
@@ -43,7 +44,7 @@ const S = {
     weekOf: 'Sedmica od', today: 'danas', items: 'stavki', estimate: 'procjena',
     navHome: 'Početna', getApp: 'Instaliraj', iosTitle: 'Dodaj Sofru na početni ekran', iosStep1: 'Dodirni', iosShare: 'Podijeli', iosStep1b: '(na novijim iPhoneima u meniju ···)',
     iosStep2: 'Skrolaj dole i dodirni', iosAdd: 'Dodaj na početni ekran', iosStep3: 'Dodirni', iosDone: 'Dodaj', otherStep1: 'Otvori meni preglednika, pa',
-    homeTitle: 'Šta ćemo danas kuhati?', homeLede: 'Sofra slaže sedmični jelovnik iz bosanske, balkanske, italijanske i francuske kuhinje — od onoga što već imaš u ostavi i zimnici.',
+    homeTitle: 'Šta ćemo danas kuhati?', homeLede: 'Sofra slaže sedmični jelovnik iz bosanske, balkanske, slovenske, italijanske i francuske kuhinje — od onoga što već imaš u ostavi i zimnici.',
     homeCta: 'Napravi sedmični plan', homeInstall: 'Instaliraj na telefon', homeOpen: 'Otvori moj plan',
     featTitle: 'Sve za kuhinju na jednom mjestu', fromKitchen: 'Iz naše kuhinje', allRecipes: 'Svi recepti',
     f1t: 'Sedmični plan', f1d: 'Jedan dodir i sedmica je isplanirana — po tvojim pravilima, sezoni i broju ukućana.',
@@ -78,6 +79,7 @@ const S = {
     youHave: 'Already in your pantry', extra: 'Add an item…', bought: 'Bought', clearBought: 'Remove bought',
     share: 'Share', whatsapp: 'WhatsApp', viber: 'Viber', copy: 'Copy', copied: 'Copied',
     pdf: 'PDF', pdfHint: 'In the print dialog choose “Save as PDF”.',
+    pdfWeek: 'Menu, shopping list and recipes', pdfMaking: 'Making the PDF…', pdfShare: 'Share / save', pdfDownload: 'Download PDF', pdfOpen: 'Open PDF', print: 'Print', pdfFail: 'PDF failed — try “Print”.', pdfSaved: 'PDF downloaded.',
     filters: 'Filters', clear: 'Clear', results: 'dishes',
     fCuisine: 'Cuisine', fType: 'Dish type', fMain: 'Main ingredient', fMeal: 'Meal', fTime: 'Time', fEquip: 'Equipment', fDiet: 'Diet', fOcc: 'Occasion', fSeason: 'In season now',
     noPork: 'No pork', posno: 'Fasting (vegan)', posnoFish: 'Fasting (fish allowed)', kid: 'Kid-friendly', veg: 'Vegetarian',
@@ -103,7 +105,7 @@ const S = {
     weekOf: 'Week of', today: 'today', items: 'items', estimate: 'estimate',
     navHome: 'Home', getApp: 'Install', iosTitle: 'Add Sofra to your Home Screen', iosStep1: 'Tap', iosShare: 'Share', iosStep1b: '(in the ··· menu on newer iPhones)',
     iosStep2: 'Scroll down and tap', iosAdd: 'Add to Home Screen', iosStep3: 'Tap', iosDone: 'Add', otherStep1: 'Open the browser menu, then',
-    homeTitle: 'What shall we cook today?', homeLede: 'Sofra builds your weekly menu from Bosnian, Balkan, Italian and French home cooking — using what is already in your pantry and preserves.',
+    homeTitle: 'What shall we cook today?', homeLede: 'Sofra builds your weekly menu from Bosnian, Balkan, Slovenian, Italian and French home cooking — using what is already in your pantry and preserves.',
     homeCta: 'Make a weekly plan', homeInstall: 'Install on your phone', homeOpen: 'Open my plan',
     featTitle: 'Everything for the kitchen in one place', fromKitchen: 'From our kitchen', allRecipes: 'All recipes',
     f1t: 'Weekly plan', f1d: 'One tap and the week is planned — by your rules, the season and the size of your household.',
@@ -125,7 +127,7 @@ const S = {
 const LISTS = {
   cu: {
     bosanska: ['Stara bosanska', 'Old Bosnian'], balkan: ['Balkanska', 'Balkan'], italian: ['Italijanska', 'Italian'],
-    french: ['Francuska', 'French'], jna: ['JNA kuhinja', 'JNA army kitchen'],
+    french: ['Francuska', 'French'], slovenska: ['Slovenska', 'Slovenian'], jna: ['JNA kuhinja', 'JNA army kitchen'],
   },
   type: {
     main: ['Glavno jelo', 'Main'], soup: ['Čorba / supa', 'Soup'], pie: ['Pita', 'Savoury pie'], salad: ['Salata', 'Salad'],

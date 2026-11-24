@@ -296,6 +296,8 @@ body.cooking { padding-bottom: 0; background: #12100e; color: #f5f2ee; }
 .modal { position: fixed; inset: 0; background: rgba(12,10,8,.5); display: none; align-items: flex-end; justify-content: center; z-index: 50; }
 .modal.open { display: flex; }
 .sheet { background: var(--bg); width: 100%; max-width: 520px; border-radius: 24px 24px 0 0; padding: 20px 18px calc(18px + env(safe-area-inset-bottom)); }
+.exp h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; } .exp h3 svg { color: var(--accent); }
+.exp-btns { display: grid; gap: 8px; margin-top: 12px; } .exp-btns .btn { justify-content: center; } .exp-btns .btn[disabled] { opacity: .45; } .exp-btns .btn[hidden] { display: none; }
 .daypick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 .daypick .btn { flex-direction: column; }
 .app-steps { border: 0; border-radius: 22px; padding: 22px 22px 18px; max-width: 380px; width: calc(100% - 32px); background: var(--bg); color: var(--ink); box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); }

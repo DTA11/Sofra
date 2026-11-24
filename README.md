@@ -7,12 +7,12 @@ Bosanski (ijekavica) prvo, engleski kao prekidač.
 pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvezi (JSON)* / *Uvezi*.
 
 ## Šta radi
-- Sedmični plan iz odabrane mješavine kuhinja (stara bosanska, balkanska, italijanska, francuska, JNA)
+- Sedmični plan iz odabrane mješavine kuhinja (stara bosanska, balkanska, slovenska, italijanska, francuska, JNA)
 - Pravila: npr. junetina najviše 2× sedmično, bez ponavljanja 2–3 sedmice, sezonsko povrće, planirani ostaci,
   zamjena dana jednim dodirom, porcije za broj ukućana, posni dani, „bez svinjetine“, prednost dječijim jelima
 - Ostava + zimnica (tegle); plan koristi ono što imaš i ponovo koristi iste svježe namirnice kroz sedmicu
 - Jedan spisak za kupovinu po odjeljcima prodavnice → WhatsApp / Viber / dijeljenje; kupljeno ide u ostavu
-- PDF (plan + spisak + recepti) preko prozora za štampu → „Sačuvaj kao PDF“
+- Pravi PDF fajl (sedmica: plan + spisak + recepti; samo spisak; jedan recept) — preuzmi, podijeli ili otvori; štampa samo na zahtjev. PDF se pravi u pregledniku (js/pdf.js) s ugrađenim DejaVu fontovima (fonts/, licenca u fonts/LICENSE.txt)
 - Filteri: kuhinja, glavni sastojak, vrsta jela, obrok, vrijeme, oprema (sač/peka, ekspres lonac, rerna, kazan, roštilj), posno, za djecu…
 - Ramazanski / iftar način, praznični meniji (Bajram, iftar, Badnji dan, Božić, Nova godina)
 - Način kuhanja: veliki koraci, tajmeri, ekran ostaje upaljen (Wake Lock)
@@ -32,6 +32,7 @@ js/data/ingredients.js  katalog namirnica (odjeljak, sezona, zimnica, kvarljivo)
 js/data/recipes-books.js  recepti po Lakišiću i JNA recepturama (količine i vremena kao u knjizi, tekst nov)
 js/data/recipes-trad.js   ostala jela (tekst i količine napisani za Sofru)
 js/data/recipes-sweet.js  slatko
+js/data/recipes-slo.js    slovenska kuhinja (tekst i količine napisani za Sofru)
 js/data/index.js      izvedeni filteri (posno, bez svinjetine…), izvori, praznični meniji
 sw.js                 offline keš (povećaj VERSION pri svakoj promjeni)
 manifest.webmanifest  PWA manifest

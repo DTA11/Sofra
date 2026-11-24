@@ -5,6 +5,7 @@ export const CU_COLORS = {
   italian: ['#4f6b1f', '#e1e9cc'],
   french: ['#6d2f5c', '#eedbe7'],
   jna: ['#4d5530', '#e3e4cf'],
+  slovenska: ['#2f5d4a', '#dbe8df'],
 };
 const COPPER = ['#b8642f', '#d88b4f', '#7c3d1a'];
 
