@@ -426,3 +426,12 @@ body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 .hero-band .wday small, .hero-band .wday span { color: rgba(255,255,255,.85); }
 .hero-band .wday.on { background: #fff; color: #8c1c13; border-color: #fff; }
 .hero-band .wday.on small, .hero-band .wday.on span { color: #8c1c13; }
+
+/* today's random dish on the homepage */
+.pick { position: relative; z-index: 1; }
+.pick-art { display: block; border-radius: 22px; overflow: hidden; box-shadow: 0 16px 30px -16px rgba(0,0,0,.7); aspect-ratio: 16 / 10; }
+.pick-art .art { width: 100%; height: 100%; display: block; }
+.pick-txt { padding-top: 14px; }
+.pick-name { display: block; color: #fff; text-decoration: none; font: 700 clamp(1.5rem, 5vw, 2rem)/1.1 var(--display); margin: 2px 0 6px; }
+.home-hero .meta-row { color: rgba(255,255,255,.88); }
+.btn.sm { min-height: 42px; padding: 8px 14px; font-size: .9rem; }

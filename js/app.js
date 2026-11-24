@@ -116,12 +116,7 @@ function viewHome() {
         </div>
         <div class="trust"><span>${ICON.check}${RECIPES.length} ${t('dishes')}</span><span>${ICON.check}${getLang() === 'bs' ? 'Bez registracije' : 'No sign-up'}</span><span>${ICON.check}${getLang() === 'bs' ? 'Radi i bez interneta' : 'Works offline'}</span></div>
       </div>
-      <div class="hh-art">
-        <div class="tile t1">${dishArt(R['bosanski-lonac'])}</div>
-        <div class="tile t2">${dishArt(R['begova-corba'])}</div>
-        <div class="tile t3">${dishArt(R['baklava-sarajevska'])}</div>
-        <div class="tile t4">${dishArt(R['zeljanica'])}</div>
-      </div>
+      ${todayPick()}
     </section>
     <section class="home-sec">
       <div class="sec-head"><h2>${t('fromKitchen')}</h2><a href="#/recipes">${t('allRecipes')} →</a></div>
@@ -135,6 +130,31 @@ function viewHome() {
     <section class="home-sec privacy"><h3>${ICON.check} ${t('privacyTitle')}</h3><p>${t('privacyText')}</p></section>
     <footer class="sitefoot"><p><b>Sofra</b> — ${t('footer').replace(/^Sofra — /, '')}</p>
       <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/jna">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
+}
+
+// "Prijedlog za danas": a random dish, the same all day, new one on tap
+function pickPool() {
+  const st = S(); const m = new Date().getMonth() + 1;
+  return RECIPES.filter((r) => (r.type === 'main' || r.type === 'pie') && (st.cuisines[r.cu] || 0) > 0
+    && (!st.noPork && st.mode !== 'ramazan' || r.noPork) && (!r.months || r.months.includes(m)) && !(r.eq || []).some((e) => !st.equipment[e]));
+}
+function todayPick() {
+  const pool = pickPool(); if (!pool.length) return '';
+  if (ui.pickIdx == null) { const d = new Date(); const seed = d.getFullYear() * 400 + d.getMonth() * 32 + d.getDate(); ui.pickIdx = (seed * 7919) % pool.length; }
+  const r = pool[ui.pickIdx % pool.length];
+  const st = S();
+  return `<div class="pick">
+      <a class="pick-art" href="#/recipe/${r.id}">${dishArt(r, 'big')}</a>
+      <div class="pick-txt">
+        <span class="label">${getLang() === 'bs' ? 'Prijedlog za danas' : 'Today’s idea'}</span>
+        <a class="pick-name" href="#/recipe/${r.id}">${esc(name(r))}</a>
+        <p class="meta-row">${ICON.clock}${fmtTime(r)} <span class="dot"></span>${esc(L('cu', r.cu))}</p>
+        <div class="row gap wrap">
+          <a class="btn light sm" href="#/cook/${r.id}?s=${st.household}">${ICON.play} ${t('cook')}</a>
+          <button class="btn ghost sm" data-act="repick">${ICON.refresh} ${getLang() === 'bs' ? 'Drugi prijedlog' : 'Another idea'}</button>
+        </div>
+      </div>
+    </div>`;
 }
 
 // ───────── install button (same behaviour as Baby Card Printables) ─────────
@@ -685,6 +705,7 @@ document.addEventListener('click', (e) => {
     }
     case 'reset': if (confirm(t('resetQ'))) { store.resetAll(); setLang(S().lang); go('#/plan'); } break;
     case 'install': doInstall(); break;
+    case 'repick': { const n = pickPool().length; if (n > 1) { let k; do { k = Math.floor(Math.random() * n); } while (k === ui.pickIdx % n); ui.pickIdx = k; } rer(); break; }
     case 'homeplan': generatePlan(); go('#/plan'); break;
     default: break;
   }
