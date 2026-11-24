@@ -138,7 +138,7 @@ function todayPick() {
       <div class="pick-txt">
         <span class="label">${getLang() === 'bs' ? 'Prijedlog za danas' : 'Today’s idea'}</span>
         <a class="pick-name" href="#/recipe/${r.id}">${esc(name(r))}</a>
-        <p class="meta-row">${ICON.clock}${fmtTime(r)} <span class="dot"></span>${esc(origin(r))}</p>
+        <p class="meta-row">${ICON.clock}${fmtTime(r)} <span class="dot"></span>${esc(L('type', r.type))}</p>
         <div class="row gap wrap">
           <a class="btn light sm" href="#/cook/${r.id}?s=${st.household}">${ICON.play} ${t('cook')}</a>
           <button class="btn ghost sm" data-act="repick">${ICON.refresh} ${getLang() === 'bs' ? 'Drugi prijedlog' : 'Another idea'}</button>
@@ -285,7 +285,7 @@ function card(r) {
   return `<a class="card" href="#/recipe/${r.id}">
     ${dishArt(r, 'cardart')}
     <div class="card-body">
-      <div class="card-top"><span class="cu cu-${r.cu}">${esc(r.reg ? L('reg', r.reg) : shortCu(r.cu))}</span><span class="time">${ICON.clock}${fmtTime(r)}</span></div>
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(r.type === 'dessert' && r.sub ? L('sub', r.sub) : L('type', r.type))}</span><span class="time">${ICON.clock}${fmtTime(r)}</span></div>
       <b>${esc(name(r))}</b>
       <div class="tags">${badges(r)}${fav ? `<span class="tag fav">★</span>` : ''}</div>
     </div>
@@ -318,8 +318,6 @@ function regionChips() {
   const regs = keys('reg').filter((k) => used.has(k) && f.cu.has(regionCountry(k)));
   return regs.length ? chipGroup(t('fRegion'), 'reg', regs.map((k) => [k, L('reg', k)])) : '';
 }
-const shortCu = (cu) => (cu === 'bosanska' ? 'BiH' : cu === 'svakodnevno' ? (getLang() === 'bs' ? 'Svakodnevno' : 'Everyday') : L('cu', cu));
-const origin = (r) => L('cu', r.cu) + (r.reg ? ' · ' + L('reg', r.reg) : '');
 function searchBar() {
   const n = activeFilterCount();
   return `<div class="searchbar"><input type="search" id="q" placeholder="${t('search')}" value="${esc(ui.filters.q)}">
@@ -393,7 +391,7 @@ function viewRecipe(id) {
   const servParam = r.pan ? '' : `?s=${ui.serv[r.id] ?? defaultServ(r)}`;
   return `<article class="recipe">
       <div class="rhero">${dishArt(r, 'big')}<a class="backfab" href="javascript:history.back()" aria-label="${t('back')}">${ICON.back}</a></div>
-      <div class="card-top"><span class="cu cu-${r.cu}">${esc(origin(r))}</span><span class="muted">${esc(L('type', r.type))} · ${fmtTime(r)}</span></div>
+      <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('type', r.type))}</span><span class="muted">${fmtTime(r)}</span></div>
       <h1 class="rtitle">${esc(name(r))}</h1>
       <div class="tags">${badges(r)}${occ}${eq}</div>
       <div class="row gap wrap actions">
@@ -622,7 +620,7 @@ function ingParts(ing, f) {
 const stepTime = (s) => (s[2] ? ` (${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'})` : '');
 function recipeBlocks(r, f, servTxt, page = false) {
   return [
-    { t: 'h2', text: name(r), page, sub: `${origin(r)} · ${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''}` },
+    { t: 'h2', text: name(r), page, sub: `${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''}` },
     { t: 'p', text: tx(r.story), font: 'I', muted: 1, after: 6 },
     { t: 'h3', text: t('ingredients') },
     { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
