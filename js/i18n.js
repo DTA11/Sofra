@@ -83,7 +83,7 @@ const S = {
     guideTitle: 'Prvi koraci', guideLede: 'Tri koraka do prvog plana — traje par minuta.',
     g1t: 'Ostava', g1d: 'Označi šta obično imaš u kuhinji. Plan bira jela od toga, a spisak to preskače.', g1b: 'Otvori ostavu',
     g2t: 'Plan', g2d: 'Odaberi: jedno jelo, jedan dan, sedmica ili mjesec.', g2b: 'Napravi plan',
-    g3t: 'Kupovina', g3d: 'Spisak samo za ono što fali. U prodavnici kvačiš stavke, a možeš ga i poslati ili sačuvati kao PDF.', g3b: 'Otvori spisak',
+    g3t: 'Kupovina', g3d: 'Spisak samo za ono što fali. U prodavnici označavaš šta si kupio, a možeš ga i poslati ili sačuvati kao PDF.', g3b: 'Otvori spisak',
     guideSkip: 'Preskoči vodič', guideDone: 'Gotovo — prijatno!', guideShow: 'Prikaži vodič „Prvi koraci“', guideShown: 'Vodič je na stranici Plan.',
     starterTitle: 'Brzi početak: šta obično imaš?', starterLede: 'Osnovne stvari su već označene — skini kvačicu gdje nemaš, dodaj ostalo. Kasnije sve nađeš niže na ovoj stranici.',
     starterAll: 'Označi sve', starterDone: 'Gotovo — idemo na plan',
