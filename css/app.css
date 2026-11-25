@@ -522,6 +522,14 @@ body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 .gno svg { width: 16px; height: 16px; }
 .gsteps li.ok .gno { background: var(--olive); }
 .gsteps li.ok b { text-decoration: line-through; text-decoration-color: var(--muted); }
+/* quick-guide window on app load */
+.sheet.welcome { max-height: 88vh; max-height: 88dvh; overflow-y: auto; }
+.sheet.welcome h3 { margin: 4px 0 6px; font: 700 1.35rem var(--display); }
+.sheet.welcome .gsteps { margin: 12px 0 8px; }
+.sheet.welcome .gsteps .wlabel { display: block; margin: 6px 0 -4px; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; font: 700 .78rem var(--ui); }
+.wfoot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.wfoot .check { display: flex; align-items: center; gap: 8px; font-size: .92rem; color: var(--muted); }
+.wfoot input { width: 18px; height: 18px; accent-color: var(--accent); }
 /* plan length sheet */
 .rangepick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0 12px; }
 .rbtn { display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: var(--ink); cursor: pointer; font: 400 .8rem/1.35 var(--ui); }

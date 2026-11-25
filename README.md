@@ -19,6 +19,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Filteri: kuhinja, glavni sastojak, vrsta jela, obrok, vrijeme, oprema (sač/peka, ekspres lonac, rerna, kazan, roštilj), posno, za djecu…
 - Ramazanski / iftar način, praznični meniji (Bajram, iftar, Badnji dan, Božić, Nova godina)
 - **Jufke za pite** (13 pita): zadano domaće jufke — mijesi, odmara, razvlači (koraci se dodaju u recept, količine u tekstu su omjeri pa važe za svaki broj porcija); zamjena „Kupovne“ za one bez vremena. Prekidač na receptu, u načinu kuhanja (1. korak) i u postavkama; vrijedi za sve pite. Ocjena i nutrijenti se uvijek računaju po kupovnoj verziji (`ingShop`), pa se ne mijenjaju s prekidačem.
+- **„Prije nego počnete“**: prozor s kratkim vodičem pri svakom otvaranju aplikacije (prvo Postavke i Ostava, onda Plan i Kupovina; urađeni koraci označeni), dok se ne označi „Ne prikazuj više“ ili dok svi koraci nisu urađeni. Postavke → „Prikaži vodič“ ga vraća. Ne otvara se u načinu kuhanja.
 - Način kuhanja: veliki koraci, tajmeri, ekran ostaje upaljen (Wake Lock)
 - **Doručak bez kuhanja** (#/dorucci): 20 složenih doručaka od kupovnih proizvoda (js/data/recipes-combo.js, vrsta `combo`, količine po osobi); postavka „Doručak bez kuhanja radnim danom“ (pon–pet složeni, vikendom kuhani)
 - Kupovni proizvodi (`prod` u ingredients.js): namazi, delikatesa, konzerve, mliječno, pekara, voće, čaj i kafa — dugotrajna zaliha u ostavi; spisak po odjeljcima prodavnice

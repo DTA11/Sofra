@@ -117,6 +117,7 @@ function route() {
   const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
   syncInstallButtons();
+  { const gk = { settings: 'settings', pantry: 'pantry' }[name]; if (gk && !(S().guide || {})[gk]) { S().guide = { ...S().guide, [gk]: true }; store.save(); } } // quick guide: page visited = step done
   if (name === 'cook') startCook(arg);
   window.scrollTo(0, 0);
   renderChrome();
@@ -159,6 +160,32 @@ function guideCard() {
   return `<section class="guide"><h2>${t('guideTitle')}</h2><p class="muted small">${t('guideLede')}</p>
     <ol class="gsteps">${steps.map((x) => `<li class="${x.ok ? 'ok' : ''}"><span class="gno">${x.ok ? ICON.check : x.n}</span><div><b>${t(x.tt)}</b><p>${t(x.d)}</p>${x.btn}</div></li>`).join('')}</ol>
     <button class="btn ${all ? 'primary' : 'ghost'} sm" data-act="guidedone">${all ? t('guideDone') : t('guideSkip')}</button></section>`;
+}
+/** Quick-guide window: opens on every app load until "Don't show again" is ticked or all four steps are done. */
+function welcome() {
+  const st = S(); const g = st.guide || {};
+  const name = location.hash.replace(/^#\/?/, '').split('/')[0];
+  if (g.welcomeOff || name === 'cook') return;
+  const steps = [
+    [g.settings, 'w1', `<a class="btn sm {P}" href="#/settings" data-w>${ICON.gear} ${t('w1b')}</a>`],
+    [g.pantry, 'w2', `<a class="btn sm {P}" href="#/pantry" data-w>${ICON.pantry} ${t('w2b')}</a>`],
+    [!!st.plan, 'w3', `<button class="btn sm {P}" data-w="plan">${ICON.plan} ${t('w3b')}</button>`],
+    [g.shop, 'w4', `<a class="btn sm {P}" href="#/shop" data-w>${ICON.shop} ${t('w4b')}</a>`],
+  ];
+  if (steps.every((x) => x[0])) return;
+  const next = steps.findIndex((x) => !x[0]);
+  const m = $('#modal');
+  m.innerHTML = `<div class="sheet welcome"><h3>${t('wTitle')}</h3><p class="muted small">${t('wLede')}</p>
+    <ol class="gsteps">${steps.map(([ok, k, b], i) => `${i === 0 ? `<li class="wlabel">${t('wFirst')}</li>` : i === 2 ? `<li class="wlabel">${t('wThen')}</li>` : ''}<li class="${ok ? 'ok' : ''}"><span class="gno">${ok ? ICON.check : i + 1}</span><div><b>${t(k + 't')}</b><p>${t(k + 'd')}</p>${ok ? '' : b.replace('{P}', i === next ? 'primary' : '')}</div></li>`).join('')}</ol>
+    <div class="wfoot"><label class="check"><input type="checkbox" data-wnever> ${t('wNever')}</label><button class="btn" data-w="x">${t('wClose')}</button></div></div>`;
+  m.classList.add('open');
+  m.onclick = (e) => {
+    const b = e.target.closest('[data-w]');
+    if (!b && e.target !== m) return;
+    if (m.querySelector('[data-wnever]').checked) { st.guide = { ...st.guide, welcomeOff: true }; store.save(); }
+    m.classList.remove('open'); m.onclick = null;
+    if (b && b.dataset.w === 'plan') askRange(() => go('#/plan'));
+  };
 }
 // Quick-start pantry list: what most kitchens have
 const STARTER = ['onion', 'garlic', 'potato', 'carrot', 'flour', 'rice', 'sugar', 'salt', 'pepper_black', 'paprika_sweet', 'bay_leaf', 'vegeta', 'oil', 'olive_oil', 'vinegar', 'tomato_paste',
@@ -938,7 +965,7 @@ document.addEventListener('click', (e) => {
   switch (a) {
     case 'newplan': askRange(); break;
     case 'guidedone': st.guide = { ...st.guide, done: true }; store.save(); rer(); break;
-    case 'guideshow': st.guide = { done: false, pantry: false, shop: false }; store.save(); toast(t('guideShown')); go('#/plan'); break;
+    case 'guideshow': st.guide = { done: false, pantry: false, shop: false, settings: false, welcomeOff: false }; store.save(); toast(t('guideShown')); go('#/plan'); break;
     case 'starterall': STARTER.forEach((id) => store.setHave(id, true)); store.save(); rer(); break;
     case 'starterdone': st.guide = { ...st.guide, pantry: true }; store.save(); go('#/plan'); break;
     case 'shoppart': ui.shopPart = el.dataset.v; rer(); break;
@@ -1086,5 +1113,6 @@ menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false
 window.addEventListener('hashchange', () => setMenu(false));
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 route();
+welcome();
 if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('./sw.js').catch(() => {});
 window.__sofra = { R, RECIPES, kindOf, store };
