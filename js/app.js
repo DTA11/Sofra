@@ -203,8 +203,12 @@ function viewHome() {
 // "Prijedlog za danas": a random dish, the same all day, new one on tap
 function pickPool() {
   const st = S(); const m = new Date().getMonth() + 1;
-  return RECIPES.filter((r) => (r.type === 'main' || r.type === 'pie') && (st.styles[r.style] || 0) > 0
-    && (!st.noPork && st.mode !== 'ramazan' || r.noPork) && (!r.months || r.months.includes(m)) && !(r.eq || []).some((e) => !st.equipment[e]));
+  const all = RECIPES.filter((r) => (r.type === 'main' || r.type === 'pie' || (r.type === 'salad' && r.full)) && (st.styles[r.style] || 0) > 0
+    && (!st.noPork && st.mode !== 'ramazan' || r.noPork) && (!r.months || r.months.includes(m)) && !(r.eq || []).some((e) => !st.equipment[e])
+    && ((st.meatless || 0) < 3 || r.veg));
+  // "Zdravije" 2–3: today's idea skips grade D/E (if anything is left)
+  const lite = (st.health || 0) >= 2 ? all.filter((r) => !'DE'.includes(nutrition(r).grade)) : all;
+  return lite.length ? lite : all;
 }
 function todayPick() {
   const pool = pickPool(); if (!pool.length) return '';
@@ -707,6 +711,8 @@ function viewSettings() {
     <section class="set"><h3>${t('household')}</h3>${num('household', st.household, 1, 20)}</section>
     <section class="set"><h3>${t('cuisineMix')}</h3>
       ${keys('style').map((c) => `<div class="mix"><span>${esc(L('style', c))}</span><input type="range" min="0" max="3" step="1" value="${st.styles[c] || 0}" data-act="mix" data-k="${c}"><small>${lvl[st.styles[c] || 0]}</small></div>`).join('')}
+      ${['meatless', 'health'].map((k) => `<div class="mix"><span>${t(k)}</span><input type="range" min="0" max="3" step="1" value="${st[k] || 0}" data-act="mixs" data-k="${k}"><small>${t(k + 'Lvl').split('|')[st[k] || 0]}</small></div>`).join('')}
+      <p class="small muted">${t('dietHint')}</p>
     </section>
     <section class="set"><h3>${t('rules')}</h3>
       ${keys('kind').map((k) => `<div class="mix"><span>${esc(L('kind', k))}</span><input type="number" class="num" min="0" max="7" data-act="rule" data-k="${k}" value="${st.rules[k] ?? 7}"><small>× / 7</small></div>`).join('')}
@@ -715,7 +721,7 @@ function viewSettings() {
       <div class="mix"><span>${t('noRepeat')}</span>${num('noRepeatWeeks', st.noRepeatWeeks, 0, 6)}<small>${t('weeks')}</small></div>
       <div class="mix"><span>${t('weekdayMax')}</span>${num('weekdayMax', st.weekdayMax, 15, 300, 15)}<small>min</small></div>
       <div class="mix"><span>${t('dessertsWeek')}</span>${num('dessertsPerWeek', st.dessertsPerWeek, 0, 7)}</div>
-      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}${tog('healthier', t('healthier'))}${tog('posnoFish', t('posnoFish'))}
+      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}${tog('posnoFish', t('posnoFish'))}
     </section>
     <section class="set"><h3>${t('posnoDays')}</h3><div class="chips">${daysChips}</div></section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
@@ -935,7 +941,7 @@ document.addEventListener('click', (e) => {
       const r = R[el.dataset.id];
       pickDay((i) => {
         const d = S().plan.days[i];
-        const role = r.type === 'soup' ? 'soup' : r.type === 'dessert' ? 'dessert' : r.type === 'salad' ? 'side' : r.type === 'breakfast' || r.type === 'combo' ? 'breakfast' : r.type === 'snack' ? 'snack' : 'main';
+        const role = r.type === 'soup' ? 'soup' : r.type === 'dessert' ? 'dessert' : r.type === 'salad' && !r.full ? 'side' : r.type === 'breakfast' || r.type === 'combo' ? 'breakfast' : r.type === 'snack' ? 'snack' : 'main';
         const keep = d.dishes.filter((x) => x.role !== role || role === 'side');
         const dish = { id: r.id, role, serv: role === 'dessert' ? r.serves : S().household, ...(role === 'dessert' ? { fixed: 1 } : {}) };
         const order = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
@@ -1003,6 +1009,7 @@ document.addEventListener('change', (e) => {
     case 'setnum': { const v = Number(el.value); if (!Number.isNaN(v)) { st[el.dataset.k] = v; store.save(); } break; }
     case 'settog': st[el.dataset.k] = el.checked; store.save(); break;
     case 'mix': st.styles[el.dataset.k] = Number(el.value); store.save(); route(); break;
+    case 'mixs': if (['meatless', 'health'].includes(el.dataset.k)) { st[el.dataset.k] = Number(el.value); store.save(); ui.pickIdx = null; route(); } break;
     case 'rule': st.rules[el.dataset.k] = Number(el.value); store.save(); break;
     case 'panshape': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, shape: el.value }; route(); break; }
     case 'pandim': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, [el.dataset.k]: Math.max(5, Number(el.value) || 0) }; route(); break; }

@@ -25,7 +25,8 @@ export function defaults() {
     posnoFish: true,
     noPork: false,
     preferKid: false,
-    healthier: false,
+    meatless: 0,       // 0–3: meatless days (3 = vegetarian)
+    health: 0,         // 0–3: prefer dishes with grade A/B
     equipment: { oven: 1, pressure: 1, sac: 0, kazan: 0, grill: 0 },
     mode: 'normal',
     range: 'week',     // plan length: dish | day | week | month
@@ -58,6 +59,8 @@ function fill(d) {
   const s = { ...defaults(), ...migrate(d) };
   s.meals = { ...defaults().meals, ...(d.meals || {}) };
   s.styles = { ...defaults().styles, ...(d.styles || {}) };
+  if (d.health == null && d.healthier) s.health = 2; // old on/off switch
+  delete s.healthier;
   // people who already had a plan before the guide existed don't need it
   s.guide = { ...defaults().guide, ...(d.guide || (d.plan ? { done: true, pantry: true, shop: true } : {})) };
   return s;

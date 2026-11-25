@@ -8,6 +8,7 @@ import { SLO_RECIPES } from './recipes-slo.js';
 import { MORE_RECIPES } from './recipes-more.js';
 import { COMBO_RECIPES } from './recipes-combo.js';
 import { EXTRA_RECIPES } from './recipes-extra.js';
+import { SALAD_RECIPES } from './recipes-salads.js';
 
 export const SOURCES = {
   lakisic: {
@@ -79,7 +80,7 @@ function derive(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...COMBO_RECIPES].map(derive);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...COMBO_RECIPES].map(derive);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

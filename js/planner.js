@@ -8,6 +8,26 @@ export const iso = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).
 export const parseISO = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
 const weekday = (d) => (d.getDay() + 6) % 7; // 0 = Monday
 
+// "Zdravije" slider 0–3: grade weights (Nutri-Score style A–E). Level 3 nearly skips D/E.
+const HEALTH = [null, { A: 1.4, B: 1.2, C: 1, D: 0.8, E: 0.6 }, { A: 1.8, B: 1.4, C: 1, D: 0.55, E: 0.35 }, { A: 2.4, B: 1.7, C: 1, D: 0.2, E: 0.08 }];
+const healthMul = (r) => { const h = HEALTH[S().health || 0]; return h ? h[nutrition(r).grade] || 1 : 1; };
+// "Bez mesa" slider 0–3: meatless days per 7 (3 = every day, no meat or fish at all)
+const VEG_PER_WEEK = [0, 2, 4, 7];
+let pendingVeg = new Set(); // days of the plan being built that should be meatless
+/** Pick which days of each 7-day block are meatless (spread at random). */
+function vegDaysFor(n) {
+  const k = VEG_PER_WEEK[S().meatless || 0] || 0;
+  const out = new Set();
+  if (!k) return out;
+  for (let a = 0; a < n; a += 7) {
+    const len = Math.min(7, n - a);
+    const cnt = Math.min(len, Math.floor(len * k / 7 + Math.random()));
+    const idx = Array.from({ length: len }, (_, j) => a + j).sort(() => Math.random() - 0.5);
+    idx.slice(0, cnt).forEach((i) => out.add(i));
+  }
+  return out;
+}
+
 const haveOrSub = (id) => {
   const p = S().pantry;
   if (p[id]) return id;
@@ -26,6 +46,7 @@ function eligible(r, ctx) {
   const req = r.eq || [];
   if (req.some((e) => !st.equipment[e])) return false;
   if (ctx.posno && !(st.posnoFish ? r.posnoFish : r.posno)) return false;
+  if (ctx.vegDay && !r.veg) return false;
   return true;
 }
 
@@ -52,7 +73,7 @@ function score(r, ctx) {
   if (r.months) { if (r.months.includes(m)) s += 1; else s *= 0.3; }
   if (st.favs.includes(r.id)) s += 0.8;
   if (st.preferKid && r.kid) s += 1;
-  if (st.healthier) s *= { A: 1.7, B: 1.35, C: 1, D: 0.7, E: 0.5 }[nutrition(r).grade];
+  s *= healthMul(r);
   if (ctx.weekday < 5 && r.time > (ctx.maxTime ?? st.weekdayMax)) s *= 0.15;
   return Math.max(0.01, s) * (0.55 + Math.random() * 0.9);
 }
@@ -75,7 +96,12 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
     if (k && relax < 2 && st.rules[k] != null && (kindCount[k] || 0) >= st.rules[k]) return false;
     return true;
   });
-  if (!cands.length) return relax < 2 ? pick(pool, ctx, usedIds, kindCount, relax + 1) : null;
+  if (!cands.length) {
+    if (relax < 2) return pick(pool, ctx, usedIds, kindCount, relax + 1);
+    // a meatless day with no meatless dish left: better a normal dish than an empty day
+    if (ctx.vegDay && (st.meatless || 0) < 3) return pick(pool, { ...ctx, vegDay: false }, usedIds, kindCount, 0);
+    return null;
+  }
   // First pick a style (domaća / tjestenina / evropska / vojnička) by its weight, so a small
   // kitchen still shows up as often as asked; then the best-scoring dish of that style.
   const W = [0, 1, 3, 8];
@@ -89,7 +115,7 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
   return best;
 }
 
-const MAINS = () => RECIPES.filter((r) => r.type === 'main' || r.type === 'pie');
+const MAINS = () => RECIPES.filter((r) => r.type === 'main' || r.type === 'pie' || (r.type === 'salad' && r.full));
 const BREAKFASTS = () => RECIPES.filter((r) => r.meal.includes('breakfast') && r.type !== 'combo');
 const COMBOS = () => RECIPES.filter((r) => r.type === 'combo');
 const DINNERS = () => RECIPES.filter((r) => r.meal.includes('dinner') && r.type !== 'dessert' && (r.light || ['pie', 'salad', 'soup'].includes(r.type)));
@@ -129,6 +155,7 @@ function ctxFor(start, i, days, planId) {
   return {
     date, weekday: wd, month: date.getMonth() + 1,
     posno: st.mode !== 'ramazan' && st.posnoDays.includes(wd),
+    vegDay: (st.meatless || 0) >= 3 || pendingVeg.has(i) || !!(days[i] && days[i].veg),
     weekIngs: weekIngredients(wk(days, i)), recent: recentIds(planId), ...weekShape(wk(days, i), i),
   };
 }
@@ -149,16 +176,17 @@ function fillDay(days, i, start, planId, opts = {}) {
   // a month has more days than some kitchens have dishes: then repeat dishes from other weeks
   const main = pick(MAINS(), ctx, used, kc) || pick(MAINS(), ctx, usedSet(wk(days, i), i), kc);
   if (main) {
-    const makeLeft = st.leftovers && main.left && opts.allowLeft && i < n - 1;
+    const makeLeft = st.leftovers && main.left && opts.allowLeft && i < n - 1 && (main.veg || !pendingVeg.has(i + 1));
     day.dishes.push({ id: main.id, role: 'main', serv: makeLeft ? hh * 2 : hh });
     day.makesLeft = !!makeLeft;
   }
+  if (ctx.vegDay && (st.meatless || 0) < 3) day.veg = true;
   return day;
 }
 
 function addDesserts(days, start) {
   const st = S();
-  const n = Math.min(7, st.dessertsPerWeek);
+  const n = Math.min((st.health || 0) >= 3 ? 1 : 7, st.dessertsPerWeek);
   if (!n) return;
   // weekend first, then spread — counted per 7-day block
   const order = [6, 5, 3, 1, 4, 2, 0];
@@ -225,7 +253,7 @@ function pickCombo(ctx, weekUsed, yesterday) {
     if (r.months) { if (r.months.includes(ctx.month)) s += 0.5; else s *= 0.35; }
     if (st.favs.includes(r.id)) s += 0.8;
     if (st.preferKid && r.kid) s += 1;
-    if (st.healthier) s *= { A: 1.7, B: 1.35, C: 1, D: 0.7, E: 0.5 }[nutrition(r).grade];
+    s *= healthMul(r);
     s *= 0.55 + Math.random() * 0.9;
     if (s > bs) { bs = s; best = r; }
   }
@@ -282,6 +310,10 @@ export function generatePlan(startDate = new Date(), range = S().range || 'week'
   const planId = 'p' + Date.now();
   const n = RANGES[range];
   const days = new Array(n).fill(null);
+  pendingVeg = range === 'dish' ? new Set(Math.random() < (VEG_PER_WEEK[st.meatless || 0] || 0) / 7 ? [0] : []) : vegDaysFor(n);
+  try { return buildPlan(st, start, planId, range, n, days); } finally { pendingVeg = new Set(); }
+}
+function buildPlan(st, start, planId, range, n, days) {
   if (range === 'dish') {
     // just one dish: today's main, nothing else
     days[0] = fillDay(days, 0, start, planId, { only: true });
@@ -300,6 +332,7 @@ export function generatePlan(startDate = new Date(), range = S().range || 'week'
     if (d.makesLeft && i + 1 < n) {
       const m = d.dishes.find((x) => x.role === 'main');
       const next = { dishes: [{ id: m.id, role: 'main', serv: st.household, left: true }], cooked: false };
+      if (pendingVeg.has(i + 1) && (st.meatless || 0) < 3) next.veg = true;
       const ctxN = ctxFor(start, i + 1, days, planId);
       const r = R[m.id];
       if (!ctxN.posno || (st.posnoFish ? r.posnoFish : r.posno)) {
@@ -354,7 +387,7 @@ export function swapDay(i) {
   const pickR = pick(MAINS(), ctx, used, kc) || pick(MAINS(), ctx, new Set([...usedSet(wk(days, i), i), ...(oldMain ? [oldMain.id] : [])]), kc);
   old.dishes = old.dishes.filter((x) => x.role !== 'main');
   if (pickR) {
-    const left = plan.range !== 'dish' && st.leftovers && pickR.left && i + 1 < n && !days[i + 1].dishes.some((x) => x.role === 'main');
+    const left = plan.range !== 'dish' && st.leftovers && pickR.left && i + 1 < n && !days[i + 1].dishes.some((x) => x.role === 'main') && (pickR.veg || !days[i + 1].veg);
     old.dishes.splice(old.dishes.findIndex((x) => x.role === 'dessert') >= 0 ? old.dishes.findIndex((x) => x.role === 'dessert') : old.dishes.length, 0,
       { id: pickR.id, role: 'main', serv: left ? st.household * 2 : st.household });
     if (left) days[i + 1].dishes.unshift({ id: pickR.id, role: 'main', serv: st.household, left: true });

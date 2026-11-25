@@ -8,6 +8,8 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 
 ## Šta radi
 - Sedmični plan: u postavkama „Šta kuhamo“ biraš koliko često dolaze domaća jela, tjestenina i rižoto, evropska klasika i vojnička kuhinja. Porijeklo jela (država/regija) postoji samo u podacima i nigdje se ne prikazuje.
+- Klizači „Bez mesa“ (ne / bar 2 dana / bar 4 dana / uvijek — tada ni ribe) i „Zdravije“ (0–3; češće ocjene A–B, na najvišem nivou rijetko D/E i najviše 1 desert sedmično). Stari prekidač „Prednost zdravijim jelima“ se prevodi u Zdravije = 2.
+- Salate kao obrok (`full: 1`, js/data/recipes-salads.js, 17 komada): planer ih koristi za ručak i laganu večeru, ne samo kao prilog.
 - Pravila: npr. junetina najviše 2× sedmično, bez ponavljanja 2–3 sedmice, sezonsko povrće, planirani ostaci,
   zamjena dana jednim dodirom, porcije za broj ukućana, posni dani, „bez svinjetine“, prednost dječijim jelima
 - Ostava + zimnica (tegle); plan koristi ono što imaš i ponovo koristi iste svježe namirnice kroz sedmicu
