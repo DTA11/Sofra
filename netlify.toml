@@ -17,3 +17,15 @@
   for = "/foto-prompts/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+# shared recipe links: r/<id>/ pages come from tools/share-pages.mjs; a recipe without a page yet still opens
+[[redirects]]
+  from = "/r/:id/*"
+  to = "/#/recipe/:id"
+  status = 302
+
+# canvas for tools/share-pages.mjs only
+[[headers]]
+  for = "/tools/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

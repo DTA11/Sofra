@@ -165,7 +165,7 @@ function guideCard() {
 function welcome() {
   const st = S(); const g = st.guide || {};
   const name = location.hash.replace(/^#\/?/, '').split('/')[0];
-  if (g.welcomeOff || name === 'cook') return;
+  if (g.welcomeOff || name === 'cook' || name === 'recipe') return; // not over a recipe someone opened from a link
   const steps = [
     [g.settings, 'w1', `<a class="btn sm {P}" href="#/settings" data-w>${ICON.gear} ${t('w1b')}</a>`],
     [g.pantry, 'w2', `<a class="btn sm {P}" href="#/pantry" data-w>${ICON.pantry} ${t('w2b')}</a>`],
@@ -1026,7 +1026,7 @@ document.addEventListener('click', (e) => {
     case 'jar': { const id = el.dataset.id; const n = Math.max(0, (Number(st.pantry[id]) || 0) + Number(el.dataset.d)); if (n) st.pantry[id] = n; else delete st.pantry[id]; store.save(); rer(); break; }
     case 'send': {
       // a recipe goes as a link to its page; the shopping list (only on this phone) as text
-      if (el.dataset.kind === 'recipe') { const r = R[el.dataset.id]; sendText(`🍲 ${name(r)}`, name(r), `${location.origin}/#/recipe/${r.id}`); }
+      if (el.dataset.kind === 'recipe') { const r = R[el.dataset.id]; sendText(`🍲 ${name(r)}`, name(r), `${location.origin}/r/${r.id}/`); } // r/<id>/ carries the picture for the chat preview
       else sendText(shopText(), t('printShop'));
       break;
     }

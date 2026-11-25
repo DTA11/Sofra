@@ -32,6 +32,10 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 ## Privremeno
 - `/foto-prompts/` — pomoćna stranica s Gemini promptovima za fotografije jela (dugme Kopiraj). Link u hamburger meniju ("Foto promptovi"), noindex. Obrisati folder `foto-prompts/`, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml kad su fotografije gotove.
 
+## Slanje recepta (Pošalji)
+Dugme „Pošalji“ na receptu šalje link `/r/<id>/`. Ta mala stranica ima og: oznake (ime, priča, slika 1200×630 iz `share/<id>.jpg`) da Messenger/Viber/WhatsApp pokažu sliku, pa odmah otvara `/#/recipe/<id>`.
+**Nakon novog recepta ili nove fotografije** ponovo napravi stranice i slike: `python3 -m http.server 8765` pa `node tools/share-pages.mjs` (Playwright + Chrome; `PW=` i `CHROME=` za putanje). Recept bez stranice se i dalje otvara (preusmjerenje u netlify.toml), samo bez slike.
+
 ## Struktura
 ```
 index.html            app shell
