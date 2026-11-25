@@ -180,7 +180,7 @@ function viewHome() {
         <p class="lede">${t('homeLede')}</p>
         <div class="row gap wrap cta">
           ${st.plan ? `<a class="btn light" href="#/plan">${ICON.plan} ${t('homeOpen')}</a>` : `<button class="btn light" data-act="homeplan">${ICON.plan} ${t('homeCta')}</button>`}
-          <button class="btn ghost" data-act="install" data-install-cta hidden>${ICON.share} ${t('homeInstall')}</button>
+          <button class="btn ghost hh-install" data-act="install" data-install-cta hidden>${ICON.share} ${t('homeInstall')}</button>
         </div>
         <div class="trust"><span>${ICON.check}${RECIPES.length} ${t('dishes')}</span><span>${ICON.check}${getLang() === 'bs' ? 'Bez registracije' : 'No sign-up'}</span><span>${ICON.check}${getLang() === 'bs' ? 'Radi i bez interneta' : 'Works offline'}</span></div>
       </div>
@@ -962,7 +962,8 @@ document.addEventListener('click', (e) => {
     }
     case 'reset': if (confirm(t('resetQ'))) { store.resetAll(); setLang(S().lang); go('#/plan'); } break;
     case 'install': doInstall(); break;
-    case 'repick': { const n = pickPool().length; if (n > 1) { let k; do { k = Math.floor(Math.random() * n); } while (k === ui.pickIdx % n); ui.pickIdx = k; } rer(); break; }
+    case 'repick': { const n = pickPool().length; if (n > 1) { let k; do { k = Math.floor(Math.random() * n); } while (k === ui.pickIdx % n); ui.pickIdx = k; }
+      const pk = document.querySelector('.pick'); if (pk) pk.outerHTML = todayPick(); else rer(); break; } // swap in place: no re-render, no jump to top
     case 'homeplan': if (!(st.guide || {}).done && !(st.guide || {}).pantry) go('#/plan'); else askRange(() => go('#/plan')); break;
     default: break;
   }

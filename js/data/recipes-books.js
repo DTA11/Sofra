@@ -150,7 +150,7 @@ export const BOOK_RECIPES = [
   {
     id: 'krompirusa', cu: 'bosanska', reg: 'sarajevo', type: 'pie', main: 'potato', time: 90, tApprox: 1,
     serves: 4, sApprox: 1, eq: ['oven'], kid: 1,
-    bs: 'Krompiruša s kajmakom (čevljanovička)', en: 'Potato pie with kajmak (Čevljanovići style)',
+    bs: 'Krompiruša s kajmakom (čevljanovićka)', en: 'Potato pie with kajmak (Čevljanovići style)',
     ing: [
       ['phyllo', 2, 'jufka', n('domaće, rasukane', 'home-rolled')],
       ['potato', 1, 'kg'],
