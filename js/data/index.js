@@ -2,6 +2,7 @@ import { ING } from './ingredients.js';
 import { BOOK_RECIPES } from './recipes-books.js';
 import { TRAD_RECIPES } from './recipes-trad.js';
 import { SWEET_RECIPES } from './recipes-sweet.js';
+import { SWEET2_RECIPES } from './recipes-sweet2.js';
 import { MEAL_RECIPES } from './recipes-meals.js';
 import { SLO_RECIPES } from './recipes-slo.js';
 import { MORE_RECIPES } from './recipes-more.js';
@@ -78,7 +79,7 @@ function derive(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...COMBO_RECIPES].map(derive);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...COMBO_RECIPES].map(derive);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

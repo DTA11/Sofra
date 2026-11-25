@@ -95,6 +95,7 @@ const list = [
   ['phyllo', 'Jufke (kore za pitu)', 'Phyllo sheets', 'bakery', { p: 1 }],
   ['ladyfingers', 'Piškote', 'Ladyfingers', 'bakery', {}],
   ['puff_pastry', 'Lisnato tijesto', 'Puff pastry', 'frozen', {}],
+  ['kadaif', 'Kadaif (tijesto u nitima)', 'Kataifi pastry', 'frozen', {}],
 
   // Suha roba
   ['flour', 'Brašno (meko)', 'Plain flour', 'dry', { st: 1 }],
@@ -116,6 +117,9 @@ const list = [
   ['porcini', 'Vrganji (suhi)', 'Dried porcini', 'dry', {}],
   ['poppy', 'Mak (mljeveni)', 'Ground poppy seed', 'dry', {}],
   ['raisins', 'Grožđice', 'Raisins', 'dry', {}],
+  ['coconut', 'Kokos (rendani)', 'Desiccated coconut', 'dry', {}],
+  ['wafers', 'Kore za oblatne', 'Wafer sheets', 'dry', { prod: 1 }],
+  ['biscuits', 'Obični keks (čajni)', 'Plain tea biscuits', 'dry', { prod: 1 }],
   ['pumpkin_oil', 'Bučino ulje', 'Pumpkin seed oil', 'dry', {}],
   ['sugar', 'Šećer', 'Sugar', 'dry', { st: 1 }],
   ['powder_sugar', 'Šećer u prahu', 'Icing sugar', 'dry', {}],
