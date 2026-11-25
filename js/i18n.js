@@ -2,7 +2,7 @@
 const S = {
   bs: {
     appTagline: 'Sedmični jelovnik iz domaće kuhinje',
-    tabPlan: 'Plan', tabRecipes: 'Recepti', tabSweets: 'Slatko', tabPantry: 'Ostava', tabShop: 'Kupovina',
+    tabPlan: 'Jelovnik', tabRecipes: 'Recepti', tabSweets: 'Slatko', tabPantry: 'Ostava', tabShop: 'Kupovina',
     settings: 'Postavke', back: 'Nazad', close: 'Zatvori', save: 'Sačuvaj', cancel: 'Odustani', search: 'Traži…',
     newPlan: 'Novi plan', regen: 'Napravi novi plan', emptyPlan: 'Još nema plana. Napravi prvi plan (u postavkama biraš šta kuhamo).',
     swap: 'Zamijeni', cooked: 'Skuhano', cookedQ: 'Označeno kao skuhano — potrošene svježe namirnice skinute iz ostave.',
@@ -97,7 +97,7 @@ const S = {
   },
   en: {
     appTagline: 'A weekly menu from the home kitchen',
-    tabPlan: 'Plan', tabRecipes: 'Recipes', tabSweets: 'Sweets', tabPantry: 'Pantry', tabShop: 'Shopping',
+    tabPlan: 'Menu', tabRecipes: 'Recipes', tabSweets: 'Sweets', tabPantry: 'Pantry', tabShop: 'Shopping',
     settings: 'Settings', back: 'Back', close: 'Close', save: 'Save', cancel: 'Cancel', search: 'Search…',
     newPlan: 'New plan', regen: 'Make a new plan', emptyPlan: 'No plan yet. Make the first plan (choose what we cook in settings).',
     swap: 'Swap', cooked: 'Cooked', cookedQ: 'Marked as cooked — fresh ingredients used up were removed from the pantry.',
