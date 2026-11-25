@@ -25,6 +25,7 @@ const list = [
   ['trout', 'Pastrmka', 'Trout', 'meat', { p: 1, kind: 'fish' }],
   ['cod_dried', 'Bakalar (sušeni)', 'Salt cod', 'meat', { kind: 'fish' }],
   ['fish_white', 'Bijela riba', 'White fish', 'meat', { p: 1, kind: 'fish' }],
+  ['squid', 'Lignje', 'Squid', 'meat', { p: 1, kind: 'fish' }],
   ['sudzuk', 'Goveđi sudžuk', 'Beef sujuk sausage', 'deli', { kind: 'beef', mt: 1, prod: 1 }],
   ['tuna', 'Tunjevina (konzerva)', 'Tinned tuna', 'cans', { kind: 'fish', prod: 1 }],
   ['bones_beef', 'Goveđe kosti', 'Beef bones', 'meat', { p: 1 }],
@@ -58,6 +59,7 @@ const list = [
   ['spinach', 'Špinat', 'Spinach', 'veg', { p: 1, m: [3, 4, 5, 9, 10] }],
   ['chard', 'Blitva', 'Swiss chard', 'veg', { p: 1, m: [4, 5, 6, 9, 10] }],
   ['broccoli', 'Brokula', 'Broccoli', 'veg', { p: 1, m: [9, 10, 11, 12, 3, 4] }],
+  ['cauliflower', 'Karfiol', 'Cauliflower', 'veg', { p: 1, m: [9, 10, 11, 12, 1, 3, 4] }],
   ['mushrooms', 'Šampinjoni', 'Mushrooms', 'veg', { p: 1 }],
   ['parsley', 'Peršun (list)', 'Parsley', 'veg', { p: 1 }],
   ['root_mix', 'Korjenasto povrće (mrkva, celer, peršun)', 'Root veg (carrot, celeriac, parsley root)', 'veg', { p: 1 }],
@@ -87,6 +89,7 @@ const list = [
   ['cottage', 'Mladi sir', 'Fresh cottage cheese', 'dairy', { p: 1 }],
   ['parmesan', 'Parmezan', 'Parmesan', 'dairy', {}],
   ['gruyere', 'Gruyère / tvrdi sir', 'Gruyère / hard cheese', 'dairy', {}],
+  ['cheese_block', 'Polutvrdi sir (u komadu)', 'Semi-hard cheese (block)', 'dairy', { p: 1 }],
   ['mozzarella', 'Mozzarella', 'Mozzarella', 'dairy', { p: 1 }],
   ['mascarpone', 'Mascarpone', 'Mascarpone', 'dairy', { p: 1 }],
 
@@ -240,7 +243,8 @@ export const SUBSTITUTES = {
   maslo: ['butter'],
   bread_whole: ['bread'],
   sour_milk: ['yogurt'],
-  cheese_semi: ['gruyere'],
+  cheese_semi: ['gruyere', 'cheese_block'],
+  cheese_block: ['cheese_semi'],
   sauerkraut_shred: ['sauerkraut'],
   ajvar: ['ljutenica', 'pindjur'],
 };
