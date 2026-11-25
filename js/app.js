@@ -456,8 +456,8 @@ function activeFilterCount() {
   return f.cu.size + f.diet.size + f.grade.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0);
 }
 function viewRecipes() {
-  const list = RECIPES.filter((r) => r.type !== 'dessert').filter((r) => matches(r, ui.filters));
-  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert').length} ${t('dishes')}</p></section>
+  const list = RECIPES.filter((r) => r.type !== 'dessert' && r.type !== 'side').filter((r) => matches(r, ui.filters));
+  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert' && r.type !== 'side').length} ${t('dishes')}</p></section>
     <div class="feature-row">
       <a class="feature jna" href="#/vojnicka">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
       <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
@@ -781,7 +781,12 @@ function viewSettings() {
       <div class="mix"><span>${t('noRepeat')}</span>${num('noRepeatWeeks', st.noRepeatWeeks, 0, 6)}<small>${t('weeks')}</small></div>
       <div class="mix"><span>${t('weekdayMax')}</span>${num('weekdayMax', st.weekdayMax, 15, 300, 15)}<small>min</small></div><p class="small muted">${t('weekdayHint')}</p>
       <div class="mix"><span>${t('dessertsWeek')}</span>${num('dessertsPerWeek', st.dessertsPerWeek, 0, 7)}</div>
-      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}
+      ${tog('leftovers', t('leftovers'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}
+    </section>
+    <section class="set"><h3>${t('withLunch')}</h3>
+      <h4>${t('soupMode')}</h4><div class="chips">${t('soupLvl').split('|').map((x, v) => `<button class="chip ${(st.soup ?? 1) === v ? 'on' : ''}" data-act="soupl" data-v="${v}">${x}</button>`).join('')}</div>
+      <p class="small muted">${t('soupHint')}</p>
+      ${tog('sides', t('sidesTog'))}<p class="small muted">${t('sidesHint')}</p>
     </section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
     <section class="set"><button class="btn" data-act="guideshow">${ICON.check} ${t('guideShow')}</button></section>
@@ -1003,7 +1008,7 @@ document.addEventListener('click', (e) => {
       const r = R[el.dataset.id];
       pickDay((i) => {
         const d = S().plan.days[i];
-        const role = r.type === 'soup' ? 'soup' : r.type === 'dessert' ? 'dessert' : r.type === 'salad' && !r.full ? 'side' : r.type === 'breakfast' || r.type === 'combo' ? 'breakfast' : r.type === 'snack' ? 'snack' : 'main';
+        const role = r.type === 'soup' ? (r.supa ? 'soup' : 'main') : r.type === 'dessert' ? 'dessert' : r.type === 'side' || (r.type === 'salad' && !r.full) ? 'side' : r.type === 'breakfast' || r.type === 'combo' ? 'breakfast' : r.type === 'snack' ? 'snack' : 'main';
         const keep = d.dishes.filter((x) => x.role !== role || role === 'side');
         const dish = { id: r.id, role, serv: role === 'dessert' ? r.serves : S().household, ...(role === 'dessert' ? { fixed: 1 } : {}) };
         const order = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
@@ -1073,6 +1078,7 @@ document.addEventListener('change', (e) => {
     case 'xdone': st.shop.extra[Number(el.dataset.k)].done = el.checked; store.save(); el.closest('.sitem')?.classList.toggle('on', el.checked); break;
     case 'setnum': { const v = Number(el.value); if (!Number.isNaN(v)) { st[el.dataset.k] = v; store.save(); } break; }
     case 'settog': st[el.dataset.k] = el.checked; store.save(); break;
+    case 'soupl': st.soup = Number(el.dataset.v); store.save(); rer(); break;
     case 'mix': st.styles[el.dataset.k] = Number(el.value); store.save(); rerender(); break;
     case 'mixs': if (['meatless', 'health'].includes(el.dataset.k)) { st[el.dataset.k] = Number(el.value); store.save(); ui.pickIdx = null; rerender(); } break;
     case 'rule': st.rules[el.dataset.k] = Number(el.value); store.save(); break;

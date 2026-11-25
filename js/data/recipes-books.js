@@ -413,7 +413,7 @@ export const BOOK_RECIPES = [
   // ───────────── Recepture za pripremanje jela u JNA (Ebesede, 2011) ─────────────
   // Količine su po jednoj osobi (≈ 3 dl čorbe). App množi s brojem porcija.
   {
-    id: 'jna-pileca-supa', cu: 'jna', type: 'soup', main: 'chicken', time: 210, big: 1,
+    id: 'jna-pileca-supa', cu: 'jna', type: 'soup', supa: 1, main: 'chicken', time: 210, big: 1,
     serves: 1, eqOpt: ['kazan'], kid: 1,
     bs: 'Pileća supa (vojnička)', en: 'Chicken soup (army style)',
     ing: [

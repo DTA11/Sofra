@@ -14,7 +14,8 @@ export function defaults() {
     noRepeatWeeks: 2,
     weekdayMax: 90,
     leftovers: true,
-    soupDaily: false,
+    soup: 1,           // supa before lunch: 0 never · 1 sometimes · 2 always (where it fits)
+    sides: true,       // a salad, yoghurt or sauerkraut beside lunch
     meals: { breakfast: true, lunch: true, dinner: true, snack: false },
     dinnerLeft: false,
     breakfastMax: 20,
@@ -56,6 +57,8 @@ function migrate(d) {
   if (d) delete d.cuisines;
   // fasting days used to be a separate setting with strict (no meat, dairy, eggs) days: that is the Orthodox fast mode now
   if (d && (!d.mode || d.mode === 'normal') && Array.isArray(d.posnoDays) && d.posnoDays.length) d.mode = 'pravoslavni';
+  // "Čorba uz svaki ručak" (on/off) became "Supa uz ručak" (never / sometimes / always)
+  if (d && 'soupDaily' in d) { if (d.soup == null) d.soup = d.soupDaily ? 2 : 1; delete d.soupDaily; }
   return d;
 }
 function fill(d) {

@@ -9,6 +9,7 @@ import { MORE_RECIPES } from './recipes-more.js';
 import { COMBO_RECIPES } from './recipes-combo.js';
 import { EXTRA_RECIPES } from './recipes-extra.js';
 import { SALAD_RECIPES } from './recipes-salads.js';
+import { SIDE_RECIPES } from './recipes-sides.js';
 
 export const SOURCES = {
   lakisic: {
@@ -57,6 +58,8 @@ function derive(r) {
   r.posnoFish = !hasMeat && !dairyOrEgg;
   r.noMeat = !hasMeat; // Catholic fast: fish, eggs and dairy allowed
   r.eq = r.eq || [];
+  r.supa = !!r.supa; // clear soup: the only starter; other soups (čorbe) count as a main
+  r.key = r.key || [];
   r.eqOpt = r.eqOpt || [];
   r.occ = r.occ || [];
   if (r.posno && !r.occ.includes('posno')) r.occ.push('posno');
@@ -67,6 +70,7 @@ function derive(r) {
     else if (r.type === 'breakfast' || r.type === 'combo') meal.add('breakfast');
     else if (r.type === 'dessert') meal.add('dessert');
     else if (r.type === 'snack') meal.add('snack');
+    else if (r.type === 'side') meal.add('lunch');
     else ['lunch', 'dinner'].forEach((m) => meal.add(m));
   }
   if (r.noPork && !['breakfast', 'snack'].includes(r.type) && (meal.has('lunch') || meal.has('dinner') || r.type === 'soup' || r.type === 'dessert')) meal.add('iftar');
@@ -160,7 +164,7 @@ function withJufka(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...COMBO_RECIPES].map(derive).map(withJufka);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...COMBO_RECIPES].map(derive).map(withJufka);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

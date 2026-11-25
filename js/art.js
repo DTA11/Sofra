@@ -129,7 +129,7 @@ export function dishArt(r, cls = '') {
   }
   const [c, bg] = CU_COLORS[r.cu] || CU_COLORS.svakodnevno;
   const has = (id) => r.ing.some((i) => i[0] === id);
-  let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : 'main';
+  let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : r.type === 'side' ? 'kasika' : 'main';
   if (r.type === 'combo') {
     key = r.main === 'fish' ? 'fish' : !r.ing.some((i) => ['bread', 'bread_whole'].includes(i[0])) ? 'kasika' : 'bread';
   } else if (r.type === 'breakfast' || r.type === 'snack') {

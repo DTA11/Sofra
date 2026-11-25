@@ -115,10 +115,11 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
   return best;
 }
 
-const MAINS = () => RECIPES.filter((r) => r.type === 'main' || r.type === 'pie' || (r.type === 'salad' && r.full));
+// čorbe (thick soups) are a main or a light main; only a clear supa is ever a starter
+const MAINS = () => RECIPES.filter((r) => r.type === 'main' || r.type === 'pie' || (r.type === 'salad' && r.full) || (r.type === 'soup' && !r.supa));
 const BREAKFASTS = () => RECIPES.filter((r) => r.meal.includes('breakfast') && r.type !== 'combo');
 const COMBOS = () => RECIPES.filter((r) => r.type === 'combo');
-const DINNERS = () => RECIPES.filter((r) => r.meal.includes('dinner') && r.type !== 'dessert' && (r.light || ['pie', 'salad', 'soup'].includes(r.type)));
+const DINNERS = () => RECIPES.filter((r) => r.meal.includes('dinner') && r.type !== 'dessert' && !r.side && !r.supa && (r.light || ['pie', 'salad', 'soup'].includes(r.type)));
 const SNACKS = () => RECIPES.filter((r) => r.type === 'snack');
 export const ROLE_ORDER = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
 // Plan length: one dish, one day, one week or a month (4 weeks).
@@ -128,7 +129,102 @@ const wk = (days, i) => { const a = Math.floor(i / 7) * 7; return days.map((d, k
 /** Fresh food that goes off within a week: bought weekly in a month plan. Everything else is the big shop. */
 export const isFresh = (g) => !!g && (!!g.p || (!!g.prod && ['veg', 'bakery', 'dairy', 'deli'].includes(g.sec)));
 const sortDishes = (d) => d.dishes.sort((a, b) => (ROLE_ORDER[a.role] ?? 9) - (ROLE_ORDER[b.role] ?? 9));
-const SOUPS = () => RECIPES.filter((r) => r.type === 'soup');
+// starters: a clear supa; Ramazan keeps its iftar čorba too
+const SOUPS = () => RECIPES.filter((r) => r.type === 'soup' && (r.supa || S().mode === 'ramazan'));
+
+// ───────── what goes with lunch: supa before it, a salad or yoghurt beside it ─────────
+const GUSTO = ['bosanski-lonac', 'gulas', 'vojnicki-gulas-krompir', 'bograc', 'pileci-paprikas', 'krompir-paprikas', 'boeuf-bourguignon', 'pasticada', 'brodet', 'slanutak-meso', 'kalja', 'kljukusa', 'kacamak'];
+const STUFFED = ['sarma-junetina', 'punjene-paprike', 'sogan-dolma', 'klepe', 'japrak-rastan', 'posna-sarma'];
+const PIE_LIKE = ['kacamak', 'sirovi-struklji', 'zagorski-strukli', 'idrijski-zlikrofi', 'kompir-mandza'];
+/** Kind of main for pairing: pie · beans · grill · pasta · breaded · fish · light · stuffed · corba · none · meat */
+export function groupOf(r) {
+  if (!r) return 'none';
+  if (r.type === 'salad' || r.type === 'breakfast' || r.main === 'eggs' || r.id === 'tost-sir') return 'none';
+  if (r.type === 'soup') return 'corba';
+  if (r.type === 'pie' || PIE_LIKE.includes(r.id)) return 'pie';
+  if (r.main === 'beans' || ['kranjska-zelje'].includes(r.id)) return 'beans';
+  if (r.eq.includes('grill') || ['cevapi', 'pljeskavica'].includes(r.id)) return 'grill';
+  if (r.id.startsWith('pohovan') || r.id === 'popeci') return 'breaded';
+  if (r.style === 'tjestenina' || ['pasta', 'rice'].includes(r.main) || ['makaronovo-meso', 'lasagne', 'tjestenina-sir-slanina'].includes(r.id)) return 'pasta';
+  if (STUFFED.includes(r.id)) return 'stuffed';
+  if (r.main === 'fish') return 'fish';
+  if (['veg', 'potato', 'spinach', 'broccoli', 'cheese'].includes(r.main)) return 'light';
+  return 'meat';
+}
+// [side id, weight] per group — the planner picks one, by season, what is in the pantry and variety
+const SIDES = {
+  pie: [['uz-jogurt', 5], ['uz-kiselo-mlijeko', 4], ['paradajz-salata', 1], ['mijesana-salata', 1], ['satrica', 1.5], ['paradajz-kajmak', 1], ['kupus-salata', 0.6], ['salata-cvekla', 0.5]],
+  beans: [['kupus-salata', 4], ['uz-kiseli-kupus', 3], ['salata-luk', 3], ['uz-tursija', 2], ['paradajz-salata', 1.5], ['mijesana-salata', 1], ['salata-kupus-mrkva', 1.5]],
+  grill: [['salata-luk', 3], ['uz-kajmak-ajvar', 3], ['paradajz-salata', 2], ['sopska', 2], ['mijesana-salata', 1.5], ['kupus-salata', 1]],
+  pasta: [['zelena-salata', 4], ['paradajz-salata', 2], ['mijesana-salata', 2], ['krastavac-salata', 2], ['kupus-salata', 1.5], ['salata-kupus-mrkva', 1]],
+  breaded: [['zelena-salata', 3], ['mijesana-salata', 2], ['krastavac-salata', 2], ['paradajz-salata', 2], ['kupus-salata', 1.5], ['salata-cvekla', 1]],
+  fish: [['zelena-salata', 3], ['paradajz-salata', 2], ['mijesana-salata', 2], ['kupus-salata', 1.5], ['krastavac-salata', 1]],
+  light: [['uz-kiselo-mlijeko', 3], ['uz-jogurt', 3], ['zelena-salata', 2], ['paradajz-kajmak', 1.5], ['mijesana-salata', 1], ['satrica', 1], ['kupus-salata', 1], ['salata-cvekla', 1], ['uz-tursija', 0.7]],
+  stuffed: [['uz-kiselo-mlijeko', 3], ['uz-jogurt', 2], ['zelena-salata', 1.5], ['mijesana-salata', 1], ['kupus-salata', 1]],
+  corba: [['zelena-salata', 2], ['mijesana-salata', 2], ['kupus-salata', 2], ['uz-tursija', 1.5], ['paradajz-salata', 1.5], ['uz-kiseli-kupus', 1]],
+  meat: [['zelena-salata', 3], ['mijesana-salata', 2.5], ['kupus-salata', 2.5], ['paradajz-salata', 2], ['uz-kiseli-kupus', 2], ['uz-tursija', 1.5], ['krastavac-salata', 1.5], ['sopska', 1.5], ['salata-cvekla', 1.5], ['salata-kupus-mrkva', 1], ['pecene-paprike-salata', 1]],
+  none: [],
+};
+/** Is a supa a good starter before this main? Never before a čorba, beans, a thick stew or a salad meal. */
+export function supaFits(r) {
+  const g = groupOf(r);
+  return !!r && !['corba', 'beans', 'none'].includes(g) && !GUSTO.includes(r.id);
+}
+/** "Supa uz ručak": 0 never · 1 sometimes (weekend, pies, roasts, breaded, stuffed) · 2 with every lunch where it fits */
+function wantSupa(r, ctx) {
+  const st = S();
+  if (st.mode === 'ramazan') return !!r && r.type !== 'soup';
+  const lvl = st.soup ?? 1;
+  if (!lvl || !supaFits(r)) return false;
+  if (lvl >= 2) return true;
+  const g = groupOf(r);
+  return ctx.weekday >= 5 || ['pie', 'breaded', 'stuffed'].includes(g) || (g === 'meat' && r.eq.includes('oven'));
+}
+function pickSide(r, ctx, days, i, exclude) {
+  const st = S();
+  const list = SIDES[groupOf(r)] || [];
+  const mainIngs = new Set(r.ing.map((x) => x[0]));
+  const near = (k) => (days[k] ? days[k].dishes.filter((x) => x.role === 'side').map((x) => x.id) : []);
+  const yday = new Set([...(i > 0 ? near(i - 1) : []), ...(exclude ? [exclude] : [])]);
+  const week = wk(days, i).flatMap((d, k) => (d && k !== i ? d.dishes.filter((x) => x.role === 'side').map((x) => x.id) : []));
+  const ok = list.filter(([id]) => { const s = R[id]; return s && eligible(s, ctx) && !yday.has(id) && !s.key.some((k) => mainIngs.has(k)); }); // no kiseli kupus with sarma, no yoghurt with a yoghurt sauce
+  const inSeason = ok.filter(([id]) => !R[id].months || R[id].months.includes(ctx.month));
+  let best = null, bs = 0;
+  for (const [id, w] of inSeason) { // nothing in season fits → no side rather than lettuce in November
+    const s = R[id];
+    let sc = w;
+    const jars = s.ing.filter((x) => ING[x[0]] && ING[x[0]].z);
+    if (jars.length) sc *= jars.every((x) => haveOrSub(x[0])) ? 2.2 : 0.7; // zimnica first
+    else if (s.ing.some((x) => ING[x[0]] && ING[x[0]].p && haveOrSub(x[0]))) sc *= 1.3;
+    sc *= 0.5 ** week.filter((x) => x === id).length;
+    if (st.favs.includes(id)) sc *= 1.3;
+    sc *= 0.55 + Math.random() * 0.9;
+    if (sc > bs) { bs = sc; best = s; }
+  }
+  return best;
+}
+/** Add the supa and the side to every lunch (role 'main') of the plan. */
+function addStarters(days, start, planId, only) {
+  const st = S();
+  days.forEach((d, i) => {
+    if (!d || (only != null && i !== only)) return;
+    d.dishes = d.dishes.filter((x) => x.role !== 'soup' && x.role !== 'side');
+    const m = d.dishes.find((x) => x.role === 'main');
+    if (!m) return;
+    const r = R[m.id];
+    const ctx = ctxFor(start, i, days, planId);
+    if (wantSupa(r, ctx)) {
+      const used = usedSet(wk(days, i), i);
+      const soup = pick(SOUPS(), ctx, used, {}, 0) || pick(SOUPS(), ctx, new Set([r.id]), {}, 0);
+      if (soup && soup.id !== r.id) d.dishes.push({ id: soup.id, role: 'soup', serv: st.household });
+    }
+    if (st.sides !== false) {
+      const s = pickSide(r, ctx, days, i);
+      if (s) d.dishes.push({ id: s.id, role: 'side', serv: st.household });
+    }
+    sortDishes(d);
+  });
+}
 const DESSERTS = () => RECIPES.filter((r) => r.type === 'dessert' && r.serves >= 4 && r.serves <= 16);
 
 function weekIngredients(days) {
@@ -176,11 +272,6 @@ function fillDay(days, i, start, planId, opts = {}) {
   const hh = st.household;
   const day = { dishes: [], cooked: false };
   const n = days.length;
-  const ramazan = st.mode === 'ramazan';
-  if ((ramazan || st.soupDaily) && !opts.only) {
-    const soup = pick(SOUPS(), ctx, used, {}, 0) || pick(SOUPS(), ctx, usedSet(wk(days, i), i), {}, 0);
-    if (soup) { day.dishes.push({ id: soup.id, role: 'soup', serv: hh }); used.add(soup.id); }
-  }
   // a month has more days than some kitchens have dishes: then repeat dishes from other weeks
   const main = pick(MAINS(), ctx, used, kc) || pick(MAINS(), ctx, usedSet(wk(days, i), i), kc);
   if (main) {
@@ -298,6 +389,11 @@ export function swapDish(i, k) {
     r = pickMeal(x.role, st.plan.days, i, start, st.plan.id, keep.id);
     d.dishes.splice(k, 0, r ? { id: r.id, role: x.role, serv: st.household } : keep);
     if (keep.left && r) { const m = d.dishes.find((y) => y.role === 'main'); if (m && m.serv > st.household) m.serv -= st.household; }
+  } else if (x.role === 'side') {
+    const m = d.dishes.find((y) => y.role === 'main');
+    const ctx = ctxFor(start, i, st.plan.days, st.plan.id);
+    r = m ? pickSide(R[m.id], ctx, st.plan.days, i, x.id) : null;
+    if (r) d.dishes[k] = { ...x, id: r.id };
   } else {
     const pool = x.role === 'soup' ? SOUPS() : x.role === 'dessert' ? DESSERTS() : RECIPES.filter((q) => q.type === R[x.id].type);
     const ctx = ctxFor(start, i, st.plan.days, st.plan.id);
@@ -344,15 +440,12 @@ function buildPlan(st, start, planId, range, n, days) {
       const ctxN = ctxFor(start, i + 1, days, planId);
       const r = R[m.id];
       if (!ctxN.posno || posnoOk(r)) {
-        if (st.mode === 'ramazan' || st.soupDaily) {
-          const soup = pick(SOUPS(), ctxN, usedSet(days), {}, 0) || pick(SOUPS(), ctxN, usedSet(wk(days, i + 1)), {}, 0);
-          if (soup) next.dishes.unshift({ id: soup.id, role: 'soup', serv: st.household });
-        }
         days[i + 1] = next;
       } else { m.serv = st.household; d.makesLeft = false; }
     }
   }
   addDesserts(days, start);
+  addStarters(days, start, planId);
   days.forEach((d) => delete d.makesLeft);
   addMeals(days, start, planId);
   st.plan = { id: planId, start: iso(start), range, days };
@@ -388,6 +481,8 @@ export function swapDay(i) {
     const nx = days[i + 1].dishes.find((x) => x.role === 'main' && x.left && x.id === oldMain.id);
     if (nx) { days[i + 1].dishes = days[i + 1].dishes.filter((x) => x !== nx); }
   }
+  const nextMain = () => (i + 1 < n ? (days[i + 1].dishes.find((x) => x.role === 'main') || {}).id : null);
+  const nextBefore = nextMain();
   const ctx = ctxFor(start, i, days, plan.id);
   const used = usedSet(days, i);
   if (oldMain) used.add(oldMain.id);
@@ -405,6 +500,11 @@ export function swapDay(i) {
     const ctxN = ctxFor(start, i + 1, days, plan.id);
     const r2 = pick(MAINS(), ctxN, usedSet(days), kindCounts(wk(days, i + 1))) || pick(MAINS(), ctxN, usedSet(wk(days, i + 1)), kindCounts(wk(days, i + 1)));
     if (r2) days[i + 1].dishes.splice(days[i + 1].dishes.some((x) => x.role === 'soup') ? 1 : 0, 0, { id: r2.id, role: 'main', serv: st.household });
+  }
+  // the supa and the side follow the new main
+  if (plan.range !== 'dish') {
+    addStarters(days, start, plan.id, i);
+    if (i + 1 < n && nextMain() !== nextBefore) addStarters(days, start, plan.id, i + 1);
   }
   old.cooked = false;
   recordHistory();
@@ -431,7 +531,7 @@ export function markCooked(i) {
       if (!h) return;
       const g = ING[h];
       if (g.prod) return; // store products are long-life stock: they stay until you untick them
-      if (g.z && R[x.id].type === 'combo') return; // a spoon of ajvar or jam doesn't empty a jar
+      if (g.z && ['combo', 'side'].includes(R[x.id].type)) return; // a spoon of ajvar or a bowl of turšija doesn't empty a jar
       if (g.z) { st.pantry[h] = Math.max(0, (Number(st.pantry[h]) || 1) - 1); if (!st.pantry[h]) delete st.pantry[h]; }
       else if (g.p) delete st.pantry[h];
     }));
