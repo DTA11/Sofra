@@ -308,6 +308,7 @@ function viewPlan() {
   const dateTxt = `${DAYS[getLang()][(now.getDay() + 6) % 7]}, ${now.getDate()}. ${MONTHS[getLang()][now.getMonth()]}`;
   const actions = `<div class="quick">
       <button class="qbtn" data-act="newplan">${ICON.refresh}<span>${st.plan ? t('regen') : t('newPlan')}</span></button>
+      <a class="qbtn" href="#/settings">${ICON.gear}<span>${t('planSettings')}</span></a>
       <a class="qbtn" href="#/shop">${ICON.shop}<span>${t('tabShop')}</span></a>
       <button class="qbtn" data-act="print">${ICON.doc}<span>${t('pdf')}</span></button>
       <a class="qbtn" href="#/holidays">${ICON.party}<span>${t('holidays')}</span></a>
@@ -318,8 +319,7 @@ function viewPlan() {
       <div class="hero-plate">${dishArt(R['bosanski-lonac'], 'big')}</div></section>
       ${guideCard()}
       ${st.mode === 'ramazan' ? `<div class="banner">${ICON.moon} ${t('ramazanNote')}</div>` : ''}
-      <div class="empty">${t('emptyPlan')}</div>${actions}
-      <div class="row gap"><a class="btn" href="#/settings">${ICON.gear} ${t('planSettings')}</a></div>${season}`;
+      <div class="empty">${t('emptyPlan')}</div>${actions}${season}`;
   }
   const start = parseISO(st.plan.start);
   const ti = Math.floor((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - start) / DAYMS);
