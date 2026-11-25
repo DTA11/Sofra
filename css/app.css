@@ -413,9 +413,9 @@ body.standalone .toast { bottom: calc(92px + env(safe-area-inset-bottom)); }
 .sitenav a.on { background: var(--saffron); color: #2a1803; }
 .app-btn { background: var(--saffron); color: #2a1803; box-shadow: 0 4px 14px -6px rgba(0,0,0,.5); }
 .app-btn:hover { background: #f2b452; color: #2a1803; }
-.kilim-wrap { position: sticky; top: calc(64px + env(safe-area-inset-top)); z-index: 38; height: 12px; line-height: 0; }
-.kilim { display: block; width: 100%; height: 12px; }
-.menu-panel { inset: calc(76px + env(safe-area-inset-top)) 0 0 0; background: var(--bg); }
+.kilim-wrap { position: sticky; top: calc(64px + env(safe-area-inset-top)); z-index: 38; height: 20px; line-height: 0; }
+.kilim { display: block; width: 100%; height: 20px; }
+.menu-panel { inset: calc(84px + env(safe-area-inset-top)) 0 0 0; background: var(--bg); }
 .menu-panel nav a.on { color: var(--accent); }
 .menu-panel .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 /* accents */
