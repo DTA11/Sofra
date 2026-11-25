@@ -266,6 +266,12 @@ body.cooking { padding-bottom: 0; background: #12100e; color: #f5f2ee; }
 .cook .btn:hover { background: #221e1a; border-color: #2f2a26; color: #f5f2ee; }
 .cook .btn.primary:hover { background: #f5f2ee; border-color: #f5f2ee; color: #12100e; }
 body.cooking main.wrap { padding-bottom: 0; }
+.cook .jufsw .chip { background: #221e1a; border-color: #2f2a26; color: #f5f2ee; }
+.cook .jufsw .chip.on { background: #e9a24b; border-color: #e9a24b; color: #1c1206; }
+.cook .jufsw { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cook .jufsw .flabel { color: #b9b0a6; margin: 0; }
+.cook .jufsw small { display: none; }
+.cook .jufsw .chip { padding: 6px 12px; }
 .cook-body .steptimer { flex: 0 0 auto; align-self: stretch; min-height: 64px; }
 .cook .btn.primary.steptimer.running { background: transparent; border-color: #e9a24b; color: #e9a24b; }
 .cook .timers { position: sticky; top: 0; z-index: 5; background: #12100e; }
@@ -521,3 +527,7 @@ body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 /* real dish photos sit where the drawn plates are */
 img.art.photo { object-fit: cover; background: var(--soft); }
 .card img.cardart, .wday img.mini { object-fit: cover; }
+
+/* homemade / shop jufke switch */
+.jufsw { display: grid; gap: 6px; margin: 14px 0 4px; }
+.jufsw small { line-height: 1.4; }

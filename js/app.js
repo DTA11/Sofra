@@ -1,4 +1,4 @@
-import { RECIPES, R, MENUS } from './data/index.js';
+import { RECIPES, R, MENUS, JUF } from './data/index.js';
 import { ING, SECTIONS, MEAT_ALT } from './data/ingredients.js';
 import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
@@ -110,6 +110,7 @@ function route() {
   const [name, arg] = (location.hash.replace(/^#\/?/, '') || (isStandalone() ? 'plan' : 'home')).split('/');
   const fn = routes[name] || (isStandalone() ? viewPlan : viewHome);
   stopWake();
+  JUF.home = S().jufka !== 'shop';
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
   document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
@@ -512,6 +513,7 @@ function viewRecipe(id) {
       </div>
       <blockquote class="story">${esc(tx(r.story))}</blockquote>
       ${scaler}
+      ${r.juf ? jufSwitch() : ''}
       <h3>${t('ingredients')}</h3>
       <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
       ${guideLinks(r)}
@@ -519,6 +521,14 @@ function viewRecipe(id) {
       <ol class="steps">${r.st.map((s) => `<li>${esc(tx(s))}${s[2] ? ` <span class="tmr">⏱ ${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'}</span>` : ''}</li>`).join('')}</ol>
       ${nutBox(r)}
     </article>`;
+}
+
+/** Homemade or shop-bought pastry sheets — one switch for every pita that uses jufke. */
+function jufSwitch() {
+  return `<div class="jufsw"><span class="flabel">${t('jufka')}</span><div class="chips">
+    <button class="chip ${JUF.home ? 'on' : ''}" data-act="jufka" data-v="home">${t('jufHome')}</button>
+    <button class="chip ${JUF.home ? '' : 'on'}" data-act="jufka" data-v="shop">${t('jufShop')}</button></div>
+    <small class="muted">${t(JUF.home ? 'jufHomeHint' : 'jufShopHint')}</small></div>`;
 }
 
 // ───────── COOK MODE ─────────
@@ -558,7 +568,7 @@ function renderCookStep() {
   const r = R[cook.id];
   const s = r.st[cook.i];
   const body = $('#cookBody'); if (!body) return;
-  body.innerHTML = `<div class="stepno">${t('step')} ${cook.i + 1} ${t('of')} ${r.st.length}</div>
+  body.innerHTML = `${r.juf && cook.i === 0 ? jufSwitch() : ''}<div class="stepno">${t('step')} ${cook.i + 1} ${t('of')} ${r.st.length}</div>
     <p class="bigstep">${esc(tx(s))}</p>
     ${s[2] ? `<button class="btn primary big steptimer" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">${ICON.timer} ${t('timer')} ${s[2]} min</button>` : ''}`;
   markStepTimer();
@@ -722,6 +732,7 @@ function viewSettings() {
       ${keys('style').map((c) => `<div class="mix"><span>${esc(L('style', c))}</span><input type="range" min="0" max="3" step="1" value="${st.styles[c] || 0}" data-act="mix" data-k="${c}"><small>${lvl[st.styles[c] || 0]}</small></div>`).join('')}
       ${['meatless', 'health'].map((k) => `<div class="mix"><span>${t(k)}</span><input type="range" min="0" max="3" step="1" value="${st[k] || 0}" data-act="mixs" data-k="${k}"><small>${t(k + 'Lvl').split('|')[st[k] || 0]}</small></div>`).join('')}
       <p class="small muted">${t('dietHint')}</p>
+      ${jufSwitch()}
     </section>
     <section class="set"><h3>${t('rules')}</h3>
       ${keys('kind').map((k) => `<div class="mix"><span>${esc(L('kind', k))}</span><input type="number" class="num" min="0" max="7" data-act="rule" data-k="${k}" value="${st.rules[k] ?? 7}"><small>× / 7</small></div>`).join('')}
@@ -944,6 +955,7 @@ document.addEventListener('click', (e) => {
     case 'ftoggle': ui.filters[el.dataset.k] = !ui.filters[el.dataset.k]; rer(); break;
     case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '', grade: new Set() }; rer(); break;
     case 'fav': store.toggleFav(el.dataset.id); rer(); break;
+    case 'jufka': { st.jufka = el.dataset.v; store.save(); cook = null; const y = window.scrollY; route(); window.scrollTo(0, y); break; }
     case 'serv': { const r = R[el.dataset.id]; const cur = ui.serv[r.id] ?? defaultServ(r); ui.serv[r.id] = Math.max(1, cur + Number(el.dataset.d)); rer(); break; }
     case 'setserv': ui.serv[el.dataset.id] = Number(el.dataset.v); rer(); break;
     case 'addplan': {

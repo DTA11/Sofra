@@ -27,6 +27,7 @@ export function defaults() {
     preferKid: false,
     meatless: 0,       // 0–3: meatless days (3 = vegetarian)
     health: 0,         // 0–3: prefer dishes with grade A/B
+    jufka: 'home',     // pite: 'home' = hand-stretched jufke (dough steps added) · 'shop' = bought sheets
     equipment: { oven: 1, pressure: 1, sac: 0, kazan: 0, grill: 0 },
     mode: 'normal',
     range: 'week',     // plan length: dish | day | week | month

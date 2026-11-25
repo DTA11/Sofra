@@ -39,7 +39,7 @@ export function nutrition(r) {
   if (cache.has(r.id)) return cache.get(r.id);
   const tot = Object.fromEntries(KEYS.map((k) => [k, 0]));
   let mass = 0, fvlMass = 0;
-  for (const [id, q, unit, ex = {}] of r.ing) {
+  for (const [id, q, unit, ex = {}] of (r.ingShop || r.ing)) {
     if (ex.opt) continue;
     let g;
     if (q == null) {
