@@ -30,7 +30,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - **Vojnička kuhinja** (#/vojnicka): kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
 
 ## Privremeno
-- `/foto-prompts/` — pomoćna stranica s Gemini promptovima za fotografije jela (dugme Kopiraj). Nije linkana iz aplikacije, noindex. Obrisati folder `foto-prompts/` i blok u netlify.toml kad su fotografije gotove.
+- `/foto-prompts/` — pomoćna stranica s Gemini promptovima za fotografije jela (dugme Kopiraj). Link u hamburger meniju ("Foto promptovi"), noindex. Obrisati folder `foto-prompts/`, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml kad su fotografije gotove.
 
 ## Struktura
 ```
