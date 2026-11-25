@@ -779,10 +779,7 @@ function viewSettings() {
     </section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
     <section class="set"><button class="btn" data-act="guideshow">${ICON.check} ${t('guideShow')}</button></section>
-    <section class="set"><h3>${t('backup')}</h3><div class="row gap wrap">
-      <button class="btn" data-act="export">⬇ ${t('exportData')}</button>
-      <label class="btn">⬆ ${t('importData')}<input type="file" accept="application/json,.json" data-act="import" hidden></label>
-      <button class="btn danger" data-act="reset">${t('reset')}</button></div></section>
+    <section class="set"><button class="btn danger" data-act="reset">${t('reset')}</button></section>
     <section class="set"><h3>${t('about')}</h3><p class="muted small">${t('aboutText')}</p>
 </section>`;
 }
