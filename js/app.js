@@ -750,7 +750,7 @@ function viewSettings() {
   const daysChips = DAYS[getLang()].map((d, i) => `<button class="chip ${st.posnoDays.includes(i) ? 'on' : ''}" data-act="posnoday" data-i="${i}">${d.slice(0, 3)}</button>`).join('');
   const num = (k, v, min, max, step = 1) => `<input type="number" class="num" inputmode="numeric" data-act="setnum" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${v}">`;
   const tog = (k, label) => `<label class="toggle"><input type="checkbox" data-act="settog" data-k="${k}" ${st[k] ? 'checked' : ''}><span>${label}</span></label>`;
-  return `<section class="band page-band"><h1 class="display">${t('settings')}</h1><p class="lede">${t('planSettings')}</p></section>
+  return `<section class="band page-band"><a class="backlink" href="#/plan">${ICON.back} ${t('tabPlan')}</a><h1 class="display">${t('settings')}</h1><p class="lede">${t('planSettings')}</p></section>
     <section class="set"><h3>${t('language')}</h3><div class="chips">
       <button class="chip ${getLang() === 'bs' ? 'on' : ''}" data-act="lang" data-v="bs">Bosanski</button>
       <button class="chip ${getLang() === 'en' ? 'on' : ''}" data-act="lang" data-v="en">English</button></div></section>
@@ -785,6 +785,7 @@ function viewSettings() {
     </section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
     <section class="set"><button class="btn" data-act="guideshow">${ICON.check} ${t('guideShow')}</button></section>
+    <a class="btn primary block" href="#/plan">${ICON.check} ${t('settingsDone')}</a>
     <section class="set"><button class="btn danger" data-act="reset">${t('reset')}</button></section>
     <section class="set"><h3>${t('about')}</h3><p class="muted small">${t('aboutText')}</p>
 </section>`;
