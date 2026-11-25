@@ -252,6 +252,9 @@ select { min-height: 44px; border-radius: 10px; border: 1px solid var(--line); b
 
 .ings .q .g { display: block; font-weight: 500; font-size: .78em; color: var(--muted); white-space: nowrap; }
 
+/* fast repeated taps (servings +/−, sliders, chips) must not trigger iPhone double-tap zoom; pinch zoom stays */
+html, button, a, input, label, select, summary, .chip { touch-action: manipulation; }
+
 /* ═════════ cook mode ═════════ */
 body.cooking .tabbar, body.cooking .topbar, body.cooking .menu-panel, body.cooking .kilim-wrap { display: none !important; }
 body.cooking { padding-bottom: 0; background: #12100e; color: #f5f2ee; }

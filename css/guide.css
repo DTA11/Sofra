@@ -44,3 +44,4 @@ li { margin: 6px 0; }
 .related { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
 .related a { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--soft); text-decoration: none; color: var(--ink); font-weight: 600; font-size: .92rem; }
 .g-foot { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 16px; color: var(--muted); font-size: .9rem; }
+html, button, a { touch-action: manipulation; }

@@ -12,7 +12,7 @@
    TYPE   Fraunces for names, Inter for text; LAYOUT one column, sticky filters */
 :root{color-scheme:light dark;--bg:light-dark(#f8f1e7,#14110f);--card:light-dark(#fffdf9,#1f1b18);--ink:light-dark(#241a14,#f3ece4);--muted:light-dark(#76665a,#b3a698);--line:light-dark(#eaded0,#332c27);--red:#8c1c13;--ind:#1f2a44;--sf:#e8a33d;--ok:light-dark(#3f6b2a,#8cc46a)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
-*{box-sizing:border-box;min-width:0}
+*{box-sizing:border-box;min-width:0}html,button{touch-action:manipulation}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
 .top{background:var(--red);color:#fff;padding:22px max(5vw,16px) 18px}
 .top h1{font:700 clamp(28px,6vw,40px)/1.05 Fraunces,Georgia,serif;margin:0 0 6px;text-wrap:balance}
