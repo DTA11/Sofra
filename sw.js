@@ -1,5 +1,5 @@
 // Sofra service worker — offline app shell. Bump VERSION on every deploy that changes files.
-const VERSION = 'sofra-v54';
+const VERSION = 'sofra-v55';
 const FILES = [
   './',
   'index.html',
