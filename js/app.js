@@ -539,6 +539,7 @@ function viewRecipe(id) {
         <button class="btn ${fav ? 'faved' : ''}" data-act="fav" data-id="${r.id}">${fav ? ICON.starFill : ICON.star} ${t('fav')}</button>
         <button class="btn" data-act="addplan" data-id="${r.id}">${ICON.plus} ${t('addToPlan')}</button>
         <button class="btn" data-act="print" data-kind="recipe" data-id="${r.id}">${ICON.doc} ${t('pdf')}</button>
+        <button class="btn" data-act="send" data-kind="recipe" data-id="${r.id}">${ICON.share} ${t('send')}</button>
       </div>
       <blockquote class="story">${esc(tx(r.story))}</blockquote>
       ${scaler}
@@ -704,6 +705,28 @@ function shopText() {
   if (extra.length) { lines.push('', `*${L('sec', 'other')}*`); extra.forEach((e) => lines.push('• ' + e.text)); }
   return lines.join('\n');
 }
+/** A recipe as plain text for chats: name, servings, ingredients (scaled, current jufke choice), steps. */
+function recipeText(r) {
+  const f = scaleFor(r);
+  const serv = r.pan ? '' : `${ui.serv[r.id] ?? defaultServ(r)} ${t('persons')}`;
+  const lines = [`🍲 *${name(r)}*`, [fmtTime(r), serv].filter(Boolean).join(' · '), '', `*${t('ingredients')}*`];
+  r.ing.forEach((i) => {
+    const p = ingParts(i, f);
+    const tl = [p.gr, p.tail].filter(Boolean).join(', ');
+    lines.push(`• ${p.qty ? p.qty + ' ' : ''}${p.nm}${p.alt}${tl ? ` (${tl})` : ''}`);
+  });
+  lines.push('', `*${t('steps')}*`);
+  r.st.forEach((x, k) => lines.push(`${k + 1}. ${tx(x)}`));
+  lines.push('', '— Sofra');
+  return lines.join('\n');
+}
+/** "Pošalji": the phone's own share menu (Messenger, Viber, WhatsApp, SMS…); without one, copy the text. */
+function sendText(text, title) {
+  if (navigator.share) { navigator.share({ title, text }).catch(() => {}); return; }
+  const done = () => toast(t('copiedPaste'));
+  const old = () => { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch {} ta.remove(); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, old); else old();
+}
 function viewShop() {
   const st = S();
   if (!st.plan) return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1></section><div class="empty">${t('emptyPlan')}</div>`;
@@ -721,10 +744,7 @@ function viewShop() {
   return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1><p class="lede">${t(intro)}</p></section>
     ${tabs}
     <div class="row gap wrap share">
-      <button class="btn wa" data-act="wa">WhatsApp</button>
-      <button class="btn vb" data-act="viber">Viber</button>
-      ${navigator.share ? `<button class="btn" data-act="nshare">${ICON.share} ${t('share')}</button>` : ''}
-      <button class="btn" data-act="copy">${ICON.copy} ${t('copy')}</button>
+      <button class="btn" data-act="send" data-kind="shop">${ICON.share} ${t('send')}</button>
       <button class="btn" data-act="print" data-kind="shop">${ICON.doc} ${t('pdf')}</button>
     </div>
     ${!sections.length ? `<div class="empty">✓ ${t('youHave')}</div>` : ''}
@@ -1018,10 +1038,7 @@ document.addEventListener('click', (e) => {
     case 'timer': if (cook.timers.some((tm) => tm.label === el.dataset.label && tm.end > Date.now())) break; cook.timers.push({ label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
     case 'tdel': cook.timers.splice(Number(el.dataset.k), 1); tickTimers(); break;
     case 'jar': { const id = el.dataset.id; const n = Math.max(0, (Number(st.pantry[id]) || 0) + Number(el.dataset.d)); if (n) st.pantry[id] = n; else delete st.pantry[id]; store.save(); rer(); break; }
-    case 'wa': window.open('https://wa.me/?text=' + encodeURIComponent(shopText()), '_blank'); break;
-    case 'viber': location.href = 'viber://forward?text=' + encodeURIComponent(shopText()); break;
-    case 'nshare': navigator.share({ title: 'Sofra', text: shopText() }).catch(() => {}); break;
-    case 'copy': navigator.clipboard?.writeText(shopText()).then(() => toast(t('copied'))); break;
+    case 'send': sendText(el.dataset.kind === 'recipe' ? recipeText(R[el.dataset.id]) : shopText(), el.dataset.kind === 'recipe' ? name(R[el.dataset.id]) : t('printShop')); break;
     case 'xdel': st.shop.extra.splice(Number(el.dataset.k), 1); store.save(); rer(); break;
     case 'clearbought': {
       const { sections } = shoppingList(curPart());

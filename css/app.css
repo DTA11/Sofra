@@ -177,7 +177,6 @@ body.menu-open { overflow: hidden; }
 .btn.faved { color: var(--gold); border-color: var(--gold); }
 .btn.danger { color: #b3261e; border-color: #e6b4ae; }
 .btn.big { font-size: 1.1rem; padding: 16px 18px; flex: 1; justify-content: center; }
-.btn.wa { background: #25d366; color: #fff; border-color: #25d366; } .btn.vb { background: #7360f2; color: #fff; border-color: #7360f2; }
 .icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 0; border-radius: 12px; background: none; cursor: pointer; color: var(--muted); text-decoration: none; }
 .icon:hover { background: var(--soft); color: var(--ink); }
 .icon svg { width: 20px; height: 20px; }
