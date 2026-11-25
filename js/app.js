@@ -121,6 +121,8 @@ function route() {
   window.scrollTo(0, 0);
   renderChrome();
 }
+/** Re-render the current page after an in-page change, keeping the scroll position. */
+function rerender() { const y = window.scrollY; route(); window.scrollTo(0, y); }
 const go = (h) => { if (location.hash === h) route(); else location.hash = h; };
 
 // ───────── plan length & first-steps guide ─────────
@@ -932,7 +934,7 @@ document.addEventListener('click', (e) => {
   if (!el || el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'FORM') return;
   const st = S();
   const a = el.dataset.act;
-  const rer = () => route();
+  const rer = rerender;
   switch (a) {
     case 'newplan': askRange(); break;
     case 'guidedone': st.guide = { ...st.guide, done: true }; store.save(); rer(); break;
@@ -955,7 +957,7 @@ document.addEventListener('click', (e) => {
     case 'ftoggle': ui.filters[el.dataset.k] = !ui.filters[el.dataset.k]; rer(); break;
     case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '', grade: new Set() }; rer(); break;
     case 'fav': store.toggleFav(el.dataset.id); rer(); break;
-    case 'jufka': { st.jufka = el.dataset.v; store.save(); cook = null; const y = window.scrollY; route(); window.scrollTo(0, y); break; }
+    case 'jufka': { st.jufka = el.dataset.v; store.save(); cook = null; rerender(); break; }
     case 'serv': { const r = R[el.dataset.id]; const cur = ui.serv[r.id] ?? defaultServ(r); ui.serv[r.id] = Math.max(1, cur + Number(el.dataset.d)); rer(); break; }
     case 'setserv': ui.serv[el.dataset.id] = Number(el.dataset.v); rer(); break;
     case 'addplan': {
@@ -1029,11 +1031,11 @@ document.addEventListener('change', (e) => {
     case 'xdone': st.shop.extra[Number(el.dataset.k)].done = el.checked; store.save(); el.closest('.sitem')?.classList.toggle('on', el.checked); break;
     case 'setnum': { const v = Number(el.value); if (!Number.isNaN(v)) { st[el.dataset.k] = v; store.save(); } break; }
     case 'settog': st[el.dataset.k] = el.checked; store.save(); break;
-    case 'mix': st.styles[el.dataset.k] = Number(el.value); store.save(); route(); break;
-    case 'mixs': if (['meatless', 'health'].includes(el.dataset.k)) { st[el.dataset.k] = Number(el.value); store.save(); ui.pickIdx = null; route(); } break;
+    case 'mix': st.styles[el.dataset.k] = Number(el.value); store.save(); rerender(); break;
+    case 'mixs': if (['meatless', 'health'].includes(el.dataset.k)) { st[el.dataset.k] = Number(el.value); store.save(); ui.pickIdx = null; rerender(); } break;
     case 'rule': st.rules[el.dataset.k] = Number(el.value); store.save(); break;
-    case 'panshape': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, shape: el.value }; route(); break; }
-    case 'pandim': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, [el.dataset.k]: Math.max(5, Number(el.value) || 0) }; route(); break; }
+    case 'panshape': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, shape: el.value }; rerender(); break; }
+    case 'pandim': { const r = R[el.dataset.id]; const cur = ui.pan[r.id] || { ...r.pan }; ui.pan[r.id] = { ...cur, [el.dataset.k]: Math.max(5, Number(el.value) || 0) }; rerender(); break; }
     case 'import': {
       const file = el.files[0]; if (!file) return;
       file.text().then((txt) => { try { store.importJSON(txt); setLang(S().lang); toast(t('importOk')); route(); } catch { toast(t('importBad')); } });
@@ -1047,7 +1049,7 @@ document.addEventListener('submit', (e) => {
   const f = e.target; if (f.dataset.act !== 'xadd') return;
   e.preventDefault();
   const v = $('#xtext').value.trim(); if (!v) return;
-  S().shop.extra.push({ text: v, done: false }); store.save(); route();
+  S().shop.extra.push({ text: v, done: false }); store.save(); rerender();
 });
 
 document.addEventListener('input', (e) => {
