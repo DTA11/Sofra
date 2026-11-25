@@ -1,0 +1,46 @@
+/* Sofra guides (vodiči) — plain static article pages, same palette and fonts as the app. */
+:root {
+  --bg: #ffffff; --soft: #f7f4f0; --ink: #1c1917; --ink-2: #44403c; --muted: #78716c; --line: #e7e2dc;
+  --accent: #9f1d20; --accent-soft: #fbeeee; --olive: #4d6b2a; --gold: #c8912f;
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --ui: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #141210; --soft: #1c1917; --ink: #f5f2ee; --ink-2: #d6d3d1; --muted: #a8a29e; --line: #2f2a26; --accent: #e0575a; --accent-soft: #3a1f1f; --olive: #8fb35f; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.7 var(--ui); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+.g-top { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 5; }
+.g-top-in { max-width: 760px; margin: 0 auto; height: 60px; display: flex; align-items: center; gap: 12px; padding: 0 20px; }
+.g-brand { display: flex; gap: 9px; align-items: center; color: var(--ink); text-decoration: none; font: 700 1.3rem var(--display); }
+.g-top nav { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.g-top nav a { color: var(--ink-2); text-decoration: none; font: 600 .9rem var(--ui); padding: 6px 12px; border-radius: 999px; }
+.g-top nav a:hover { background: var(--soft); }
+.g-top nav a.lang { border: 1px solid var(--line); font-size: .78rem; letter-spacing: .04em; }
+.kilim { height: 10px; background: repeating-linear-gradient(90deg, var(--accent) 0 18px, var(--gold) 18px 26px, #1f3b57 26px 34px, var(--gold) 34px 42px); }
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 60px; }
+.eyebrow { color: var(--accent); font: 700 .78rem var(--ui); letter-spacing: .08em; text-transform: uppercase; margin: 28px 0 6px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; letter-spacing: -.015em; }
+h1 { font-size: clamp(2rem, 6vw, 2.8rem); margin: 0 0 12px; }
+h2 { font-size: 1.55rem; margin: 40px 0 10px; }
+h3 { font-size: 1.15rem; margin: 26px 0 6px; }
+.lede { font-size: 1.15rem; color: var(--ink-2); margin: 0 0 20px; }
+.box { background: var(--soft); border-radius: 16px; padding: 18px 20px; margin: 22px 0; }
+.box h2, .box h3 { margin-top: 0; }
+.box.tip { background: var(--accent-soft); }
+table { width: 100%; border-collapse: collapse; margin: 10px 0 6px; font-size: .97rem; }
+th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 700; color: var(--ink-2); }
+ol, ul { padding-left: 1.3em; }
+li { margin: 6px 0; }
+.faq dt { font-weight: 700; margin-top: 16px; }
+.faq dd { margin: 4px 0 0; color: var(--ink-2); }
+.cards { list-style: none; padding: 0; display: grid; gap: 12px; }
+.cards a { display: block; padding: 16px 18px; border: 1px solid var(--line); border-radius: 16px; text-decoration: none; color: var(--ink); }
+.cards a:hover { border-color: var(--accent); }
+.cards b { font: 700 1.2rem var(--display); display: block; }
+.cards span { color: var(--muted); font-size: .95rem; }
+.related { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+.related a { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--soft); text-decoration: none; color: var(--ink); font-weight: 600; font-size: .92rem; }
+.g-foot { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 16px; color: var(--muted); font-size: .9rem; }

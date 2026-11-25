@@ -2,6 +2,7 @@ import { RECIPES, R, MENUS } from './data/index.js';
 import { ING, SECTIONS, MEAT_ALT } from './data/ingredients.js';
 import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
+import { liveGuides, GUIDE_INDEX } from './data/guides.js';
 import { dishArt, ICON, KILIM } from './art.js';
 import { nutrition, GRADE_COLORS } from './nutrition.js';
 import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, shopParts, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
@@ -164,6 +165,7 @@ const STARTER = ['onion', 'garlic', 'potato', 'carrot', 'flour', 'rice', 'sugar'
 function renderChrome() {
   $('#langBtn').textContent = getLang() === 'bs' ? 'EN' : 'BS';
   document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-guides]').forEach((el) => { el.href = GUIDE_INDEX[getLang()]; });
 }
 
 // ───────── HOME (website landing) ─────────
@@ -195,7 +197,7 @@ function viewHome() {
     </section>
     <section class="home-sec privacy"><h3>${ICON.check} ${t('privacyTitle')}</h3><p>${t('privacyText')}</p></section>
     <footer class="sitefoot"><p><b>Sofra</b> — ${t('footer').replace(/^Sofra — /, '')}</p>
-      <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/vojnicka">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
+      <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/vojnicka">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="${GUIDE_INDEX[getLang()]}">${t('guides')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
 }
 
 // "Prijedlog za danas": a random dish, the same all day, new one on tap
@@ -436,6 +438,12 @@ function viewCombos() {
 }
 
 // ───────── RECIPE DETAIL ─────────
+function guideLinks(r) {
+  const ids = r.ing.map((i) => i[0]);
+  const gs = liveGuides().filter((g) => g.ing.some((x) => ids.includes(x)));
+  return gs.map((g) => { const [title, href] = g[getLang()]; return `<p class="hint">📖 ${t('guideHint')}: <a href="${href}">${esc(title)}</a></p>`; }).join('');
+}
+
 function viewRecipe(id) {
   const r = R[id];
   if (!r) return `<p>404</p>`;
@@ -486,6 +494,7 @@ function viewRecipe(id) {
       ${scaler}
       <h3>${t('ingredients')}</h3>
       <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
+      ${guideLinks(r)}
       <h3>${t('steps')}</h3>
       <ol class="steps">${r.st.map((s) => `<li>${esc(tx(s))}${s[2] ? ` <span class="tmr">⏱ ${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'}</span>` : ''}</li>`).join('')}</ol>
       ${nutBox(r)}
