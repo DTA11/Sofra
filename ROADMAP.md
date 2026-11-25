@@ -1,6 +1,6 @@
 # Sofra — plan razvoja
 
-Redoslijed je prijedlog; ništa od ovoga još nije započeto (stanje 25. 11. 2026, sofra-v67).
+Redoslijed je prijedlog; ništa od ovoga još nije započeto (stanje 25. 11. 2026, sofra-v68).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
 1. **„Ne volimo“ lista** — u Postavkama označiš namirnice koje ne želiš (npr. gljive, džigerica, riba); planer i „Prijedlog za danas“ nikad ne biraju jela s njima. Recepti s njima ostaju vidljivi u listi, samo ih planer preskače.
@@ -15,6 +15,17 @@ Redoslijed je prijedlog; ništa od ovoga još nije započeto (stanje 25. 11. 202
 8. **Objavljivanje vodiča po rasporedu** — datum objave u js/data/guides.js + zakazani Netlify rebuild (build hook).
 9. **Fotografije jela** — 14 od 223 gotovo. Promptovi: /foto-prompts/ (meni → „Foto promptovi“). Pite: jedan zatvoren komad na tanjiru, puna čaša jogurta na stolu, jedna viljuška, bez začina — tako izgledaju dobro. Kad su sve slike gotove: obrisati foto-prompts/, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml.
 10. **Opcije planera na stranici Plan** — „Šta kuhamo“, Bez mesa, Zdravije, obroci, ukućani… kao panel na Planu umjesto zasebne stranice. Vlasnik je rekao „čekaj“ — prvo pitati.
+
+## Nove ideje
+11. **Kategorija „Roštilj“** (ideja vlasnika, 25. 11. 2026) — cijela oblast od mesa do stola:
+    - **izbor mesa** — koji komad za šta (roštilj, ražanj, sač, dimljenje), na šta paziti pri kupovini;
+    - **priprema i rezanje** — rezanje, otkoštavanje, tučenje, mljevenje, oblikovanje (ćevapi, pljeskavice, ražnjići);
+    - **marinade** — osnovne marinade i trajanje mariniranja po vrsti mesa;
+    - **salamurenje i sušenje** — suho i mokro salamurenje, soljenje, sušenje;
+    - **pečenje** — vatra i žar (ćumur/drvo), direktna i indirektna toplina, temperature i vremena, odmaranje mesa;
+    - **dimljenje** — toplo i hladno dimljenje, vrsta drveta, trajanje;
+    - uz to prilozi i umaci za roštilj.
+    Oblik još nije odlučen (vodiči, novi recepti, filter ili zasebna stranica) — prvo pitati vlasnika.
 
 ## Pravila (podsjetnik)
 Bez država/regija u UI, „Vojnička kuhinja“ (nikad JNA), bez izvora i brendova, nove namirnice u ingredients.js I nutrition.js, ćilim boje, bs (ijekavica) + en, povećati VERSION u sw.js, testirati (Node + Playwright) prije pusha.
