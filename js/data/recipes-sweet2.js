@@ -99,7 +99,7 @@ export const SWEET2_RECIPES = [
   {
     id: 'torta-sir', cu: 'svakodnevno', type: 'dessert', sub: 'torta', main: 'dessert', time: 150, serves: 12, eq: ['oven'], occ: ['rodjendan'],
     pan: { shape: 'round', d: 26 },
-    bs: 'Torta od sira', en: 'Baked cheesecake',
+    bs: 'Cheesecake', en: 'Cheesecake',
     ing: [['biscuits', 250, 'g'], ['butter', 100, 'g'], ['cottage', 750, 'g'], ['sour_cream', 200, 'g'], ['sugar', 180, 'g'], ['vanilla_sugar', 1, 'kesica'], ['eggs', 3, 'kom'], ['starch', 2, 'kasika'], ['lemon', 1, 'kom', n('korica i sok', 'zest and juice')], ['dzem', 200, 'g', n('od višanja ili šumskog voća', 'sour cherry or berry jam')]],
     st: [
       ['Keks izmrvi i pomiješaj s otopljenim maslacem. Utisni u dno kalupa od 26 cm i ohladi.', 'Crush the biscuits and mix with the melted butter. Press into the base of a 26 cm tin and chill.'],
