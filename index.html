@@ -59,7 +59,16 @@
   </div>
 
   <dialog class="app-steps" data-install-steps>
-    <p class="app-steps-title" data-i18n="iosTitle">Dodaj Sofru na početni ekran</p>
+    <div data-steps-inapp hidden>
+      <p class="app-steps-title" data-i18n="inappTitle">Otvori Sofru u pregledniku</p>
+      <p data-i18n="inappLede">Stranica je otvorena unutar druge aplikacije (npr. Messenger), a odatle se Sofra ne može instalirati.</p>
+      <p><a class="btn primary block" data-inapp-open href="#"><span data-i18n="inappBtn">Otvori u pregledniku</span></a></p>
+      <ol>
+        <li><span data-i18n="inappStep1">Ako se ništa ne desi, dodirni ⋯ gore desno pa</span> <b data-i18n="inappStep1b">Otvori u pregledniku</b>.</li>
+        <li><span data-i18n="inappStep2">U pregledniku dodirni</span> <b data-i18n="getApp">Instaliraj</b>.</li>
+      </ol>
+    </div>
+    <p class="app-steps-title" data-steps-title data-i18n="iosTitle">Dodaj Sofru na početni ekran</p>
     <ol data-steps-safari>
       <li><span data-i18n="iosStep1">Dodirni</span> <b data-i18n="iosShare">Podijeli</b> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg> <small data-i18n="iosStep1b">(na novijim iPhoneima u meniju ···)</small></li>
       <li><span data-i18n="iosStep2">Skrolaj dole i dodirni</span> <b data-i18n="iosAdd">Dodaj na početni ekran</b>.</li>

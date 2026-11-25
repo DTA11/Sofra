@@ -226,12 +226,28 @@ function todayPick() {
 }
 
 // ───────── install button (same behaviour as Baby Card Printables) ─────────
-const install = { ask: window.__bip || null, ios: /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) };
-function installAvailable() { return !isStandalone() && (install.ask || install.ios); }
+const install = { ask: window.__bip || null, ios: /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1),
+  // in-app browsers (Messenger, Facebook, Instagram, Viber…) can't install a web app — send the user to the real browser
+  inapp: /FBAN|FBAV|FB_IAB|FBIOS|Messenger|Instagram|MicroMessenger|Line\/|Snapchat|musical_ly|TikTok|Viber|; wv\)/i.test(navigator.userAgent),
+  android: /Android/i.test(navigator.userAgent) };
+function installAvailable() { return !isStandalone() && (install.ask || install.ios || install.inapp); }
+function openInBrowser() {
+  const url = location.href;
+  if (install.android) location.href = `intent://${location.host}${location.pathname}${location.search}${location.hash}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(url)};end`;
+  else if (install.ios) location.href = 'x-safari-' + url; // opens Safari on iOS 17+
+}
 function syncInstallButtons() {
   document.querySelectorAll('[data-install-btn],[data-install-cta]').forEach((b) => { b.hidden = !installAvailable(); });
 }
 function doInstall() {
+  const steps0 = $('[data-install-steps]');
+  if (install.inapp && steps0) {
+    steps0.querySelector('[data-steps-inapp]').hidden = false;
+    ['[data-steps-title]', '[data-steps-safari]', '[data-steps-other]'].forEach((q) => { steps0.querySelector(q).hidden = true; });
+    steps0.querySelector('[data-inapp-open]').onclick = (e) => { e.preventDefault(); openInBrowser(); };
+    if (steps0.showModal) steps0.showModal(); else steps0.setAttribute('open', '');
+    return;
+  }
   if (install.ask) { install.ask.prompt(); install.ask.userChoice.finally(() => { install.ask = null; syncInstallButtons(); }); return; }
   const steps = $('[data-install-steps]');
   if (install.ios && steps) {
