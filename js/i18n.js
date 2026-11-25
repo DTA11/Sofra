@@ -208,7 +208,7 @@ const LISTS = {
   },
   style: {
     domaca: ['Domaća jela (variva, pite, pečenja)', 'Home cooking (stews, pies, roasts)'], tjestenina: ['Tjestenina i rižoto', 'Pasta & risotto'],
-    evropska: ['Evropska klasika (gulaši, tepsije, salate)', 'European classics (braises, bakes, salads)'], vojnicka: ['Vojnička kuhinja', 'Army kitchen'],
+    evropska: ['Evropska klasika (gulaši, zapečena jela, salate)', 'European classics (braises, oven bakes, salads)'], vojnicka: ['Vojnička kuhinja', 'Army kitchen'],
   },
   // regions: only dishes that really belong to one region get one. [bs, en, country]
   reg: {
