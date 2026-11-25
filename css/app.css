@@ -251,7 +251,7 @@ select { min-height: 44px; border-radius: 10px; border: 1px solid var(--line); b
 .source { font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; margin-top: 26px; }
 
 /* ═════════ cook mode ═════════ */
-body.cooking .tabbar, body.cooking .topbar, body.cooking .menu-panel { display: none !important; }
+body.cooking .tabbar, body.cooking .topbar, body.cooking .menu-panel, body.cooking .kilim-wrap { display: none !important; }
 body.cooking { padding-bottom: 0; background: #12100e; color: #f5f2ee; }
 .cook { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); max-width: 760px; margin: 0 auto; }
 .cook header { display: flex; align-items: center; gap: 10px; padding: 14px 0; border-bottom: 1px solid #2a2622; }
