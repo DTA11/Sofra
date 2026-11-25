@@ -1,13 +1,16 @@
 // Sofra service worker — offline app shell. Bump VERSION on every deploy that changes files.
-const VERSION = 'sofra-v86';
+const VERSION = 'sofra-v89';
 const FILES = [
   './',
   'index.html',
   'css/app.css',
   'manifest.webmanifest',
   'icons/icon.svg',
+  'icons/mark.png',
   'icons/icon-192.png',
   'icons/icon-512.png',
+  'icons/icon-maskable-512.png',
+  'icons/apple-touch-icon.png',
   'js/store.js',
   'js/art.js',
   'js/i18n.js',
