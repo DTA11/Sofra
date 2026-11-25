@@ -55,6 +55,7 @@ function derive(r) {
   r.veg = !hasMeat && !hasFish && r.ing.every((i) => !isMeat(ING[i[0]]));
   r.posno = r.veg && !dairyOrEgg;
   r.posnoFish = !hasMeat && !dairyOrEgg;
+  r.noMeat = !hasMeat; // Catholic fast: fish, eggs and dairy allowed
   r.eq = r.eq || [];
   r.eqOpt = r.eqOpt || [];
   r.occ = r.occ || [];

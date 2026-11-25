@@ -45,7 +45,7 @@ function eligible(r, ctx) {
   if (st.noPork || st.mode === 'ramazan') { if (!r.noPork) return false; }
   const req = r.eq || [];
   if (req.some((e) => !st.equipment[e])) return false;
-  if (ctx.posno && !(st.posnoFish ? r.posnoFish : r.posno)) return false;
+  if (ctx.posno && !posnoOk(r)) return false;
   if (ctx.vegDay && !r.veg) return false;
   return true;
 }
@@ -148,13 +148,21 @@ function kindCounts(days, skip = -1) {
 }
 const usedSet = (days, skip = -1) => new Set(days.flatMap((d, i) => (d && i !== skip ? d.dishes.filter((x) => !x.left).map((x) => x.id) : [])));
 
+/** Fasting modes: Catholic = no meat (fish, eggs, dairy fine); Orthodox = no meat, dairy or eggs (fish if allowed). */
+export const FAST_MODES = ['katolicki', 'pravoslavni'];
+function posnoOk(r) {
+  const st = S();
+  if (st.mode === 'katolicki') return r.noMeat;
+  return st.posnoFish ? r.posnoFish : r.posno;
+}
+
 function ctxFor(start, i, days, planId) {
   const st = S();
   const date = new Date(start.getTime() + i * DAY);
   const wd = weekday(date);
   return {
     date, weekday: wd, month: date.getMonth() + 1,
-    posno: st.mode !== 'ramazan' && st.posnoDays.includes(wd),
+    posno: FAST_MODES.includes(st.mode) && st.posnoDays.includes(wd),
     vegDay: (st.meatless || 0) >= 3 || pendingVeg.has(i) || !!(days[i] && days[i].veg),
     weekIngs: weekIngredients(wk(days, i)), recent: recentIds(planId), ...weekShape(wk(days, i), i),
   };
@@ -335,7 +343,7 @@ function buildPlan(st, start, planId, range, n, days) {
       if (pendingVeg.has(i + 1) && (st.meatless || 0) < 3) next.veg = true;
       const ctxN = ctxFor(start, i + 1, days, planId);
       const r = R[m.id];
-      if (!ctxN.posno || (st.posnoFish ? r.posnoFish : r.posno)) {
+      if (!ctxN.posno || posnoOk(r)) {
         if (st.mode === 'ramazan' || st.soupDaily) {
           const soup = pick(SOUPS(), ctxN, usedSet(days), {}, 0) || pick(SOUPS(), ctxN, usedSet(wk(days, i + 1)), {}, 0);
           if (soup) next.dishes.unshift({ id: soup.id, role: 'soup', serv: st.household });

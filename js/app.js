@@ -750,7 +750,12 @@ function viewSettings() {
       <button class="chip ${getLang() === 'en' ? 'on' : ''}" data-act="lang" data-v="en">English</button></div></section>
     <section class="set"><h3>${t('mode')}</h3><div class="chips">
       <button class="chip ${st.mode === 'normal' ? 'on' : ''}" data-act="mode" data-v="normal">${t('modeNormal')}</button>
-      <button class="chip ${st.mode === 'ramazan' ? 'on' : ''}" data-act="mode" data-v="ramazan">🌙 ${t('modeRamazan')}</button></div></section>
+      <button class="chip ${st.mode === 'ramazan' ? 'on' : ''}" data-act="mode" data-v="ramazan">🌙 ${t('modeRamazan')}</button>
+      <button class="chip ${st.mode === 'katolicki' ? 'on' : ''}" data-act="mode" data-v="katolicki">✝ ${t('modeKatolicki')}</button>
+      <button class="chip ${st.mode === 'pravoslavni' ? 'on' : ''}" data-act="mode" data-v="pravoslavni">☦ ${t('modePravoslavni')}</button></div>
+      <p class="small muted">${t('modeHint_' + st.mode)}</p>
+      ${['katolicki', 'pravoslavni'].includes(st.mode) ? `<h4>${t('posnoDays')}</h4><div class="chips">${daysChips}<button class="chip ${st.posnoDays.length === 7 ? 'on' : ''}" data-act="posnoall">${t('allDays')}</button></div>
+      ${st.mode === 'pravoslavni' ? tog('posnoFish', t('fishOk')) : ''}` : ''}</section>
     <section class="set"><h3>${t('meals')}</h3><div class="chips">${['breakfast', 'lunch', 'dinner', 'snack'].map((m) => `<button class="chip ${st.meals[m] ? 'on' : ''}" data-act="meal" data-k="${m}">${t(m)}</button>`).join('')}</div>
       ${tog('dinnerLeft', t('dinnerLeft'))}
       ${tog('noCookBreakfast', t('noCookBreakfast'))}<p class="small muted">${t('noCookHint')} <a href="#/dorucci">${t('combosTitle')} →</a></p>
@@ -770,9 +775,8 @@ function viewSettings() {
       <div class="mix"><span>${t('noRepeat')}</span>${num('noRepeatWeeks', st.noRepeatWeeks, 0, 6)}<small>${t('weeks')}</small></div>
       <div class="mix"><span>${t('weekdayMax')}</span>${num('weekdayMax', st.weekdayMax, 15, 300, 15)}<small>min</small></div>
       <div class="mix"><span>${t('dessertsWeek')}</span>${num('dessertsPerWeek', st.dessertsPerWeek, 0, 7)}</div>
-      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}${tog('posnoFish', t('posnoFish'))}
+      ${tog('leftovers', t('leftovers'))}${tog('soupDaily', t('soupDaily'))}${tog('noPork', t('noPork'))}${tog('preferKid', t('preferKid'))}
     </section>
-    <section class="set"><h3>${t('posnoDays')}</h3><div class="chips">${daysChips}</div></section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
     <section class="set"><button class="btn" data-act="guideshow">${ICON.check} ${t('guideShow')}</button></section>
     <section class="set"><h3>${t('backup')}</h3><div class="row gap wrap">
@@ -1030,7 +1034,8 @@ document.addEventListener('click', (e) => {
       st.shop.extra = st.shop.extra.filter((x) => !x.done); store.save(); rer(); break;
     }
     case 'lang': st.lang = el.dataset.v; setLang(st.lang); store.save(); rer(); break;
-    case 'mode': st.mode = el.dataset.v; store.save(); rer(); break;
+    case 'mode': if (st.mode !== el.dataset.v) { st.mode = el.dataset.v; if (st.posnoDays.length < 7) st.posnoDays = st.mode === 'katolicki' ? [4] : st.mode === 'pravoslavni' ? [2, 4] : st.posnoDays; } store.save(); rer(); break;
+    case 'posnoall': st.posnoDays = st.posnoDays.length === 7 ? (st.mode === 'katolicki' ? [4] : [2, 4]) : [0, 1, 2, 3, 4, 5, 6]; store.save(); rer(); break;
     case 'posnoday': { const i = Number(el.dataset.i); st.posnoDays = st.posnoDays.includes(i) ? st.posnoDays.filter((x) => x !== i) : [...st.posnoDays, i]; store.save(); rer(); break; }
     case 'meal': { st.meals[el.dataset.k] = !st.meals[el.dataset.k]; if (!st.meals.lunch && !st.meals.dinner) st.meals.lunch = true; store.save(); rer(); break; }
     case 'equip': st.equipment[el.dataset.k] = st.equipment[el.dataset.k] ? 0 : 1; store.save(); rer(); break;

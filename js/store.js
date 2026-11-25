@@ -21,15 +21,15 @@ export function defaults() {
     noCookBreakfast: false, // weekdays: assembled breakfast from shop products
     dinnerMax: 45,
     dessertsPerWeek: 2,
-    posnoDays: [],
-    posnoFish: true,
+    posnoDays: [],     // weekdays 0=Mon … 6=Sun; used only in the fasting modes
+    posnoFish: false,  // Orthodox fast: fish allowed on fasting days
     noPork: false,
     preferKid: false,
     meatless: 0,       // 0–3: meatless days (3 = vegetarian)
     health: 0,         // 0–3: prefer dishes with grade A/B
     jufka: 'home',     // pite: 'home' = hand-stretched jufke (dough steps added) · 'shop' = bought sheets
     equipment: { oven: 1, pressure: 1, sac: 0, kazan: 0, grill: 0 },
-    mode: 'normal',
+    mode: 'normal',    // normal | ramazan | katolicki | pravoslavni
     range: 'week',     // plan length: dish | day | week | month
     guide: { done: false, pantry: false, shop: false }, // first-steps guide
     pantry,            // id -> 1 (have) ; zimnica: number of jars
@@ -54,6 +54,8 @@ function migrate(d) {
     d.styles = { domaca: Number(y.domaca) || 0, tjestenina: it, evropska: Math.max(it, fr), vojnicka: Number(y.jna) || 0 };
   }
   if (d) delete d.cuisines;
+  // fasting days used to be a separate setting with strict (no meat, dairy, eggs) days: that is the Orthodox fast mode now
+  if (d && (!d.mode || d.mode === 'normal') && Array.isArray(d.posnoDays) && d.posnoDays.length) d.mode = 'pravoslavni';
   return d;
 }
 function fill(d) {
