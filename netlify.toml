@@ -11,3 +11,9 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# temporary photo-prompt helper page — not linked from the app, delete when photos are done
+[[headers]]
+  for = "/foto-prompts/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

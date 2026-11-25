@@ -29,6 +29,9 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - **Slatko**: kolači, torte, sitni kolači, orijentalni slatkiši, preračunavanje kalupa
 - **Vojnička kuhinja** (#/vojnicka): kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
 
+## Privremeno
+- `/foto-prompts/` — pomoćna stranica s Gemini promptovima za fotografije jela (dugme Kopiraj). Nije linkana iz aplikacije, noindex. Obrisati folder `foto-prompts/` i blok u netlify.toml kad su fotografije gotove.
+
 ## Struktura
 ```
 index.html            app shell
