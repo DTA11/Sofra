@@ -783,8 +783,6 @@ function viewSettings() {
       <button class="btn" data-act="export">⬇ ${t('exportData')}</button>
       <label class="btn">⬆ ${t('importData')}<input type="file" accept="application/json,.json" data-act="import" hidden></label>
       <button class="btn danger" data-act="reset">${t('reset')}</button></div></section>
-    <section class="set"><h3>${t('install')}</h3>
-      ${installAvailable() ? `<button class="btn primary" data-act="install">${ICON.share} ${t('install')}</button>` : `<p class="muted small">${t('installHint')}</p>`}</section>
     <section class="set"><h3>${t('about')}</h3><p class="muted small">${t('aboutText')}</p>
 </section>`;
 }
