@@ -5,7 +5,7 @@ import { NUT, STOCK, PIECE, UNIT_G, SPOON, TEASPOON, PACKET, BUNCH, HEAD, YIELD,
 
 const KEYS = ['kcal', 'protein', 'fat', 'sat', 'carbs', 'sugar', 'fibre', 'salt'];
 
-function grams(id, q, unit) {
+export function grams(id, q, unit) {
   if (unit === 'kom' || unit === '') return q * (PIECE[id] ?? 100);
   if (unit === 'kasika') return q * (SPOON[id] ?? 12);
   if (unit === 'kasicica') return q * (TEASPOON[id] ?? 4);

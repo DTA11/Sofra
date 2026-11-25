@@ -4,7 +4,7 @@ import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTH
 import * as store from './store.js';
 import { liveGuides, GUIDE_INDEX } from './data/guides.js';
 import { dishArt, ICON, KILIM } from './art.js';
-import { nutrition, GRADE_COLORS } from './nutrition.js';
+import { nutrition, grams, GRADE_COLORS } from './nutrition.js';
 import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, shopParts, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -84,8 +84,8 @@ function badges(r) {
 
 /** One formatted ingredient line. f = scale factor. */
 function ingLine(ing, f) {
-  const { qty, nm, alt, tail } = ingParts(ing, f);
-  return `<li><span class="q">${esc(qty)}</span><span class="n">${esc(nm)}${alt ? `<span class="alt">${esc(alt)}</span>` : ''}${tail ? ` <small>(${esc(tail)})</small>` : ''}</span></li>`;
+  const { qty, gr, nm, alt, tail } = ingParts(ing, f);
+  return `<li><span class="q">${esc(qty)}${gr ? `<small class="g">${esc(gr)}</small>` : ''}</span><span class="n">${esc(nm)}${alt ? `<span class="alt">${esc(alt)}</span>` : ''}${tail ? ` <small>(${esc(tail)})</small>` : ''}</span></li>`;
 }
 
 function scaleFor(r) {
@@ -789,26 +789,33 @@ function viewSettings() {
 function ingParts(ing, f) {
   const [id, q, unit, ex = {}] = ing;
   const note = ex.note ? tx(ex.note) : '';
-  let qty = '';
+  let qty = '', gr = '';
   if (q != null) {
     const a = niceQ(q * f, unit);
     let txt = a.s;
     if (ex.max != null) txt = `${a.s}–${niceQ(ex.max * f, unit).s}`;
     const ul = unitLabel(a.u, a.n);
     qty = `${txt}${ul ? ' ' + ul : ''}`;
+    // spoons, handfuls and packets: also the approximate weight
+    if (G_UNITS.includes(unit)) {
+      const g1 = grams(id, a.n, unit), g2 = ex.max != null ? grams(id, niceQ(ex.max * f, unit).n, unit) : null;
+      gr = `≈ ${fmtG(g1)}${g2 != null && fmtG(g2) !== fmtG(g1) ? '–' + fmtG(g2) : ''} g`;
+    }
   }
   const tail = [note, ex.opt ? t('optional') : '', q == null && !note ? t('toTaste') : ''].filter(Boolean).join(', ');
   // other meats that work too — skipped when the recipe note already offers an alternative
   const alt = MEAT_ALT[id] && !/^(ili|or) /i.test(note) ? ` (${t('or')} ${tx(MEAT_ALT[id])})` : '';
-  return { qty, nm: iname(id), alt, tail };
+  return { qty, gr, nm: iname(id), alt, tail };
 }
+const G_UNITS = ['kasika', 'kasicica', 'saka', 'kesica'];
+const fmtG = (g) => (g < 2 ? String(Math.round(g * 2) / 2).replace('.', ',') : g < 30 ? String(Math.round(g)) : String(Math.round(g / 5) * 5));
 const stepTime = (s) => (s[2] ? ` (${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'})` : '');
 function recipeBlocks(r, f, servTxt, page = false) {
   return [
     { t: 'h2', text: name(r), page, sub: `${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''} · ${t('fGrade')} ${nutrition(r).grade}${perPortion(r) ? ` · ≈ ${nf(nutrition(r).serv.kcal)} kcal / ${t('nutServ').toLowerCase()}` : ''}` },
     { t: 'p', text: tx(r.story), font: 'I', muted: 1, after: 6 },
     { t: 'h3', text: t('ingredients') },
-    { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); return [p.qty, [['R', p.nm + p.alt], ...(p.tail ? [['I', ` (${p.tail})`]] : [])]]; }) },
+    { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); const tl = [p.gr, p.tail].filter(Boolean).join(', '); return [p.qty, [['R', p.nm + p.alt], ...(tl ? [['I', ` (${tl})`]] : [])]]; }) },
     { t: 'h3', text: t('steps') },
     { t: 'ol', items: r.st.map((s) => [['R', tx(s)], ['B', stepTime(s)]]) },
   ];
