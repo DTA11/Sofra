@@ -241,7 +241,7 @@ const LISTS = {
   unit: {
     g: ['g', 'g', 'g', 'g', 'g'], kg: ['kg', 'kg', 'kg', 'kg', 'kg'], ml: ['ml', 'ml', 'ml', 'ml', 'ml'], l: ['l', 'l', 'l', 'l', 'l'], dl: ['dl', 'dl', 'dl', 'dl', 'dl'],
     kom: ['kom', 'kom', 'kom', '', ''], kasika: ['kašika', 'kašike', 'kašika', 'tbsp', 'tbsp'], kasicica: ['kašičica', 'kašičice', 'kašičica', 'tsp', 'tsp'],
-    cen: ['čen', 'čena', 'čenova', 'clove', 'cloves'], glavica: ['glavica', 'glavice', 'glavica', '', ''], sop: ['vezica', 'vezice', 'vezica', 'bunch', 'bunches'],
+    cen: ['češanj', 'češnja', 'češnjeva', 'clove', 'cloves'], glavica: ['glavica', 'glavice', 'glavica', '', ''], sop: ['vezica', 'vezice', 'vezica', 'bunch', 'bunches'],
     prst: ['prstohvat', 'prstohvata', 'prstohvata', 'pinch', 'pinches'], kesica: ['kesica', 'kesice', 'kesica', 'sachet', 'sachets'],
     kriska: ['kriška', 'kriške', 'kriški', 'slice', 'slices'], jufka: ['jufka', 'jufke', 'jufki', 'sheet', 'sheets'], list: ['list', 'lista', 'listova', 'leaf', 'leaves'],
     zrno: ['zrno', 'zrna', 'zrna', 'corn', 'corns'], saka: ['šaka', 'šake', 'šaka', 'handful', 'handfuls'], '': ['', '', '', '', ''],

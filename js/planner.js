@@ -439,6 +439,7 @@ export function niceQ(q, unit) {
   if (u === 'g' && q >= 1000) { q /= 1000; u = 'kg'; }
   if (u === 'ml' && q >= 1000) { q /= 1000; u = 'l'; }
   if (u === 'dl' && q >= 10) { q /= 10; u = 'l'; }
+  if (u === 'cen') q = Math.max(1, Math.ceil(q - 0.05)); // garlic: whole cloves only, never 0
   let s;
   if (q >= 100) s = String(Math.round(q / 5) * 5);
   else if (q >= 10) s = String(Math.round(q));
