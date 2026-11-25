@@ -1,6 +1,7 @@
 // Dishes without a book source: text written fresh for Sofra, classic home amounts.
 const n = (bs, en) => ({ note: [bs, en] });
 const T = { b: 'trad' };
+const O = { opt: 1 };
 
 export const TRAD_RECIPES = [
   // ───────── Bosanska ─────────
@@ -74,6 +75,45 @@ export const TRAD_RECIPES = [
       ['Pokrij krpom 10 minuta da omekša. Služi s jogurtom.', 'Cover with a cloth for 10 minutes to soften. Serve with yoghurt.', 10],
     ],
     story: ['Miješani burek: pola mesa, pola krompira. Krompir upije sok od mesa, a pita bude sočnija i izdašnija.', 'A mixed burek: half meat, half potato. The potato soaks up the meat juices, making the pie juicier and go further.'],
+    src: T,
+  },
+  {
+    id: 'poprskusa', cu: 'bosanska', type: 'pie', main: 'cheese', time: 45, serves: 4, eq: ['oven'], kid: 1,
+    bs: 'Poprskuša', en: 'Poprskuša (poured flour pie with kajmak)',
+    ing: [['flour', 400, 'g'], ['lard_or_oil', 2, 'kasika', n('i malo za tepsiju', 'plus a little for the tin')], ['salt', 1, 'kasicica'], ['kajmak', 200, 'g', n('ili pavlaka', 'or sour cream')], ['milk', 150, 'ml', O], ['garlic', 2, 'cen', O]],
+    st: [
+      ['U loncu zakuhaj 500 ml vode, dodaj masnoću i so i pusti da opet provri.', 'Bring 500 ml water to the boil in a pot, add the fat and salt and let it boil again.', 3],
+      ['Skloni s vatre, dodaj brašno i brzo miješaj dok ne dobiješ glatku, gustu smjesu — ni čvrstu ni rijetku.', 'Take off the heat, add the flour and stir quickly into a smooth, thick batter — neither stiff nor runny.'],
+      ['Smjesu izlij u pomašćenu tepsiju, poravnaj mokrom kašikom i peci na 200 °C oko 30 minuta dok ne porumeni.', 'Pour into a greased tin, smooth with a wet spoon and bake at 200 °C for about 30 minutes until golden.', 30],
+      ['Toplu pitu premaži kajmakom (ili prelij mlijekom s protisnutim bijelim lukom i pavlakom) i vrati u ugašenu, toplu rernu na 5 minuta.', 'Spread the hot pie with kajmak (or pour over milk with crushed garlic and sour cream) and return to the switched-off, warm oven for 5 minutes.', 5],
+    ],
+    story: ['Pita bez razvlačenja jufki — voda, brašno i malo masti. Zovu je još vrelica i oparuša. Skromna, ali s kajmakom odozgo nema joj zamjene.', 'A pie with no pastry to stretch — water, flour and a little fat. Also called vrelica or oparuša. Humble, but with kajmak on top nothing beats it.'],
+    src: T,
+  },
+  {
+    id: 'uljevak-krompir', cu: 'bosanska', type: 'pie', main: 'potato', time: 60, serves: 4, eq: ['oven'], kid: 1,
+    bs: 'Uljevak od krompira', en: 'Baked grated-potato pie (uljevak)',
+    ing: [['potato', 1, 'kg'], ['flour', 150, 'g'], ['salt', 1.5, 'kasicica'], ['lard_or_oil', 4, 'kasika', n('ili maslac', 'or butter')], ['kajmak', 100, 'g', O], ['yogurt', 500, 'ml', O]],
+    st: [
+      ['Tepsiju s masnoćom stavi u rernu na 220 °C da se dobro ugrije.', 'Put the tin with the fat into the oven at 220 °C to get very hot.', 10],
+      ['Krompir oguli i sitno izrendaj. Lagano ga ocijedi (ne skroz), posoli i umiješaj brašno.', 'Peel and finely grate the potatoes. Drain lightly (not completely), salt and stir in the flour.'],
+      ['Smjesu izlij u vruću tepsiju, oko 1,5 cm debelo, i poravnaj. Pokapaj s malo vruće masnoće iz tepsije.', 'Pour the mixture into the hot tin about 1.5 cm thick and level it. Drizzle with a little hot fat from the tin.'],
+      ['Peci oko 40 minuta dok ne porumeni i ne postane hrskav po rubovima. Služi toplo s kajmakom ili jogurtom.', 'Bake for about 40 minutes until golden and crisp at the edges. Serve warm with kajmak or yoghurt.', 40],
+    ],
+    story: ['Samo krompir i brašno — a izvana hrskav, iznutra mekan. Brža zamjena za krompirušu kad nema vremena za jufke.', 'Just potato and flour — crisp outside, soft inside. A quicker stand-in for potato pie when there is no time for pastry.'],
+    src: T,
+  },
+  {
+    id: 'kukuruzni-uljevak', cu: 'bosanska', type: 'pie', main: 'cheese', time: 50, serves: 6, eq: ['oven'], kid: 1,
+    bs: 'Kukuruzni uljevak sa sirom', en: 'Cornmeal pie with fresh cheese',
+    ing: [['eggs', 3, 'kom'], ['yogurt', 500, 'ml', n('ili kiselo mlijeko', 'or soured milk')], ['oil', 100, 'ml'], ['cornmeal', 300, 'g'], ['flour', 100, 'g'], ['baking_powder', 1, 'kesica'], ['cottage', 250, 'g', n('mladi sir', 'fresh cheese')], ['salt', 1, 'kasicica'], ['cream', 200, 'ml', n('za preljev', 'to pour over')], ['sour_cream', 4, 'kasika']],
+    st: [
+      ['Jaja umuti s jogurtom i solju, pa dodaj ulje i 200 ml vode i nastavi mutiti.', 'Whisk the eggs with the yoghurt and salt, then add the oil and 200 ml water and keep whisking.'],
+      ['Umiješaj kukuruzno i bijelo brašno s praškom za pecivo, pa dodaj izmrvljen sir — ne miješaj previše, neka ostanu grudice sira.', 'Stir in the cornmeal and flour with the baking powder, then add the crumbled cheese — don’t overmix, leave some lumps of cheese.'],
+      ['Izlij u nauljenu tepsiju i peci na 200 °C oko 35 minuta dok ne porumeni.', 'Pour into an oiled tin and bake at 200 °C for about 35 minutes until golden.', 35],
+      ['Vrući uljevak prelij vrhnjem, izbockaj kašikom da upije, pa premaži pavlakom.', 'Pour the cream over the hot pie, prick with a spoon so it soaks in, then spread with sour cream.'],
+    ],
+    story: ['Mekši i sočniji rođak proje: vrhnje se upije u vrući uljevak, a mladi sir ostane u mekim grudicama.', 'A softer, juicier cousin of cornbread: the cream soaks into the hot pie and the fresh cheese stays in soft lumps.'],
     src: T,
   },
   {

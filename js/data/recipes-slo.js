@@ -5,6 +5,20 @@ const T = { b: 'trad' };
 export const SLO_RECIPES = [
   // ───────── Glavna jela i čorbe ─────────
   {
+    id: 'makaronovo-meso', cu: 'slovenska', type: 'main', main: 'beef', time: 90, serves: 4, kid: 1,
+    bs: 'Makaronovo meso', en: 'Macaroni with beef sauce',
+    ing: [['beef', 500, 'g', n('sitno sjeckana kao za gulaš ili mljevena', 'diced small as for goulash, or minced')], ['pasta_short', 500, 'g', n('makaroni', 'macaroni')], ['onion', 2, 'glavica'], ['garlic', 2, 'cen'], ['oil', 3, 'kasika'], ['tomato_paste', 3, 'kasika'], ['paprika_sweet', 1, 'kasika'], ['bay_leaf', 1, 'list'], ['thyme', 1, 'kasicica'], ['marjoram', 1, 'kasicica'], ['salt', null, ''], ['pepper_black', null, ''], ['parmesan', 40, 'g', { opt: 1, note: ['ili drugi tvrdi sir', 'or another hard cheese'] }]],
+    st: [
+      ['Luk sitno isjeckaj i na ulju pirjaj dok ne omekša i požuti.', 'Chop the onion finely and soften in the oil until golden.', 8],
+      ['Dodaj meso i prži na jačoj vatri dok ne promijeni boju. Umiješaj bijeli luk, alevu papriku i paradajz-pire.', 'Add the meat and fry over higher heat until browned. Stir in the garlic, paprika and tomato paste.', 8],
+      ['Dodaj lovor, majčinu dušicu, mažuran, so i biber, nalij s 300 ml vode i pirjaj poklopljeno. Mljeveno meso je gotovo za 30 minuta, sjeckano za oko 60 — dolijevaj vode po potrebi.', 'Add the bay leaf, thyme, marjoram, salt and pepper, pour in 300 ml water and simmer covered. Mince is done in 30 minutes, diced meat in about 60 — add water as needed.', 60],
+      ['Makarone skuhaj u slanoj vodi i ocijedi.', 'Cook the macaroni in salted water and drain.', 10],
+      ['Makarone izmiješaj s mesom ili ih prelij umakom. Po želji pospi rendanim sirom.', 'Toss the macaroni with the meat or spoon the sauce over. Sprinkle with grated cheese if you like.'],
+    ],
+    story: ['Nedjeljni ručak koji djeca uvijek pojedu. Sa sjeckanim mesom je sočnije, s mljevenim brže — oboje je pravo makaronovo meso.', 'The Sunday lunch children always finish. Diced meat makes it juicier, mince makes it quicker — both are the real thing.'],
+    src: T,
+  },
+  {
     id: 'jota', cu: 'slovenska', reg: 'primorska', type: 'main', main: 'beans', time: 120, serves: 6, left: 1, eqOpt: ['pressure'],
     bs: 'Jota (grah s kiselim kupusom)', en: 'Jota (beans with sauerkraut)',
     ing: [['beans', 300, 'g', n('namočen preko noći', 'soaked overnight')], ['sauerkraut_shred', 500, 'g'], ['potato', 400, 'g'], ['smoked_ribs', 400, 'g', n('ili kranjska kobasica', 'or Carniolan sausage')], ['garlic', 3, 'cen'], ['flour', 2, 'kasika'], ['lard_or_oil', 2, 'kasika'], ['bay_leaf', 2, 'list'], ['paprika_sweet', 1, 'kasicica'], ['salt', null, ''], ['pepper_black', null, '']],
