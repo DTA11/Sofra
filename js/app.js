@@ -705,24 +705,10 @@ function shopText() {
   if (extra.length) { lines.push('', `*${L('sec', 'other')}*`); extra.forEach((e) => lines.push('• ' + e.text)); }
   return lines.join('\n');
 }
-/** A recipe as plain text for chats: name, servings, ingredients (scaled, current jufke choice), steps. */
-function recipeText(r) {
-  const f = scaleFor(r);
-  const serv = r.pan ? '' : `${ui.serv[r.id] ?? defaultServ(r)} ${t('persons')}`;
-  const lines = [`🍲 *${name(r)}*`, [fmtTime(r), serv].filter(Boolean).join(' · '), '', `*${t('ingredients')}*`];
-  r.ing.forEach((i) => {
-    const p = ingParts(i, f);
-    const tl = [p.gr, p.tail].filter(Boolean).join(', ');
-    lines.push(`• ${p.qty ? p.qty + ' ' : ''}${p.nm}${p.alt}${tl ? ` (${tl})` : ''}`);
-  });
-  lines.push('', `*${t('steps')}*`);
-  r.st.forEach((x, k) => lines.push(`${k + 1}. ${tx(x)}`));
-  lines.push('', '— Sofra');
-  return lines.join('\n');
-}
 /** "Pošalji": the phone's own share menu (Messenger, Viber, WhatsApp, SMS…); without one, copy the text. */
-function sendText(text, title) {
-  if (navigator.share) { navigator.share({ title, text }).catch(() => {}); return; }
+function sendText(text, title, url) {
+  if (navigator.share) { navigator.share(url ? { title, text, url } : { title, text }).catch(() => {}); return; }
+  if (url) text = `${text}\n${url}`;
   const done = () => toast(t('copiedPaste'));
   const old = () => { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch {} ta.remove(); };
   if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, old); else old();
@@ -1038,7 +1024,12 @@ document.addEventListener('click', (e) => {
     case 'timer': if (cook.timers.some((tm) => tm.label === el.dataset.label && tm.end > Date.now())) break; cook.timers.push({ label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
     case 'tdel': cook.timers.splice(Number(el.dataset.k), 1); tickTimers(); break;
     case 'jar': { const id = el.dataset.id; const n = Math.max(0, (Number(st.pantry[id]) || 0) + Number(el.dataset.d)); if (n) st.pantry[id] = n; else delete st.pantry[id]; store.save(); rer(); break; }
-    case 'send': sendText(el.dataset.kind === 'recipe' ? recipeText(R[el.dataset.id]) : shopText(), el.dataset.kind === 'recipe' ? name(R[el.dataset.id]) : t('printShop')); break;
+    case 'send': {
+      // a recipe goes as a link to its page; the shopping list (only on this phone) as text
+      if (el.dataset.kind === 'recipe') { const r = R[el.dataset.id]; sendText(`🍲 ${name(r)}`, name(r), `${location.origin}/#/recipe/${r.id}`); }
+      else sendText(shopText(), t('printShop'));
+      break;
+    }
     case 'xdel': st.shop.extra.splice(Number(el.dataset.k), 1); store.save(); rer(); break;
     case 'clearbought': {
       const { sections } = shoppingList(curPart());
