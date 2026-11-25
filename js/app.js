@@ -547,7 +547,7 @@ function viewRecipe(id) {
       <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
       ${guideLinks(r)}
       <h3>${t('steps')}</h3>
-      <ol class="steps">${r.st.map((s) => `<li>${esc(tx(s))}${s[2] ? ` <span class="tmr">⏱ ${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'}</span>` : ''}</li>`).join('')}</ol>
+      <ol class="steps">${r.st.map((s) => `<li>${esc(tx(s))}</li>`).join('')}</ol>
       ${nutBox(r)}
     </article>`;
 }
@@ -809,7 +809,6 @@ function ingParts(ing, f) {
 }
 const G_UNITS = ['kasika', 'kasicica', 'saka', 'kesica'];
 const fmtG = (g) => (g < 2 ? String(Math.round(g * 2) / 2).replace('.', ',') : g < 30 ? String(Math.round(g)) : String(Math.round(g / 5) * 5));
-const stepTime = (s) => (s[2] ? ` (${s[2] >= 60 && s[2] % 60 === 0 ? s[2] / 60 + ' h' : s[2] + ' min'})` : '');
 function recipeBlocks(r, f, servTxt, page = false) {
   return [
     { t: 'h2', text: name(r), page, sub: `${L('type', r.type)} · ${fmtTime(r)}${servTxt ? ' · ' + servTxt : ''} · ${t('fGrade')} ${nutrition(r).grade}${perPortion(r) ? ` · ≈ ${nf(nutrition(r).serv.kcal)} kcal / ${t('nutServ').toLowerCase()}` : ''}` },
@@ -817,7 +816,7 @@ function recipeBlocks(r, f, servTxt, page = false) {
     { t: 'h3', text: t('ingredients') },
     { t: 'grid', qw: 1, items: r.ing.map((i) => { const p = ingParts(i, f); const tl = [p.gr, p.tail].filter(Boolean).join(', '); return [p.qty, [['R', p.nm + p.alt], ...(tl ? [['I', ` (${tl})`]] : [])]]; }) },
     { t: 'h3', text: t('steps') },
-    { t: 'ol', items: r.st.map((s) => [['R', tx(s)], ['B', stepTime(s)]]) },
+    { t: 'ol', items: r.st.map((s) => [['R', tx(s)]]) },
   ];
 }
 function shopBlocks(part = curPart(), withExtra = true) {

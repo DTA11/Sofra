@@ -247,7 +247,6 @@ select { min-height: 44px; border-radius: 10px; border: 1px solid var(--line); b
 .steps { list-style: none; counter-reset: s; padding: 0; }
 .steps li { counter-increment: s; position: relative; padding: 0 0 20px 50px; line-height: 1.65; }
 .steps li::before { content: counter(s); position: absolute; left: 0; top: -1px; width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--ink); font: 700 .95rem/31px var(--display); text-align: center; }
-.tmr { white-space: nowrap; font-size: .78rem; font-weight: 700; background: var(--soft); color: var(--ink-2); border-radius: 6px; padding: 2px 8px; }
 .source { font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; margin-top: 26px; }
 
 .ings .q .g { display: block; font-weight: 500; font-size: .78em; color: var(--muted); white-space: nowrap; }
