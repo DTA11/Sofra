@@ -731,8 +731,8 @@ function viewSettings() {
       <div class="mix"><span>${t('dinnerMax')}</span>${num('dinnerMax', st.dinnerMax, 5, 180, 5)}<small>min</small></div></section>
     <section class="set"><h3>${t('household')}</h3>${num('household', st.household, 1, 20)}</section>
     <section class="set"><h3>${t('cuisineMix')}</h3>
-      ${keys('style').map((c) => `<div class="mix"><span>${esc(L('style', c))}</span><input type="range" min="0" max="3" step="1" value="${st.styles[c] || 0}" data-act="mix" data-k="${c}"><small>${lvl[st.styles[c] || 0]}</small></div>`).join('')}
-      ${['meatless', 'health'].map((k) => `<div class="mix"><span>${t(k)}</span><input type="range" min="0" max="3" step="1" value="${st[k] || 0}" data-act="mixs" data-k="${k}"><small>${t(k + 'Lvl').split('|')[st[k] || 0]}</small></div>`).join('')}
+      ${keys('style').map((c) => `<div class="mix"><span>${esc(L('style', c))}</span><span class="rng"><input type="range" min="0" max="3" step="1" value="${st.styles[c] || 0}" data-act="mix" data-k="${c}"><span class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span><small>${lvl[st.styles[c] || 0]}</small></div>`).join('')}
+      ${['meatless', 'health'].map((k) => `<div class="mix"><span>${t(k)}</span><span class="rng"><input type="range" min="0" max="3" step="1" value="${st[k] || 0}" data-act="mixs" data-k="${k}"><span class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span><small>${t(k + 'Lvl').split('|')[st[k] || 0]}</small></div>`).join('')}
       <p class="small muted">${t('dietHint')}</p>
       ${jufSwitch()}
     </section>
