@@ -683,9 +683,9 @@ function qtyText(it) {
   if (it.unknown && !it.q) return '';
   const COUNT = ['kom', 'glavica', 'cen', 'kesica', 'jufka', 'kriska', 'sop', 'list', 'zrno'];
   if (COUNT.includes(it.unit)) { it = { ...it, q: Math.ceil(it.q - 0.05), qmax: Math.ceil(it.qmax - 0.05) }; }
-  const a = niceQ(it.q, it.unit);
+  const a = niceQ(it.q, it.unit, it.id, true);
   let s = a.s;
-  if (it.qmax > it.q + 1e-6) s += '–' + niceQ(it.qmax, it.unit).s;
+  if (it.qmax > it.q + 1e-6) s += '–' + niceQ(it.qmax, it.unit, it.id, true).s;
   const u = unitLabel(a.u, a.n);
   return `${s}${u ? ' ' + u : ''}${it.unknown ? ' +' : ''}`;
 }
@@ -748,7 +748,9 @@ function viewSettings() {
   const st = S();
   const lvl = [t('never'), t('rarely'), t('often'), t('mostly')];
   const daysChips = DAYS[getLang()].map((d, i) => `<button class="chip ${st.posnoDays.includes(i) ? 'on' : ''}" data-act="posnoday" data-i="${i}">${d.slice(0, 3)}</button>`).join('');
-  const num = (k, v, min, max, step = 1) => `<input type="number" class="num" inputmode="numeric" data-act="setnum" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${v}">`;
+  // − value + steppers instead of typed numbers (easier on a phone)
+  const step = (act, k, v, min, max, d = 1) => `<span class="stepper"><button class="round" data-act="${act}" data-k="${k}" data-d="${-d}" data-min="${min}" data-max="${max}"${v <= min ? ' disabled' : ''} aria-label="−">−</button><b class="sv">${v}</b><button class="round" data-act="${act}" data-k="${k}" data-d="${d}" data-min="${min}" data-max="${max}"${v >= max ? ' disabled' : ''} aria-label="+">+</button></span>`;
+  const num = (k, v, min, max, d = 1) => step('stepnum', k, v, min, max, d);
   const tog = (k, label) => `<label class="toggle"><input type="checkbox" data-act="settog" data-k="${k}" ${st[k] ? 'checked' : ''}><span>${label}</span></label>`;
   return `<section class="band page-band"><a class="backlink" href="#/plan">${ICON.back} ${t('tabPlan')}</a><h1 class="display">${t('settings')}</h1><p class="lede">${t('planSettings')}</p></section>
     <section class="set"><h3>${t('language')}</h3><div class="chips">
@@ -775,7 +777,7 @@ function viewSettings() {
       ${jufSwitch()}
     </section>
     <section class="set"><h3>${t('rules')}</h3>
-      ${keys('kind').map((k) => `<div class="mix"><span>${esc(L('kind', k))}</span><input type="number" class="num" min="0" max="7" data-act="rule" data-k="${k}" value="${st.rules[k] ?? 7}"><small>× / 7</small></div>`).join('')}
+      ${keys('kind').map((k) => `<div class="mix"><span>${esc(L('kind', k))}</span>${step('steprule', k, st.rules[k] ?? 7, 0, 7)}<small>× / 7</small></div>`).join('')}
     </section>
     <section class="set">
       <div class="mix"><span>${t('noRepeat')}</span>${num('noRepeatWeeks', st.noRepeatWeeks, 0, 6)}<small>${t('weeks')}</small></div>
@@ -802,14 +804,14 @@ function ingParts(ing, f) {
   const note = ex.note ? tx(ex.note) : '';
   let qty = '', gr = '';
   if (q != null) {
-    const a = niceQ(q * f, unit);
+    const a = niceQ(q * f, unit, id);
     let txt = a.s;
-    if (ex.max != null) txt = `${a.s}–${niceQ(ex.max * f, unit).s}`;
+    if (ex.max != null) txt = `${a.s}–${niceQ(ex.max * f, unit, id).s}`;
     const ul = unitLabel(a.u, a.n);
     qty = `${txt}${ul ? ' ' + ul : ''}`;
     // spoons, handfuls and packets: also the approximate weight
     if (G_UNITS.includes(unit)) {
-      const g1 = grams(id, a.n, unit), g2 = ex.max != null ? grams(id, niceQ(ex.max * f, unit).n, unit) : null;
+      const g1 = grams(id, a.n, unit), g2 = ex.max != null ? grams(id, niceQ(ex.max * f, unit, id).n, unit) : null;
       gr = `≈ ${fmtG(g1)}${g2 != null && fmtG(g2) !== fmtG(g1) ? '–' + fmtG(g2) : ''} g`;
     }
   }
@@ -1004,6 +1006,12 @@ document.addEventListener('click', (e) => {
     case 'jufka': { st.jufka = el.dataset.v; store.save(); cook = null; rerender(); break; }
     case 'serv': { const r = R[el.dataset.id]; const cur = ui.serv[r.id] ?? defaultServ(r); ui.serv[r.id] = Math.max(1, cur + Number(el.dataset.d)); rer(); break; }
     case 'setserv': ui.serv[el.dataset.id] = Number(el.dataset.v); rer(); break;
+    case 'stepnum': case 'steprule': {
+      const o = a === 'stepnum' ? st : st.rules, k = el.dataset.k, d = Number(el.dataset.d);
+      const cur = Number(o[k] ?? (a === 'steprule' ? 7 : 0));
+      o[k] = Math.min(Number(el.dataset.max), Math.max(Number(el.dataset.min), Math.round((cur + d) / Math.abs(d)) * Math.abs(d)));
+      store.save(); rer(); break;
+    }
     case 'addplan': {
       const r = R[el.dataset.id];
       pickDay((i) => {

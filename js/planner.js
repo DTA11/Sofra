@@ -541,8 +541,15 @@ export function markCooked(i) {
 
 // ───────── quantities ─────────
 export function scaleQ(q, f) { return q == null ? null : q * f; }
-export function niceQ(q, unit) {
+// Countable things: eggs, leaves, slices… only whole; onions, lemons, tomatoes… whole or half. Never ¾ of an egg.
+const WHOLE_U = new Set(['list', 'zrno', 'kriska', 'jufka']);
+const HALF_U = new Set(['glavica', 'sop', 'kesica']);
+const HALF_KOM = new Set(['lemon', 'tomato', 'pepper', 'carrot', 'cucumber', 'zucchini', 'eggplant', 'potato', 'apple', 'beetroot', 'onion', 'celery_stalk', 'banana', 'lettuce']);
+export function niceQ(q, unit, id, buy = false) {
   if (q == null) return '';
+  const rnd = buy ? (x) => Math.ceil(x - 0.05) : Math.round;
+  if (WHOLE_U.has(unit) || (unit === 'kom' && id && !HALF_KOM.has(id))) q = Math.max(1, rnd(q));
+  else if (HALF_U.has(unit) || unit === 'kom') q = Math.max(0.5, rnd(q * 2) / 2);
   let u = unit;
   if (u === 'g' && q >= 1000) { q /= 1000; u = 'kg'; }
   if (u === 'ml' && q >= 1000) { q /= 1000; u = 'l'; }
