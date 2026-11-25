@@ -263,6 +263,13 @@ body.cooking { padding-bottom: 0; background: #12100e; color: #f5f2ee; }
 .cook footer { display: flex; gap: 10px; padding: 12px 0 18px; position: sticky; bottom: 0; background: #12100e; }
 .cook .btn { background: #221e1a; border-color: #2f2a26; color: #f5f2ee; }
 .cook .btn.primary { background: #f5f2ee; border-color: #f5f2ee; color: #12100e; }
+.cook .btn:hover { background: #221e1a; border-color: #2f2a26; color: #f5f2ee; }
+.cook .btn.primary:hover { background: #f5f2ee; border-color: #f5f2ee; color: #12100e; }
+body.cooking main.wrap { padding-bottom: 0; }
+.cook-body .steptimer { flex: 0 0 auto; align-self: stretch; min-height: 64px; }
+.cook .btn.primary.steptimer.running { background: transparent; border-color: #e9a24b; color: #e9a24b; }
+.cook .timers { position: sticky; top: 0; z-index: 5; background: #12100e; }
+.cook .timers:empty { padding: 0; }
 .cook-ings { background: #1d1a17; border-radius: var(--r); padding: 12px 16px; }
 .cook-ings summary { cursor: pointer; font-weight: 700; }
 .cook-ings .ings { border: 0; } .cook-ings .ings li { border-color: #2f2a26; } .cook-ings .ings .q { color: #e9a24b; }

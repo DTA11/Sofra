@@ -560,9 +560,17 @@ function renderCookStep() {
   const body = $('#cookBody'); if (!body) return;
   body.innerHTML = `<div class="stepno">${t('step')} ${cook.i + 1} ${t('of')} ${r.st.length}</div>
     <p class="bigstep">${esc(tx(s))}</p>
-    ${s[2] ? `<button class="btn primary big" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">${ICON.timer} ${t('timer')} ${s[2]} min</button>` : ''}`;
+    ${s[2] ? `<button class="btn primary big steptimer" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">${ICON.timer} ${t('timer')} ${s[2]} min</button>` : ''}`;
+  markStepTimer();
   const nx = $('[data-act="cnext"]');
   if (nx) nx.textContent = cook.i === r.st.length - 1 ? `✓ ${t('done')}` : `${t('next')} →`;
+}
+/** Step timer button: shows "running" while this step's timer is on, so a second tap doesn't start a duplicate. */
+function markStepTimer() {
+  const b = $('.steptimer'); if (!b || !cook) return;
+  const on = cook.timers.some((tm) => tm.label === b.dataset.label && tm.end > Date.now());
+  b.classList.toggle('running', on);
+  b.innerHTML = on ? `${ICON.timer} ${t('timerRunning')}` : `${ICON.timer} ${t('timer')} ${b.dataset.m} min`;
 }
 function tickTimers() {
   clearInterval(tickTimers._h);
@@ -575,6 +583,7 @@ function tickTimers() {
       const mm = String(Math.floor(left / 60)).padStart(2, '0'), ss = String(left % 60).padStart(2, '0');
       return `<button class="timer ${left === 0 ? 'done' : ''}" data-act="tdel" data-k="${k}">${esc(tm.label)} · ${mm}:${ss} ✕</button>`;
     }).join('');
+    markStepTimer();
   };
   draw(); tickTimers._h = setInterval(draw, 1000);
 }
@@ -960,7 +969,7 @@ document.addEventListener('click', (e) => {
     }
     case 'cnext': { const r = R[cook.id]; if (cook.i < r.st.length - 1) { cook.i++; renderCookStep(); } else { history.back(); } break; }
     case 'cprev': if (cook.i > 0) { cook.i--; renderCookStep(); } break;
-    case 'timer': cook.timers.push({ label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
+    case 'timer': if (cook.timers.some((tm) => tm.label === el.dataset.label && tm.end > Date.now())) break; cook.timers.push({ label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
     case 'tdel': cook.timers.splice(Number(el.dataset.k), 1); tickTimers(); break;
     case 'jar': { const id = el.dataset.id; const n = Math.max(0, (Number(st.pantry[id]) || 0) + Number(el.dataset.d)); if (n) st.pantry[id] = n; else delete st.pantry[id]; store.save(); rer(); break; }
     case 'wa': window.open('https://wa.me/?text=' + encodeURIComponent(shopText()), '_blank'); break;
