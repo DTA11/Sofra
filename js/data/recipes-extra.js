@@ -13,7 +13,7 @@ export const EXTRA_RECIPES = [
       ['Listove raštana operi, odreži tvrde žile i prelij ih ključalom vodom da omekšaju.', 'Wash the collard leaves, trim the tough ribs and pour boiling water over them to soften.', 3],
       ['Pola luka sitno isijeci i izmiješaj s mesom, rižom, alevom paprikom, solju i biberom.', 'Finely chop half the onion and mix it with the mince, rice, paprika, salt and pepper.'],
       ['Na svaki list stavi kašiku nadjeva i zamotaj čvrsto, uvlačeći krajeve.', 'Put a spoonful of filling on each leaf and roll tightly, tucking in the sides.'],
-      ['Na dno lonca stavi ostatak luka i suho meso, poslaži japrake, dodaj ulje, koncentrat i toliko vode da budu pokriveni.', 'Lay the remaining onion and smoked meat in the pot, pack in the rolls, add the oil, tomato paste and water to cover.'],
+      ['Na dno lonca stavi ostatak luka i suho meso, poslaži japrake, dodaj ulje, paradajz-pire i toliko vode da budu pokriveni.', 'Lay the remaining onion and smoked meat in the pot, pack in the rolls, add the oil, tomato paste and water to cover.'],
       ['Pritisni tanjirom i kuhaj poklopljeno na tihoj vatri 90 minuta.', 'Weigh down with a plate and simmer covered on low heat for 90 minutes.', 90],
     ],
     story: ['Zimska sarma od raštana — listovi su najbolji poslije prvog mraza.', 'A winter roll made with collard leaves — they taste best after the first frost.'],
@@ -38,7 +38,7 @@ export const EXTRA_RECIPES = [
     ing: [['potato', 1, 'kg'], ['onion', 2, 'glavica'], ['garlic', 2, 'cen'], ['paprika_sweet', 2, 'kasicica'], ['tomato_paste', 1, 'kasika'], ['flour', 1, 'kasika'], ['oil', 5, 'kasika'], ['bay_leaf', 1, 'list'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Luk sitno isijeci i pirjaj na ulju 10 minuta, dodaj bijeli luk i brašno i kratko prži.', 'Chop the onion finely and cook it in the oil for 10 minutes, add the garlic and flour and fry briefly.', 10],
-      ['Skloni s vatre, umiješaj alevu papriku i koncentrat, pa nalij 1 l vode.', 'Take off the heat, stir in the paprika and tomato paste, then pour in 1 l water.'],
+      ['Skloni s vatre, umiješaj alevu papriku i paradajz-pire, pa nalij 1 l vode.', 'Take off the heat, stir in the paprika and tomato paste, then pour in 1 l water.'],
       ['Dodaj krompir na kocke i lovor, posoli i kuhaj 25 minuta dok sos ne postane gust.', 'Add the diced potatoes and bay leaf, season and cook for 25 minutes until the sauce thickens.', 25],
       ['Pospi peršunom.', 'Sprinkle with parsley.'],
     ],
@@ -52,7 +52,7 @@ export const EXTRA_RECIPES = [
     st: [
       ['Luk i mrkvu sitno isijeci i pirjaj na pola ulja 10 minuta. Dodaj rižu, papriku, nanu i biber i prži još 2 minute.', 'Chop the onion and carrot finely and cook in half the oil for 10 minutes. Add the rice, paprika, mint and pepper and fry 2 more minutes.', 10],
       ['Listove kupusa po potrebi isperi; u svaki zamotaj kašiku nadjeva.', 'Rinse the cabbage leaves if very salty and roll a spoonful of filling in each.'],
-      ['Sarme gusto poslaži u lonac, prelij ostatkom ulja i koncentratom razmućenim u vodi da budu pokrivene.', 'Pack the rolls tightly in a pot, pour over the rest of the oil and the tomato paste mixed with water to cover.'],
+      ['Sarme gusto poslaži u lonac, prelij ostatkom ulja i paradajz-pireom razmućenim u vodi da budu pokrivene.', 'Pack the rolls tightly in a pot, pour over the rest of the oil and the tomato paste mixed with water to cover.'],
       ['Kuhaj poklopljeno na tihoj vatri 90 minuta.', 'Simmer covered on low heat for 90 minutes.', 90],
     ],
     story: ['Sarma za posne dane pred Božić — umjesto mesa luk, riža i malo nane.', 'The roll for the fasting days before Christmas — onion, rice and a little mint instead of meat.'],
@@ -77,7 +77,7 @@ export const EXTRA_RECIPES = [
     ing: [['leek', 1, 'kg'], ['rice', 200, 'g'], ['tomato_paste', 1, 'kasika'], ['paprika_sweet', 1, 'kasicica'], ['olive_oil', 6, 'kasika'], ['lemon', 0.5, 'kom'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Praziluk isijeci na kolutove od 2 cm i pirjaj na ulju 10 minuta.', 'Cut the leeks into 2 cm rounds and cook them in the oil for 10 minutes.', 10],
-      ['Dodaj rižu, papriku i koncentrat, posoli i pobiberi, pa sve prebaci u tepsiju.', 'Add the rice, paprika and tomato paste, season and tip everything into a baking dish.'],
+      ['Dodaj rižu, papriku i paradajz-pire, posoli i pobiberi, pa sve prebaci u tepsiju.', 'Add the rice, paprika and tomato paste, season and tip everything into a baking dish.'],
       ['Nalij 600 ml vruće vode i peci na 190 °C 35 minuta, dok riža ne upije tečnost.', 'Pour in 600 ml hot water and bake at 190 °C for 35 minutes, until the rice has absorbed the liquid.', 35],
       ['Pokapaj limunom prije služenja.', 'Squeeze over the lemon before serving.'],
     ],
@@ -125,7 +125,7 @@ export const EXTRA_RECIPES = [
   {
     id: 'fritule', cu: 'hrvatska', type: 'dessert', sub: 'sitni', main: 'dessert', time: 60, serves: 6, kid: 1, occ: ['bozic', 'novagodina'],
     bs: 'Fritule s grožđicama', en: 'Fritule (small doughnuts with raisins)',
-    ing: [['flour', 400, 'g'], ['eggs', 2, 'kom'], ['yogurt', 200, 'g'], ['milk', 150, 'ml'], ['sugar', 50, 'g'], ['yeast', 1, 'kesica'], ['raisins', 80, 'g'], ['lemon', 1, 'kom', n('naribana korica', 'grated zest')], ['oil', 600, 'ml', n('za prženje', 'for frying')], ['powder_sugar', 50, 'g'], ['salt', 1, 'prst']],
+    ing: [['flour', 400, 'g'], ['eggs', 2, 'kom'], ['yogurt', 200, 'g'], ['milk', 150, 'ml'], ['sugar', 50, 'g'], ['yeast', 1, 'kesica'], ['raisins', 80, 'g'], ['lemon', 1, 'kom', n('rendana korica', 'grated zest')], ['oil', 600, 'ml', n('za prženje', 'for frying')], ['powder_sugar', 50, 'g'], ['salt', 1, 'prst']],
     st: [
       ['Kvasac razmuti u mlakom mlijeku sa šećerom. Dodaj jaja, jogurt, koricu limuna, so i brašno i umuti gusto tijesto.', 'Dissolve the yeast in the warm milk with the sugar. Add the eggs, yoghurt, lemon zest, salt and flour and beat to a thick batter.'],
       ['Umiješaj grožđice i ostavi pokriveno 40 minuta da naraste.', 'Stir in the raisins and leave covered for 40 minutes to rise.', 40],
@@ -196,7 +196,7 @@ export const EXTRA_RECIPES = [
       ['Kupus prebaci u tepsiju, dodaj lovor i 300 ml vode, a odozgo poslaži posoljene pileće batke.', 'Tip the sauerkraut into a baking dish with the bay leaves and 300 ml water; lay the salted chicken legs on top.'],
       ['Peci na 190 °C oko 80 minuta, dok piletina ne porumeni a kupus ne upije sok.', 'Bake at 190 °C for about 80 minutes, until the chicken is golden and the sauerkraut has soaked up the juices.', 80],
     ],
-    story: ['Zimsko jelo iz pećnice — kupus upije sav sok od mesa.', 'A winter oven dish — the sauerkraut soaks up all the juices from the meat.'],
+    story: ['Zimsko jelo iz rerne — kupus upije sav sok od mesa.', 'A winter oven dish — the sauerkraut soaks up all the juices from the meat.'],
     src: T,
   },
   {
@@ -206,7 +206,7 @@ export const EXTRA_RECIPES = [
     st: [
       ['Meso izmiješaj s jednim sitno sjeckanim lukom, bijelim lukom, solju, biberom i ljutom paprikom. Ostavi u frižideru 30 minuta.', 'Mix the mince with one finely chopped onion, the garlic, salt, pepper and hot paprika. Rest in the fridge 30 minutes.', 30],
       ['Oblikuj 4 tanke, široke pljeskavice.', 'Shape 4 thin, wide patties.'],
-      ['Peci na roštilju ili jako vrelom tiganju po 4 minute sa svake strane.', 'Grill or cook in a very hot pan for 4 minutes on each side.', 8],
+      ['Peci na roštilju ili u jako vreloj tavi po 4 minute sa svake strane.', 'Grill or cook in a very hot pan for 4 minutes on each side.', 8],
       ['Služi u hljebu sa sirovim lukom i po želji kajmakom.', 'Serve in the bread with raw onion and kajmak if you like.'],
     ],
     story: ['Velika, tanka i sočna — glavno jelo svakog roštilja.', 'Big, thin and juicy — the star of every barbecue.'],
@@ -317,7 +317,7 @@ export const EXTRA_RECIPES = [
     bs: 'Čorba od crvene leće', en: 'Red lentil soup',
     ing: [['lentils', 250, 'g', n('crvena', 'red')], ['onion', 1, 'glavica'], ['carrot', 1, 'kom'], ['potato', 1, 'kom'], ['tomato_paste', 1, 'kasika'], ['oil', 3, 'kasika'], ['paprika_sweet', 1, 'kasicica'], ['mint_dry', 1, 'kasicica'], ['lemon', 1, 'kom'], ['salt', null, '']],
     st: [
-      ['Luk, mrkvu i krompir isijeci na kockice i pirjaj na ulju 5 minuta. Dodaj koncentrat.', 'Dice the onion, carrot and potato and cook in the oil for 5 minutes. Add the tomato paste.', 5],
+      ['Luk, mrkvu i krompir isijeci na kockice i pirjaj na ulju 5 minuta. Dodaj paradajz-pire.', 'Dice the onion, carrot and potato and cook in the oil for 5 minutes. Add the tomato paste.', 5],
       ['Dodaj opranu leću i 1,5 l vode, kuhaj 25 minuta.', 'Add the rinsed lentils and 1.5 l water and cook for 25 minutes.', 25],
       ['Izmiksaj u glatku čorbu i posoli.', 'Blend until smooth and season.'],
       ['Na malo ulja kratko zagrij papriku i nanu i prelij preko tanjira. Služi s kriškom limuna.', 'Briefly warm the paprika and mint in a little oil and drizzle over each bowl. Serve with a lemon wedge.'],
@@ -332,7 +332,7 @@ export const EXTRA_RECIPES = [
     st: [
       ['Slanutak kuhaj u svježoj vodi 60 minuta, ocijedi.', 'Boil the chickpeas in fresh water for 60 minutes and drain.', 60],
       ['Meso na kockice zapeci na ulju i maslacu, dodaj luk i papriku i pirjaj 10 minuta.', 'Brown the diced beef in the oil and butter, add the onion and pepper and cook 10 minutes.', 10],
-      ['Dodaj koncentrat, alevu papriku, slanutak i 800 ml vode. Kuhaj na tihoj vatri 45 minuta.', 'Add the tomato paste, paprika, chickpeas and 800 ml water. Simmer for 45 minutes.', 45],
+      ['Dodaj paradajz-pire, alevu papriku, slanutak i 800 ml vode. Kuhaj na tihoj vatri 45 minuta.', 'Add the tomato paste, paprika, chickpeas and 800 ml water. Simmer for 45 minutes.', 45],
       ['Služi s rižom ili hljebom.', 'Serve with rice or bread.'],
     ],
     story: ['Gusto varivo koje se kuha u velikim loncima — za cijelu porodicu i još za sutra.', 'A thick stew cooked in big pots — for the whole family and tomorrow too.'],

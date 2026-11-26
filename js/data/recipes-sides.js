@@ -121,7 +121,7 @@ export const SIDE_RECIPES = [
     bs: 'Kupus salata', en: 'Cabbage salad',
     ing: [['cabbage', 600, 'g'], ['salt', 1, 'kasicica'], ['oil', 3, 'kasika'], ['vinegar', 2, 'kasika'], ['pepper_black', null, ''], ['paprika_sweet', null, '', O]],
     st: [
-      ['Kupus naribaj ili isijeci na vrlo tanke rezance. Posoli i dobro ga izgnječi rukama, da omekša.', 'Grate the cabbage or slice it very thinly. Salt it and squeeze it well with your hands to soften.'],
+      ['Kupus izrendaj ili isijeci na vrlo tanke rezance. Posoli i dobro ga izgnječi rukama, da omekša.', 'Grate the cabbage or slice it very thinly. Salt it and squeeze it well with your hands to soften.'],
       ['Ostavi 10 minuta, pa prelij uljem i sirćetom, pobiberi i po želji pospi slatkom paprikom.', 'Leave for 10 minutes, then dress with oil and vinegar, add pepper and a little sweet paprika if you like.', 10],
     ],
     story: ['Zimska salata uz grah, sarmu i pečenje — što duže stoji, to je bolja.', 'The winter salad for beans, sarma and roasts — the longer it stands, the better it gets.'],

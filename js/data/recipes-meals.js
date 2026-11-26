@@ -31,7 +31,7 @@ export const MEAL_RECIPES = [
   {
     id: 'popara', cu: 'bosanska', type: 'breakfast', main: 'cheese', time: 10, serves: 4, kid: 1, light: 1, meal: ['breakfast', 'dinner'],
     bs: 'Popara sa sirom', en: 'Popara (bread porridge with cheese)',
-    ing: [['bread', 400, 'g', n('stariji, od juče', 'day-old')], ['milk', 500, 'ml', n('ili voda', 'or water')], ['butter', 40, 'g'], ['feta', 150, 'g'], ['salt', 1, 'prst']],
+    ing: [['bread', 400, 'g', n('stariji, od jučer', 'day-old')], ['milk', 500, 'ml', n('ili voda', 'or water')], ['butter', 40, 'g'], ['feta', 150, 'g'], ['salt', 1, 'prst']],
     st: [
       ['Hljeb isijeci na kocke.', 'Cut the bread into cubes.'],
       ['U loncu zagrij mlijeko s maslacem i prstohvatom soli dok ne proključa.', 'Bring the milk to the boil with the butter and a pinch of salt.'],
@@ -194,9 +194,9 @@ export const MEAL_RECIPES = [
     ing: [['tuna', 2, 'kom', n('konzerve od 160 g', '160 g tins')], ['potato', 600, 'g'], ['onion', 1, 'glavica'], ['eggs', 2, 'kom'], ['olive_oil', 4, 'kasika'], ['vinegar', 1, 'kasika'], ['parsley', null, ''], ['salt', null, '']],
     st: [
       ['Krompir skuhaj u ljusci (20 min), jaja 10 minuta. Ohladi i isijeci.', 'Boil the potatoes in their skins (20 min) and the eggs for 10 minutes. Cool and slice.', 20],
-      ['Dodaj ocijeđenu tunu, luk, peršun, ulje, sirće i so. Lagano izmiješaj.', 'Add the drained tuna, onion, parsley, oil, vinegar and salt. Toss gently.'],
+      ['Dodaj ocijeđenu tunjevinu, luk, peršun, ulje, sirće i so. Lagano izmiješaj.', 'Add the drained tuna, onion, parsley, oil, vinegar and salt. Toss gently.'],
     ],
-    story: ['Brza večera iz ostave — konzerva tune uvijek spasi dan.', 'A quick supper from the cupboard — a tin of tuna always saves the day.'],
+    story: ['Brza večera iz ostave — konzerva tunjevine uvijek spasi dan.', 'A quick supper from the cupboard — a tin of tuna always saves the day.'],
     src: T,
   },
   {
@@ -345,13 +345,13 @@ export const MEAL_RECIPES = [
       ['Kolutove uvaljaj u brašno, jaje i prezle i prži u vrelom ulju 2–3 minute sa svake strane, dok ne porumene, a iznutra ne omekšaju.', 'Coat the rounds in flour, egg and breadcrumbs and fry in hot oil for 2–3 minutes per side until golden outside and soft inside.', 5],
       ['Ocijedi na papiru, pospi peršunom i služi s umakom od jogurta i bijelog luka.', 'Drain on paper, sprinkle with parsley and serve with the garlic yoghurt.'],
     ],
-    story: ['Kasno ljeto, pun kotao patlidžana i tanjir koji nestaje brže nego što se prži — meso nikome ne fali.', 'Late summer, a crate of aubergines and a plate that empties faster than you can fry — nobody misses the meat.'],
+    story: ['Kasno ljeto, puna korpa patlidžana i tanjir koji nestaje brže nego što se prži — meso nikome ne fali.', 'Late summer, a crate of aubergines and a plate that empties faster than you can fry — nobody misses the meat.'],
     src: T,
   },
   {
     id: 'pohovani-karfiol', cu: 'svakodnevno', type: 'main', main: 'veg', time: 35, serves: 4, kid: 1, light: 1, meal: ['lunch', 'dinner'],
     bs: 'Pohovani karfiol', en: 'Breaded cauliflower',
-    ing: [['cauliflower', 1, 'kg', n('1 glavica', '1 head')], ['flour', 80, 'g'], ['eggs', 2, 'kom'], ['milk', 2, 'kasika'], ['breadcrumbs', 120, 'g'], ['oil', 300, 'ml', n('za prženje', 'for frying')], ['yogurt', 250, 'g', n('za uz', 'to serve')], ['salt', null, '']],
+    ing: [['cauliflower', 1, 'kg', n('1 glavica', '1 head')], ['flour', 80, 'g'], ['eggs', 2, 'kom'], ['milk', 2, 'kasika'], ['breadcrumbs', 120, 'g'], ['oil', 300, 'ml', n('za prženje', 'for frying')], ['yogurt', 250, 'g', n('kao prilog', 'to serve')], ['salt', null, '']],
     st: [
       ['Karfiol rastavi na cvjetove i kuhaj u slanoj vodi 5 minuta — treba omekšati, a ostati čvrst.', 'Break the cauliflower into florets and cook in salted water for 5 minutes — it should soften but still hold firm.', 5],
       ['Ocijedi i ostavi da se prohladi i osuši.', 'Drain and leave to cool and steam dry.'],

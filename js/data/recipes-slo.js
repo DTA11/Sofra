@@ -27,7 +27,7 @@ export const SLO_RECIPES = [
       ['U drugom loncu kiseli kupus prelij s 1 l vode i kuhaj 30 minuta. Ako je jako kiseo, prvo ga isperi.', 'In another pot cover the sauerkraut with 1 l water and cook for 30 minutes. If it is very sour, rinse it first.', 30],
       ['Krompir oguli, isijeci na kocke i dodaj grahu. Kuhaj još 20 minuta.', 'Peel and dice the potatoes, add to the beans and cook another 20 minutes.', 20],
       ['Na masti kratko zaprži brašno sa zgnječenim bijelim lukom i alevom paprikom, razrijedi kutlačom čorbe i vrati u lonac.', 'Fry the flour briefly in the lard with crushed garlic and paprika, loosen with a ladle of broth and stir back into the pot.'],
-      ['Ulij kupus s tekućinom, posoli, pobiberi i kuhaj zajedno 10 minuta. Meso isijeci i vrati u jelo.', 'Add the sauerkraut with its liquid, season and simmer together for 10 minutes. Slice the meat and return it to the pot.', 10],
+      ['Ulij kupus s tečnošću, posoli, pobiberi i kuhaj zajedno 10 minuta. Meso isijeci i vrati u jelo.', 'Add the sauerkraut with its liquid, season and simmer together for 10 minutes. Slice the meat and return it to the pot.', 10],
     ],
     story: ['Jelo s Krasa i iz Trsta — gusto, kiselo i zasitno. Kao i grah, sutradan je još bolje.', 'A dish of the Karst and Trieste — thick, sour and filling. Like any bean pot, it is even better the next day.'],
     src: T,
@@ -38,7 +38,7 @@ export const SLO_RECIPES = [
     ing: [['barley', 250, 'g'], ['beans', 200, 'g', n('namočen preko noći', 'soaked overnight')], ['smoked_ribs', 400, 'g'], ['root_mix', 300, 'g'], ['onion', 1, 'glavica'], ['potato', 2, 'kom'], ['garlic', 2, 'cen'], ['tomato_paste', 1, 'kasika'], ['bay_leaf', 2, 'list'], ['marjoram', 1, 'kasicica'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Grah, ječam i suho meso stavi u veliki lonac, nalij s 3 l vode, dodaj lovor i kuhaj na tihoj vatri 60 minuta.', 'Put the beans, barley and smoked meat in a large pot, add 3 l water and the bay leaves and simmer for 60 minutes.', 60],
-      ['Dodaj luk, korjenasto povrće i krompir isječene na kocke te paradajz koncentrat. Kuhaj još 30 minuta, povremeno miješaj da se ne uhvati za dno.', 'Add the diced onion, root vegetables and potatoes and the tomato paste. Simmer another 30 minutes, stirring now and then so it does not catch.', 30],
+      ['Dodaj luk, korjenasto povrće i krompir isječene na kocke i paradajz-pire. Kuhaj još 30 minuta, povremeno miješaj da se ne uhvati za dno.', 'Add the diced onion, root vegetables and potatoes and the tomato paste. Simmer another 30 minutes, stirring now and then so it does not catch.', 30],
       ['Meso izvadi, skini s kosti, isijeci i vrati u lonac.', 'Lift out the meat, take it off the bone, chop and return it.'],
       ['Začini bijelim lukom, mažuranom, solju i biberom. Pred služenje pospi peršunom.', 'Season with garlic, marjoram, salt and pepper. Sprinkle with parsley to serve.'],
     ],
@@ -80,7 +80,7 @@ export const SLO_RECIPES = [
     st: [
       ['Luk sitno isjeckaj i na masti pirjaj 15 minuta dok ne postane mekan i zlatan.', 'Chop the onion finely and sweat in the lard for 15 minutes until soft and golden.', 15],
       ['Dodaj meso isječeno na kocke od 3 cm i prži dok ne izgubi crvenu boju.', 'Add the meat cut into 3 cm cubes and fry until no longer pink.'],
-      ['Skloni lonac s vatre, umiješaj obje aleve paprike (da ne zagori), paradajz koncentrat, kim i lovor. Ulij vino i 1 l vode.', 'Take the pot off the heat and stir in both paprikas (so they do not burn), the tomato paste, caraway and bay. Pour in the wine and 1 l water.'],
+      ['Skloni lonac s vatre, umiješaj obje aleve paprike (da ne zagori), paradajz-pire, kim i lovor. Ulij vino i 1 l vode.', 'Take the pot off the heat and stir in both paprikas (so they do not burn), the tomato paste, caraway and bay. Pour in the wine and 1 l water.'],
       ['Kuhaj poklopljeno na tihoj vatri 90 minuta. Govedina i divljač trebaju najduže.', 'Simmer covered on low heat for 90 minutes. Beef and venison need the longest.', 90],
       ['Dodaj krompir na kocke, papriku na trake i zgnječen bijeli luk, po potrebi još vode. Kuhaj 25 minuta i posoli.', 'Add the diced potatoes, the peppers in strips and the crushed garlic, plus more water if needed. Cook 25 minutes and season with salt.', 25],
     ],
@@ -98,7 +98,7 @@ export const SLO_RECIPES = [
       ['Rolu umotaj u navlaženu, pobrašnjenu krpu, krajeve veži i kuhaj u slanoj vodi koja lagano ključa 30 minuta.', 'Wrap the roll in a damp, floured cloth, tie the ends and cook in gently boiling salted water for 30 minutes.', 30],
       ['Prezle zaprži na maslacu. Štrukelj odmotaj, isijeci na komade i prelij prezlama.', 'Toast the breadcrumbs in the butter. Unwrap the štrukelj, slice and spoon the buttered crumbs over.'],
     ],
-    story: ['Štruklji su slovenska nedjelja: kuhani ili pečeni, slani ili slatki — postoji ih više od sedamdeset vrsta.', 'Štruklji are a Slovenian Sunday: boiled or baked, savoury or sweet — there are more than seventy kinds.'],
+    story: ['Štruklji su slovenska nedjelja: kuhani ili pečeni, slani ili slatki — ima ih više od sedamdeset vrsta.', 'Štruklji are a Slovenian Sunday: boiled or baked, savoury or sweet — there are more than seventy kinds.'],
     src: T,
   },
   {
@@ -108,7 +108,7 @@ export const SLO_RECIPES = [
     st: [
       ['Suhe vrganje namoči u 200 ml tople vode na 15 minuta.', 'Soak the dried porcini in 200 ml warm water for 15 minutes.', 15],
       ['Heljdu isperi, nalij s 600 ml slane vode i kuhaj poklopljeno na tihoj vatri 15 minuta, pa ostavi sa strane još 10 minuta.', 'Rinse the buckwheat, add 600 ml salted water and simmer covered for 15 minutes, then leave off the heat for 10 minutes more.', 15],
-      ['Na ulju propirjaj luk, dodaj narezane šampinjone i vrganje s tekućinom od namakanja. Pirjaj 10 minuta dok tekućina ne ispari.', 'Soften the onion in the oil, add the sliced mushrooms and the porcini with their soaking liquid. Cook 10 minutes until the liquid is gone.', 10],
+      ['Na ulju propirjaj luk, dodaj isječene šampinjone i vrganje s tečnošću od namakanja. Pirjaj 10 minuta dok tečnost ne ispari.', 'Soften the onion in the oil, add the sliced mushrooms and the porcini with their soaking liquid. Cook 10 minutes until the liquid is gone.', 10],
       ['Umiješaj bijeli luk, heljdu, so, biber i peršun.', 'Stir in the garlic, buckwheat, salt, pepper and parsley.'],
     ],
     story: ['Heljda je vjekovima bila hljeb slovenskih brda. S gljivama iz šume postaje posno jelo za cijelu porodicu.', 'Buckwheat was the bread of the Slovenian hills for centuries. With forest mushrooms it becomes a fasting meal for the whole family.'],
@@ -146,7 +146,7 @@ export const SLO_RECIPES = [
     ing: [['mushrooms', 400, 'g'], ['porcini', 20, 'g'], ['potato', 2, 'kom'], ['onion', 1, 'glavica'], ['butter', 30, 'g'], ['flour', 2, 'kasika'], ['sour_cream', 150, 'g'], ['vinegar', 1, 'kasika'], ['bay_leaf', 1, 'list'], ['marjoram', 1, 'kasicica'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Vrganje namoči u 300 ml tople vode na 15 minuta.', 'Soak the porcini in 300 ml warm water for 15 minutes.', 15],
-      ['Na maslacu propirjaj luk i narezane šampinjone 5 minuta, pospi brašnom i kratko promiješaj.', 'Soften the onion and sliced mushrooms in the butter for 5 minutes, dust with flour and stir briefly.', 5],
+      ['Na maslacu propirjaj luk i isječene šampinjone 5 minuta, pospi brašnom i kratko promiješaj.', 'Soften the onion and sliced mushrooms in the butter for 5 minutes, dust with flour and stir briefly.', 5],
       ['Dodaj vrganje s vodom, krompir na kocke, lovor i još 800 ml vode. Kuhaj 20 minuta.', 'Add the porcini with their water, the diced potatoes, bay and another 800 ml water. Simmer 20 minutes.', 20],
       ['Umiješaj pavlaku razmućenu s malo čorbe, sirće, mažuran, so i biber. Pospi peršunom.', 'Stir in the sour cream loosened with a little soup, the vinegar, marjoram, salt and pepper. Finish with parsley.'],
     ],
@@ -159,7 +159,7 @@ export const SLO_RECIPES = [
     ing: [['buckwheat_flour', 400, 'g'], ['salt', 1, 'kasicica'], ['lard_or_oil', 3, 'kasika'], ['cracklings', 100, 'g', { opt: 1 }], ['yogurt', 1, 'l', n('kiselo mlijeko ili bijela kafa', 'soured milk, or milky coffee')]],
     st: [
       ['U loncu zakuhaj 1 l slane vode. Ubaci brašno odjednom tako da u sredini bude brdašce i ne miješaj.', 'Bring 1 l salted water to the boil. Tip in all the flour so it forms a mound in the middle, and do not stir.'],
-      ['Drškom kuhače probuši rupu kroz sredinu i kuhaj na tihoj vatri 20 minuta.', 'Poke a hole through the middle with the handle of a wooden spoon and cook on low heat for 20 minutes.', 20],
+      ['Drškom drvene kašike probuši rupu kroz sredinu i kuhaj na tihoj vatri 20 minuta.', 'Poke a hole through the middle with the handle of a wooden spoon and cook on low heat for 20 minutes.', 20],
       ['Odlij dio vode u šolju, žgance dobro razmrvi viljuškom, po potrebi vrati malo vode. Pokrij i ostavi 5 minuta.', 'Pour some of the water off into a cup, break the žganci up well with a fork, adding a little water back if needed. Cover and rest 5 minutes.', 5],
       ['Prelij vrelom masti s čvarcima i služi uz kiselo mlijeko.', 'Pour hot lard with cracklings over and serve with soured milk.'],
     ],
@@ -187,7 +187,7 @@ export const SLO_RECIPES = [
     ing: [['flour', 250, 'g', n('za podlogu (prhko tijesto)', 'for the shortcrust base')], ['butter', 250, 'g'], ['phyllo', 500, 'g'], ['poppy', 250, 'g'], ['cottage', 1, 'kg'], ['walnuts', 250, 'g', n('mljeveni', 'ground')], ['apple', 1, 'kg'], ['sugar', 400, 'g'], ['eggs', 4, 'kom'], ['sour_cream', 500, 'g'], ['vanilla_sugar', 2, 'kesica'], ['cinnamon', 1, 'kasicica'], ['salt', 1, 'prst']],
     st: [
       ['Od brašna, 100 g maslaca, prstohvata soli i 4–5 kašika hladne vode zamijesi prhko tijesto. Razvij ga i obloži dno kalupa.', 'Rub the flour with 100 g butter and a pinch of salt and bring together with 4–5 tbsp cold water. Roll out and line the base of the tin.'],
-      ['Pripremi četiri nadjeva, svaki sa 100 g šećera: mak; sir s 2 jajeta i vanilin šećerom; orahe; naribane jabuke s cimetom.', 'Make four fillings, each with 100 g sugar: poppy seed; cottage cheese with 2 eggs and the vanilla sugar; walnut; grated apple with cinnamon.'],
+      ['Pripremi četiri nadjeva, svaki sa 100 g šećera: mak; sir s 2 jajeta i vanilin šećerom; orahe; izrendane jabuke s cimetom.', 'Make four fillings, each with 100 g sugar: poppy seed; cottage cheese with 2 eggs and the vanilla sugar; walnut; grated apple with cinnamon.'],
       ['Pavlaku umuti s 2 jajeta. Ostatak maslaca otopi.', 'Whisk the sour cream with 2 eggs. Melt the remaining butter.'],
       ['Na podlogu stavi jufku, pokapaj maslacem, rasporedi mak i prelij kašikom pavlake. Ponovi redom: jufka, sir, jufka, orasi, jufka, jabuke — pa sve još jednom. Završi jufkom i ostatkom pavlake.', 'On the base lay a sheet of phyllo, drizzle with butter, spread the poppy seed and spoon over some sour cream. Repeat in order: phyllo, cheese, phyllo, walnut, phyllo, apple — then the whole sequence once more. Finish with phyllo and the rest of the cream.'],
       ['Peci na 180 °C oko 75 minuta, dok ne porumeni.', 'Bake at 180 °C for about 75 minutes until golden.', 75],
@@ -216,7 +216,7 @@ export const SLO_RECIPES = [
     id: 'blejska-kremsnita', cu: 'slovenska', reg: 'gorenjska', type: 'dessert', sub: 'kolac', main: 'dessert', time: 90, serves: 12, eq: ['oven'], occ: ['rodjendan'],
     pan: { shape: 'rect', w: 30, h: 20 },
     bs: 'Kremšnita (blejska)', en: 'Bled cream slice (kremšnita)',
-    ing: [['puff_pastry', 500, 'g', n('2 lista', '2 sheets')], ['milk', 1, 'l'], ['eggs', 6, 'kom', n('odvojiti', 'separated')], ['sugar', 200, 'g'], ['starch', 80, 'g'], ['vanilla_sugar', 2, 'kesica'], ['cream', 400, 'ml'], ['powder_sugar', 3, 'kasika']],
+    ing: [['puff_pastry', 500, 'g', n('2 lista', '2 sheets')], ['milk', 1, 'l'], ['eggs', 6, 'kom', n('odvojeni žumanjci i bjelanjci', 'separated')], ['sugar', 200, 'g'], ['starch', 80, 'g'], ['vanilla_sugar', 2, 'kesica'], ['cream', 400, 'ml'], ['powder_sugar', 3, 'kasika']],
     st: [
       ['Lisnato tijesto razvij na veličinu kalupa, izbockaj viljuškom i peci dvije kore na 200 °C po 15 minuta. Ohladi.', 'Roll the puff pastry to the size of the tin, prick with a fork and bake the two sheets at 200 °C for 15 minutes each. Let cool.', 15],
       ['Žumanjke umuti s pola šećera, škrobom i vanilin šećerom i s malo hladnog mlijeka. Ostatak mlijeka zakuhaj.', 'Whisk the yolks with half the sugar, the cornflour, vanilla sugar and a little cold milk. Bring the rest of the milk to the boil.'],

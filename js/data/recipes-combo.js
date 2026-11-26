@@ -48,7 +48,7 @@ const list = [
     ing: [['yogurt', 200, 'g'], ['oats', 40, 'g'], ['banana', 1, 'kom'], ['walnuts', 15, 'g'], ['honey', 1, 'kasicica', O]],
     st: [
       ['Pahuljice umiješaj u jogurt i ostavi 5 minuta da omekšaju (ili preko noći u frižideru).', 'Stir the oats into the yoghurt and leave 5 minutes to soften (or overnight in the fridge).', 5],
-      ['Odozgo nareži bananu i izlomi orahe; po želji malo meda.', 'Top with sliced banana and broken walnuts; a little honey if you like.'],
+      ['Odozgo isijeci bananu i izlomi orahe; po želji malo meda.', 'Top with sliced banana and broken walnuts; a little honey if you like.'],
     ],
     story: ['Zdjelica koja se složi za dvije minute, a drži do ručka.', 'A bowl put together in two minutes that keeps you going until lunch.'],
   },

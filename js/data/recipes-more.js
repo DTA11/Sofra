@@ -10,9 +10,9 @@ export const MORE_RECIPES = [
     bs: 'Pašticada s njokima', en: 'Pašticada with gnocchi',
     ing: [['beef', 1.2, 'kg', n('frikando ili ruža, u komadu', 'topside or silverside, in one piece')], ['bacon', 80, 'g', n('za protkivanje', 'for larding')], ['garlic', 4, 'cen'], ['vinegar', 250, 'ml', n('vinsko, za mariniranje', 'wine vinegar, for the marinade')], ['onion', 2, 'glavica'], ['root_mix', 300, 'g'], ['prunes', 8, 'kom'], ['tomato_paste', 2, 'kasika'], ['wine_red', 500, 'ml'], ['cloves', 3, 'kom'], ['nutmeg', 1, 'prst'], ['bay_leaf', 2, 'list'], ['olive_oil', 4, 'kasika'], ['salt', null, ''], ['pepper_black', null, ''], ['gnocchi', 1, 'kg']],
     st: [
-      ['Večer ranije meso protkaj trakicama slanine i režnjevima bijelog luka, prelij sirćetom razrijeđenim s istom količinom vode i ostavi u frižideru preko noći.', 'The night before, lard the meat with strips of bacon and slivers of garlic, cover with the vinegar mixed with the same amount of water and leave in the fridge overnight.', 720],
+      ['Večer ranije meso protkaj trakicama slanine i češnjevima bijelog luka, prelij sirćetom razrijeđenim s istom količinom vode i ostavi u frižideru preko noći.', 'The night before, lard the meat with strips of bacon and slivers of garlic, cover with the vinegar mixed with the same amount of water and leave in the fridge overnight.', 720],
       ['Meso osuši, posoli i pobiberi pa ga na maslinovom ulju zapeci sa svih strana. Izvadi ga.', 'Pat the meat dry, season and brown it on all sides in the olive oil. Lift it out.'],
-      ['U istoj masnoći pirjaj luk i korjenasto povrće 15 minuta, dodaj suhe šljive, klinčiće, lovor i paradajz koncentrat.', 'In the same fat cook the onion and root vegetables for 15 minutes, then add the prunes, cloves, bay leaves and tomato paste.', 15],
+      ['U istoj masnoći pirjaj luk i korjenasto povrće 15 minuta, dodaj suhe šljive, klinčiće, lovor i paradajz-pire.', 'In the same fat cook the onion and root vegetables for 15 minutes, then add the prunes, cloves, bay leaves and tomato paste.', 15],
       ['Vrati meso, ulij vino i 300 ml vode. Pirjaj poklopljeno na tihoj vatri 3 sata, okrećući meso i podlijevajući po potrebi.', 'Return the meat, pour in the wine and 300 ml water. Braise covered on low heat for 3 hours, turning the meat and adding water when needed.', 180],
       ['Meso izvadi i isijeci na šnite. Umak propasiraj ili izmiksaj, začini muškatnim oraščićem i vrati meso u umak.', 'Lift out the meat and slice it. Pass or blend the sauce, season with nutmeg and return the slices to the sauce.'],
       ['Njoke skuhaj u slanoj vodi dok ne isplivaju i služi s pašticadom.', 'Cook the gnocchi in salted water until they float and serve with the pašticada.'],
@@ -41,7 +41,7 @@ export const MORE_RECIPES = [
     ing: [['beans', 250, 'g', n('namočen preko noći', 'soaked overnight')], ['smoked_ribs', 400, 'g'], ['corn', 300, 'g'], ['potato', 400, 'g'], ['root_mix', 200, 'g'], ['onion', 1, 'glavica'], ['garlic', 2, 'cen'], ['tomato_paste', 1, 'kasika'], ['bay_leaf', 2, 'list'], ['olive_oil', 3, 'kasika'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Grah i suho meso stavi u lonac s 3 l vode i lovorom, kuhaj 60 minuta.', 'Put the beans and smoked meat in a pot with 3 l water and the bay leaves and cook for 60 minutes.', 60],
-      ['Na maslinovom ulju propirjaj luk i korjenasto povrće, dodaj paradajz koncentrat i sve prebaci u lonac.', 'Soften the onion and root vegetables in the olive oil, add the tomato paste and tip everything into the pot.'],
+      ['Na maslinovom ulju propirjaj luk i korjenasto povrće, dodaj paradajz-pire i sve prebaci u lonac.', 'Soften the onion and root vegetables in the olive oil, add the tomato paste and tip everything into the pot.'],
       ['Dodaj krompir na kocke i kukuruz, kuhaj još 30 minuta.', 'Add the diced potatoes and the corn and cook for another 30 minutes.', 30],
       ['Meso skini s kosti i vrati u lonac. Začini bijelim lukom, solju i biberom. Maneštra treba biti gusta.', 'Take the meat off the bone and return it. Season with garlic, salt and pepper. Maneštra should be thick.'],
     ],
@@ -99,7 +99,7 @@ export const MORE_RECIPES = [
     st: [
       ['Krompir oguli, isijeci na kocke i kuhaj u 1 l slane vode 20 minuta.', 'Peel and dice the potatoes and boil them in 1 l salted water for 20 minutes.', 20],
       ['Postepeno dodaj brašno i kuhaj na tihoj vatri još 15 minuta.', 'Gradually add the cornmeal and cook on low heat for another 15 minutes.', 15],
-      ['Drvenom kuhačom snažno miješaj i gnječi dok ne postane glatko i žilavo, dodajući kajmak i sir u dijelovima.', 'Beat and mash hard with a wooden spoon until smooth and elastic, working in the kajmak and cheese a little at a time.'],
+      ['Drvenom kašikom snažno miješaj i gnječi dok ne postane glatko i žilavo, dodajući kajmak i sir u dijelovima.', 'Beat and mash hard with a wooden spoon until smooth and elastic, working in the kajmak and cheese a little at a time.'],
       ['Služi vruće, uz kiselo mlijeko.', 'Serve hot with soured milk.'],
     ],
     story: ['Kačamak sa sjevera Crne Gore — jelo za hladna jutra, koje se miješa „dok ruka ne zaboli“.', 'Kačamak from northern Montenegro — food for cold mornings, stirred “until your arm aches”.'],
@@ -142,7 +142,7 @@ export const MORE_RECIPES = [
       ['Dodaj krompir na krupne komade i kuhaj još 40 minuta, dok mlijeko ne postane gust, zlatan umak.', 'Add the potatoes in large chunks and cook another 40 minutes, until the milk becomes a thick golden sauce.', 40],
       ['Pobiberi i služi iz lonca.', 'Season with pepper and serve from the pot.'],
     ],
-    story: ['Katunsko jelo s crnogorskih planina, gdje je mlijeka bilo više nego vode — meso postane mekano kao puter.', 'A dish of the Montenegrin mountain pastures, where milk was easier to come by than water — the meat turns butter-soft.'],
+    story: ['Katunsko jelo s crnogorskih planina, gdje je mlijeka bilo više nego vode — meso postane mekano kao maslac.', 'A dish of the Montenegrin mountain pastures, where milk was easier to come by than water — the meat turns butter-soft.'],
     src: T,
   },
   {
@@ -274,7 +274,7 @@ export const MORE_RECIPES = [
     st: [
       ['Brašno, so i oko 900 ml vode umuti u glatko tijesto gustoće palačinki.', 'Whisk the flour, salt and about 900 ml water into a smooth, pancake-thick batter.'],
       ['Vrhnje, pavlaku i otopljeni maslac izmiješaj u premaz.', 'Mix the cream, sour cream and melted butter for the filling.'],
-      ['U namašćenu okruglu tepsiju kašikom nanesi tijesto u zrakastim prugama od sredine prema rubu, ostavljajući razmak. Peci pod grijačem (gornji grill, najjače) 5 minuta dok ne porumeni.', 'Spoon the batter into a buttered round tin in rays from the centre to the edge, leaving gaps. Cook under the grill (top heat, highest) for 5 minutes until browned.', 5],
+      ['U namašćenu okruglu tepsiju kašikom nanesi tijesto u zrakastim prugama od sredine prema rubu, ostavljajući razmak. Peci pod gornjim grijačem (najjače) 5 minuta dok ne porumeni.', 'Spoon the batter into a buttered round tin in rays from the centre to the edge, leaving gaps. Cook under the grill (top heat, highest) for 5 minutes until browned.', 5],
       ['Premaži kremom, pa nanesi novi sloj tijesta u razmake. Ponavljaj sloj po sloj dok ne potrošiš tijesto — oko 15 slojeva.', 'Brush with the cream, then spoon the next layer of batter into the gaps. Repeat layer by layer until the batter is used up — about 15 layers.'],
       ['Završi kremom, pokrij i ostavi 15 minuta prije rezanja. Služi s jogurtom.', 'Finish with cream, cover and rest 15 minutes before cutting. Serve with yoghurt.', 15],
     ],
@@ -285,7 +285,7 @@ export const MORE_RECIPES = [
     id: 'trilece', cu: 'albanska', type: 'dessert', sub: 'kolac', main: 'dessert', time: 75, serves: 12, eq: ['oven'], kid: 1, occ: ['rodjendan'],
     pan: { shape: 'rect', w: 30, h: 20 },
     bs: 'Trileçe (kolač s tri mlijeka)', en: 'Trileçe (three-milk cake)',
-    ing: [['eggs', 5, 'kom'], ['sugar', 250, 'g', n('150 g u biskvit, 100 g za karamel', '150 g for the sponge, 100 g for the caramel')], ['flour', 150, 'g'], ['baking_powder', 1, 'kesica'], ['milk', 500, 'ml'], ['cream', 400, 'ml', n('200 ml u preliv, 200 ml za karamel', '200 ml for the soak, 200 ml for the caramel')], ['condensed_milk', 400, 'g', n('1 konzerva', '1 tin')], ['vanilla_sugar', 1, 'kesica']],
+    ing: [['eggs', 5, 'kom'], ['sugar', 250, 'g', n('150 g u biskvit, 100 g za karamel', '150 g for the sponge, 100 g for the caramel')], ['flour', 150, 'g'], ['baking_powder', 1, 'kesica'], ['milk', 500, 'ml'], ['cream', 400, 'ml', n('200 ml u preljev, 200 ml za karamel', '200 ml for the soak, 200 ml for the caramel')], ['condensed_milk', 400, 'g', n('1 konzerva', '1 tin')], ['vanilla_sugar', 1, 'kesica']],
     st: [
       ['Jaja umuti sa 150 g šećera 8 minuta dok ne postanu gusta i svijetla. Lagano umiješaj brašno s praškom za pecivo.', 'Whisk the eggs with 150 g sugar for 8 minutes until thick and pale. Gently fold in the flour and baking powder.', 8],
       ['Peci u kalupu obloženom papirom na 180 °C oko 25 minuta.', 'Bake in a lined tin at 180 °C for about 25 minutes.', 25],

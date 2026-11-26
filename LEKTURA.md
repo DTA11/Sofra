@@ -27,3 +27,18 @@ Ako nešto ne valja, vrati staru verziju ili napiši bolju.
 | Pileća sitnež | Pileći sitnež | ingredients.js | „sitnež“ je muškog roda (ostavljeno „(vratovi, krilca)“) |
 | ostale namirnice „X (y)“: bakalar, tunjevina, sardine, kukuruz šećerac, grah iz konzerve, vrganji, mak, kokos, kafa, kondenzovano mlijeko, čili, nana, ren, kiseli kupus, crvena babura, šljive, kupus, krupna so, leća, slanutak, maslo, polutvrdi sir, čaj | „Sušeni bakalar“, „Tunjevina iz konzerve“, „Espresso“, „Kiseli kupus u glavicama“, „Ribani kiseli kupus“, „Leća“, „Slanutak“, „Maslo“… | ingredients.js | bez zagrada, da se ne sudare sa zagradom bilješke; vrsta (crvena/smeđa leća, leblebija…) ostaje u bilješkama |
 | bilješke „suhi vrganji“, „kukuruz šećerac“, „ohlađen espresso“ | (uklonjeno) / „ohlađen“ | recipes-slo.js, recipes-more.js, recipes-sweet.js | ponavljale su novo ime sastojka |
+| od juče | od jučer | recipes-meals.js | standardni bosanski oblik |
+| tuna (konzerva tune, ocijeđenu tunu) | tunjevina | recipes-meals.js | jedno ime (sastojak „Tunjevina iz konzerve“) |
+| bilješka „za uz“ (jogurt) | „kao prilog“ | recipes-meals.js | „za uz“ zvuči nedovršeno |
+| pun kotao patlidžana | puna korpa patlidžana | recipes-meals.js | kotao se ne puni sirovim patlidžanom |
+| koncentrat / paradajz koncentrat | paradajz-pire | recipes-extra.js, recipes-slo.js, recipes-more.js | jedno ime (sastojak „Paradajz-pire“); u vojničkim čorbama „koncentrat za supu“ ostaje |
+| tiganj | tava | recipes-extra.js | u aplikaciji svuda „tava“ |
+| pećnica | rerna | recipes-extra.js | u aplikaciji svuda „rerna“ |
+| te (veznik) | i | recipes-slo.js | bosanski |
+| puter | maslac | recipes-more.js | jedno ime |
+| kuhača | (drvena) kašika | recipes-more.js, recipes-slo.js | bosanski |
+| gornji grill | gornji grijač | recipes-more.js | bez engleske riječi |
+| režnjevi bijelog luka | češnjevi bijelog luka | recipes-more.js | jedan izraz za bijeli luk |
+| tekućina | tečnost | recipes-slo.js | bosanski |
+| naribati / narezati (šampinjone, piletinu, bananu) | izrendati / isjeći | recipes-slo.js, recipes-salads.js, recipes-combo.js, recipes-sides.js, recipes-extra.js | dosljedno s „isijeci“ i „izrendaj“; „narezani sir/salama“ (kupovno) ostaje |
+| bilješka „odvojiti“ (jaja) | „odvojeni žumanjci i bjelanjci“ | recipes-slo.js | bilješka uz sastojak, ne naredba |
