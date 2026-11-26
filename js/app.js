@@ -113,15 +113,15 @@ const routes = {
   pantry: viewPantry, shop: viewShop, settings: viewSettings, cook: viewCook,
 };
 function route() {
-  const [name, arg] = (location.hash.replace(/^#\/?/, '') || (isStandalone() ? 'plan' : 'home')).split('/');
-  const fn = routes[name] || (isStandalone() ? viewPlan : viewHome);
+  const [name, arg] = (location.hash.replace(/^#\/?/, '') || 'home').split('/');
+  const fn = routes[name] || viewHome;
   stopWake();
   if (name !== 'cook') stopVoice();
   JUF.home = S().jufka !== 'shop';
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
   document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica', 'uzina', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
-  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica', 'uzina'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
+  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica', 'uzina'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : 'home');
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
   syncInstallButtons();
   { const gk = { settings: 'settings', pantry: 'pantry' }[name]; if (gk && !(S().guide || {})[gk]) { S().guide = { ...S().guide, [gk]: true }; store.save(); } } // quick guide: page visited = step done
@@ -1321,6 +1321,12 @@ window.addEventListener('hashchange', route);
 // ───────── boot ─────────
 store.load();
 setLang(S().lang);
+// the installed app opens on the home page: older installs saved "#/plan" as their start address,
+// so a fresh launch (not a reload in the same session) on #/plan goes home instead
+try {
+  if (isStandalone() && !sessionStorage.getItem('sofra-open') && /^#\/?plan$/.test(location.hash)) history.replaceState(null, '', '#/home');
+  sessionStorage.setItem('sofra-open', '1');
+} catch { /* no sessionStorage */ }
 document.querySelectorAll('.tabbar a').forEach((a) => { a.querySelector('span').innerHTML = ICON[a.dataset.tab] || ''; });
 $('#gearBtn').innerHTML = ICON.gear;
 $('#kilim').innerHTML = KILIM;
