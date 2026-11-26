@@ -140,7 +140,7 @@ const SHAPES = {
 /** Illustration for a recipe. size: 'card' | 'hero' */
 // Recipes with a real photo (photos/<id>-s.webp 480 px, photos/<id>-l.webp 1200 px, 16:10).
 // Not pre-cached: the service worker keeps each photo once it has been seen, so the app stays small.
-export const PHOTOS = new Set(['pasta-fagioli', 'begova-corba', 'cevapi', 'sarma-junetina', 'burek', 'bosanski-lonac', 'krompirusa-obicna', 'sirnica', 'punjene-paprike', 'musaka-krompir', 'grah-suho-meso', 'cufte-sos', 'pohovana-teleca-snicla', 'pecena-piletina']);
+export const PHOTOS = new Set(['pasta-fagioli', 'begova-corba', 'cevapi', 'sarma-junetina', 'burek', 'bosanski-lonac', 'krompirusa-obicna', 'sirnica', 'punjene-paprike', 'musaka-krompir', 'grah-suho-meso', 'cufte-sos', 'pohovana-teleca-snicla', 'pecena-piletina', 'salata-riza-tuna', 'salata-paradajz-masline-sir', 'caprese', 'salata-cvekla', 'pileca-salata-jogurt', 'ruska-salata', 'sopska', 'krompir-salata-jaja', 'grah-salata', 'tuna-salata', 'solata-bucno-olje', 'gusta-salata-jogurt', 'seljacka-salata-feta', 'salata-kupus-mrkva', 'pecene-paprike-salata', 'cezar-salata', 'salata-tuna-tjestenina']);
 
 export function dishArt(r, cls = '') {
   if (PHOTOS.has(r.id)) {
