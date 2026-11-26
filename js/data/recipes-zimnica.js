@@ -82,7 +82,7 @@ export const ZIM_RECIPES = [
     bs: 'Pekmez od šljiva', en: 'Plum butter (pekmez)',
     ing: [['plums', 5000, 'g', n('zrele, slatke', 'ripe, sweet')], ['sugar', 500, 'g', n('ili bez šećera', 'or no sugar at all')], ['cinnamon', 1, 'kasicica', O], ['cloves', 3, 'kom', O]],
     st: [
-      ['Šljive operi, prepolovi i izvadi koštice. Crvljive i pljesnive baci.', 'Wash, halve and stone the plums. Throw away any with worms or mould.'],
+      ['Šljive operi, prepolovi i izvadi koštice. Crvljive i plijesnive baci.', 'Wash, halve and stone the plums. Throw away any with worms or mould.'],
       ['Stavi ih u širok lonac debelog dna, poklopi i kuhaj na laganoj vatri 30 minuta dok ne puste sok i ne raskuhaju se.', 'Put them in a wide heavy-based pot, cover and cook gently for 30 minutes until they release their juice and fall apart.', 30],
       ['Otklopi i kuhaj na laganoj vatri 3–4 sata, miješajući po dnu sve češće kako se zgušnjava (ili u tepsiji u rerni na 160 °C, miješaj svakih 30 minuta). Ko voli glatko, na pola kuhanja propasira ili izmiksa.', 'Uncover and cook gently for 3–4 hours, stirring the bottom more and more often as it thickens (or in a roasting tin in the oven at 160 °C, stirring every 30 minutes). For a smooth butter, purée it halfway through.', 200],
       JARS(),

@@ -109,7 +109,7 @@ export const BS = {
       </div>
 
       <h2>Mljevenje</h2>
-      <p>Meso isijeci na trake ili kocke od 3–4 cm i skini žile i opne. Ako ga mljeješ sam, pusti ga dva puta kroz mašinu: prvo kroz krupnu ploču (8 mm), pa kroz sitnu (4–5 mm). Toplo meso se razmaže umjesto da se samelje i masnoća se odvoji, zato sve drži hladnim. Ako nemaš mašinu, mesar će ti samljeti komad koji izabereš.</p>
+      <p>Meso isijeci na trake ili kocke od 3–4 cm i skini žile i opne. Ako ga melješ sam, pusti ga dva puta kroz mašinu: prvo kroz krupnu ploču (8 mm), pa kroz sitnu (4–5 mm). Toplo meso se razmaže umjesto da se samelje i masnoća se odvoji, zato sve drži hladnim. Ako nemaš mašinu, mesar će ti samljeti komad koji izabereš.</p>
 
       <h2>So, voda i mijesenje</h2>
       <table>
@@ -118,7 +118,7 @@ export const BS = {
           <tr><td>So</td><td>16–18 g</td><td>16–18 g</td></tr>
           <tr><td>Hladna (gazirana) voda</td><td>80–100 ml</td><td>50 ml</td></tr>
           <tr><td>Bijeli luk</td><td>1–2 češnja ili bez</td><td>2 češnja</td></tr>
-          <tr><td>Crni luk</td><td>—</td><td>1 glavica, vrlo sitno</td></tr>
+          <tr><td>Crveni luk</td><td>—</td><td>1 glavica, vrlo sitno</td></tr>
           <tr><td>Biber, ljuta paprika</td><td>malo biber</td><td>po ukusu</td></tr>
         </tbody>
       </table>
@@ -140,7 +140,7 @@ export const BS = {
         <li>Nabadaj meso gusto, ali ne nabijeno — između komada neka ostane milimetar da toplina prođe.</li>
         <li>Između mesa stavi luk i papriku isječene na komade iste veličine.</li>
         <li>Mekše i tanje komade (piletinu) peci na posebnim štapićima, ne s junetinom.</li>
-        <li>Dva paralelna štapića kroz isto meso sprečavaju da se komadi okreću kad okrećeš ražnjić.</li>
+        <li>Dva paralelna štapića kroz isto meso sprječavaju da se komadi okreću kad okrećeš ražnjić.</li>
       </ol>
 
       <h2>Tučenje, otkoštavanje i rezanje na leptir</h2>
@@ -206,15 +206,15 @@ export const BS = {
 
       <h2>Šest osnovnih marinada (za 1 kg mesa)</h2>
       <h3>1. Osnovna, za svinjetinu i junetinu</h3>
-      <p>5 kašika ulja, 3 češnja bijelog luka, 1 kašičica slatke paprike, ½ kašičice biber. Po želji sitno isjeckan crni luk.</p>
+      <p>5 kašika ulja, 3 češnja bijelog luka, 1 kašičica slatke aleve paprike, ½ kašičice bibera. Po želji sitno isjeckan crveni luk.</p>
       <h3>2. Jogurt, za piletinu</h3>
-      <p>150 ml gustog jogurta, sok od ½ limuna, 2 češnja bijelog luka, 1 kašičica paprike, 2 kašike ulja, 1 kašičica soli.</p>
+      <p>150 ml gustog jogurta, sok od ½ limuna, 2 češnja bijelog luka, 1 kašičica aleve paprike, 2 kašike ulja, 1 kašičica soli.</p>
       <h3>3. Limun i ruzmarin, za janjetinu i batke</h3>
       <p>4 kašike maslinovog ulja, sok od 1 limuna, 4 češnja bijelog luka, 1 kašičica suhog ruzmarina ili dvije grančice svježeg, biber.</p>
       <h3>4. Med i paprika, za krilca i rebarca</h3>
-      <p>3 kašike ulja, 1 kašika meda, 2 kašičice slatke paprike, prstohvat ljute, 3 češnja bijelog luka, sok od ½ limuna. Med zagori brzo — peci na indirektnoj toplini, a nad žar tek na kraju.</p>
+      <p>3 kašike ulja, 1 kašika meda, 2 kašičice slatke aleve paprike, prstohvat ljute, 3 češnja bijelog luka, sok od ½ limuna. Med zagori brzo — peci na indirektnoj toplini, a nad žar tek na kraju.</p>
       <h3>5. Pivo i luk, za svinjski vrat</h3>
-      <p>200 ml svijetlog piva, 1 glavica crnog luka na kolutove, 3 kašike ulja, 1 kašičica bibera, kašičica senfa. Preko noći.</p>
+      <p>200 ml svijetlog piva, 1 glavica crvenog luka na kolutove, 3 kašike ulja, 1 kašičica bibera, kašičica senfa. Preko noći.</p>
       <h3>6. Za ribu i lignje</h3>
       <p>4 kašike maslinovog ulja, 2 češnja bijelog luka, šaka peršuna. Limun tek kad je riba pečena.</p>
 
@@ -283,7 +283,7 @@ export const BS = {
       <h2>Salamurenje za suho meso</h2>
       <p>Za suho meso uzimaju se cijeli, čisti komadi bez kosti: goveđi but (bot, frikando), svinjski vrat, slabina ili but. Komadi neka budu do 5–6 cm debeli, da so i dim prođu do sredine.</p>
       <h3>So za salamurenje</h3>
-      <p>So za salamurenje je kuhinjska so s malo nitrita. Čuva crvenu boju mesa i, što je važnije, sprečava rast bakterija koje izazivaju botulizam u mesu koje se dugo dimi i suši na niskoj temperaturi. Za meso koje se hladno dimi i suši sedmicama koristi je obavezno i drži se uputstva na pakovanju; ne miješaj je sa običnom solju „od oka“.</p>
+      <p>So za salamurenje je kuhinjska so s malo nitrita. Čuva crvenu boju mesa i, što je važnije, sprječava rast bakterija koje izazivaju botulizam u mesu koje se dugo dimi i suši na niskoj temperaturi. Za meso koje se hladno dimi i suši sedmicama koristi je obavezno i drži se uputstva na pakovanju; ne miješaj je s običnom solju „od oka“.</p>
 
       <h3>Suho salamurenje</h3>
       <ol>
@@ -301,7 +301,7 @@ export const BS = {
         <li>Meso isperi hladnom vodom i ostavi ga sat-dva u čistoj vodi da se izjednači so na površini.</li>
         <li>Objesi ga da se osuši izvana, dan na hladnom i promajnom mjestu.</li>
         <li>Dimi ga hladnim dimom (ispod 25 °C) nekoliko sati dnevno, 1–3 sedmice — vidi vodič za dimljenje.</li>
-        <li>Suši ga na 10–15 °C i umjerenoj vlazi, dok ne izgubi 30–35 % težine. Važi ga povremeno.</li>
+        <li>Suši ga na 10–15 °C i umjerenoj vlazi, dok ne izgubi 30–35 % težine. Povremeno ga izvaži.</li>
       </ol>
 
       <h2>Kad nešto pođe po zlu</h2>
@@ -320,7 +320,7 @@ export const BS = {
       </div>
 
       <h2>Čuvanje</h2>
-      <p>Osušeno meso čuvaj na hladnom i suhom, umotano u papir ili krpu, ne u plastiku. Kad ga načneš, drži ga u frižideru. Vakumirano traje u frižideru nekoliko mjeseci.</p>
+      <p>Osušeno meso čuvaj na hladnom i suhom, umotano u papir ili krpu, ne u plastiku. Kad ga načneš, drži ga u frižideru. Vakuumirano traje u frižideru nekoliko mjeseci.</p>
 
       <h2>U Sofri</h2>
       <ul class="related">
@@ -455,7 +455,7 @@ export const BS = {
       <div class="box">
         <h2>Ukratko</h2>
         <ol>
-          <li>Toplo dimljenje: 80–110 °C, meso se peče; pastrmka 1–1,5 sat, piletina 2–3 sata.</li>
+          <li>Toplo dimljenje: 80–110 °C, meso se peče; pastrmka 1–1,5 sati, piletina 2–3 sata.</li>
           <li>Hladno dimljenje: ispod 25 °C, nekoliko sati dnevno kroz 1–3 sedmice, samo za salamureno meso.</li>
           <li>Drvo: bukva, hrast, voćke (jabuka, šljiva, trešnja); nikad četinari ni obrađeno drvo.</li>
           <li>Dim neka bude tanak i plavičast, ne gust i bijel.</li>
@@ -499,7 +499,7 @@ export const BS = {
       <table>
         <thead><tr><th>Šta</th><th>Salamura</th><th>Dimljenje na 90–110 °C</th></tr></thead>
         <tbody>
-          <tr><td>Pastrmka, skuša (cijele)</td><td>1–2 sata</td><td>1–1,5 sat</td></tr>
+          <tr><td>Pastrmka, skuša (cijele)</td><td>1–2 sata</td><td>1–1,5 sati</td></tr>
           <tr><td>Pileći batci</td><td>4–6 sati</td><td>1,5–2 sata</td></tr>
           <tr><td>Cijelo pile</td><td>8–12 sati</td><td>2,5–3 sata</td></tr>
           <tr><td>Svinjska rebarca</td><td>6–12 sati ili suhi začin</td><td>3–4 sata</td></tr>
@@ -526,7 +526,7 @@ export const BS = {
       </div>
 
       <h2>Čuvanje</h2>
-      <p>Toplo dimljena riba i meso traju u frižideru 3–5 dana, umotani. Hladno dimljeno i osušeno meso čuva se kao suho meso — na hladnom i suhom, ili vakumirano u frižideru.</p>
+      <p>Toplo dimljena riba i meso traju u frižideru 3–5 dana, umotani. Hladno dimljeno i osušeno meso čuva se kao suho meso — na hladnom i suhom, ili vakuumirano u frižideru.</p>
 
       <h2>U Sofri</h2>
       <ul class="related">
@@ -570,7 +570,7 @@ export const BS = {
         <thead><tr><th>Šta</th><th>Po osobi</th><th>Za 4 osobe</th></tr></thead>
         <tbody>
           <tr><td>Lepinja ili somun</td><td>1 komad</td><td>4</td></tr>
-          <tr><td>Crni luk</td><td>½ glavice</td><td>2 glavice</td></tr>
+          <tr><td>Crveni luk</td><td>½ glavice</td><td>2 glavice</td></tr>
           <tr><td>Kajmak</td><td>30–40 g</td><td>150 g</td></tr>
           <tr><td>Ajvar</td><td>40 g (2–3 kašike)</td><td>150–200 g</td></tr>
           <tr><td>Urnebes</td><td>50–60 g</td><td>250 g sira</td></tr>
@@ -581,7 +581,7 @@ export const BS = {
 
       <h2>Pripremi prije vatre</h2>
       <h3>Luk</h3>
-      <p>Crni luk isjeckaj sitno ili na tanke polumjesece, posoli i izgnječi rukama — postane blaži. Za salatu od luka dodaj kašiku sirćeta i ulja.</p>
+      <p>Crveni luk isjeckaj sitno ili na tanke polumjesece, posoli i izgnječi rukama — postane blaži. Za salatu od luka dodaj kašiku sirćeta i ulja.</p>
       <h3>Urnebes</h3>
       <p>Bijeli sir izmrvi viljuškom s malo kajmaka, bijelim lukom, ljutom i slatkom paprikom i kašikom ulja. Ako je preljuto, umiješaj ajvar.</p>
       <h3>Umak od jogurta</h3>
@@ -596,7 +596,7 @@ export const BS = {
       <h2>Kad nešto pođe po zlu</h2>
       <dl class="faq">
         <dt>Luk je preljut</dt>
-        <dd>Isjeckan ga posoli i izgnječi, ili ga na pet minuta potopi u hladnu vodu pa ocijedi.</dd>
+        <dd>Isjeckaj ga, posoli i izgnječi, ili ga na pet minuta potopi u hladnu vodu pa ocijedi.</dd>
         <dt>Urnebes je previše tečan</dt>
         <dd>Bilo je previše ulja ili kajmaka. Dodaj još izmrvljenog sira.</dd>
         <dt>Lepinje su tvrde</dt>

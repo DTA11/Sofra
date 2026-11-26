@@ -75,7 +75,7 @@ export const BS = {
 
       <div class="box tip">
         <h3>A okretanje tegli naopako i umotavanje u deke?</h3>
-        <p>Mnogi tako rade, i za džem, pekmez i turšiju to obično prođe. Ali to nije isto što i kuhanje u vodi: sadržaj se ne zagrije jednako do sredine tegle. Za ajvar, paradajz sos i sve od povrća sa malo kiseline kuhanje zatvorenih tegli u vodi je obavezno.</p>
+        <p>Mnogi tako rade, i za džem, pekmez i turšiju to obično prođe. Ali to nije isto što i kuhanje u vodi: sadržaj se ne zagrije jednako do sredine tegle. Za ajvar, paradajz sos i sve od povrća s malo kiseline kuhanje zatvorenih tegli u vodi je obavezno.</p>
       </div>
 
       <h2>Kad nešto pođe po zlu</h2>
@@ -118,7 +118,7 @@ export const BS = {
       </div>
 
       <h2>Zašto kiselina</h2>
-      <p>Paprika, patlidžan, mrkva, karfiol, krastavac pa i paradajz nisu dovoljno kiseli da bi bili sigurni sami u zatvorenoj tegli. U takvoj tegli, bez zraka, može se razviti bakterija koja stvara opasan otrov (botulizam), a ne mijenja ni miris ni ukus. Kiselina to sprečava — zato se sirće u turšiji ne razrjeđuje više nego što piše, a u ajvar i paradajz sos se uvijek dodaje kiselina.</p>
+      <p>Paprika, patlidžan, mrkva, karfiol, krastavac pa i paradajz nisu dovoljno kiseli da bi bili sigurni sami u zatvorenoj tegli. U takvoj tegli, bez zraka, može se razviti bakterija koja stvara opasan otrov (botulizam), a ne mijenja ni miris ni ukus. Kiselina to sprječava — zato se sirće u turšiji ne razrjeđuje više nego što piše, a u ajvar i paradajz sos se uvijek dodaje kiselina.</p>
 
       <h2>Sirće</h2>
       <table>
@@ -143,7 +143,7 @@ export const BS = {
           <tr><td>Ajvar</td><td>oko 30 g na 5 kg paprika</td><td>za ukus</td></tr>
         </tbody>
       </table>
-      <p>Za kiseljenje je najbolja krupna so bez joda i bez dodataka protiv grudvanja. Jodirana so nije opasna, ali može zamutiti salamuru i potamniti povrće. Kod kupusa so važe — premalo soli i kupus omekša i pokvari se, previše i ne kiseli se.</p>
+      <p>Za kiseljenje je najbolja krupna so bez joda i bez dodataka protiv grudvanja. Jodirana so nije opasna, ali može zamutiti salamuru i potamniti povrće. Kod kupusa so se mora izvagati — premalo soli i kupus omekša i pokvari se, previše i ne kiseli se.</p>
 
       <h2>Šećer</h2>
       <table>
@@ -169,7 +169,7 @@ export const BS = {
         <dt>Džem se ne zgušnjava</dt>
         <dd>Kuhaj ga još, u kraćim razmacima radi probu na hladnom tanjiru. Rijedak džem nije pokvaren, samo se razlije — koristi ga za kolače.</dd>
         <dt>Kupus je mekan i sluzav</dt>
-        <dd>Bilo je premalo soli ili pretoplo (iznad 22 °C). Sluzav kupus koji ružno miriše se baca; sljedeći put važi so i drži bure na 15–20 °C.</dd>
+        <dd>Bilo je premalo soli ili pretoplo (iznad 22 °C). Sluzav kupus koji ružno miriše se baca; sljedeći put izvaži so i drži bure na 15–20 °C.</dd>
       </dl>
 
       <h2>Recepti u Sofri</h2>
@@ -236,8 +236,8 @@ export const BS = {
         <dd>Kod kiselog kupusa to je normalno. Opasno je samo uz ostale znakove ispod.</dd>
         <dt>Kupus je mekan, sluzav, ružičast ili miriše na trulo</dt>
         <dd>Bilo je premalo soli, pretoplo ili kupus nije bio pod salamurom. Takve glavice baci; ako je cijelo bure takvo — sve baci, posudu dobro operi.</dd>
-        <dt>Na površini je dlakava, zelena ili crna pljesan</dt>
-        <dd>Skini pljesan i gornje glavice koje je dodiruju; ako je pljesan prodrla u kupus ili se širi, baci sve. Spriječi je tako što kupus uvijek drži pod salamurom.</dd>
+        <dt>Na površini je dlakava, zelena ili crna plijesan</dt>
+        <dd>Skini plijesan i gornje glavice koje je dodiruju; ako je plijesan prodrla u kupus ili se širi, baci sve. Spriječi je tako što kupus uvijek drži pod salamurom.</dd>
         <dt>Kupus se ne kiseli</dt>
         <dd>Prehladno je. Prenesi bure na toplije mjesto (15–20 °C) i nastavi pretakati.</dd>
       </dl>
@@ -316,14 +316,14 @@ export const BS = {
       slug: 'pokvarena-tegla',
       title: 'Kad se tegla pokvari: znakovi i šta uraditi',
       metaTitle: 'Pokvarena zimnica: kako prepoznati pokvarenu teglu i šta uraditi | Sofra',
-      desc: 'Znakovi pokvarene zimnice (ispupčen poklopac, pjena, pljesan, miris), zašto se sumnjiva tegla nikad ne kuša, kako je sigurno baciti i očistiti, i šta nije znak kvara.',
+      desc: 'Znakovi pokvarene zimnice (ispupčen poklopac, pjena, plijesan, miris), zašto se sumnjiva tegla nikad ne kuša, kako je sigurno baciti i očistiti, i šta nije znak kvara.',
       card: 'Znakovi kvara, zašto ne kušati, kako baciti i očistiti, šta je normalno.',
       lede: 'Pokvarena zimnica se prepoznaje okom, uhom i nosom — nikad jezikom. Ako sumnjaš, baci cijelu teglu: jedna tegla ajvara nije vrijedna rizika.',
       body: `
       <div class="box">
         <h2>Ukratko</h2>
         <ol>
-          <li>Baci teglu ako je poklopac ispupčen, labav ili „klika“, ako šikne kad je otvaraš, ako se u njoj dižu mjehurići (a nije kiseli kupus), ako ima pljesni ili čudno miriše.</li>
+          <li>Baci teglu ako je poklopac ispupčen, labav ili „klika“, ako šikne kad je otvaraš, ako se u njoj dižu mjehurići (a nije kiseli kupus), ako ima plijesni ili čudno miriše.</li>
           <li>Sumnjivu teglu ne kušaj, ni vrh kašike, i ne daj je životinjama.</li>
           <li>Ispupčen poklopac ne otvaraj blizu lica. Zatvorenu teglu stavi u kesu, zaveži i baci u smeće.</li>
           <li>Ako je sadržaj iscurio, očisti sve izbjeljivačem razrijeđenim s vodom (1 : 5) i operi ruke.</li>
@@ -357,7 +357,7 @@ export const BS = {
       </ol>
 
       <h2>Pljesan na džemu i pekmezu</h2>
-      <p>Nekad se pljesan sa vrha skidala, a džem jeo. Danas se savjetuje baciti cijelu teglu: pljesan pušta niti dublje nego što se vidi, a neke stvaraju otrove. Kod otvorene tegle u frižideru to znači da je stajala predugo ili da je vađena prljavom kašikom.</p>
+      <p>Nekad se plijesan s vrha skidala, a džem jeo. Danas se savjetuje baciti cijelu teglu: plijesan pušta niti dublje nego što se vidi, a neke stvaraju otrove. Kod otvorene tegle u frižideru to znači da je stajala predugo ili da je vađena prljavom kašikom.</p>
 
       <h2>Šta nije znak kvara</h2>
       <dl class="faq">

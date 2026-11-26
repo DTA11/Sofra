@@ -50,3 +50,9 @@ Ako nešto ne valja, vrati staru verziju ili napiši bolju.
 | trokutići | trouglići | recipes-combo.js | bosanski (trougao) |
 | hladni uložak | rashladni uložak | recipes-uzina.js | „uložak“ je u aplikaciji i rezanci za supu |
 | vreća | (velika) kesa | recipes-zimnica.js | paprike se ne stavljaju u vreću |
+| „Prije nego počnete“, uradite, imate, označite, recite, dozvolite | „Prije nego počneš“, uradi, imaš, označi, reci, dozvoli | i18n.js | aplikacija se svuda obraća s „ti“ („Ne volite“ ostaje — misli se na ukućane) |
+| uključi je u Postavke → … | uključi je u Postavkama → … | i18n.js | padež |
+| crni luk | crveni luk | grill-guides/bs.mjs | isto ime kao sastojak |
+| slatka paprika / paprika (u marinadama) | slatka aleva paprika / aleva paprika | grill-guides/bs.mjs | da se ne miješa sa svježom paprikom |
+| skrob | škrob | vodici/kako-skuhati-rizu | isto kao „Kukuruzni škrob“ |
+| so važe / važi so | so se mora izvagati / izvaži so | zimnica-guides/bs.mjs | „važiti“ ≠ „vagati“ |
