@@ -42,3 +42,11 @@ Ako nešto ne valja, vrati staru verziju ili napiši bolju.
 | tekućina | tečnost | recipes-slo.js | bosanski |
 | naribati / narezati (šampinjone, piletinu, bananu) | izrendati / isjeći | recipes-slo.js, recipes-salads.js, recipes-combo.js, recipes-sides.js, recipes-extra.js | dosljedno s „isijeci“ i „izrendaj“; „narezani sir/salama“ (kupovno) ostaje |
 | bilješka „odvojiti“ (jaja) | „odvojeni žumanjci i bjelanjci“ | recipes-slo.js | bilješka uz sastojak, ne naredba |
+| na kašiku ulja | na kašici ulja | recipes-salads.js | padež |
+| slatka paprika / paprika (u marinadama) | slatka aleva paprika / aleva paprika | recipes-sides.js, recipes-grill.js | da se ne miješa sa svježom paprikom |
+| pladanj | tacna | recipes-grill.js | bosanski |
+| ploške | kriške | recipes-grill.js | bosanski, kao u ostalim receptima |
+| vani (brzo tamni) | izvana | recipes-grill.js | značenje „s vanjske strane“ |
+| trokutići | trouglići | recipes-combo.js | bosanski (trougao) |
+| hladni uložak | rashladni uložak | recipes-uzina.js | „uložak“ je u aplikaciji i rezanci za supu |
+| vreća | (velika) kesa | recipes-zimnica.js | paprike se ne stavljaju u vreću |

@@ -41,7 +41,7 @@ export const SIDE_RECIPES = [
     ing: [['root_mix', 400, 'g'], ['onion', 1, 'glavica'], ['potato', 1, 'kom'], ['oil', 1, 'kasika'], ['soup_pasta', 80, 'g'], ['salt', 1.5, 'kasicica'], ['pepper_black', null, ''], ['parsley', null, '']],
     st: [
       ['Povrće očisti i isijeci na sitne kocke ili tanke štapiće, luk sitno.', 'Clean the veg and cut into small dice or thin sticks; chop the onion finely.'],
-      ['Na ulju kratko propirjaj luk i povrće, nalij 1,5 litru vode i posoli. Kuhaj 20 minuta.', 'Soften the onion and veg briefly in the oil, pour in 1.5 litres of water and salt it. Cook for 20 minutes.', 20],
+      ['Na ulju kratko propirjaj luk i povrće, nalij 1,5 litara vode i posoli. Kuhaj 20 minuta.', 'Soften the onion and veg briefly in the oil, pour in 1.5 litres of water and salt it. Cook for 20 minutes.', 20],
       ['Ubaci uložak (rezance, rižu ili griz) i kuhaj još 5–10 minuta. Pobiberi i pospi peršunom.', 'Add the soup pasta (noodles, rice or semolina) and cook 5–10 minutes more. Season with pepper and scatter with parsley.', 8],
     ],
     story: ['Brza supa za radni dan — od onoga što ima u frižideru, gotova za pola sata.', 'A quick weekday soup — made from what is in the fridge, ready in half an hour.'],
@@ -122,7 +122,7 @@ export const SIDE_RECIPES = [
     ing: [['cabbage', 600, 'g'], ['salt', 1, 'kasicica'], ['oil', 3, 'kasika'], ['vinegar', 2, 'kasika'], ['pepper_black', null, ''], ['paprika_sweet', null, '', O]],
     st: [
       ['Kupus izrendaj ili isijeci na vrlo tanke rezance. Posoli i dobro ga izgnječi rukama, da omekša.', 'Grate the cabbage or slice it very thinly. Salt it and squeeze it well with your hands to soften.'],
-      ['Ostavi 10 minuta, pa prelij uljem i sirćetom, pobiberi i po želji pospi slatkom paprikom.', 'Leave for 10 minutes, then dress with oil and vinegar, add pepper and a little sweet paprika if you like.', 10],
+      ['Ostavi 10 minuta, pa prelij uljem i sirćetom, pobiberi i po želji pospi slatkom alevom paprikom.', 'Leave for 10 minutes, then dress with oil and vinegar, add pepper and a little sweet paprika if you like.', 10],
     ],
     story: ['Zimska salata uz grah, sarmu i pečenje — što duže stoji, to je bolja.', 'The winter salad for beans, sarma and roasts — the longer it stands, the better it gets.'],
     src: T,
@@ -144,7 +144,7 @@ export const SIDE_RECIPES = [
     ing: [['onion', 2, 'glavica'], ['vinegar', 2, 'kasika'], ['oil', 1, 'kasika'], ['salt', 0.5, 'kasicica'], ['paprika_sweet', null, '', O], ['parsley', null, '', O]],
     st: [
       ['Luk isijeci na tanke kolutove ili polumjesece, posoli i izgnječi rukama da pusti sok i ublaži se.', 'Slice the onion into thin rings or half-moons, salt and squeeze with your hands so it softens and mellows.'],
-      ['Prelij sirćetom i uljem, ostavi 10 minuta. Po želji pospi slatkom paprikom i peršunom.', 'Dress with vinegar and oil and leave for 10 minutes. Sprinkle with sweet paprika and parsley if you like.', 10],
+      ['Prelij sirćetom i uljem, ostavi 10 minuta. Po želji pospi slatkom alevom paprikom i peršunom.', 'Dress with vinegar and oil and leave for 10 minutes. Sprinkle with sweet paprika and parsley if you like.', 10],
     ],
     story: ['Uz grah, ćevape i sve s roštilja — mali tanjir koji se uvijek isprazni.', 'With beans, ćevapi and anything off the grill — the small plate that always gets emptied.'],
     src: T,
@@ -171,7 +171,7 @@ export const SIDE_RECIPES = [
     id: 'uz-kiseli-kupus', cu: 'svakodnevno', type: 'side', main: 'veg', time: 5, serves: 4, key: ['sauerkraut', 'sauerkraut_shred', 'cabbage'],
     bs: 'Kiseli kupus kao salata', en: 'Sauerkraut salad',
     ing: [['sauerkraut_shred', 400, 'g'], ['oil', 1, 'kasika'], ['paprika_sweet', null, '', O]],
-    st: [['Kiseli kupus ocijedi (ako je preslan, kratko ga isperi), prelij uljem i po želji pospi slatkom paprikom.', 'Drain the sauerkraut (rinse briefly if very salty), drizzle with oil and sprinkle with sweet paprika if you like.']],
+    st: [['Kiseli kupus ocijedi (ako je preslan, kratko ga isperi), prelij uljem i po želji pospi slatkom alevom paprikom.', 'Drain the sauerkraut (rinse briefly if very salty), drizzle with oil and sprinkle with sweet paprika if you like.']],
     story: ['Iz tegle ili bureta, zimi uz grah i pečenje.', 'Straight from the jar or the barrel — in winter, with beans and roasts.'],
     src: T,
   },

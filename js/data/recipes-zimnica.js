@@ -21,7 +21,7 @@ const COOL = [
   'Tegle izvadi krpom ili hvataljkom i ostavi na drvenoj dasci, bez propuha, do sutra. Ohlađen poklopac mora biti uvučen i ne smije „klikati“ kad ga pritisneš — takvu teglu stavi u frižider i potroši prvu. Na svaku teglu napiši šta je i kad je napravljena.',
   'Lift the jars out with a cloth or jar tongs and leave them on a wooden board, out of draughts, until the next day. Once cool, the lid must be pulled in and must not click when pressed — put any jar that clicks in the fridge and use it first. Label every jar with what it is and the date.'];
 const FILL = (space = 1) => [
-  `Vruće puni u vruće tegle do ${space} cm ispod ruba. Rub obriši čistom, vlažnom krpom i odmah zatvori novim ili neoštećenim poklopcem.`,
+  `Vruće puni u vruće tegle do ${String(space).replace('.', ',')} cm ispod ruba. Rub obriši čistom, vlažnom krpom i odmah zatvori novim ili neoštećenim poklopcem.`,
   `Fill hot into the hot jars to ${space} cm below the rim. Wipe the rim with a clean damp cloth and close at once with a new or undamaged lid.`];
 
 export const ZIM_RECIPES = [
@@ -32,7 +32,7 @@ export const ZIM_RECIPES = [
     ing: [['pepper_red', 5000, 'g', n('mesnate crvene babure', 'fleshy red peppers')], ['eggplant', 1000, 'g'], ['oil', 300, 'ml'], ['vinegar', 100, 'ml', n('9 %', '9 %')], ['salt', 2, 'kasika'], ['sugar', 1, 'kasika', O], ['garlic', 3, 'cen', O]],
     st: [
       ['Paprike i patlidžan operi i osuši. Slaži ih na limove u jednom redu i peci na 220 °C, okrećući, dok koža ne pocrni i ne odvoji se — oko 35 minuta. (Može i na ploči ili žaru.)', 'Wash and dry the peppers and aubergines. Lay them in one layer on trays and roast at 220 °C, turning, until the skin blackens and lifts — about 35 minutes. (A hotplate or grill works too.)', 35],
-      ['Pečeno povrće stavi u veliku posudu, pokrij ili zatvori u vreću i ostavi 20 minuta da se „znoji“ — koža će se lako guliti.', 'Put the roasted veg in a large bowl, cover or close in a bag and leave for 20 minutes to sweat — the skins will slip off easily.', 20],
+      ['Pečeno povrće stavi u veliku posudu, pokrij ili zatvori u veliku kesu i ostavi 20 minuta da se „znoji“ — koža će se lako guliti.', 'Put the roasted veg in a large bowl, cover or close in a bag and leave for 20 minutes to sweat — the skins will slip off easily.', 20],
       ['Oguli kožu, izvadi peteljke i sjemenke. Ne ispiraj pod vodom — gubi se ukus. Očišćeno ostavi u cjedilu bar sat vremena (može i preko noći u frižideru) da iscuri sok.', 'Peel off the skins and remove the stalks and seeds. Do not rinse under water — it washes away the flavour. Leave the cleaned flesh in a colander for at least an hour (or overnight in the fridge) to drain.', 60],
       ['Paprike i patlidžan samelji na mašini za meso (krupna ploča) ili sitno isjeckaj nožem.', 'Put the peppers and aubergine through a mincer (coarse plate) or chop them finely with a knife.'],
       ['U širok lonac debelog dna stavi trećinu ulja i povrće. Kuhaj na srednjoj vatri, stalno miješajući drvenom kašikom po dnu, a ostatak ulja dodaj malo-pomalo. Ajvar je gotov kad kašika ostavlja trag po dnu i više ne pušta vodu — obično 1,5–2 sata.', 'Put a third of the oil and the veg into a wide heavy-based pot. Cook over a medium heat, stirring the bottom constantly with a wooden spoon, adding the rest of the oil a little at a time. It is done when the spoon leaves a trail across the bottom and no more water seeps out — usually 1½–2 hours.', 100],
@@ -84,7 +84,7 @@ export const ZIM_RECIPES = [
     st: [
       ['Šljive operi, prepolovi i izvadi koštice. Crvljive i pljesnive baci.', 'Wash, halve and stone the plums. Throw away any with worms or mould.'],
       ['Stavi ih u širok lonac debelog dna, poklopi i kuhaj na laganoj vatri 30 minuta dok ne puste sok i ne raskuhaju se.', 'Put them in a wide heavy-based pot, cover and cook gently for 30 minutes until they release their juice and fall apart.', 30],
-      ['Otklopi i kuhaj na laganoj vatri 3–4 sata, miješajući po dnu sve češće kako se gusne (ili u tepsiji u rerni na 160 °C, miješaj svakih 30 minuta). Ko voli glatko, na pola kuhanja propasira ili izmiksa.', 'Uncover and cook gently for 3–4 hours, stirring the bottom more and more often as it thickens (or in a roasting tin in the oven at 160 °C, stirring every 30 minutes). For a smooth butter, purée it halfway through.', 200],
+      ['Otklopi i kuhaj na laganoj vatri 3–4 sata, miješajući po dnu sve češće kako se zgušnjava (ili u tepsiji u rerni na 160 °C, miješaj svakih 30 minuta). Ko voli glatko, na pola kuhanja propasira ili izmiksa.', 'Uncover and cook gently for 3–4 hours, stirring the bottom more and more often as it thickens (or in a roasting tin in the oven at 160 °C, stirring every 30 minutes). For a smooth butter, purée it halfway through.', 200],
       JARS(),
       ['Zadnjih 15 minuta umiješaj šećer i začine. Pekmez je gotov kad kap na hladnom tanjiru ne curi kad ga nagneš i kad kašika stoji u njemu.', 'For the last 15 minutes stir in the sugar and spices. It is done when a drop on a cold plate does not run when tilted and a spoon stands up in it.', 15],
       FILL(1),
@@ -131,7 +131,7 @@ export const ZIM_RECIPES = [
       ['Paradajz operi, odreži peteljke i oštećene dijelove i isijeci na četvrtine.', 'Wash the tomatoes, cut out the stalks and any damaged bits and quarter them.'],
       ['Kuhaj u širokom loncu, miješajući, 20 minuta dok se ne raspadne.', 'Cook in a wide pot, stirring, for 20 minutes until it falls apart.', 20],
       ['Propasiraj kroz mašinu za paradajz ili gusto sito, da ostanu koža i sjemenke.', 'Pass through a food mill or fine sieve to remove the skins and seeds.'],
-      ['Vrati na vatru i kuhaj lagano 40–60 minuta, dok ne ugusne koliko voliš. Posoli.', 'Return to the heat and simmer for 40–60 minutes until as thick as you like. Season with salt.', 50],
+      ['Vrati na vatru i kuhaj lagano 40–60 minuta, dok se ne zgusne koliko voliš. Posoli.', 'Return to the heat and simmer for 40–60 minutes until as thick as you like. Season with salt.', 50],
       JARS(),
       ['U svaku teglu od 0,5 l stavi 1 kašiku limunovog soka (u teglu od 1 l — 2 kašike) i po želji list bosiljka. Paradajz sam nije dovoljno kiseo za teglu — sok se ne smije izostaviti.', 'Put 1 tablespoon of lemon juice in each 0.5 litre jar (2 in a 1 litre jar) and a basil leaf if you like. Tomatoes alone are not acidic enough for jarring — the juice must not be left out.'],
       FILL(1.5),
@@ -179,7 +179,7 @@ export const ZIM_RECIPES = [
       ['Kupusu skini vanjske listove i kocen, pa ga izribaj na tanke rezance. Izvagaj ga: na svaki kilogram ide 20 g soli.', 'Remove the outer leaves and core and shred the cabbage thinly. Weigh it: every kilogram gets 20 g of salt.'],
       ['U velikoj posudi kupus izmiješaj sa solju i kimom i gnječi rukama 5–10 minuta, dok ne pusti puno soka.', 'In a large bowl mix the cabbage with the salt and caraway and squeeze it with your hands for 5–10 minutes until it gives off plenty of juice.', 8],
       ['Kupus slaži u tegle sloj po sloj i dobro nabij šakom ili oklagijom, dok ga sok ne pokrije. Do ruba ostavi 3–4 cm. Odozgo stavi list kupusa i nešto teško (manju teglu s vodom), da sve ostane pod sokom.', 'Pack the cabbage into the jars layer by layer, pressing hard with your fist or a rolling pin until the juice covers it. Leave 3–4 cm below the rim. Put a cabbage leaf on top and something heavy (a small jar of water) to keep everything under the juice.'],
-      ['Tegle pokrij labavo (poklopac samo prisloni, ne zavrći) i stavi na tanjir — sok će curiti. Drži ih na 18–20 °C i svaki dan kupus pritisni čistom kašikom da izađu mjehurići.', 'Cover the jars loosely (rest the lid on, do not screw it down) and stand them on a plate — juice will run over. Keep them at 18–20 °C and press the cabbage down with a clean spoon every day to let the bubbles out.'],
+      ['Tegle pokrij labavo (poklopac samo prisloni, ne zavrći ga) i stavi na tanjir — sok će curiti. Drži ih na 18–20 °C i svaki dan kupus pritisni čistom kašikom da izađu mjehurići.', 'Cover the jars loosely (rest the lid on, do not screw it down) and stand them on a plate — juice will run over. Keep them at 18–20 °C and press the cabbage down with a clean spoon every day to let the bubbles out.'],
       ['Za 2–4 sedmice kupus je kiseo i prestane vrjeti. Tada tegle zatvori i drži na hladnom (frižider, podrum ispod 10 °C). Ako sok padne ispod kupusa, dolij salamuru (20 g soli na litar vode).', 'In 2–4 weeks the cabbage is sour and stops bubbling. Then close the jars and keep them cold (fridge or a cellar below 10 °C). If the juice drops below the cabbage, top up with brine (20 g salt per litre of water).'],
     ],
     story: ['Kad nema mjesta za bure — kupus u teglama, za podvarak, kupus salatu i jotu.', 'When there is no room for a barrel — sauerkraut in jars, for baked sauerkraut, salad and bean stew.'],

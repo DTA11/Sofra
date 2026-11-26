@@ -10,7 +10,7 @@ export const SALAD_RECIPES = [
     bs: 'Cezar salata s piletinom', en: 'Caesar salad with chicken',
     ing: [['chicken_breast', 500, 'g'], ['lettuce', 1, 'glavica', n('rimska ili ledena', 'romaine or iceberg')], ['bread', 3, 'kriska'], ['parmesan', 50, 'g'], ['mayonnaise', 4, 'kasika'], ['lemon', 1, 'kom'], ['garlic', 1, 'cen'], ['mustard', 1, 'kasicica'], ['olive_oil', 3, 'kasika'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
-      ['Piletinu posoli, pobiberi i peci na kašiku ulja 5–6 minuta sa svake strane. Ostavi da odmori pa isijeci na trake.', 'Season the chicken and fry in a spoon of oil for 5–6 minutes a side. Let it rest, then slice into strips.', 12],
+      ['Piletinu posoli, pobiberi i peci na kašici ulja 5–6 minuta sa svake strane. Ostavi da odmori pa isijeci na trake.', 'Season the chicken and fry in a spoon of oil for 5–6 minutes a side. Let it rest, then slice into strips.', 12],
       ['Hljeb isijeci na kocke, pokapaj uljem i prepeci u tavi ili rerni dok ne postane hrskav.', 'Cut the bread into cubes, drizzle with oil and toast in a pan or the oven until crisp.', 8],
       ['Za preljev izmiješaj majonezu, sok limuna, protisnut bijeli luk, senf, kašiku ulja i pola rendanog parmezana. Razrijedi kašikom vode.', 'For the dressing mix the mayonnaise, lemon juice, crushed garlic, mustard, a spoon of oil and half the grated parmesan. Thin with a spoon of water.'],
       ['Salatu natrgaj u zdjelu, prelij preljevom, dodaj piletinu i kocke hljeba i pospi ostatkom parmezana.', 'Tear the lettuce into a bowl, toss with the dressing, add the chicken and croutons and finish with the rest of the parmesan.'],
@@ -53,7 +53,7 @@ export const SALAD_RECIPES = [
       ['Jogurt izmiješaj s majonezom, solju i biberom, pa sjedini sa svim sastojcima.', 'Mix the yoghurt with the mayonnaise, salt and pepper, then fold in everything else.'],
       ['Služi na listovima zelene salate ili s hljebom.', 'Serve on lettuce leaves or with bread.'],
     ],
-    story: ['Lakša rođaka ruske salate — više mesa, manje majoneze. Supa od kuhanja piletine ne baca se, nego ide za čorbu.', 'A lighter cousin of Russian salad — more meat, less mayonnaise. Keep the chicken cooking water for a soup.'],
+    story: ['Lakša rođakinja ruske salate — više mesa, manje majoneze. Supa od kuhanja piletine ne baca se, nego ide za čorbu.', 'A lighter cousin of Russian salad — more meat, less mayonnaise. Keep the chicken cooking water for a soup.'],
     src: T,
   },
   {

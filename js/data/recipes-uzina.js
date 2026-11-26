@@ -8,7 +8,7 @@ const T = { b: 'trad' };
 const O = { opt: 1 };
 const U = { cu: 'svakodnevno', type: 'snack', pack: 1, serves: 4, src: T };
 const WRAP = ['Zamotaj u papir za pečenje ili stavi u kutiju za užinu.', 'Wrap in baking paper or put in a lunch box.'];
-const COLD = ['Zamotaj i drži na hladnom; ako je toplo ili se nosi duže od 4 sata, stavi uz hladni uložak.', 'Wrap and keep cool; on a warm day or if it is carried for more than 4 hours, pack it with an ice pack.'];
+const COLD = ['Zamotaj i drži na hladnom; ako je toplo ili se nosi duže od 4 sata, stavi i rashladni uložak.', 'Wrap and keep cool; on a warm day or if it is carried for more than 4 hours, pack it with an ice pack.'];
 
 export const UZINA_RECIPES = [
   {

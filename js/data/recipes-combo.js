@@ -135,7 +135,7 @@ const list = [
   {
     id: 'sd-salama-topljeni-krastavac', kid: 1, main: 'chicken',
     bs: 'Hljeb, pileća salama i topljeni sir s krastavcem', en: 'Bread, chicken salami and processed cheese with cucumber',
-    ing: [['bread', 2, 'kriska'], ['cheese_spread', 2, 'kom', n('trokutića', 'portions')], ['chicken_salami', 40, 'g'], ['cucumber', 100, 'g'], tea],
+    ing: [['bread', 2, 'kriska'], ['cheese_spread', 2, 'kom', n('trouglića', 'portions')], ['chicken_salami', 40, 'g'], ['cucumber', 100, 'g'], tea],
     st: [
       teaStep,
       ['Hljeb namaži topljenim sirom i složi salamu odozgo.', 'Spread the bread with the processed cheese and lay the salami on top.'],
