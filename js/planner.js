@@ -1,6 +1,6 @@
 import { nutrition } from './nutrition.js';
 import { RECIPES, R } from './data/index.js';
-import { ING, SUBSTITUTES, SECTIONS } from './data/ingredients.js';
+import { ING, SUBSTITUTES, SECTIONS, dislikedIn } from './data/ingredients.js';
 import { S, save } from './store.js';
 
 const DAY = 86400000;
@@ -45,6 +45,7 @@ function eligible(r, ctx) {
   if (st.noPork || st.mode === 'ramazan') { if (!r.noPork) return false; }
   const req = r.eq || [];
   if (req.some((e) => !st.equipment[e])) return false;
+  if (dislikedIn(r, st.dislikes).length) return false; // "Ne volimo"
   if (ctx.posno && !posnoOk(r)) return false;
   if (ctx.vegDay && !r.veg) return false;
   return true;

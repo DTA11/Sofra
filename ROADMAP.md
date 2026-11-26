@@ -3,7 +3,7 @@
 Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v91). Urađeno: 11 (Roštilj).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
-1. **„Ne volimo“ lista** — u Postavkama označiš namirnice koje ne želiš (npr. gljive, džigerica, riba); planer i „Prijedlog za danas“ nikad ne biraju jela s njima. Recepti s njima ostaju vidljivi u listi, samo ih planer preskače.
+1. ✅ **„Ne volimo“** (urađeno 26. 11. 2026, sofra-v93) — Postavke → „Ne volimo“: 22 grupe (gljive, riba, iznutrice, kupus, grah/leća/slanutak…) + bilo koja namirnica preko polja „Dodaj drugu namirnicu“ (st.dislikes, ID-jevi iz ingredients.js, DISLIKE_GROUPS). Planer (eligible), prilozi i „Prijedlog za danas“ preskaču jela koja ih trebaju (opcionalni sastojci se ne broje); recept ostaje u listi, na njemu piše „Ne volite: …“.
 2. **Ocjena nakon kuhanja** — na kraju načina kuhanja 👍 / 👎. Ocjena se čuva u store-u; planer češće bira jela s 👍, a jela s 👎 ne nudi (ili rijetko). Pregled ocijenjenih u Omiljenim.
 3. **„Šta mogu skuhati od ovoga?“** — odabereš 2–3 namirnice koje imaš (+ ostava), dobiješ jela sortirana po tome koliko toga fali.
 4. **Procjena cijene sedmice** — okvirna cijena po namirnici (nova polja u ingredients.js), cijena jela i spiska za kupovinu; opcija „Jeftinija sedmica“ u planeru.

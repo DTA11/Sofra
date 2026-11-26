@@ -280,3 +280,36 @@ export const MEAT_ALT = {
   smoked_ribs: ['suho goveđe meso', 'smoked dried beef'],
   kranjska: ['druga dimljena kobasica', 'another smoked sausage'],
 };
+
+// "Ne volimo" (Postavke): groups of things families commonly skip. st.dislikes holds ingredient ids;
+// the planner and "Prijedlog za danas" never pick a dish that needs one of them (optional ingredients don't count).
+// Recipes stay in the list. Pork is not here — it has its own switch ("Bez svinjetine").
+export const DISLIKE_GROUPS = [
+  ['gljive', 'Gljive', 'Mushrooms', ['mushrooms', 'porcini']],
+  ['iznutrice', 'Iznutrice i pašteta', 'Offal and pâté', ['lamb_offal', 'chicken_giblets', 'pate']],
+  ['riba', 'Riba', 'Fish', ['trout', 'cod_dried', 'fish_white', 'mackerel', 'tuna', 'sardines']],
+  ['morski', 'Lignje', 'Squid', ['squid']],
+  ['janjetina', 'Janjetina', 'Lamb', ['lamb', 'lamb_offal']],
+  ['teletina', 'Teletina', 'Veal', ['veal']],
+  ['patlidzan', 'Patlidžan', 'Aubergine', ['eggplant']],
+  ['tikvice', 'Tikvice', 'Courgette', ['zucchini']],
+  ['bamija', 'Bamija', 'Okra', ['okra']],
+  ['kupus', 'Kupus i kiseli kupus', 'Cabbage and sauerkraut', ['cabbage', 'sauerkraut', 'sauerkraut_shred', 'kale']],
+  ['spinat', 'Špinat i blitva', 'Spinach and chard', ['spinach', 'chard']],
+  ['mahunarke', 'Grah, leća, slanutak', 'Beans, lentils, chickpeas', ['beans', 'beans_can', 'lentils', 'chickpeas']],
+  ['grasak', 'Grašak', 'Peas', ['peas', 'peas_fresh']],
+  ['mahune', 'Mahune', 'Green beans', ['green_beans']],
+  ['celer', 'Celer', 'Celery', ['celery', 'celery_stalk']],
+  ['cvekla', 'Cvekla', 'Beetroot', ['beetroot']],
+  ['bundeva', 'Bundeva', 'Pumpkin', ['pumpkin']],
+  ['ljuto', 'Ljuto', 'Hot spice', ['paprika_hot', 'chili']],
+  ['masline', 'Masline', 'Olives', ['olives']],
+  ['orasi', 'Orasi i bademi', 'Walnuts and almonds', ['walnuts', 'almonds']],
+  ['suhovoce', 'Suhe šljive i grožđice', 'Prunes and raisins', ['prunes', 'raisins']],
+  ['kim', 'Kim', 'Caraway', ['caraway']],
+];
+/** Ingredient ids of recipe r that are on the "Ne volimo" list (optional ingredients don't count). */
+export function dislikedIn(r, list) {
+  if (!list || !list.length) return [];
+  return [...new Set(r.ing.filter((i) => list.includes(i[0]) && !(i[3] && i[3].opt)).map((i) => i[0]))];
+}

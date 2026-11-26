@@ -571,3 +571,8 @@ img.art.photo { max-width: 100%; } /* a 1200 px photo never pushes a box wider t
 .gcards a:hover { box-shadow: inset 0 0 0 1px var(--ink); }
 .gcards b { font: 700 1rem var(--display); }
 .gcards span { color: var(--muted); font-size: .82rem; }
+
+/* "Ne volimo" */
+.dislike-add { display: flex; gap: 8px; margin-top: 10px; }
+.dislike-add input { flex: 1; min-width: 0; font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line, #e7dccb); background: var(--card); color: var(--ink); }
+.dislike-note { margin: 8px 0 0; padding: 8px 12px; border-radius: 12px; background: var(--soft); border-left: 4px solid var(--saffron); }

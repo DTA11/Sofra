@@ -1,5 +1,5 @@
 import { RECIPES, R, MENUS, JUF } from './data/index.js';
-import { ING, SECTIONS, MEAT_ALT } from './data/ingredients.js';
+import { ING, SECTIONS, MEAT_ALT, DISLIKE_GROUPS, dislikedIn } from './data/ingredients.js';
 import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
 import { liveGuides, GUIDE_INDEX } from './data/guides.js';
@@ -235,7 +235,7 @@ function pickPool() {
   const st = S(); const m = new Date().getMonth() + 1;
   const all = RECIPES.filter((r) => (r.type === 'main' || r.type === 'pie' || (r.type === 'salad' && r.full)) && (st.styles[r.style] || 0) > 0
     && (!st.noPork && st.mode !== 'ramazan' || r.noPork) && (!r.months || r.months.includes(m)) && !(r.eq || []).some((e) => !st.equipment[e])
-    && ((st.meatless || 0) < 3 || r.veg));
+    && ((st.meatless || 0) < 3 || r.veg) && !dislikedIn(r, st.dislikes).length);
   // "Zdravije" 2–3: today's idea skips grade D/E (if anything is left)
   const lite = (st.health || 0) >= 2 ? all.filter((r) => !'DE'.includes(nutrition(r).grade)) : all;
   return lite.length ? lite : all;
@@ -483,6 +483,24 @@ function viewJNA() {
   return `<section class="band page-band"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('jnaTitle')}</h1><p class="lede">${t('jnaIntro')}</p></section>
     <div class="grid">${list.map(card).join('')}</div>`;
 }
+// ───────── "NE VOLIMO": groups + any single ingredient; the planner skips dishes that need them ─────────
+function dislikeSection(st) {
+  const d = st.dislikes || [];
+  const L2 = getLang() === 'bs' ? 1 : 2;
+  const groupIds = new Set(DISLIKE_GROUPS.flatMap((g) => g[3]));
+  const groups = DISLIKE_GROUPS.map((g) => `<button class="chip ${g[3].every((id) => d.includes(id)) ? 'on' : ''}" data-act="dislikeg" data-k="${g[0]}">${esc(g[L2])}</button>`).join('');
+  const singles = d.filter((id) => !groupIds.has(id) && ING[id]).map((id) => `<button class="chip on" data-act="dislikerm" data-k="${id}">${esc(iname(id))} ✕</button>`).join('');
+  const opts = Object.values(ING).filter((g) => !g.st && !d.includes(g.id)).map((g) => iname(g.id)).sort((a, b) => a.localeCompare(b, 'bs')).map((n) => `<option value="${esc(n)}">`).join('');
+  const skipped = d.length ? RECIPES.filter((r) => ['main', 'pie', 'soup', 'salad', 'dessert', 'breakfast'].includes(r.type) && dislikedIn(r, d).length).length : 0;
+  return `<section class="set" id="dislikes"><h3>${t('dislikesTitle')}</h3>
+      <p class="small muted">${t('dislikesHint')}</p>
+      <div class="chips">${groups}</div>
+      ${singles ? `<div class="chips">${singles}</div>` : ''}
+      <form class="dislike-add" data-act="dislikeadd"><input id="dislikeText" list="dislikeList" placeholder="${t('dislikesAdd')}" autocomplete="off"><datalist id="dislikeList">${opts}</datalist><button class="btn" type="submit">+</button></form>
+      ${skipped ? `<p class="small muted">${t('dislikesCount').replace('{n}', skipped)}</p>` : ''}
+    </section>`;
+}
+
 // ───────── ROŠTILJ: grill guides + dishes off the grill + sauces and sides ─────────
 const grillDishes = () => RECIPES.filter((r) => r.grill && r.type !== 'side');
 const grillGuides = () => liveGuides().filter((g) => g.grill);
@@ -553,6 +571,7 @@ function viewRecipe(id) {
       <div class="card-top"><span class="cu cu-${r.cu}">${esc(L('type', r.type))}</span><span class="muted">${gradeChip(r)} ${fmtTime(r)}</span></div>
       <h1 class="rtitle">${esc(name(r))}</h1>
       <div class="tags">${badges(r)}${occ}${eq}</div>
+      ${(() => { const dl = dislikedIn(r, S().dislikes); return dl.length ? `<p class="small dislike-note">${t('dislikedNote').replace('{x}', esc(dl.map(iname).join(', ')))} <a href="#/settings">${t('dislikesTitle')} →</a></p>` : ''; })()}
       <div class="row gap wrap actions">
         <a class="btn primary" href="#/cook/${r.id}${servParam}${r.pan ? '?p=1' : ''}">${ICON.play} ${r.type === 'combo' ? t('assemble') : t('cook')}</a>
         <button class="btn ${fav ? 'faved' : ''}" data-act="fav" data-id="${r.id}">${fav ? ICON.starFill : ICON.star} ${t('fav')}</button>
@@ -811,6 +830,7 @@ function viewSettings() {
       ${tog('sides', t('sidesTog'))}<p class="small muted">${t('sidesHint')}</p>
     </section>
     <section class="set"><h3>${t('equipOwned')}</h3><div class="chips">${keys('eq').map((e) => `<button class="chip ${st.equipment[e] ? 'on' : ''}" data-act="equip" data-k="${e}">${esc(L('eq', e))}</button>`).join('')}</div></section>
+    ${dislikeSection(st)}
     <section class="set"><button class="btn" data-act="guideshow">${ICON.check} ${t('guideShow')}</button></section>
     <a class="btn primary block" href="#/plan">${ICON.check} ${t('settingsDone')}</a>
     <section class="set"><button class="btn danger" data-act="reset">${t('reset')}</button></section>
@@ -1076,6 +1096,12 @@ document.addEventListener('click', (e) => {
     case 'posnoday': { const i = Number(el.dataset.i); st.posnoDays = st.posnoDays.includes(i) ? st.posnoDays.filter((x) => x !== i) : [...st.posnoDays, i]; store.save(); rer(); break; }
     case 'meal': { st.meals[el.dataset.k] = !st.meals[el.dataset.k]; if (!st.meals.lunch && !st.meals.dinner) st.meals.lunch = true; store.save(); rer(); break; }
     case 'equip': st.equipment[el.dataset.k] = st.equipment[el.dataset.k] ? 0 : 1; store.save(); rer(); break;
+    case 'dislikeg': {
+      const g = DISLIKE_GROUPS.find((x) => x[0] === el.dataset.k); const d = new Set(st.dislikes || []);
+      if (g[3].every((id) => d.has(id))) g[3].forEach((id) => d.delete(id)); else g[3].forEach((id) => d.add(id));
+      st.dislikes = [...d]; ui.pickIdx = null; store.save(); rer(); break;
+    }
+    case 'dislikerm': st.dislikes = (st.dislikes || []).filter((id) => id !== el.dataset.k); ui.pickIdx = null; store.save(); rer(); break;
     case 'export': {
       const blob = new Blob([store.exportJSON()], { type: 'application/json' });
       saveFile(blob, `sofra-backup-${new Date().toISOString().slice(0, 10)}.json`); break;
@@ -1122,7 +1148,15 @@ document.addEventListener('change', (e) => {
 });
 
 document.addEventListener('submit', (e) => {
-  const f = e.target; if (f.dataset.act !== 'xadd') return;
+  const f = e.target;
+  if (f.dataset.act === 'dislikeadd') {
+    e.preventDefault();
+    const v = $('#dislikeText').value.trim().toLowerCase(); if (!v) return;
+    const g = Object.values(ING).find((x) => x.bs.toLowerCase() === v || x.en.toLowerCase() === v) || Object.values(ING).find((x) => !x.st && (x.bs.toLowerCase().startsWith(v) || x.en.toLowerCase().startsWith(v)));
+    if (!g) { toast(t('dislikesNone')); return; }
+    const st = S(); st.dislikes = [...new Set([...(st.dislikes || []), g.id])]; ui.pickIdx = null; store.save(); rerender(); return;
+  }
+  if (f.dataset.act !== 'xadd') return;
   e.preventDefault();
   const v = $('#xtext').value.trim(); if (!v) return;
   S().shop.extra.push({ text: v, done: false }); store.save(); rerender();
