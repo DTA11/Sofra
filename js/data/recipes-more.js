@@ -38,7 +38,7 @@ export const MORE_RECIPES = [
   {
     id: 'istarska-manestra', cu: 'hrvatska', reg: 'istra', type: 'main', main: 'beans', time: 120, serves: 6, left: 1, eqOpt: ['pressure'],
     bs: 'Istarska maneštra s kukuruzom', en: 'Istrian maneštra with corn',
-    ing: [['beans', 250, 'g', n('namočen preko noći', 'soaked overnight')], ['smoked_ribs', 400, 'g'], ['corn', 300, 'g', n('kukuruz šećerac', 'sweetcorn')], ['potato', 400, 'g'], ['root_mix', 200, 'g'], ['onion', 1, 'glavica'], ['garlic', 2, 'cen'], ['tomato_paste', 1, 'kasika'], ['bay_leaf', 2, 'list'], ['olive_oil', 3, 'kasika'], ['salt', null, ''], ['pepper_black', null, '']],
+    ing: [['beans', 250, 'g', n('namočen preko noći', 'soaked overnight')], ['smoked_ribs', 400, 'g'], ['corn', 300, 'g'], ['potato', 400, 'g'], ['root_mix', 200, 'g'], ['onion', 1, 'glavica'], ['garlic', 2, 'cen'], ['tomato_paste', 1, 'kasika'], ['bay_leaf', 2, 'list'], ['olive_oil', 3, 'kasika'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Grah i suho meso stavi u lonac s 3 l vode i lovorom, kuhaj 60 minuta.', 'Put the beans and smoked meat in a pot with 3 l water and the bay leaves and cook for 60 minutes.', 60],
       ['Na maslinovom ulju propirjaj luk i korjenasto povrće, dodaj paradajz koncentrat i sve prebaci u lonac.', 'Soften the onion and root vegetables in the olive oil, add the tomato paste and tip everything into the pot.'],
@@ -55,7 +55,7 @@ export const MORE_RECIPES = [
     st: [
       ['Od brašna, 1 jajeta, ulja, prstohvata soli i oko 200 ml mlake vode zamijesi mekano tijesto. Premaži uljem i ostavi 30 minuta.', 'Knead the flour, 1 egg, the oil, a pinch of salt and about 200 ml lukewarm water into a soft dough. Brush with oil and rest 30 minutes.', 30],
       ['Sir izmiješaj s 3 jajeta, 200 g pavlake i solju.', 'Mix the cottage cheese with 3 eggs, 200 g of the sour cream and salt.'],
-      ['Tijesto razvuci na stolnjaku vrlo tanko, rasporedi nadjev po cijeloj površini i zarolaj. Rubom tanjira izreži komade od 8 cm.', 'Stretch the dough very thin on a cloth, spread the filling over it and roll up. Cut 8 cm pieces with the rim of a plate.'],
+      ['Tijesto razvuci na stolnjaku vrlo tanko, rasporedi nadjev po cijeloj površini i zarolaj. Rubom tanjira isijeci komade od 8 cm.', 'Stretch the dough very thin on a cloth, spread the filling over it and roll up. Cut 8 cm pieces with the rim of a plate.'],
       ['Štrukle skuhaj u slanoj vodi 10 minuta, ocijedi i složi u namašćenu tepsiju.', 'Boil the štrukli in salted water for 10 minutes, drain and lay them in a buttered dish.', 10],
       ['Prelij vrhnjem pomiješanim s ostatkom pavlake, dodaj listiće maslaca i peci na 200 °C oko 30 minuta, dok ne porumene.', 'Pour over the cream mixed with the rest of the sour cream, dot with butter and bake at 200 °C for about 30 minutes until golden.', 30],
     ],
@@ -289,7 +289,7 @@ export const MORE_RECIPES = [
     st: [
       ['Jaja umuti sa 150 g šećera 8 minuta dok ne postanu gusta i svijetla. Lagano umiješaj brašno s praškom za pecivo.', 'Whisk the eggs with 150 g sugar for 8 minutes until thick and pale. Gently fold in the flour and baking powder.', 8],
       ['Peci u kalupu obloženom papirom na 180 °C oko 25 minuta.', 'Bake in a lined tin at 180 °C for about 25 minutes.', 25],
-      ['Izmiješaj mlijeko, kondenzovano mlijeko, 200 ml vrhnja i vanilin šećer. Topli biskvit izbockaj vilicom, prelij smjesom i ostavi da upije.', 'Mix the milk, condensed milk, 200 ml cream and vanilla sugar. Prick the warm sponge with a fork and pour the mixture over to soak in.'],
+      ['Izmiješaj mlijeko, kondenzovano mlijeko, 200 ml vrhnja i vanilin šećer. Topli biskvit izbockaj viljuškom, prelij smjesom i ostavi da upije.', 'Mix the milk, condensed milk, 200 ml cream and vanilla sugar. Prick the warm sponge with a fork and pour the mixture over to soak in.'],
       ['100 g šećera otopi u karamel, pa pažljivo ulij 200 ml vrelog vrhnja i kuhaj dok ne postane glatko. Ohladi i prelij kolač.', 'Melt 100 g sugar to a caramel, then carefully pour in 200 ml hot cream and stir until smooth. Cool and pour over the cake.'],
       ['Drži u frižideru najmanje 4 sata.', 'Chill for at least 4 hours.', 240],
     ],

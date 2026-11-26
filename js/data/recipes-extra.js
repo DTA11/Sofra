@@ -64,7 +64,7 @@ export const EXTRA_RECIPES = [
     bs: 'Pržene ćufte s nanom i jogurt-sosom', en: 'Fried meatballs with mint and yoghurt sauce',
     ing: [['beef_mince', 600, 'g'], ['bread', 2, 'kriska', n('namočen u vodi i iscijeđen', 'soaked and squeezed')], ['onion', 1, 'glavica'], ['garlic', 3, 'cen'], ['mint_dry', 2, 'kasicica'], ['eggs', 1, 'kom'], ['flour', 3, 'kasika'], ['oil', 150, 'ml'], ['yogurt', 300, 'g'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
-      ['Meso izmiješaj s hljebom, rendanim lukom, jednim čenom bijelog luka, nanom, jajem, solju i biberom.', 'Mix the mince with the bread, grated onion, one garlic clove, mint, egg, salt and pepper.'],
+      ['Meso izmiješaj s hljebom, rendanim lukom, jednim češnjem bijelog luka, nanom, jajem, solju i biberom.', 'Mix the mince with the bread, grated onion, one garlic clove, mint, egg, salt and pepper.'],
       ['Oblikuj ćufte veličine oraha, uvaljaj u brašno i prži na ulju 8–10 minuta.', 'Shape walnut-sized balls, roll in flour and fry in the oil for 8–10 minutes.', 10],
       ['Jogurt izmiješaj s ostatkom zgnječenog bijelog luka i prstohvatom soli i služi uz ćufte.', 'Stir the remaining crushed garlic and a pinch of salt into the yoghurt and serve with the meatballs.'],
     ],

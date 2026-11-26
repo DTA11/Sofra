@@ -41,7 +41,7 @@ export const BS = {
           <tr><td>Riba</td><td>cijela orada, brancin, skuša, pastrmka; lignje</td><td>cijela riba s kožom ne raspada se na rešetki</td></tr>
         </tbody>
       </table>
-      <p>Komadi za dugo kuhanje — goveđe koljeno, prednji but za gulaš, rebra s puno vezivnog tkiva — na roštilju ostanu žilavi. Njih ostavi za lonac, ili ih isjeci tanko i mariniraj preko noći.</p>
+      <p>Komadi za dugo kuhanje — goveđe koljeno, prednji but za gulaš, rebra s puno vezivnog tkiva — na roštilju ostanu žilavi. Njih ostavi za lonac, ili ih isijeci tanko i mariniraj preko noći.</p>
 
       <h2>Koliko mesa po osobi</h2>
       <p>Količine su za sirovo meso, bez kosti ako nije drukčije rečeno. Pečenjem meso izgubi oko četvrtinu težine.</p>
@@ -127,7 +127,7 @@ export const BS = {
 
       <h2>Oblikovanje</h2>
       <h3>Ćevapi</h3>
-      <p>Ruke nakvasi hladnom vodom. Uzmi komad od 25–30 g (veličine oraha u ljusci), razvaljaj ga među dlanovima u prstić dug 6–7 cm i debeo oko 2 cm. Slaži ih na tacnu tako da se ne dodiruju. Brže ide s vrećicom za ukrašavanje bez nastavka ili s nastavkom od 2 cm: istisni dugu kobasicu i reži je nožem.</p>
+      <p>Ruke nakvasi hladnom vodom. Uzmi komad od 25–30 g (veličine oraha u ljusci), razvaljaj ga među dlanovima u prstić dug 6–7 cm i debeo oko 2 cm. Slaži ih na tacnu tako da se ne dodiruju. Brže ide s kesom za ukrašavanje bez nastavka ili s nastavkom od 2 cm: istisni dugu kobasicu i reži je nožem.</p>
       <h3>Pljeskavice</h3>
       <p>Komad od 150–250 g stavi između dvije folije i dlanom ga razvuci u krug debeo oko 1 cm, prečnika 15–20 cm. Na sredini prstima napravi plitko udubljenje — pljeskavica se pečenjem skupi i naduva u sredini, a ovako ostane ravna. Neka bude malo šira od lepinje, jer se skupi.</p>
       <h3>Punjena pljeskavica</h3>
@@ -159,7 +159,7 @@ export const BS = {
       </dl>
 
       <h2>Čuvanje i zamrzavanje</h2>
-      <p>Oblikovane ćevape i pljeskavice drži u frižideru najviše dan. Možeš ih zamrznuti na tacni, pa prebaciti u vrećicu, do 3 mjeseca. Peci ih odmrznute preko noći u frižideru.</p>
+      <p>Oblikovane ćevape i pljeskavice drži u frižideru najviše dan. Možeš ih zamrznuti na tacni, pa prebaciti u kesu, do 3 mjeseca. Peci ih odmrznute preko noći u frižideru.</p>
 
       <h2>Recepti u Sofri</h2>
       <ul class="related">
@@ -180,7 +180,7 @@ export const BS = {
         <ol>
           <li>Na 1 kg mesa dovoljno je 100–150 ml marinade.</li>
           <li>Osnova: ulje + začini + bijeli luk; po želji malo kiseline (limun, sirće, jogurt).</li>
-          <li>Mariniraj u frižideru, u zatvorenoj posudi ili vrećici, i okreni meso jednom-dvaput.</li>
+          <li>Mariniraj u frižideru, u zatvorenoj posudi ili kesi, i okreni meso jednom-dvaput.</li>
           <li>Piletina i svinjetina 2–12 sati, riba samo 15–30 minuta.</li>
           <li>Prije pečenja višak marinade obriši — kaplje, plamti i gori.</li>
         </ol>
@@ -221,8 +221,8 @@ export const BS = {
       <h2>Korak po korak</h2>
       <ol>
         <li>Meso osuši ubrusom — marinada se bolje drži za suhu površinu.</li>
-        <li>Sastojke marinade izmiješaj u posudi ili vrećici, ubaci meso i dobro ga promasiraj.</li>
-        <li>Istisni zrak iz vrećice ili pokrij posudu i stavi u frižider.</li>
+        <li>Sastojke marinade izmiješaj u posudi ili kesi, ubaci meso i dobro ga promasiraj.</li>
+        <li>Istisni zrak iz kese ili pokrij posudu i stavi u frižider.</li>
         <li>Pola sata prije pečenja meso izvadi iz frižidera.</li>
         <li>Obriši višak marinade, po potrebi posoli i peci.</li>
       </ol>
@@ -289,8 +289,8 @@ export const BS = {
       <ol>
         <li>Izvagaj meso. Na 1 kg mesa odmjeri 25–30 g soli za salamurenje (ili mješavinu po uputstvu na pakovanju).</li>
         <li>Po želji dodaj 2–3 g šećera, zgnječen biber, lovor, bijeli luk.</li>
-        <li>So dobro utrljaj sa svih strana, stavi meso u vrećicu ili posudu koja ne propušta i stavi na 2–5 °C.</li>
-        <li>Svaki drugi dan ga okreni i promasiraj kroz vrećicu; sok koji pusti neka ostane uz meso.</li>
+        <li>So dobro utrljaj sa svih strana, stavi meso u kesu ili posudu koja ne propušta i stavi na 2–5 °C.</li>
+        <li>Svaki drugi dan ga okreni i promasiraj kroz kesu; sok koji pusti neka ostane uz meso.</li>
         <li>Drži ga oko 1 sedmicu na svaka 3 cm debljine (komad od 6 cm — 2 sedmice).</li>
       </ol>
       <h3>Mokro salamurenje</h3>

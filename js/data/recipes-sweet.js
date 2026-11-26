@@ -20,7 +20,7 @@ export const SWEET_RECIPES = [
     id: 'tiramisu', cu: 'italian', reg: 'veneto', type: 'dessert', sub: 'torta', main: 'dessert', time: 30, serves: 8, occ: ['novagodina', 'rodjendan'],
     pan: { shape: 'rect', w: 30, h: 20 },
     bs: 'Tiramisu', en: 'Tiramisù',
-    ing: [['mascarpone', 500, 'g'], ['eggs', 4, 'kom'], ['sugar', 100, 'g'], ['ladyfingers', 300, 'g'], ['coffee', 300, 'ml', n('ohlađen espresso', 'cooled espresso')], ['cocoa', 2, 'kasika']],
+    ing: [['mascarpone', 500, 'g'], ['eggs', 4, 'kom'], ['sugar', 100, 'g'], ['ladyfingers', 300, 'g'], ['coffee', 300, 'ml', n('ohlađen', 'cooled')], ['cocoa', 2, 'kasika']],
     st: [
       ['Žumanjke umuti sa šećerom dok ne pobijele, umiješaj mascarpone.', 'Beat the yolks with the sugar until pale, then fold in the mascarpone.'],
       ['Bjelanjke umuti u čvrst snijeg i lagano umiješaj u kremu.', 'Whisk the whites to stiff peaks and fold them in gently.'],

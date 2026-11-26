@@ -99,7 +99,7 @@ export const SALAD_RECIPES = [
     ing: [['zucchini', 2, 'kom'], ['eggplant', 1, 'kom'], ['pepper', 2, 'kom'], ['onion', 2, 'glavica'], ['garlic', 3, 'cen'], ['feta', 200, 'g'], ['olive_oil', 5, 'kasika'], ['vinegar', 1, 'kasika'], ['basil', 1, 'sop', O], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Povrće isijeci na krupne komade, luk na osmine. Prelij s 3 kašike ulja, posoli i pobiberi.', 'Cut the vegetables into large pieces and the onions into eighths. Toss with 3 tbsp oil, salt and pepper.'],
-      ['Peci na 220 °C oko 30 minuta, jednom promiješaj. Zadnjih 10 minuta dodaj čenove bijelog luka.', 'Roast at 220 °C for about 30 minutes, stirring once. Add the garlic cloves for the last 10 minutes.', 30],
+      ['Peci na 220 °C oko 30 minuta, jednom promiješaj. Zadnjih 10 minuta dodaj češnjeve bijelog luka.', 'Roast at 220 °C for about 30 minutes, stirring once. Add the garlic cloves for the last 10 minutes.', 30],
       ['Pečeno povrće prelij ostatkom ulja i sirćetom, izmrvi sir odozgo i pospi bosiljkom. Služi toplo.', 'Dress the roast vegetables with the remaining oil and vinegar, crumble the cheese over and scatter with basil. Serve warm.'],
     ],
     story: ['Kad je ljeti previše tikvica i paprika — sve u tepsiju, pa u zdjelu. Dobra je i hladna sutradan.', 'When summer brings too many courgettes and peppers — all into the tray, then into the bowl. Good cold the next day too.'],

@@ -268,7 +268,7 @@ export const TRAD_RECIPES = [
     ing: [['phyllo', 500, 'g'], ['cottage', 500, 'g'], ['feta', 200, 'g'], ['eggs', 5, 'kom'], ['sour_cream', 200, 'g'], ['milk', 300, 'ml'], ['oil', 100, 'ml'], ['baking_powder', 1, 'kesica'], ['salt', 1, 'kasicica']],
     st: [
       ['Umuti jaja, dodaj oba sira, pavlaku, mlijeko, pola ulja, prašak i so.', 'Beat the eggs, add both cheeses, sour cream, milk, half the oil, baking powder and salt.'],
-      ['Na dno nauljene tepsije stavi 2 kore. Ostale kore gužvaj, umači u fil i slaži.', 'Lay 2 sheets in an oiled tin. Scrunch the rest, dip in the filling and pack them in.'],
+      ['Na dno nauljene tepsije stavi 2 jufke. Ostale jufke gužvaj, umači u fil i slaži.', 'Lay 2 sheets in an oiled tin. Scrunch the rest, dip in the filling and pack them in.'],
       ['Prelij ostatkom fila i ulja, ostavi 15 minuta da upije.', 'Pour over the remaining filling and oil and leave for 15 minutes to soak.', 15],
       ['Peci na 200 °C oko 40 minuta.', 'Bake at 200 °C for about 40 minutes.', 40],
     ],
@@ -293,7 +293,7 @@ export const TRAD_RECIPES = [
     bs: 'Svinjsko pečenje', en: 'Roast pork',
     ing: [['pork_shoulder', 1.5, 'kg'], ['garlic', 6, 'cen'], ['potato', 1, 'kg'], ['onion', 2, 'glavica'], ['wine_white', 200, 'ml'], ['paprika_sweet', 1, 'kasicica'], ['bay_leaf', 2, 'list'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
-      ['Meso izbodi nožem i napuni čenima bijelog luka. Natrljaj solju, biberom i alevom paprikom.', 'Stud the meat with garlic slivers and rub with salt, pepper and paprika.'],
+      ['Meso izbodi nožem i napuni češnjevima bijelog luka. Natrljaj solju, biberom i alevom paprikom.', 'Stud the meat with garlic slivers and rub with salt, pepper and paprika.'],
       ['Stavi u tepsiju s lukom i lovorom, nalij vino i 200 ml vode. Pokrij folijom.', 'Put in a tin with the onions and bay, add the wine and 200 ml water. Cover with foil.'],
       ['Peci na 170 °C 90 minuta.', 'Roast at 170 °C for 90 minutes.', 90],
       ['Skini foliju, dodaj krompir, pojačaj na 200 °C i peci još 60 minuta, polijevajući.', 'Uncover, add the potatoes, raise to 200 °C and roast 60 more minutes, basting.', 60],
@@ -413,7 +413,7 @@ export const TRAD_RECIPES = [
     st: [
       ['Napravi ragù: povrće ispirjaj, dodaj meso, vino i paradajz i krčkaj 90 minuta.', 'Make the ragù: soften the vegetables, add meat, wine and tomatoes and simmer 90 minutes.', 90],
       ['Bešamel: na maslacu zaprži brašno, postepeno umiješaj mlijeko i kuhaj 5 minuta dok ne zgusne. Začini muškatnim oraščićem.', 'Béchamel: cook the flour in the butter, whisk in the milk gradually and simmer 5 minutes until thick. Add nutmeg.', 5],
-      ['Slaži: bešamel, kore, ragù, bešamel, parmezan — 4–5 slojeva.', 'Layer: béchamel, sheets, ragù, béchamel, parmesan — 4–5 layers.'],
+      ['Slaži: bešamel, kore za lazanje, ragù, bešamel, parmezan — 4–5 slojeva.', 'Layer: béchamel, sheets, ragù, béchamel, parmesan — 4–5 layers.'],
       ['Peci na 180 °C 40 minuta, ostavi 15 minuta prije rezanja.', 'Bake at 180 °C for 40 minutes; rest 15 minutes before cutting.', 40],
     ],
     story: ['Nedjeljno jelo Emilije-Romanje. Pravljenje traje, ali jedna tepsija nahrani cijelu porodicu dva dana.', 'Emilia-Romagna’s Sunday dish. It takes time, but one tray feeds the family for two days.'],
@@ -501,7 +501,7 @@ export const TRAD_RECIPES = [
     st: [
       ['Brašno, hladan maslac, 1 jaje i prstohvat soli brzo zamijesi, ohladi 30 minuta.', 'Rub the flour and cold butter together, add 1 egg and a pinch of salt; chill 30 minutes.', 30],
       ['Razvij tijesto u kalup od 26 cm i peci na slijepo 15 minuta na 190 °C.', 'Line a 26 cm tin and blind-bake for 15 minutes at 190 °C.', 15],
-      ['Slaninu ispeci i rasporedi po tijestu. Umuti 3 jaja s vrhnjem, solju, biberom i muškatom pa prelij.', 'Fry the bacon and scatter it over the base. Beat 3 eggs with the cream, salt, pepper and nutmeg and pour over.'],
+      ['Slaninu ispeci i rasporedi po tijestu. Umuti 3 jaja s vrhnjem, solju, biberom i muškatnim oraščićem pa prelij.', 'Fry the bacon and scatter it over the base. Beat 3 eggs with the cream, salt, pepper and nutmeg and pour over.'],
       ['Peci na 180 °C 30 minuta dok ne stegne.', 'Bake at 180 °C for 30 minutes until set.', 30],
     ],
     story: ['Iz Lorene, na granici s Njemačkom — originalno samo jaja, vrhnje i slanina, bez sira.', 'From Lorraine on the German border — originally just eggs, cream and bacon, no cheese.'],

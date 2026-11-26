@@ -627,7 +627,7 @@ function viewRecipe(id) {
       ${s >= 30 ? `<p class="hint">🍲 ${t('kazanHint')} ${Math.ceil((s * (r.type === 'soup' ? 0.3 : 0.45) * 1.25) / 10) * 10} ${t('liters')}.</p>` : ''}` : ''}`;
   }
   const occ = r.occ.filter((o) => o !== 'posno').map((o) => `<span class="tag">${esc(L('occ', o))}</span>`).join('');
-  const eq = [...r.eq, ...r.eqOpt].map((e) => `<span class="tag">${esc(L('eq', e))}${r.eq.includes(e) ? '' : '?'}</span>`).join('');
+  const eq = [...r.eq, ...r.eqOpt].map((e) => `<span class="tag">${esc(L('eq', e))}${r.eq.includes(e) ? '' : ` (${esc(t('optional'))})`}</span>`).join('');
   const servParam = r.pan ? '' : `?s=${ui.serv[r.id] ?? defaultServ(r)}`;
   return `<article class="recipe">
       <div class="rhero">${dishArt(r, 'big')}<a class="backfab" href="javascript:history.back()" aria-label="${t('back')}">${ICON.back}</a></div>

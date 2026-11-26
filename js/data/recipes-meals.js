@@ -144,7 +144,7 @@ export const MEAL_RECIPES = [
     ing: [['eggs', 4, 'kom'], ['gruyere', 50, 'g'], ['butter', 20, 'g'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Jaja umuti sa solju, biberom i sitnim peršunom.', 'Beat the eggs with salt, pepper and chopped parsley.'],
-      ['Na pjenušavom maslacu ulij jaja i vilicom pomjeraj rubove ka sredini.', 'Pour into foaming butter and draw the edges to the middle with a fork.'],
+      ['Na pjenušavom maslacu ulij jaja i viljuškom pomjeraj rubove ka sredini.', 'Pour into foaming butter and draw the edges to the middle with a fork.'],
       ['Dok je sredina još mekana, pospi sir, preklopi i služi — sve za oko 3 minute.', 'While the middle is still soft, add the cheese, fold and serve — about 3 minutes in all.', 3],
     ],
     story: ['Francuski kuhari kažu da se kuhar prepoznaje po omletu: blijed izvana, kremast unutra.', 'French chefs say you can judge a cook by their omelette: pale outside, creamy inside.'],

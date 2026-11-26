@@ -22,7 +22,8 @@
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 84px; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--ui); padding-bottom: 32px; overflow-x: clip; -webkit-font-smoothing: antialiased; }
 a { color: var(--accent); }
-h1, h2, h3 { font-family: var(--display); line-height: 1.12; letter-spacing: -.015em; font-weight: 700; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; letter-spacing: -.015em; font-weight: 700; overflow-wrap: break-word; }
+.rtitle, .display { overflow-wrap: break-word; min-width: 0; }
 h2 { font-size: clamp(1.45rem, 4vw, 1.9rem); margin: 1.2em 0 .5em; }
 h3 { font-size: 1.12rem; margin: 1.4em 0 .5em; display: flex; align-items: center; gap: 8px; }
 h3 svg { width: 19px; height: 19px; color: var(--olive); }
@@ -260,9 +261,10 @@ html, button, a, input, label, select, summary, .chip { touch-action: manipulati
 body.cooking .tabbar, body.cooking .topbar, body.cooking .menu-panel, body.cooking .kilim-wrap { display: none !important; }
 body.cooking { padding-bottom: 0; background: #12100e; color: #f5f2ee; }
 .cook { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom); max-width: 760px; margin: 0 auto; }
-.cook header { display: flex; align-items: center; gap: 10px; padding: 14px 0; border-bottom: 1px solid #2a2622; }
+.cook header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 14px 0; border-bottom: 1px solid #2a2622; }
 .cook header .icon { color: #f5f2ee; }
-.cook header b { font: 700 1.15rem var(--display); flex: 1; }
+.cook header b { font: 700 1.15rem/1.2 var(--display); flex: 1 1 170px; min-width: 0; overflow-wrap: break-word; }
+.cook #wake { margin-left: auto; }
 .cook-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 20px 0; }
 .stepno { color: #e9a24b; text-transform: uppercase; letter-spacing: .1em; font: 700 .82rem var(--ui); }
 .bigstep { font: 500 clamp(1.5rem, 5.6vw, 2.1rem)/1.45 var(--display); margin: 0; }

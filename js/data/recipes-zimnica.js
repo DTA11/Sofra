@@ -51,7 +51,7 @@ export const ZIM_RECIPES = [
     ing: [['cauliflower', 1000, 'g'], ['carrot', 500, 'g'], ['pepper', 1000, 'g', n('šilje ili babure', 'long or bell peppers')], ['cucumber', 1000, 'g', n('sitni krastavčići', 'small pickling cucumbers')], ['vinegar', 1000, 'ml', n('9 %, za salamuru', '9 %, for the brine'), ], ['salt', 60, 'g', { note: ['za salamuru', 'for the brine'], eat: 0.4 }], ['sugar', 150, 'g', { note: ['za salamuru', 'for the brine'], eat: 0.4 }], ['mustard_seed', 2, 'kasicica'], ['pepper_black', 30, 'zrno'], ['bay_leaf', 8, 'list'], ['garlic', 8, 'cen', O]],
     st: [
       JARS(),
-      ['Karfiol rastavi na cvjetiće, mrkvu isijeci na kolutove, paprike na trake ili ih ostavi cijele (probuši ih vilicom), krastavčiće operi i odreži vrhove.', 'Break the cauliflower into florets, slice the carrots into rounds, cut the peppers into strips or leave them whole (pierce with a fork), wash the cucumbers and trim the ends.'],
+      ['Karfiol rastavi na cvjetiće, mrkvu isijeci na kolutove, paprike na trake ili ih ostavi cijele (probuši ih viljuškom), krastavčiće operi i odreži vrhove.', 'Break the cauliflower into florets, slice the carrots into rounds, cut the peppers into strips or leave them whole (pierce with a fork), wash the cucumbers and trim the ends.'],
       ['Karfiol i mrkvu blanširaj 2 minute u kipućoj vodi pa ocijedi — ostaju hrskavi, a ljepše se slažu.', 'Blanch the cauliflower and carrot for 2 minutes in boiling water, then drain — they stay crisp and pack better.', 2],
       ['Povrće gusto složi u tegle u slojevima, a između stavi gorušicu, biber, lovor i (po želji) bijeli luk.', 'Pack the veg tightly into the jars in layers, with the mustard seed, peppercorns, bay and (if using) garlic in between.'],
       ['Salamura: 1 l sirćeta (9 %), 2 l vode, so i šećer zakuhaj dok se ne otope. Ne razrjeđuj više od toga — kiselina čuva turšiju.', 'Brine: bring 1 litre of 9 % vinegar, 2 litres of water, the salt and sugar to the boil until dissolved. Do not dilute it more than this — the acid is what preserves the pickles.'],
@@ -68,7 +68,7 @@ export const ZIM_RECIPES = [
     ing: [['pepper', 3000, 'g', n('babure ili šilje, čvrste', 'firm bell or long peppers')], ['vinegar', 1000, 'ml', n('9 %, za salamuru', '9 %, for the brine')], ['salt', 60, 'g', { note: ['za salamuru', 'for the brine'], eat: 0.4 }], ['sugar', 200, 'g', { note: ['za salamuru', 'for the brine'], eat: 0.4 }], ['pepper_black', 20, 'zrno'], ['bay_leaf', 6, 'list'], ['mustard_seed', 1, 'kasicica', O]],
     st: [
       JARS(),
-      ['Paprike operi. Sitne ostavi cijele i svaku probuši vilicom na 2–3 mjesta; krupne isijeci na četvrtine i očisti od sjemenki.', 'Wash the peppers. Leave small ones whole and pierce each with a fork in 2–3 places; quarter large ones and remove the seeds.'],
+      ['Paprike operi. Sitne ostavi cijele i svaku probuši viljuškom na 2–3 mjesta; krupne isijeci na četvrtine i očisti od sjemenki.', 'Wash the peppers. Leave small ones whole and pierce each with a fork in 2–3 places; quarter large ones and remove the seeds.'],
       ['Paprike gusto složi u tegle, s biberom, lovorom i gorušicom.', 'Pack the peppers tightly into the jars with the peppercorns, bay and mustard seed.'],
       ['Salamura: 1 l sirćeta (9 %), 2 l vode, so i šećer zakuhaj. Ne razrjeđuj više.', 'Brine: bring 1 litre of 9 % vinegar, 2 litres of water, the salt and sugar to the boil. Do not dilute it further.'],
       ['Vrelom salamurom prelij paprike tako da budu potpuno pokrivene, do 1 cm ispod ruba. Rub obriši i zatvori.', 'Pour the boiling brine over so the peppers are completely covered, up to 1 cm below the rim. Wipe the rim and close.'],
@@ -146,7 +146,7 @@ export const ZIM_RECIPES = [
     ing: [['plums', 2500, 'g', n('čvrste, zrele', 'firm, ripe')], ['sugar', 500, 'g', n('za sirup', 'for the syrup')], ['cinnamon', 1, 'kom', { opt: 1, note: ['štapić', 'stick'] }], ['cloves', 6, 'kom', O]],
     st: [
       JARS(),
-      ['Šljive operi, prepolovi i izvadi koštice (sitne mogu i cijele, probušene vilicom).', 'Wash, halve and stone the plums (small ones can stay whole, pierced with a fork).'],
+      ['Šljive operi, prepolovi i izvadi koštice (sitne mogu i cijele, probušene viljuškom).', 'Wash, halve and stone the plums (small ones can stay whole, pierced with a fork).'],
       ['Sirup: 2 l vode i šećer zakuhaj dok se šećer ne otopi.', 'Syrup: bring 2 litres of water and the sugar to the boil until the sugar dissolves.'],
       ['Šljive gusto složi u vruće tegle, dodaj po komadić cimeta i klinčić, pa prelij vrućim sirupom do 1,5 cm ispod ruba. Kašikom istisni mjehuriće, rub obriši i zatvori.', 'Pack the plums into the hot jars, add a piece of cinnamon and a clove to each and pour over the hot syrup to 1.5 cm below the rim. Press out the air bubbles, wipe the rim and close.'],
       BATH(25, '0,72 l'),

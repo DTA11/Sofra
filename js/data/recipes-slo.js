@@ -66,7 +66,7 @@ export const SLO_RECIPES = [
       ['Zamijesi brašno, jaja, prstohvat soli i oko 100 ml mlake vode u glatko, čvrsto tijesto. Pokrij i ostavi 30 minuta.', 'Knead the flour, eggs, a pinch of salt and about 100 ml lukewarm water into a smooth, firm dough. Cover and rest 30 minutes.', 30],
       ['Krompir skuhaj u ljusci (oko 25 minuta), oguli i izgnječi.', 'Boil the potatoes in their skins (about 25 minutes), peel and mash.', 25],
       ['Na slanini propirjaj sitan luk, umiješaj u krompir s mažuranom, solju, biberom i vlascem. Od nadjeva oblikuj kuglice veličine lješnjaka.', 'Fry the chopped onion in the bacon, then mix into the potatoes with marjoram, salt, pepper and chives. Roll hazelnut-sized balls of filling.'],
-      ['Tijesto tanko razvij, kuglice poredaj u red 2 cm od ruba, preklopi tijesto preko njih i izreži. Svaki žlikrof stisni prstima sa strane da dobije „šeširić“.', 'Roll the dough thin, set the balls in a row 2 cm from the edge, fold the dough over and cut. Pinch each one at the sides so it gets its little “hat”.'],
+      ['Tijesto tanko razvij, kuglice poredaj u red 2 cm od ruba, preklopi tijesto preko njih i isijeci. Svaki žlikrof stisni prstima sa strane da dobije „šeširić“.', 'Roll the dough thin, set the balls in a row 2 cm from the edge, fold the dough over and cut. Pinch each one at the sides so it gets its little “hat”.'],
       ['Kuhaj u slanoj vodi dok ne isplivaju, pa još 2 minute.', 'Cook in salted water until they float, then 2 minutes more.', 2],
       ['Ocijedi i prelij otopljenim maslacem — ili služi uz gulaš od janjetine ili zečetine, kako se jede u Idriji.', 'Drain and pour melted butter over — or serve with a lamb or rabbit stew, the way Idrija does.'],
     ],
@@ -134,7 +134,7 @@ export const SLO_RECIPES = [
     st: [
       ['Na maslacu prži brašno uz stalno miješanje dok ne postane boje lješnjaka, oko 5 minuta.', 'Toast the flour in the butter, stirring constantly, until it is hazelnut brown, about 5 minutes.', 5],
       ['Dodaj kim, pa postepeno ulij 1,2 l vode, stalno miješajući da ne bude grudica. Posoli i kuhaj 10 minuta.', 'Add the caraway, then gradually pour in 1.2 l water, stirring so no lumps form. Salt and simmer 10 minutes.', 10],
-      ['Razmućena jaja ulij u tankom mlazu u čorbu koja ključa i promiješaj vilicom.', 'Pour the beaten eggs in a thin stream into the boiling soup and stir with a fork.'],
+      ['Razmućena jaja ulij u tankom mlazu u čorbu koja ključa i promiješaj viljuškom.', 'Pour the beaten eggs in a thin stream into the boiling soup and stir with a fork.'],
       ['Služi s prepečenim kockicama hljeba.', 'Serve with toasted bread cubes.'],
     ],
     story: ['Najskromnija slovenska čorba — brašno, voda, kim i jaje. Stari su govorili da vraća snagu poslije duge noći.', 'The humblest Slovenian soup — flour, water, caraway and an egg. The old folks said it brings you back after a long night.'],
@@ -143,7 +143,7 @@ export const SLO_RECIPES = [
   {
     id: 'gobova-juha', cu: 'slovenska', type: 'soup', main: 'veg', time: 40, serves: 4,
     bs: 'Čorba od gljiva (gobova juha)', en: 'Mushroom soup (gobova juha)',
-    ing: [['mushrooms', 400, 'g'], ['porcini', 20, 'g', n('suhi vrganji', 'dried porcini')], ['potato', 2, 'kom'], ['onion', 1, 'glavica'], ['butter', 30, 'g'], ['flour', 2, 'kasika'], ['sour_cream', 150, 'g'], ['vinegar', 1, 'kasika'], ['bay_leaf', 1, 'list'], ['marjoram', 1, 'kasicica'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
+    ing: [['mushrooms', 400, 'g'], ['porcini', 20, 'g'], ['potato', 2, 'kom'], ['onion', 1, 'glavica'], ['butter', 30, 'g'], ['flour', 2, 'kasika'], ['sour_cream', 150, 'g'], ['vinegar', 1, 'kasika'], ['bay_leaf', 1, 'list'], ['marjoram', 1, 'kasicica'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Vrganje namoči u 300 ml tople vode na 15 minuta.', 'Soak the porcini in 300 ml warm water for 15 minutes.', 15],
       ['Na maslacu propirjaj luk i narezane šampinjone 5 minuta, pospi brašnom i kratko promiješaj.', 'Soften the onion and sliced mushrooms in the butter for 5 minutes, dust with flour and stir briefly.', 5],
@@ -160,7 +160,7 @@ export const SLO_RECIPES = [
     st: [
       ['U loncu zakuhaj 1 l slane vode. Ubaci brašno odjednom tako da u sredini bude brdašce i ne miješaj.', 'Bring 1 l salted water to the boil. Tip in all the flour so it forms a mound in the middle, and do not stir.'],
       ['Drškom kuhače probuši rupu kroz sredinu i kuhaj na tihoj vatri 20 minuta.', 'Poke a hole through the middle with the handle of a wooden spoon and cook on low heat for 20 minutes.', 20],
-      ['Odlij dio vode u šolju, žgance dobro razmrvi vilicom, po potrebi vrati malo vode. Pokrij i ostavi 5 minuta.', 'Pour some of the water off into a cup, break the žganci up well with a fork, adding a little water back if needed. Cover and rest 5 minutes.', 5],
+      ['Odlij dio vode u šolju, žgance dobro razmrvi viljuškom, po potrebi vrati malo vode. Pokrij i ostavi 5 minuta.', 'Pour some of the water off into a cup, break the žganci up well with a fork, adding a little water back if needed. Cover and rest 5 minutes.', 5],
       ['Prelij vrelom masti s čvarcima i služi uz kiselo mlijeko.', 'Pour hot lard with cracklings over and serve with soured milk.'],
     ],
     story: ['Žganci su bili slovenski doručak prije kafe i peciva — seljački, topli i do ručka dovoljni.', 'Žganci were the Slovenian breakfast before coffee and pastries — peasant food, warm and enough to last till lunch.'],
@@ -218,12 +218,12 @@ export const SLO_RECIPES = [
     bs: 'Kremšnita (blejska)', en: 'Bled cream slice (kremšnita)',
     ing: [['puff_pastry', 500, 'g', n('2 lista', '2 sheets')], ['milk', 1, 'l'], ['eggs', 6, 'kom', n('odvojiti', 'separated')], ['sugar', 200, 'g'], ['starch', 80, 'g'], ['vanilla_sugar', 2, 'kesica'], ['cream', 400, 'ml'], ['powder_sugar', 3, 'kasika']],
     st: [
-      ['Lisnato tijesto razvij na veličinu kalupa, izbockaj vilicom i peci dvije kore na 200 °C po 15 minuta. Ohladi.', 'Roll the puff pastry to the size of the tin, prick with a fork and bake the two sheets at 200 °C for 15 minutes each. Let cool.', 15],
+      ['Lisnato tijesto razvij na veličinu kalupa, izbockaj viljuškom i peci dvije kore na 200 °C po 15 minuta. Ohladi.', 'Roll the puff pastry to the size of the tin, prick with a fork and bake the two sheets at 200 °C for 15 minutes each. Let cool.', 15],
       ['Žumanjke umuti s pola šećera, škrobom i vanilin šećerom i s malo hladnog mlijeka. Ostatak mlijeka zakuhaj.', 'Whisk the yolks with half the sugar, the cornflour, vanilla sugar and a little cold milk. Bring the rest of the milk to the boil.'],
       ['U mlijeko koje ključa umiješaj smjesu žumanjaka i kuhaj uz stalno miješanje 2 minute dok ne zgusne.', 'Whisk the yolk mixture into the boiling milk and cook, stirring all the time, for 2 minutes until thick.', 2],
       ['Bjelanjke umuti s ostatkom šećera u čvrst snijeg i odmah ga umiješaj u vruću kremu.', 'Beat the whites with the remaining sugar to stiff peaks and fold straight into the hot custard.'],
       ['Jednu koru stavi u kalup, prelij kremom i ostavi da se ohladi, pa u frižider na 3 sata.', 'Put one sheet in the tin, pour the custard over and let it cool, then chill for 3 hours.', 180],
-      ['Na stegnutu kremu rasporedi umućeno slatko vrhnje, pokrij drugom korom (najbolje već izrezanom na kocke) i pospi šećerom u prahu.', 'Spread the whipped cream over the set custard, cover with the second sheet (ideally already cut into squares) and dust with icing sugar.'],
+      ['Na stegnutu kremu rasporedi umućeno slatko vrhnje, pokrij drugom korom (najbolje već isječenom na kocke) i pospi šećerom u prahu.', 'Spread the whipped cream over the set custard, cover with the second sheet (ideally already cut into squares) and dust with icing sugar.'],
     ],
     story: ['Na Bledu se peče od 1953. godine — visoka vanilin krema, sloj šlaga i hrskava kora, uvijek u kvadratu 7 × 7 cm.', 'Baked at Bled since 1953 — a tall vanilla custard, a layer of cream and crisp pastry, always cut 7 × 7 cm.'],
     src: T,
