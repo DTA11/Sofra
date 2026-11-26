@@ -10,6 +10,7 @@ import { COMBO_RECIPES } from './recipes-combo.js';
 import { EXTRA_RECIPES } from './recipes-extra.js';
 import { SALAD_RECIPES } from './recipes-salads.js';
 import { SIDE_RECIPES } from './recipes-sides.js';
+import { GRILL_RECIPES } from './recipes-grill.js';
 
 export const SOURCES = {
   lakisic: {
@@ -35,9 +36,10 @@ export const SOURCES = {
 };
 
 // Planner styles: the plan mixes kitchens by style, not by country.
-export const STYLES = ['domaca', 'tjestenina', 'evropska', 'vojnicka'];
+export const STYLES = ['domaca', 'tjestenina', 'evropska', 'vojnicka', 'rostilj'];
 const PASTA = ['spaghetti', 'pasta_short', 'tagliatelle', 'lasagne', 'arborio', 'gnocchi'];
 function styleOf(r) {
+  if (r.grill && r.type !== 'side') return 'rostilj'; // dishes off the grill: their own slider in "Šta kuhamo"
   if (r.cu === 'jna') return 'vojnicka';
   if (r.cu === 'italian' || r.cu === 'french') return r.ing.some((i) => PASTA.includes(i[0])) ? 'tjestenina' : 'evropska';
   return 'domaca';
@@ -58,7 +60,8 @@ function derive(r) {
   r.posnoFish = !hasMeat && !dairyOrEgg;
   r.noMeat = !hasMeat; // Catholic fast: fish, eggs and dairy allowed
   r.eq = r.eq || [];
-  r.supa = !!r.supa; // clear soup: the only starter; other soups (čorbe) count as a main
+  r.supa = !!r.supa;
+  r.grill = !!r.grill; // off the grill (or a grill pan): Roštilj filter, page and planner style // clear soup: the only starter; other soups (čorbe) count as a main
   r.key = r.key || [];
   r.eqOpt = r.eqOpt || [];
   r.occ = r.occ || [];
@@ -164,7 +167,7 @@ function withJufka(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...COMBO_RECIPES].map(derive).map(withJufka);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...GRILL_RECIPES, ...COMBO_RECIPES].map(derive).map(withJufka);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

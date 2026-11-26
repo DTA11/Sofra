@@ -50,6 +50,10 @@ const SHAPES = {
     <ellipse cx="80" cy="66" rx="54" ry="18" fill="#f3e2c3"/><ellipse cx="80" cy="63" rx="50" ry="15" fill="#e9cf9f"/>
     ${[[52, 58], [64, 66], [76, 58], [88, 66], [100, 58]].map(([x, y]) => `<rect x="${x - 4}" y="${y - 14}" width="11" height="30" rx="5.5" transform="rotate(62 ${x} ${y})" fill="#7a3b1c"/><path d="M${x - 8} ${y - 2}l12 -6" stroke="#4a210d" stroke-width="2" transform="rotate(0)"/>`).join('')}
     <path d="M96 74c6-4 14-4 20 0" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M98 78c6-3 12-3 16 0" stroke="#b33a2a" stroke-width="3" stroke-linecap="round"/>`,
+  // grilled vegetables: striped slices on a plate
+  grillveg: (c) => `${shadow(80, 88, 52)}
+    <ellipse cx="80" cy="66" rx="56" ry="19" fill="#fffaf2"/><ellipse cx="80" cy="66" rx="56" ry="19" fill="none" stroke="${c}" stroke-width="3"/>
+    ${[[56, 62, '#6b3f73'], [72, 66, '#7da33f'], [88, 62, '#d8432f'], [104, 66, '#e8a33d'], [64, 72, '#7da33f'], [96, 72, '#6b3f73']].map(([x, y, f]) => `<g transform="rotate(-24 ${x} ${y})"><rect x="${x - 7}" y="${y - 11}" width="14" height="22" rx="6" fill="${f}"/><path d="M${x - 6} ${y - 4}h12M${x - 6} ${y + 3}h12" stroke="#3a2416" stroke-width="2" opacity=".7"/></g>`).join('')}`,
   fish: (c) => `${shadow(80, 88, 52)}
     <ellipse cx="80" cy="64" rx="58" ry="20" fill="#fffaf2"/><ellipse cx="80" cy="64" rx="58" ry="20" fill="none" stroke="${c}" stroke-width="3"/>
     <path d="M40 60c14-16 46-18 66-2l16-10v24l-16-10c-20 16-52 14-66-2z" fill="#9aa9b4"/>
@@ -139,7 +143,8 @@ export function dishArt(r, cls = '') {
     if (r.main === 'eggs') key = 'eggs';
     else if (r.id === 'tost-sir') key = 'bread';
     else if (r.eq.includes('sac')) key = 'sac';
-    else if (r.eq.includes('grill')) key = 'grill';
+    else if (r.grill && r.main === 'veg') key = 'grillveg';
+    else if (r.grill && r.main !== 'fish') key = 'grill';
     else if (r.main === 'fish') key = 'fish';
     else if (['spaghetti', 'pasta_short', 'tagliatelle', 'arborio'].some(has)) key = 'pasta';
     else if (r.eq.includes('oven')) key = 'oven';
@@ -181,5 +186,6 @@ export const ICON = {
   search: I('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'),
   filter: I('<path d="M4 6h16M7 12h10M10 18h4"/>'),
   book: I('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'),
+  flame: I('<path d="M12 3c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5.5.3 2 1.2 3 2.2 3.5C11 9 11 6 12 3z"/><path d="M4 21h16"/>'),
   timer: I('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4"/>'),
 };

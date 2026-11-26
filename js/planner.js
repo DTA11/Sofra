@@ -73,6 +73,7 @@ function score(r, ctx) {
   if (r.months) { if (r.months.includes(m)) s += 1; else s *= 0.3; }
   if (st.favs.includes(r.id)) s += 0.8;
   if (st.preferKid && r.kid) s += 1;
+  if (r.grill && st.equipment.grill) s *= 1.25; // a real grill at home: grill dishes a bit more often than in a pan
   s *= healthMul(r);
   if (ctx.weekday < 5 && r.time > (ctx.maxTime ?? st.weekdayMax)) s *= 0.15;
   return Math.max(0.01, s) * (0.55 + Math.random() * 0.9);
@@ -82,6 +83,13 @@ function recentIds(exceptPlanId) {
   const st = S();
   const cutoff = Date.now() - st.noRepeatWeeks * 7 * DAY;
   return new Set(st.history.filter((h) => h.plan !== exceptPlanId && parseISO(h.date).getTime() >= cutoff).map((h) => h.id));
+}
+
+/** Grill days: mostly at the weekend and in the warm months, rarely on a winter weekday. */
+export function grillMul(ctx) {
+  const m = ctx.month;
+  const season = m >= 5 && m <= 9 ? 1.6 : m === 4 || m === 10 ? 1 : 0.45;
+  return season * (ctx.weekday >= 5 ? 2.2 : 0.7);
 }
 
 function pick(pool, ctx, usedIds, kindCount, relax = 0) {
@@ -106,7 +114,7 @@ function pick(pool, ctx, usedIds, kindCount, relax = 0) {
   // kitchen still shows up as often as asked; then the best-scoring dish of that style.
   const W = [0, 1, 3, 8];
   const styles = [...new Set(cands.map((r) => r.style))];
-  const sw = styles.map((x) => W[st.styles[x] || 0] || (relax >= 2 ? 0.2 : 0));
+  const sw = styles.map((x) => (W[st.styles[x] || 0] || (relax >= 2 ? 0.2 : 0)) * (x === 'rostilj' ? grillMul(ctx) : 1));
   let roll = Math.random() * sw.reduce((a, b) => a + b, 0);
   let style = styles[0];
   for (let i = 0; i < styles.length; i++) { roll -= sw[i]; if (roll <= 0) { style = styles[i]; break; } }
@@ -143,7 +151,7 @@ export function groupOf(r) {
   if (r.type === 'soup') return 'corba';
   if (r.type === 'pie' || PIE_LIKE.includes(r.id)) return 'pie';
   if (r.main === 'beans' || ['kranjska-zelje'].includes(r.id)) return 'beans';
-  if (r.eq.includes('grill') || ['cevapi', 'pljeskavica'].includes(r.id)) return 'grill';
+  if (r.grill) return r.main === 'fish' ? 'fish' : 'grill'; // grilled fish takes the fish salads, not onion and kajmak
   if (r.id.startsWith('pohovan') || r.id === 'popeci') return 'breaded';
   if (r.style === 'tjestenina' || ['pasta', 'rice'].includes(r.main) || ['makaronovo-meso', 'lasagne', 'tjestenina-sir-slanina'].includes(r.id)) return 'pasta';
   if (STUFFED.includes(r.id)) return 'stuffed';
@@ -155,10 +163,10 @@ export function groupOf(r) {
 const SIDES = {
   pie: [['uz-jogurt', 5], ['uz-kiselo-mlijeko', 4], ['paradajz-salata', 1], ['mijesana-salata', 1], ['satrica', 1.5], ['paradajz-kajmak', 1], ['kupus-salata', 0.6], ['salata-cvekla', 0.5]],
   beans: [['kupus-salata', 4], ['uz-kiseli-kupus', 3], ['salata-luk', 3], ['uz-tursija', 2], ['paradajz-salata', 1.5], ['mijesana-salata', 1], ['salata-kupus-mrkva', 1.5]],
-  grill: [['salata-luk', 3], ['uz-kajmak-ajvar', 3], ['paradajz-salata', 2], ['sopska', 2], ['mijesana-salata', 1.5], ['kupus-salata', 1]],
+  grill: [['salata-luk', 3], ['uz-kajmak-ajvar', 3], ['paradajz-salata', 2], ['sopska', 2], ['urnebes', 2.5], ['umak-jogurt-luk', 1.5], ['mijesana-salata', 1.5], ['kupus-salata', 1], ['pecene-paprike-salata', 1]],
   pasta: [['zelena-salata', 4], ['paradajz-salata', 2], ['mijesana-salata', 2], ['krastavac-salata', 2], ['kupus-salata', 1.5], ['salata-kupus-mrkva', 1]],
   breaded: [['zelena-salata', 3], ['mijesana-salata', 2], ['krastavac-salata', 2], ['paradajz-salata', 2], ['kupus-salata', 1.5], ['salata-cvekla', 1]],
-  fish: [['zelena-salata', 3], ['paradajz-salata', 2], ['mijesana-salata', 2], ['kupus-salata', 1.5], ['krastavac-salata', 1]],
+  fish: [['zelena-salata', 3], ['paradajz-salata', 2], ['mijesana-salata', 2], ['kupus-salata', 1.5], ['krastavac-salata', 1], ['umak-jogurt-luk', 0.7]],
   light: [['uz-kiselo-mlijeko', 3], ['uz-jogurt', 3], ['zelena-salata', 2], ['paradajz-kajmak', 1.5], ['mijesana-salata', 1], ['satrica', 1], ['kupus-salata', 1], ['salata-cvekla', 1], ['uz-tursija', 0.7]],
   stuffed: [['uz-kiselo-mlijeko', 3], ['uz-jogurt', 2], ['zelena-salata', 1.5], ['mijesana-salata', 1], ['kupus-salata', 1]],
   corba: [['zelena-salata', 2], ['mijesana-salata', 2], ['kupus-salata', 2], ['uz-tursija', 1.5], ['paradajz-salata', 1.5], ['uz-kiseli-kupus', 1]],
@@ -193,7 +201,7 @@ function pickSide(r, ctx, days, i, exclude) {
   for (const [id, w] of inSeason) { // nothing in season fits → no side rather than lettuce in November
     const s = R[id];
     let sc = w;
-    const jars = s.ing.filter((x) => ING[x[0]] && ING[x[0]].z);
+    const jars = s.ing.filter((x) => ING[x[0]] && ING[x[0]].z && !(x[3] && x[3].opt)); // an optional spoon of ajvar is no reason to skip a side
     if (jars.length) sc *= jars.every((x) => haveOrSub(x[0])) ? 2.2 : 0.7; // zimnica first
     else if (s.ing.some((x) => ING[x[0]] && ING[x[0]].p && haveOrSub(x[0]))) sc *= 1.3;
     sc *= 0.5 ** week.filter((x) => x === id).length;

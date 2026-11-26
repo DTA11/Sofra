@@ -200,7 +200,7 @@ export const EXTRA_RECIPES = [
     src: T,
   },
   {
-    id: 'pljeskavica', cu: 'srpska', type: 'main', main: 'beef', time: 40, serves: 4, kid: 1,
+    id: 'pljeskavica', cu: 'srpska', type: 'main', main: 'beef', time: 40, serves: 4, grill: 1, eqOpt: ['grill'], kid: 1,
     bs: 'Pljeskavica s lukom i hljebom', en: 'Pljeskavica (grilled meat patty) with onion and bread',
     ing: [['mixed_mince', 800, 'g', n('ili samo junetina', 'or beef only')], ['onion', 2, 'glavica'], ['garlic', 2, 'cen'], ['paprika_hot', 1, 'prst'], ['bread', 4, 'kom', n('lepinje ili zemičke', 'flatbreads or rolls')], ['kajmak', 100, 'g', O], ['salt', null, ''], ['pepper_black', null, '']],
     st: [

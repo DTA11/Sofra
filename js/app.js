@@ -51,7 +51,7 @@ function nutBox(r) {
 
 // ───────── UI state (not persisted) ─────────
 const ui = {
-  filters: { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '', grade: new Set() },
+  filters: { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, grill: false, sub: '', reg: '', grade: new Set() },
   showFilters: false,
   serv: {},      // recipe id -> servings
   pan: {},       // recipe id -> {shape,w,h,d}
@@ -103,7 +103,7 @@ function defaultServ(r) {
 
 // ───────── routing ─────────
 const routes = {
-  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, vojnicka: viewJNA, holidays: viewHolidays, dorucci: viewCombos,
+  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, vojnicka: viewJNA, holidays: viewHolidays, dorucci: viewCombos, rostilj: viewGrill,
   pantry: viewPantry, shop: viewShop, settings: viewSettings, cook: viewCook,
 };
 function route() {
@@ -113,8 +113,8 @@ function route() {
   JUF.home = S().jufka !== 'shop';
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
-  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
-  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
+  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
+  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
   syncInstallButtons();
   { const gk = { settings: 'settings', pantry: 'pantry' }[name]; if (gk && !(S().guide || {})[gk]) { S().guide = { ...S().guide, [gk]: true }; store.save(); } } // quick guide: page visited = step done
@@ -408,6 +408,7 @@ function matches(r, f) {
   if (f.occ && !r.occ.includes(f.occ)) return false;
   if (f.season && r.months && !r.months.includes(new Date().getMonth() + 1)) return false;
   if (f.fav && !S().favs.includes(r.id)) return false;
+  if (f.grill && !r.grill) return false;
   return true;
 }
 function chipGroup(label, key, opts, multi = false) {
@@ -442,6 +443,7 @@ function filterPanel(extra = '') {
     <div class="fgroup"><div class="chips">
       <button class="chip ${f.season ? 'on' : ''}" data-act="ftoggle" data-k="season">🌱 ${t('fSeason')}</button>
       <button class="chip ${f.fav ? 'on' : ''}" data-act="ftoggle" data-k="fav">★ ${t('favs')}</button>
+      <button class="chip ${f.grill ? 'on' : ''}" data-act="ftoggle" data-k="grill">🔥 ${t('grillTitle')}</button>
       <button class="chip" data-act="fclear">✕ ${t('clear')}</button>
     </div></div>
   </div>`;
@@ -453,7 +455,7 @@ function searchBar() {
 }
 function activeFilterCount() {
   const f = ui.filters;
-  return f.cu.size + f.diet.size + f.grade.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0);
+  return f.cu.size + f.diet.size + f.grade.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0) + (f.grill ? 1 : 0);
 }
 function viewRecipes() {
   const list = RECIPES.filter((r) => r.type !== 'dessert' && r.type !== 'side').filter((r) => matches(r, ui.filters));
@@ -462,6 +464,7 @@ function viewRecipes() {
       <a class="feature jna" href="#/vojnicka">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
       <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
       <a class="feature nocook" href="#/dorucci">${ICON.pantry}<b>${t('combosTitle')}</b><small>${RECIPES.filter((r) => r.type === 'combo').length} ${t('combos')}</small></a>
+      <a class="feature grill" href="#/rostilj">${ICON.flame}<b>${t('grillTitle')}</b><small>${grillDishes().length} ${t('dishes')} · ${grillGuides().length} ${t('grillGuidesN')}</small></a>
     </div>
     ${searchBar()}${filterPanel()}
     <p class="muted small">${list.length} ${t('results')}</p>
@@ -480,6 +483,22 @@ function viewJNA() {
   return `<section class="band page-band"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('jnaTitle')}</h1><p class="lede">${t('jnaIntro')}</p></section>
     <div class="grid">${list.map(card).join('')}</div>`;
 }
+// ───────── ROŠTILJ: grill guides + dishes off the grill + sauces and sides ─────────
+const grillDishes = () => RECIPES.filter((r) => r.grill && r.type !== 'side');
+const grillGuides = () => liveGuides().filter((g) => g.grill);
+const GRILL_SIDES = ['salata-luk', 'uz-kajmak-ajvar', 'urnebes', 'umak-jogurt-luk', 'sopska', 'paradajz-salata', 'pecene-paprike-salata'];
+function viewGrill() {
+  const st = S();
+  const guides = grillGuides().map((g) => { const [title, href, sub] = g[getLang()]; return `<li><a href="${href}"><b>${esc(title)}</b>${sub ? `<span>${esc(sub)}</span>` : ''}</a></li>`; }).join('');
+  const sides = GRILL_SIDES.map((id) => R[id]).filter(Boolean);
+  return `<section class="band page-band grill"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('grillTitle')}</h1><p class="lede">${t('grillIntro')}</p></section>
+    ${guides ? `<h2 class="sec-title">📖 ${t('grillGuides')}</h2><ul class="gcards">${guides}</ul>` : ''}
+    <div class="banner"><span>${(st.styles.rostilj || 0) ? t('grillOn') : t('grillOff')}</span> <a href="#/settings">${t('planSettings')} →</a></div>
+    <h2 class="sec-title">🔥 ${t('grillDishes')}</h2>
+    <div class="grid">${grillDishes().map(card).join('')}</div>
+    <h2 class="sec-title">${t('grillSides')}</h2>
+    <div class="grid">${sides.map(card).join('')}</div>`;
+}
 function viewCombos() {
   const list = RECIPES.filter((r) => r.type === 'combo');
   return `<section class="band page-band"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('combosTitle')}</h1><p class="lede">${t('combosIntro')}</p></section>
@@ -490,7 +509,7 @@ function viewCombos() {
 // ───────── RECIPE DETAIL ─────────
 function guideLinks(r) {
   const ids = r.ing.map((i) => i[0]);
-  const gs = liveGuides().filter((g) => g.ing.some((x) => ids.includes(x)));
+  const gs = liveGuides().filter((g) => g.ing.some((x) => ids.includes(x)) || (g.rec || []).includes(r.id));
   return gs.map((g) => { const [title, href] = g[getLang()]; return `<p class="hint">📖 ${t('guideHint')}: <a href="${href}">${esc(title)}</a></p>`; }).join('');
 }
 
@@ -772,6 +791,7 @@ function viewSettings() {
     <section class="set"><h3>${t('household')}</h3>${num('household', st.household, 1, 20)}</section>
     <section class="set"><h3>${t('cuisineMix')}</h3>
       ${keys('style').map((c) => `<div class="mix"><span>${esc(L('style', c))}</span><span class="rng"><input type="range" min="0" max="3" step="1" value="${st.styles[c] || 0}" data-act="mix" data-k="${c}"><span class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span><small>${lvl[st.styles[c] || 0]}</small></div>`).join('')}
+      <p class="small muted">${t('grillHint')} <a href="#/rostilj">${t('grillTitle')} →</a></p>
       ${['meatless', 'health'].map((k) => `<div class="mix"><span>${t(k)}</span><span class="rng"><input type="range" min="0" max="3" step="1" value="${st[k] || 0}" data-act="mixs" data-k="${k}"><span class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span><small>${t(k + 'Lvl').split('|')[st[k] || 0]}</small></div>`).join('')}
       <p class="small muted">${t('dietHint')}</p>
       ${jufSwitch()}
@@ -1001,7 +1021,7 @@ document.addEventListener('click', (e) => {
       rer(); break;
     }
     case 'ftoggle': ui.filters[el.dataset.k] = !ui.filters[el.dataset.k]; rer(); break;
-    case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, sub: '', reg: '', grade: new Set() }; rer(); break;
+    case 'fclear': ui.filters = { q: '', cu: new Set(), type: '', main: '', meal: '', time: '', eq: '', diet: new Set(), occ: '', season: false, fav: false, grill: false, sub: '', reg: '', grade: new Set() }; rer(); break;
     case 'fav': store.toggleFav(el.dataset.id); rer(); break;
     case 'jufka': { st.jufka = el.dataset.v; store.save(); cook = null; rerender(); break; }
     case 'serv': { const r = R[el.dataset.id]; const cur = ui.serv[r.id] ?? defaultServ(r); ui.serv[r.id] = Math.max(1, cur + Number(el.dataset.d)); rer(); break; }

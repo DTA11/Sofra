@@ -9,10 +9,10 @@ export const NUT = {
   // meat & fish
   beef: [190, 20, 12, 5, 0, 0, 0, 0.15, 0], beef_mince: [250, 17, 20, 8, 0, 0, 0, 0.17, 0], veal: [140, 20, 6, 2.5, 0, 0, 0, 0.2, 0],
   lamb: [280, 17, 23, 10, 0, 0, 0, 0.17, 0], chicken: [215, 18, 15, 4.3, 0, 0, 0, 0.2, 0], chicken_legs: [215, 18, 15, 4.2, 0, 0, 0, 0.2, 0],
-  chicken_breast: [120, 23, 2.6, 0.6, 0, 0, 0, 0.15, 0], turkey: [150, 21, 7, 2, 0, 0, 0, 0.15, 0], smoked_beef: [250, 35, 12, 5, 0, 0, 0, 4.5, 0],
-  pork: [240, 17, 19, 7, 0, 0, 0, 0.15, 0], pork_shoulder: [230, 17, 18, 6.5, 0, 0, 0, 0.15, 0], bacon: [450, 12, 45, 16, 0, 0, 0, 3, 0],
+  chicken_breast: [120, 23, 2.6, 0.6, 0, 0, 0, 0.15, 0], chicken_wings: [200, 18, 14, 3.9, 0, 0, 0, 0.2, 0], turkey: [150, 21, 7, 2, 0, 0, 0, 0.15, 0], smoked_beef: [250, 35, 12, 5, 0, 0, 0, 4.5, 0],
+  pork: [240, 17, 19, 7, 0, 0, 0, 0.15, 0], pork_shoulder: [230, 17, 18, 6.5, 0, 0, 0, 0.15, 0], pork_neck: [250, 17, 20, 7.5, 0, 0, 0, 0.15, 0], pork_loin: [145, 21, 6.5, 2.3, 0, 0, 0, 0.15, 0], bacon: [450, 12, 45, 16, 0, 0, 0, 3, 0],
   guanciale: [650, 7, 69, 24, 0, 0, 0, 3, 0], trout: [140, 20, 6, 1.5, 0, 0, 0, 0.15, 0], cod_dried: [290, 62, 2.4, 0.5, 0, 0, 0, 3, 0],
-  fish_white: [90, 19, 1.2, 0.3, 0, 0, 0, 0.2, 0], squid: [92, 15.6, 1.4, 0.4, 3.1, 0, 0, 0.1, 0], sudzuk: [450, 22, 40, 16, 1, 0, 0, 3.5, 0], tuna: [190, 26, 9, 1.5, 0, 0, 0, 0.9, 0],
+  fish_white: [90, 19, 1.2, 0.3, 0, 0, 0, 0.2, 0], squid: [92, 15.6, 1.4, 0.4, 3.1, 0, 0, 0.1, 0], mackerel: [205, 19, 14, 3.3, 0, 0, 0, 0.2, 0], sudzuk: [450, 22, 40, 16, 1, 0, 0, 3.5, 0], tuna: [190, 26, 9, 1.5, 0, 0, 0, 0.9, 0],
   bones_beef: [60, 5, 4, 1.7, 0, 0, 0, 0.1, 0], chicken_giblets: [200, 17, 14, 4, 0, 0, 0, 0.2, 0], lamb_offal: [160, 17, 9, 3.5, 1, 0, 0, 0.2, 0],
   mixed_mince: [240, 18, 18, 7.5, 0, 0, 0, 0.17, 0], kranjska: [300, 14, 27, 10, 1, 0, 0, 2.2, 0], smoked_ribs: [380, 18, 34, 12, 0, 0, 0, 2.5, 0],
   cracklings: [600, 30, 52, 20, 0, 0, 0, 1.5, 0], ham: [250, 28, 15, 5, 0, 0, 0, 4, 0], venison_or_beef: [150, 22, 6, 2.5, 0, 0, 0, 0.15, 0],
@@ -92,7 +92,7 @@ export const STOCK = [7, 0.5, 0.3, 0.1, 0.5, 0.3, 0, 0.6, 0];
 // grams for one 'kom' (piece) etc. — only where it differs by ingredient
 export const PIECE = {
   eggs: 55, tomato: 120, carrot: 80, pepper: 150, zucchini: 250, lemon: 40, eggplant: 300, celery_stalk: 40, celery: 300, potato: 150,
-  trout: 300, chili: 1, prunes: 10, pickles: 50, kranjska: 180, cucumber: 300, cloves: 0.1, bread: 200, apple: 180, tuna: 130,
+  trout: 300, mackerel: 350, chili: 1, prunes: 10, pickles: 50, kranjska: 180, cucumber: 300, cloves: 0.1, bread: 200, apple: 180, tuna: 130,
   vanilla_sugar: 3, onion: 120, garlic: 5, lettuce: 300, cabbage: 1000, dates: 8,
   banana: 120, orange: 150, mandarin: 70, pear: 170, hot_dogs: 50, cheese_spread: 17, beetroot: 200, pumpkin: 2000, // edible part; one processed-cheese portion
 };
@@ -113,4 +113,4 @@ export const YIELD = {
   buckwheat: 2.5, cornmeal: 4, buckwheat_flour: 4, flour: 1.3,
 };
 // edible share of what is bought (bones, heads, skin)
-export const EDIBLE = { chicken: 0.7, chicken_legs: 0.75, smoked_ribs: 0.6, trout: 0.55, fish_white: 0.55, cauliflower: 0.6, chicken_giblets: 0.5, lamb_offal: 0.7 };
+export const EDIBLE = { chicken: 0.7, chicken_legs: 0.75, smoked_ribs: 0.6, trout: 0.55, mackerel: 0.6, chicken_wings: 0.65, fish_white: 0.55, cauliflower: 0.6, chicken_giblets: 0.5, lamb_offal: 0.7 };

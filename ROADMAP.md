@@ -1,6 +1,6 @@
 # Sofra — plan razvoja
 
-Redoslijed je prijedlog; ništa od ovoga još nije započeto (stanje 25. 11. 2026, sofra-v68).
+Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v91). Urađeno: 11 (Roštilj).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
 1. **„Ne volimo“ lista** — u Postavkama označiš namirnice koje ne želiš (npr. gljive, džigerica, riba); planer i „Prijedlog za danas“ nikad ne biraju jela s njima. Recepti s njima ostaju vidljivi u listi, samo ih planer preskače.
@@ -17,15 +17,10 @@ Redoslijed je prijedlog; ništa od ovoga još nije započeto (stanje 25. 11. 202
 10. **Opcije planera na stranici Plan** — „Šta kuhamo“, Bez mesa, Zdravije, obroci, ukućani… kao panel na Planu umjesto zasebne stranice. Vlasnik je rekao „čekaj“ — prvo pitati.
 
 ## Nove ideje
-11. **Kategorija „Roštilj“** (ideja vlasnika, 25. 11. 2026) — cijela oblast od mesa do stola:
-    - **izbor mesa** — koji komad za šta (roštilj, ražanj, sač, dimljenje), na šta paziti pri kupovini;
-    - **priprema i rezanje** — rezanje, otkoštavanje, tučenje, mljevenje, oblikovanje (ćevapi, pljeskavice, ražnjići);
-    - **marinade** — osnovne marinade i trajanje mariniranja po vrsti mesa;
-    - **salamurenje i sušenje** — suho i mokro salamurenje, soljenje, sušenje;
-    - **pečenje** — vatra i žar (ćumur/drvo), direktna i indirektna toplina, temperature i vremena, odmaranje mesa;
-    - **dimljenje** — toplo i hladno dimljenje, vrsta drveta, trajanje;
-    - uz to prilozi i umaci za roštilj.
-    Oblik još nije odlučen (vodiči, novi recepti, filter ili zasebna stranica) — prvo pitati vlasnika.
+11. ✅ **Roštilj** (urađeno 26. 11. 2026, sofra-v91) — oblik B + C:
+    - **7 vodiča** (/vodici/ + /guides/): izbor mesa i količine, ćevapi/pljeskavice/ražnjići (mljevenje, oblikovanje), marinade, salamurenje i sušenje, vatra i žar, dimljenje, prilozi i umaci. Tekstovi u tools/grill-guides/bs.mjs + en.mjs, stranice pravi `node tools/grill-guides/build.mjs`.
+    - **14 jela sa žara + 2 umaka** (js/data/recipes-grill.js; ćevapi i pljeskavica dobili `grill: 1`), filter „🔥 Roštilj“ u Receptima i stranica #/rostilj (vodiči, jela, prilozi). Roštilj je opcionalna oprema — sve ide i u grill-tavi.
+    - **„Roštilj“ u Šta kuhamo** (stil `rostilj`, zadano „rijetko“): dani s roštiljem češće vikendom i maj–septembar, zimi radnim danom rijetko; s opremom „Roštilj“ malo češće. Prilog uz roštilj: luk, kajmak i ajvar, urnebes, šopska…; riba sa žara dobija riblje priloge.
 
 ## Pravila (podsjetnik)
 Bez država/regija u UI, „Vojnička kuhinja“ (nikad JNA), bez izvora i brendova, nove namirnice u ingredients.js I nutrition.js, ćilim boje, bs (ijekavica) + en, povećati VERSION u sw.js, testirati (Node + Playwright) prije pusha.

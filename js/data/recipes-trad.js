@@ -6,7 +6,7 @@ const O = { opt: 1 };
 export const TRAD_RECIPES = [
   // ───────── Bosanska ─────────
   {
-    id: 'cevapi', cu: 'bosanska', reg: 'sarajevo', type: 'main', main: 'beef', time: 40, serves: 4, eq: ['grill'], kid: 1,
+    id: 'cevapi', cu: 'bosanska', reg: 'sarajevo', type: 'main', main: 'beef', time: 40, serves: 4, grill: 1, eqOpt: ['grill'], kid: 1,
     bs: 'Ćevapi', en: 'Ćevapi',
     ing: [['beef_mince', 800, 'g', n('masnije, 20 % masti', 'with about 20 % fat')], ['garlic', 2, 'cen'], ['salt', 2, 'kasicica'], ['pepper_black', 1, 'kasicica'], ['bread', 4, 'kom', n('somuni / lepinje', 'flatbreads (somun)')], ['onion', 2, 'glavica'], ['kajmak', 150, 'g', { opt: 1 }]],
     st: [

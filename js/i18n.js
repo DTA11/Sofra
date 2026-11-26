@@ -98,6 +98,10 @@ const S = {
     guideSkip: 'Preskoči vodič', guideDone: 'Gotovo — prijatno!', guideShow: 'Prikaži vodič „Prvi koraci“', guideShown: 'Vodič je na stranici Jelovnik.',
     starterTitle: 'Brzi početak: šta obično imaš?', starterLede: 'Osnovne stvari su već označene — odznači ono što nemaš, označi ostalo. Kasnije sve nađeš niže na ovoj stranici.',
     starterAll: 'Označi sve', starterDone: 'Gotovo — idemo na jelovnik',
+    grillTitle: 'Roštilj', grillIntro: 'Od mesa do stola: koji komad kupiti, kako ga isjeći i oblikovati, marinade, žar, dimljenje i salamurenje — pa jela sa žara i ono što ide uz njih. Sve se može i u grill-tavi.',
+    grillGuides: 'Vodiči za roštilj', grillGuidesN: 'vodiča', grillDishes: 'Jela sa žara', grillSides: 'Prilozi i umaci',
+    grillOn: 'Roštilj je uključen u „Šta kuhamo“ — jelovnik stavlja jela sa žara najčešće vikendom i ljeti.', grillOff: 'Roštilj je isključen u „Šta kuhamo“ — jelovnik ne bira jela sa žara.',
+    grillHint: 'Roštilj: dani s roštiljem najčešće dolaze vikendom i od maja do septembra, zimi radnim danom rijetko. Uz jelo luk, kajmak i ajvar, urnebes ili salata.',
   },
   en: {
     appTagline: 'A weekly menu from the home kitchen',
@@ -197,6 +201,10 @@ const S = {
     guideSkip: 'Skip the guide', guideDone: 'Done — enjoy!', guideShow: 'Show the “First steps” guide', guideShown: 'The guide is on the Menu page.',
     starterTitle: 'Quick start: what do you usually have?', starterLede: 'The basics are already ticked — untick what you don’t have, tick the rest. Everything else is further down this page.',
     starterAll: 'Tick all', starterDone: 'Done — on to the menu',
+    grillTitle: 'Grill', grillIntro: 'From the butcher to the table: which cut to buy, how to cut and shape it, marinades, the fire, smoking and curing — then the dishes off the grill and what goes with them. Everything also works in a grill pan.',
+    grillGuides: 'Grill guides', grillGuidesN: 'guides', grillDishes: 'Off the grill', grillSides: 'Sides & sauces',
+    grillOn: 'Grill is switched on in “What we cook” — the menu puts grill dishes mostly at the weekend and in summer.', grillOff: 'Grill is switched off in “What we cook” — the menu does not pick grill dishes.',
+    grillHint: 'Grill: grill days come mostly at the weekend and from May to September, rarely on a winter weekday. Served with onion, kajmak and ajvar, urnebes or a salad.',
   },
 };
 
@@ -209,6 +217,7 @@ const LISTS = {
   style: {
     domaca: ['Domaća jela (variva, pite, pečenja)', 'Home cooking (stews, pies, roasts)'], tjestenina: ['Tjestenina i rižoto', 'Pasta & risotto'],
     evropska: ['Evropska klasika (gulaši, zapečena jela, salate)', 'European classics (braises, oven bakes, salads)'], vojnicka: ['Vojnička kuhinja', 'Army kitchen'],
+    rostilj: ['Roštilj (ćevapi, ražnjići, riba i povrće sa žara)', 'Grill (ćevapi, skewers, grilled fish and veg)'],
   },
   // regions: only dishes that really belong to one region get one. [bs, en, country]
   reg: {

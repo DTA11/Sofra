@@ -9,7 +9,7 @@ export function defaults() {
     v: 1,
     lang: (navigator.language || 'bs').toLowerCase().startsWith('en') ? 'en' : 'bs',
     household: 4,
-    styles: { domaca: 3, tjestenina: 1, evropska: 1, vojnicka: 0 },
+    styles: { domaca: 3, tjestenina: 1, evropska: 1, vojnicka: 0, rostilj: 1 },
     rules: { beef: 2, chicken: 3, lamb: 1, pork: 1, fish: 2 },
     noRepeatWeeks: 2,
     weekdayMax: 90,

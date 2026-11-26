@@ -7,7 +7,7 @@ Bosanski (ijekavica) prvo, engleski kao prekidač.
 pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvezi (JSON)* / *Uvezi*.
 
 ## Šta radi
-- Sedmični plan: u postavkama „Šta kuhamo“ biraš koliko često dolaze domaća jela, tjestenina i rižoto, evropska klasika i vojnička kuhinja. Porijeklo jela (država/regija) postoji samo u podacima i nigdje se ne prikazuje.
+- Sedmični plan: u postavkama „Šta kuhamo“ biraš koliko često dolaze domaća jela, tjestenina i rižoto, evropska klasika, vojnička kuhinja i roštilj. Porijeklo jela (država/regija) postoji samo u podacima i nigdje se ne prikazuje.
 - Klizači „Bez mesa“ (ne / bar 2 dana / bar 4 dana / uvijek — tada ni ribe) i „Zdravije“ (0–3; češće ocjene A–B, na najvišem nivou rijetko D/E i najviše 1 desert sedmično). Stari prekidač „Prednost zdravijim jelima“ se prevodi u Zdravije = 2.
 - **Pohovano** (js/data/recipes-meals.js): Bečka šnicla, svinjska šnicla, pileća prsa, riblji file, lignje s tartar umakom; bez mesa: patlidžan, karfiol, šampinjoni, sir (uz postojeće tikvice i popeke). Ulje „za prženje“ se u nutrijentima računa samo 15 %.
 - **Uz ručak** (js/data/recipes-sides.js, pravila u planner.js `SIDES`, `groupOf`, `supaFits`): predjelo je samo **bistra supa** (`supa: 1` — pileća, goveđa, od povrća, s knedlicama od griza, vojnička pileća); **čorbe** su glavno jelo ili lagana večera. Postavka „Supa prije ručka“: nikad / ponekad (vikend, pite, pečenja, pohovano, punjena jela) / uvijek; nikad uz grah, gulaše i čorbe. **Prilog** (salata, jogurt, kiselo mlijeko, kiseli kupus, turšija, kajmak i ajvar) bira se po vrsti jela, samo u sezoni, prvo iz zimnice; ne ponavlja namirnicu iz glavnog jela (`key`). Prilozi tipa `side` se ne prikazuju u listi recepata i ne troše cijelu teglu. Ramazan zadržava čorbu za iftar.
@@ -26,6 +26,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - **Doručak bez kuhanja** (#/dorucci): 20 složenih doručaka od kupovnih proizvoda (js/data/recipes-combo.js, vrsta `combo`, količine po osobi); postavka „Doručak bez kuhanja radnim danom“ (pon–pet složeni, vikendom kuhani)
 - Kupovni proizvodi (`prod` u ingredients.js): namazi, delikatesa, konzerve, mliječno, pekara, voće, čaj i kafa — dugotrajna zaliha u ostavi; spisak po odjeljcima prodavnice
 - Omiljena jela, kratka priča svakog jela
+- **Roštilj** (#/rostilj, js/data/recipes-grill.js): 7 vodiča (meso, oblikovanje, marinade, salamurenje, žar, dimljenje, prilozi), 16 jela sa žara (`grill: 1`) i umaci (urnebes, jogurt s bijelim lukom), filter „Roštilj“ u Receptima. U „Šta kuhamo“ klizač „Roštilj“ (stil `rostilj`): češće vikendom i ljeti. Roštilj je opcionalna oprema — sve ide i u grill-tavi.
 - **Vodiči** (/vodici/ bs, /guides/ en): statične stranice s osnovama kuhanja (prvi: riža — omjer, porcije, greške); recepti s tom namirnicom linkuju vodič. Plan i teme: GUIDES.md
 - **Slatko**: kolači, torte, sitni kolači, orijentalni slatkiši, preračunavanje kalupa
 - **Vojnička kuhinja** (#/vojnicka): kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
@@ -52,6 +53,8 @@ js/data/recipes-sweet.js  slatko
 js/data/recipes-slo.js    slovenska kuhinja (tekst i količine napisani za Sofru)
 js/data/recipes-more.js   Hrvatska, Crna Gora, Sjeverna Makedonija, Albanija i Kosovo
 js/data/recipes-combo.js  složeni doručci bez kuhanja (po osobi)
+js/data/recipes-grill.js  jela sa žara i umaci (Roštilj)
+tools/grill-guides/       tekstovi vodiča za roštilj (bs, en) + build.mjs
 js/data/index.js      izvedeni filteri (posno, bez svinjetine…), izvori, praznični meniji
 sw.js                 offline keš (povećaj VERSION pri svakoj promjeni)
 manifest.webmanifest  PWA manifest
