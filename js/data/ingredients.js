@@ -193,6 +193,13 @@ const list = [
   ['ljutenica', 'Ljutenica', 'Ljutenica', 'jar', { z: 1 }],
   ['pindjur', 'Pinđur', 'Pinđur', 'jar', { z: 1 }],
   ['sok_sipak', 'Sok od šipka / zove', 'Rosehip or elderflower syrup', 'jar', { z: 1 }],
+  // Za zimnicu (sezonsko voće i povrće, krupna so, gorušica)
+  ['pepper_red', 'Crvena paprika (babura, za pečenje)', 'Red peppers (for roasting)', 'veg', { p: 1, m: [8, 9, 10] }],
+  ['plums', 'Šljive (svježe)', 'Plums (fresh)', 'veg', { p: 1, m: [8, 9, 10] }],
+  ['apricots', 'Kajsije', 'Apricots', 'veg', { p: 1, m: [6, 7] }],
+  ['strawberries', 'Jagode', 'Strawberries', 'veg', { p: 1, m: [5, 6] }],
+  ['salt_coarse', 'Krupna so bez joda (za kiseljenje)', 'Coarse non-iodised salt (for pickling)', 'spice', {}],
+  ['mustard_seed', 'Gorušica (zrno)', 'Mustard seed', 'spice', {}],
   // Mahunarke i povrće za nove recepte
   ['lentils', 'Leća (crvena ili smeđa)', 'Lentils (red or brown)', 'dry', {}],
   ['chickpeas', 'Slanutak (leblebija)', 'Chickpeas', 'dry', {}],

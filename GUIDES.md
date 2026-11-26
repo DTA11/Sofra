@@ -8,7 +8,7 @@ if Sofra is ever opened up or monetised. Guides are written ahead and published 
 - Each guide is a plain static page, one per language: `vodici/<slug>/index.html` (bs, ijekavica) and
   `guides/<slug>/index.html` (en), linked with `hreflang`. Style: `css/guide.css` (same palette and fonts as the app).
 - Index pages: `vodici/index.html`, `guides/index.html` — add a card for every published guide.
-- Grill guides are generated: texts in `tools/grill-guides/bs.mjs` + `en.mjs`, run `node tools/grill-guides/build.mjs` (also rewrites both index pages).
+- Grill and zimnica guides are generated: texts in `tools/grill-guides/` and `tools/zimnica-guides/` (`bs.mjs` + `en.mjs`), run `node tools/grill-guides/build.mjs` (builds both sets and rewrites both index pages).
 - `js/data/guides.js` lists guides with `date`, the ingredient ids they cover and/or recipe ids (`rec`); recipe pages show
   "📖 Vodič: …" under the ingredients when a live guide matches.
 - Same rules as the app: no countries/regions, no brands, no sources; recipes linked as `/#/recipe/<id>`.
@@ -27,6 +27,7 @@ if Sofra is ever opened up or monetised. Guides are written ahead and published 
 |---|---|---|
 | 1 | Kako skuhati rižu (omjer, porcije, greške) | ✅ published 2026-11-25 |
 | R1–R7 | Roštilj: izbor mesa, oblikovanje, marinade, salamurenje i sušenje, vatra i žar, dimljenje, prilozi i umaci (tools/grill-guides/, `grill: 1` u guides.js → stranica #/rostilj) | ✅ published 2026-11-26 |
+| Z1–Z5 | Zimnica: tegle i sterilizacija, omjeri sirćeta/soli/šećera, kiseli kupus, čuvanje, pokvarena tegla (tools/zimnica-guides/, `zim: 1` u guides.js → stranica #/zimnica) | ✅ published 2026-11-26 |
 | 2 | Mjere i porcije: koliko čega po osobi (meso, tjestenina, krompir, povrće, supa; šolja/kašika u grame) | next |
 | 3 | Tjestenina: koliko vode i soli, al dente, porcije | planned |
 | 4 | Krompir: kuhani, pire, pečeni, pomfrit | planned |

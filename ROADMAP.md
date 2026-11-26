@@ -1,6 +1,6 @@
 # Sofra — plan razvoja
 
-Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v91). Urađeno: 11 (Roštilj).
+Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v94). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
 1. ✅ **„Ne volimo“** (urađeno 26. 11. 2026, sofra-v93) — Postavke → „Ne volimo“: 22 grupe (gljive, riba, iznutrice, kupus, grah/leća/slanutak…) + bilo koja namirnica preko polja „Dodaj drugu namirnicu“ (st.dislikes, ID-jevi iz ingredients.js, DISLIKE_GROUPS). Planer (eligible), prilozi i „Prijedlog za danas“ preskaču jela koja ih trebaju (opcionalni sastojci se ne broje); recept ostaje u listi, na njemu piše „Ne volite: …“.
@@ -21,6 +21,8 @@ Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v91). Urađeno: 11 (Roštilj
     - **7 vodiča** (/vodici/ + /guides/): izbor mesa i količine, ćevapi/pljeskavice/ražnjići (mljevenje, oblikovanje), marinade, salamurenje i sušenje, vatra i žar, dimljenje, prilozi i umaci. Tekstovi u tools/grill-guides/bs.mjs + en.mjs, stranice pravi `node tools/grill-guides/build.mjs`.
     - **14 jela sa žara + 2 umaka** (js/data/recipes-grill.js; ćevapi i pljeskavica dobili `grill: 1`), filter „🔥 Roštilj“ u Receptima i stranica #/rostilj (vodiči, jela, prilozi). Roštilj je opcionalna oprema — sve ide i u grill-tavi.
     - **„Roštilj“ u Šta kuhamo** (stil `rostilj`, zadano „rijetko“): dani s roštiljem češće vikendom i maj–septembar, zimi radnim danom rijetko; s opremom „Roštilj“ malo češće. Prilog uz roštilj: luk, kajmak i ajvar, urnebes, šopska…; riba sa žara dobija riblje priloge.
+
+12. ✅ **Zimnica** (urađeno 26. 11. 2026, sofra-v94) — stranica #/zimnica (pločica u Receptima, link iz Ostave i s Jelovnika): kalendar po mjesecima, 10 recepata s prinosom u teglama (tegle idu pravo u Ostavu), dugme „Na spisak“, 5 vodiča (/vodici/ + /guides/): tegle i sterilizacija, omjeri, kiseli kupus, čuvanje, pokvarena tegla.
 
 ## Pravila (podsjetnik)
 Bez država/regija u UI, „Vojnička kuhinja“ (nikad JNA), bez izvora i brendova, nove namirnice u ingredients.js I nutrition.js, ćilim boje, bs (ijekavica) + en, povećati VERSION u sw.js, testirati (Node + Playwright) prije pusha.

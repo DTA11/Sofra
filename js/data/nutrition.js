@@ -27,6 +27,7 @@ export const NUT = {
   parsley: [36, 3, 0.8, 0.1, 6.3, 0.9, 3.3, 0.1, 1], root_mix: [38, 1.1, 0.2, 0, 8.5, 4, 2.6, 0.1, 1], parsley_root: [55, 2.3, 0.6, 0, 12, 3, 4.3, 0, 1],
   peas_fresh: [81, 5.4, 0.4, 0.1, 14, 5.7, 5.1, 0, 1], dill: [43, 3.5, 1.1, 0, 7, 0, 2.1, 0.2, 1], lettuce: [15, 1.4, 0.2, 0, 2.9, 0.8, 1.3, 0, 1],
   vine_leaves: [93, 5.6, 2.1, 0.3, 17, 6, 11, 0, 1], chives: [30, 3.3, 0.7, 0.1, 4.4, 1.9, 2.5, 0, 1], kale: [32, 3, 0.6, 0.1, 5.4, 0.5, 4, 0, 1],
+  pepper_red: [31, 1, 0.3, 0, 6, 4.2, 2.1, 0, 1], plums: [46, 0.7, 0.3, 0, 11.4, 9.9, 1.4, 0, 1], apricots: [48, 1.4, 0.4, 0, 11, 9.2, 2, 0, 1], strawberries: [32, 0.7, 0.3, 0, 7.7, 4.9, 2, 0, 1],
   prunes: [240, 2.2, 0.4, 0, 64, 38, 7.1, 0, 1], lemon: [29, 1.1, 0.3, 0, 9, 2.5, 2.8, 0, 1], apple: [52, 0.3, 0.2, 0, 14, 10, 2.4, 0, 1],
   walnuts: [654, 15, 65, 6, 14, 2.6, 6.7, 0, 0], almonds: [579, 21, 50, 3.8, 22, 4.4, 12.5, 0, 0], dates: [282, 2.5, 0.4, 0, 75, 63, 8, 0, 1],
   // dairy & eggs
@@ -54,7 +55,7 @@ export const NUT = {
   wine_red: [40, 0.1, 0, 0, 2.6, 0.6, 0, 0, 0], wine_white: [40, 0.1, 0, 0, 2.6, 1, 0, 0, 0], vinegar: [20, 0, 0, 0, 0.6, 0.4, 0, 0, 0],
   stock_cube: [250, 10, 20, 10, 15, 5, 0, 50, 0], // per 100 g of cube; as ready stock see STOCK
   // spices
-  salt: [0, 0, 0, 0, 0, 0, 0, 100, 0], pepper_black: SPICE, paprika_sweet: [282, 14, 13, 2, 54, 10, 35, 0.1, 0], paprika_hot: SPICE,
+  salt: [0, 0, 0, 0, 0, 0, 0, 100, 0], salt_coarse: [0, 0, 0, 0, 0, 0, 0, 100, 0], mustard_seed: [508, 26, 36, 2, 28, 7, 12, 0, 0], pepper_black: SPICE, paprika_sweet: [282, 14, 13, 2, 54, 10, 35, 0.1, 0], paprika_hot: SPICE,
   bay_leaf: SPICE, vegeta: [200, 5, 1, 0.2, 30, 10, 2, 55, 0], cinnamon: SPICE, cloves: SPICE, nutmeg: SPICE, oregano: SPICE, thyme: SPICE,
   basil: [23, 3.2, 0.6, 0, 2.7, 0.3, 1.6, 0, 1], rosemary: SPICE, saffron: SPICE, chili: SPICE, mint_dry: SPICE, caraway: SPICE, marjoram: SPICE,
   // jars & tins
@@ -113,4 +114,4 @@ export const YIELD = {
   buckwheat: 2.5, cornmeal: 4, buckwheat_flour: 4, flour: 1.3,
 };
 // edible share of what is bought (bones, heads, skin)
-export const EDIBLE = { chicken: 0.7, chicken_legs: 0.75, smoked_ribs: 0.6, trout: 0.55, mackerel: 0.6, chicken_wings: 0.65, fish_white: 0.55, cauliflower: 0.6, chicken_giblets: 0.5, lamb_offal: 0.7 };
+export const EDIBLE = { plums: 0.93, apricots: 0.92, pepper_red: 0.8, chicken: 0.7, chicken_legs: 0.75, smoked_ribs: 0.6, trout: 0.55, mackerel: 0.6, chicken_wings: 0.65, fish_white: 0.55, cauliflower: 0.6, chicken_giblets: 0.5, lamb_offal: 0.7 };

@@ -50,6 +50,7 @@ export function nutrition(r) {
     const note = ex.note ? ex.note.join(' ') : '';
     if (/prženje|frying/i.test(note)) g *= 0.15; // most of the frying oil stays in the pan
     if (/korica|zest/i.test(note) && id === 'lemon') g = 5 * q;
+    if (ex.eat != null) g *= ex.eat; // brine: most of it stays in the jar or barrel
     const isStock = id === 'stock_cube' && ['l', 'ml', 'dl'].includes(unit);
     const v = isStock ? STOCK : NUT[id];
     if (!v) continue;
@@ -62,12 +63,14 @@ export function nutrition(r) {
       if (g0.sec === 'meat' || g0.mt) cooked *= 0.75;
       else if (v[8] && id !== 'beans') cooked *= 0.85;
     }
-    if (id === 'salt' || id === 'bones_beef' || g0.drink) cooked = 0; // tea/coffee: the water does not count for the grade
+    if (id === 'salt' || id === 'salt_coarse' || id === 'bones_beef' || g0.drink) cooked = 0; // tea/coffee: the water does not count for the grade
     mass += cooked;
     if (v[8]) fvlMass += cooked;
   }
   // soups: the bowl is mostly broth
   if (r.type === 'soup') mass = Math.max(mass, r.serves * (r.cu === 'jna' ? 300 : 350));
+  // zimnica: the weight that ends up in the jars (vegetables and fruit cook down a lot)
+  if (r.type === 'zimnica' && r.jarG) mass = r.serves * r.jarG;
   mass = Math.max(mass, 1);
   const serv = Object.fromEntries(KEYS.map((k) => [k, tot[k] / r.serves]));
   const p100 = Object.fromEntries(KEYS.map((k) => [k, (tot[k] / mass) * 100]));

@@ -3,6 +3,7 @@ import { ING, SECTIONS, MEAT_ALT, DISLIKE_GROUPS, dislikedIn } from './data/ingr
 import { t, L, keys, regionCountry, tx, setLang, getLang, unitLabel, DAYS, MONTHS } from './i18n.js';
 import * as store from './store.js';
 import { liveGuides, GUIDE_INDEX } from './data/guides.js';
+import { ZIM_NOTES } from './data/recipes-zimnica.js';
 import { dishArt, ICON, KILIM } from './art.js';
 import { nutrition, grams, GRADE_COLORS } from './nutrition.js';
 import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, shopParts, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
@@ -15,7 +16,12 @@ const iname = (id) => { const g = ING[id]; return g ? (getLang() === 'bs' ? g.bs
 const DAYMS = 86400000;
 const nf = (v, d = 0) => (Math.round(v * 10 ** d) / 10 ** d).toLocaleString(getLang() === 'bs' ? 'hr-HR' : 'en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
 const gradeChip = (r) => { const g = nutrition(r).grade; return `<span class="ns ns-${g}" title="${t('nutGrade')}">${g}</span>`; };
-const perPortion = (r) => r.serves > 1 || r.type === 'soup' || r.type === 'combo';
+const perPortion = (r) => r.type !== 'zimnica' && (r.serves > 1 || r.type === 'soup' || r.type === 'combo');
+const isZim = (r) => r.type === 'zimnica';
+/** "tegla / tegle / tegli" (or heads of cabbage) for a zimnica recipe */
+const jarU = (r, n) => unitLabel(r.yieldU || 'tegla', n);
+/** Dishes listed under Recepti: no desserts (Slatko), no plain accompaniments, no zimnica (own page). */
+const inRecipes = (r) => !['dessert', 'side', 'zimnica'].includes(r.type);
 function nutTags(n, pp) {
   // per serving where a serving exists, otherwise per 100 g (trays of sweets)
   const s = n.serv, h = n.p100, out = [];
@@ -97,13 +103,13 @@ function scaleFor(r) {
   return s / r.serves;
 }
 function defaultServ(r) {
-  if (r.type === 'dessert') return r.serves;
+  if (r.type === 'dessert' || isZim(r)) return r.serves;
   return S().household;
 }
 
 // ───────── routing ─────────
 const routes = {
-  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, vojnicka: viewJNA, holidays: viewHolidays, dorucci: viewCombos, rostilj: viewGrill,
+  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, vojnicka: viewJNA, holidays: viewHolidays, dorucci: viewCombos, rostilj: viewGrill, zimnica: viewZimnica,
   pantry: viewPantry, shop: viewShop, settings: viewSettings, cook: viewCook,
 };
 function route() {
@@ -113,8 +119,8 @@ function route() {
   JUF.home = S().jufka !== 'shop';
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
-  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
-  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
+  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
+  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
   syncInstallButtons();
   { const gk = { settings: 'settings', pantry: 'pantry' }[name]; if (gk && !(S().guide || {})[gk]) { S().guide = { ...S().guide, [gk]: true }; store.save(); } } // quick guide: page visited = step done
@@ -227,7 +233,7 @@ function viewHome() {
     </section>
     <section class="home-sec privacy"><h3>${ICON.check} ${t('privacyTitle')}</h3><p>${t('privacyText')}</p></section>
     <footer class="sitefoot"><p><b>Sofra</b> — ${t('footer').replace(/^Sofra — /, '')}</p>
-      <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/vojnicka">${t('jnaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="${GUIDE_INDEX[getLang()]}">${t('guides')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
+      <p class="small"><a href="#/recipes">${t('tabRecipes')}</a> · <a href="#/sweets">${t('tabSweets')}</a> · <a href="#/vojnicka">${t('jnaTitle')}</a> · <a href="#/zimnica">${t('zimnicaTitle')}</a> · <a href="#/holidays">${t('holidays')}</a> · <a href="${GUIDE_INDEX[getLang()]}">${t('guides')}</a> · <a href="#/settings">${t('settings')}</a></p></footer>`;
 }
 
 // "Prijedlog za danas": a random dish, the same all day, new one on tap
@@ -313,7 +319,7 @@ function viewPlan() {
       <button class="qbtn" data-act="print">${ICON.doc}<span>${t('pdf')}</span></button>
       <a class="qbtn" href="#/holidays">${ICON.party}<span>${t('holidays')}</span></a>
     </div>`;
-  const season = `<section class="season"><h3>${ICON.leaf} ${t('seasonNow')} · ${MONTHS[getLang()][now.getMonth()]}</h3><div class="chips">${sez}</div></section>`;
+  const season = `<section class="season"><h3>${ICON.leaf} ${t('seasonNow')} · ${MONTHS[getLang()][now.getMonth()]}</h3><div class="chips">${sez}</div>${zimNowLine()}</section>`;
   if (!st.plan) {
     return `<section class="band hero-band"><p class="eyebrow">${dateTxt}</p><h1 class="display">Sofra</h1><p class="lede">${t('appTagline')}</p>
       <div class="hero-plate">${dishArt(R['bosanski-lonac'], 'big')}</div></section>
@@ -458,13 +464,14 @@ function activeFilterCount() {
   return f.cu.size + f.diet.size + f.grade.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0) + (f.grill ? 1 : 0);
 }
 function viewRecipes() {
-  const list = RECIPES.filter((r) => r.type !== 'dessert' && r.type !== 'side').filter((r) => matches(r, ui.filters));
-  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter((r) => r.type !== 'dessert' && r.type !== 'side').length} ${t('dishes')}</p></section>
+  const list = RECIPES.filter(inRecipes).filter((r) => matches(r, ui.filters));
+  return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter(inRecipes).length} ${t('dishes')}</p></section>
     <div class="feature-row">
       <a class="feature jna" href="#/vojnicka">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
       <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
       <a class="feature nocook" href="#/dorucci">${ICON.pantry}<b>${t('combosTitle')}</b><small>${RECIPES.filter((r) => r.type === 'combo').length} ${t('combos')}</small></a>
       <a class="feature grill" href="#/rostilj">${ICON.flame}<b>${t('grillTitle')}</b><small>${grillDishes().length} ${t('dishes')} · ${grillGuides().length} ${t('grillGuidesN')}</small></a>
+      <a class="feature zimf" href="#/zimnica">${ICON.jar}<b>${t('zimnicaTitle')}</b><small>${zimRecipes().length} ${t('zimRecipesN')} · ${zimGuides().length} ${t('grillGuidesN')}</small></a>
     </div>
     ${searchBar()}${filterPanel()}
     <p class="muted small">${list.length} ${t('results')}</p>
@@ -517,6 +524,49 @@ function viewGrill() {
     <h2 class="sec-title">${t('grillSides')}</h2>
     <div class="grid">${sides.map(card).join('')}</div>`;
 }
+// ───────── ZIMNICA: season calendar, recipes (jars go straight into Ostava) and guides ─────────
+const zimRecipes = () => RECIPES.filter(isZim);
+const zimGuides = () => liveGuides().filter((g) => g.zim);
+const zimFor = (m) => zimRecipes().filter((r) => (r.when || []).includes(m));
+/** Short line for the Plan page: what to put up this month. */
+function zimNowLine() {
+  const m = new Date().getMonth() + 1; const list = zimFor(m);
+  if (!list.length) return '';
+  return `<p class="small zimnow">🫙 ${t('zimNow')}: ${list.map((r) => `<a href="#/recipe/${r.id}">${esc(name(r))}</a>`).join(', ')} · <a href="#/zimnica">${t('zimCal')} →</a></p>`;
+}
+function viewZimnica() {
+  const st = S();
+  const m = new Date().getMonth() + 1;
+  const now = zimFor(m), next = zimFor(m % 12 + 1).filter((r) => !now.includes(r));
+  const mon = (k) => MONTHS[getLang()][k - 1];
+  const cal = Array.from({ length: 12 }, (_, k) => k + 1).map((k) => {
+    const list = zimFor(k);
+    const note = ZIM_NOTES[k] ? `<small>${esc(tx(ZIM_NOTES[k]))}</small>` : '';
+    return `<li class="zm ${k === m ? 'on' : ''}"><b>${esc(mon(k))}</b><div>${list.length ? `<div class="chips">${list.map((r) => `<a class="chip" href="#/recipe/${r.id}">${esc(name(r))}</a>`).join('')}</div>` : ''}${note}</div></li>`;
+  }).join('');
+  const guides = zimGuides().map((g) => { const [title, href, sub] = g[getLang()]; return `<li><a href="${href}"><b>${esc(title)}</b>${sub ? `<span>${esc(sub)}</span>` : ''}</a></li>`; }).join('');
+  const jars = Object.values(ING).filter((g) => g.z && Number(st.pantry[g.id]) > 0)
+    .map((g) => `<span class="chip chip-static">🫙 ${esc(iname(g.id))} · <b>${Number(st.pantry[g.id])}</b></span>`).join('');
+  return `<section class="band page-band zimband"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('zimnicaTitle')}</h1><p class="lede">${t('zimIntro')}</p></section>
+    <section class="zimnow-box"><h2 class="sec-title">${t('zimNowT')} · ${esc(mon(m))}</h2>
+      ${now.length ? `<div class="grid">${now.map(card).join('')}</div>` : `<p class="muted">${esc(ZIM_NOTES[m] ? tx(ZIM_NOTES[m]) : t('zimNothing'))}</p>`}
+      ${next.length ? `<p class="small muted">${t('zimNext')} (${esc(mon(m % 12 + 1))}): ${next.map((r) => `<a href="#/recipe/${r.id}">${esc(name(r))}</a>`).join(', ')}</p>` : ''}</section>
+    <section class="psec"><h3>${t('zimInPantry')}</h3>${jars ? `<div class="chips">${jars}</div>` : `<p class="small muted">${t('zimNoJars')}</p>`}
+      <p class="small"><a href="#/pantry">${t('tabPantry')} →</a></p></section>
+    ${guides ? `<h2 class="sec-title">📖 ${t('zimGuides')}</h2><ul class="gcards">${guides}</ul>` : ''}
+    <h2 class="sec-title">${t('zimCal')}</h2>
+    <ol class="zcal">${cal}</ol>
+    <h2 class="sec-title">🫙 ${t('zimRecipes')}</h2>
+    <div class="grid">${zimRecipes().map(card).join('')}</div>`;
+}
+/** Jars made: straight into Ostava (zimnica items count jars). */
+function addJars(r, n) {
+  const st = S();
+  n = Math.max(1, Math.round(n));
+  st.pantry[r.jar] = (Number(st.pantry[r.jar]) || 0) + n;
+  store.save();
+  toast(t('zimAdded').replace('{n}', n).replace('{u}', jarU(r, n)).replace('{x}', iname(r.jar)));
+}
 function viewCombos() {
   const list = RECIPES.filter((r) => r.type === 'combo');
   return `<section class="band page-band"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('combosTitle')}</h1><p class="lede">${t('combosIntro')}</p></section>
@@ -554,7 +604,7 @@ function viewRecipe(id) {
   } else {
     const s = ui.serv[r.id] ?? defaultServ(r);
     scaler = `<div class="scaler">
-      <span>${r.type === 'dessert' && r.yieldNote ? esc(tx(r.yieldNote)) + ' · ' : ''}${t('servings')}</span>
+      <span>${r.type === 'dessert' && r.yieldNote ? esc(tx(r.yieldNote)) + ' · ' : ''}${isZim(r) ? esc(jarU(r, s).replace(/^./, (c) => c.toUpperCase())) + (r.jarMl ? ` (${nf(r.jarMl / 1000, r.jarMl % 100 ? 2 : 1)} l)` : '') : t('servings')}</span>
       <button class="round" data-act="serv" data-id="${r.id}" data-d="-1">−</button><b class="sv">${s}</b><button class="round" data-act="serv" data-id="${r.id}" data-d="1">+</button>
       ${r.sApprox ? `<small class="muted">(${t('estimate')})</small>` : ''}
     </div>
@@ -575,12 +625,14 @@ function viewRecipe(id) {
       <div class="row gap wrap actions">
         <a class="btn primary" href="#/cook/${r.id}${servParam}${r.pan ? '?p=1' : ''}">${ICON.play} ${r.type === 'combo' ? t('assemble') : t('cook')}</a>
         <button class="btn ${fav ? 'faved' : ''}" data-act="fav" data-id="${r.id}">${fav ? ICON.starFill : ICON.star} ${t('fav')}</button>
-        <button class="btn" data-act="addplan" data-id="${r.id}">${ICON.plus} ${t('addToPlan')}</button>
+        ${isZim(r) ? `<button class="btn" data-act="jarsin" data-id="${r.id}">🫙 ${t('zimMade')}</button>
+        <button class="btn" data-act="zimshop" data-id="${r.id}">${ICON.shop} ${t('zimToShop')}</button>` : `<button class="btn" data-act="addplan" data-id="${r.id}">${ICON.plus} ${t('addToPlan')}</button>`}
         <button class="btn" data-act="print" data-kind="recipe" data-id="${r.id}">${ICON.doc} ${t('pdf')}</button>
         <button class="btn" data-act="send" data-kind="recipe" data-id="${r.id}">${ICON.share} ${t('send')}</button>
       </div>
       <blockquote class="story">${esc(tx(r.story))}</blockquote>
       ${scaler}
+      ${isZim(r) ? zimInfo(r) : ''}
       ${r.juf ? jufSwitch() : ''}
       <h3>${t('ingredients')}</h3>
       <ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul>
@@ -591,6 +643,13 @@ function viewRecipe(id) {
     </article>`;
 }
 
+/** Zimnica recipe: what one batch gives, where the jars go, how long until it is ready. */
+function zimInfo(r) {
+  const n = Math.round(r.serves * scaleFor(r));
+  return `<div class="zinfo"><p>🫙 ${t('zimYield').replace('{n}', n).replace('{u}', jarU(r, n))} → ${t('tabPantry')}: <b>${esc(iname(r.jar))}</b> <small class="muted">(${t('zimHave')} ${Number(S().pantry[r.jar]) || 0})</small></p>
+    ${r.wait ? `<p class="small muted">⏳ ${esc(tx(r.wait))}</p>` : ''}
+    <p class="small"><a href="#/zimnica">${t('zimCal')} →</a></p></div>`;
+}
 /** Homemade or shop-bought pastry sheets — one switch for every pita that uses jufke. */
 function jufSwitch() {
   return `<div class="jufsw"><span class="flabel">${t('jufka')}</span><div class="chips">
@@ -641,7 +700,7 @@ function renderCookStep() {
     ${s[2] ? `<button class="btn primary big steptimer" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">${ICON.timer} ${t('timer')} ${s[2]} min</button>` : ''}`;
   markStepTimer();
   const nx = $('[data-act="cnext"]');
-  if (nx) nx.textContent = cook.i === r.st.length - 1 ? `✓ ${t('done')}` : `${t('next')} →`;
+  if (nx) nx.textContent = cook.i === r.st.length - 1 ? (isZim(r) ? `✓ ${t('zimDoneBtn').replace('{n}', Math.round(r.serves * cook.f))}` : `✓ ${t('done')}`) : `${t('next')} →`;
 }
 /** Step timer button: shows "running" while this step's timer is on, so a second tap doesn't start a duplicate. */
 function markStepTimer() {
@@ -710,7 +769,7 @@ function viewPantry() {
   return `<section class="band page-band"><h1 class="display">${t('tabPantry')}</h1><p class="lede">${t('pantryIntro')}</p></section>
     ${starter}
     <div class="searchbar"><input type="search" id="pq" placeholder="${t('search')}" value="${esc(ui.pantryQ)}"></div>
-    ${zim.length ? `<section class="psec zim"><h3>${t('zimnica')} <small class="muted">(${t('jars')})</small></h3>${zim.map(zrow).join('')}</section>` : ''}
+    ${zim.length ? `<section class="psec zim"><h3>${t('zimnica')} <small class="muted">(${t('jars')})</small></h3>${zim.map(zrow).join('')}<p class="small"><a href="#/zimnica">${t('zimCal')} · ${t('zimRecipes')} →</a></p></section>` : ''}
     ${prod.length ? `<section class="psec prod"><h3>${t('prodTitle')} <small class="muted">(${t('prodHint')})</small></h3>
       ${prod.map((s) => `<h4>${esc(L('sec', s.sec))}</h4><div class="pgrid">${s.items.map(row).join('')}</div>`).join('')}</section>` : ''}
     ${secs.map((s) => `<section class="psec"><h3>${esc(L('sec', s.sec))}</h3><div class="pgrid">${s.items.map(row).join('')}</div></section>`).join('')}`;
@@ -751,9 +810,15 @@ function sendText(text, title, url) {
   const old = () => { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch {} ta.remove(); };
   if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, old); else old();
 }
+function extraSection(st) {
+  return `<section class="ssec"><h3>${esc(L('sec', 'other'))}</h3>
+      ${st.shop.extra.map((e, k) => `<label class="sitem ${e.done ? 'on' : ''}"><input type="checkbox" data-act="xdone" data-k="${k}" ${e.done ? 'checked' : ''}><span class="n">${esc(e.text)}</span><button class="icon" data-act="xdel" data-k="${k}">✕</button></label>`).join('')}
+      <form class="row gap" data-act="xadd"><input id="xtext" placeholder="${t('extra')}"><button class="btn">＋</button></form>
+    </section>`;
+}
 function viewShop() {
   const st = S();
-  if (!st.plan) return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1></section><div class="empty">${t('emptyPlan')}</div>`;
+  if (!st.plan) return `<section class="band page-band"><h1 class="display">${t('tabShop')}</h1></section><div class="empty">${t('emptyPlan')}</div>${st.shop.extra.length ? extraSection(st) : ''}`;
   const part = curPart();
   const { sections, have } = shoppingList(part);
   const rng = planRange();
@@ -773,10 +838,7 @@ function viewShop() {
     </div>
     ${!sections.length ? `<div class="empty">✓ ${t('youHave')}</div>` : ''}
     ${sections.map((s) => `<section class="ssec"><h3>${esc(L('sec', s.sec))}</h3>${s.items.map(item).join('')}</section>`).join('')}
-    <section class="ssec"><h3>${esc(L('sec', 'other'))}</h3>
-      ${st.shop.extra.map((e, k) => `<label class="sitem ${e.done ? 'on' : ''}"><input type="checkbox" data-act="xdone" data-k="${k}" ${e.done ? 'checked' : ''}><span class="n">${esc(e.text)}</span><button class="icon" data-act="xdel" data-k="${k}">✕</button></label>`).join('')}
-      <form class="row gap" data-act="xadd"><input id="xtext" placeholder="${t('extra')}"><button class="btn">＋</button></form>
-    </section>
+    ${extraSection(st)}
     <button class="btn" data-act="clearbought">${t('clearBought')}</button>
     ${have.length ? `<details class="have"><summary>✓ ${t('youHave')} (${have.length})</summary><ul>${have.map((it) => `<li>${esc(iname(it.haveId))}${it.haveId !== it.id ? ` <small>(${esc(iname(it.id))})</small>` : ''} <span class="muted">${esc(qtyText(it))}</span></li>`).join('')}</ul></details>` : ''}`;
 }
@@ -892,7 +954,8 @@ function exportDoc(kind, id) {
   if (kind === 'recipe') {
     const r = R[id];
     const f = scaleFor(r);
-    const servTxt = r.pan ? '' : `${ui.serv[r.id] ?? defaultServ(r)} ${t('persons')}`;
+    const sv = ui.serv[r.id] ?? defaultServ(r);
+    const servTxt = r.pan ? '' : isZim(r) ? `${sv} ${jarU(r, sv)}` : `${sv} ${t('persons')}`;
     const blocks = recipeBlocks(r, f, servTxt);
     blocks[0] = { t: 'title', text: name(r), sub: blocks[0].sub };
     return { blocks, title: name(r), file: `sofra-${r.id}.pdf` };
@@ -1073,7 +1136,14 @@ document.addEventListener('click', (e) => {
       });
       break;
     }
-    case 'cnext': { const r = R[cook.id]; if (cook.i < r.st.length - 1) { cook.i++; renderCookStep(); } else { history.back(); } break; }
+    case 'cnext': { const r = R[cook.id]; if (cook.i < r.st.length - 1) { cook.i++; renderCookStep(); } else { if (isZim(r)) addJars(r, r.serves * cook.f); history.back(); } break; }
+    case 'jarsin': { const r = R[el.dataset.id]; addJars(r, r.serves * scaleFor(r)); rer(); break; }
+    case 'zimshop': {
+      const r = R[el.dataset.id]; const f = scaleFor(r); let k = 0;
+      r.ing.forEach((i) => { if (i[1] == null || (i[3] && i[3].opt)) return; const p = ingParts(i, f); const text = `${p.nm} — ${p.qty} (${name(r)})`;
+        if (!st.shop.extra.some((e) => e.text === text && !e.done)) { st.shop.extra.push({ text, done: false }); k++; } });
+      store.save(); toast(t('zimShopped').replace('{n}', k)); break;
+    }
     case 'cprev': if (cook.i > 0) { cook.i--; renderCookStep(); } break;
     case 'timer': if (cook.timers.some((tm) => tm.label === el.dataset.label && tm.end > Date.now())) break; cook.timers.push({ label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
     case 'tdel': cook.timers.splice(Number(el.dataset.k), 1); tickTimers(); break;
@@ -1166,7 +1236,7 @@ document.addEventListener('input', (e) => {
   if (e.target.id === 'q') {
     ui.filters.q = e.target.value;
     const isSweet = location.hash.startsWith('#/sweets');
-    const list = RECIPES.filter((r) => (isSweet ? r.type === 'dessert' : r.type !== 'dessert')).filter((r) => matches(r, ui.filters));
+    const list = RECIPES.filter((r) => (isSweet ? r.type === 'dessert' : inRecipes(r))).filter((r) => matches(r, ui.filters));
     $('#results').innerHTML = list.map(card).join('');
   }
   if (e.target.id === 'pq') {

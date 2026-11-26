@@ -114,6 +114,15 @@ const SHAPES = {
     <rect x="34" y="60" width="92" height="12" fill="#e2b25e"/><rect x="34" y="72" width="92" height="6" fill="#c98b3d"/>
     <path d="M65 50v28M96 50v28" stroke="#fff" stroke-width="3"/>
     <circle cx="50" cy="55" r="2" fill="${c}"/><circle cx="80" cy="55" r="2" fill="${c}"/><circle cx="110" cy="55" r="2" fill="${c}"/>`,
+  // zimnica: two jars with a cloth lid; r.color = what is inside
+  jar: (c, r = {}) => { const f = r.color || '#c9a43a';
+    const one = (x, w, h, y0) => `<rect x="${x}" y="${y0}" width="${w}" height="${h}" rx="9" fill="#fffaf2" opacity=".95"/>
+      <rect x="${x + 4}" y="${y0 + 10}" width="${w - 8}" height="${h - 14}" rx="6" fill="${f}"/>
+      <path d="M${x + 9} ${y0 + 16}v${h - 28}" stroke="#fff" stroke-width="3" opacity=".35" stroke-linecap="round"/>
+      <rect x="${x + 2}" y="${y0 - 6}" width="${w - 4}" height="9" rx="3" fill="${c}"/>
+      <path d="M${x - 2} ${y0 + 1}q${w / 2 + 2} -12 ${w + 4} 0l-4 6q${-(w / 2) + 2} -8 ${-w + 4} 0z" fill="#e9d6b0"/>
+      <rect x="${x + 8}" y="${y0 + h / 2}" width="${w - 16}" height="12" rx="2" fill="#fffaf2" opacity=".9"/>`;
+    return `${shadow(80, 90, 50)}${one(42, 36, 50, 38)}${one(82, 40, 58, 30)}`; },
   kasika: (c) => `${shadow(80, 86, 40)}
     <path d="M44 48h72a36 28 0 0 1-72 0z" fill="#fffaf2"/>
     <ellipse cx="80" cy="48" rx="36" ry="8" fill="#fbf1de"/>
@@ -133,7 +142,7 @@ export function dishArt(r, cls = '') {
   }
   const [c, bg] = CU_COLORS[r.cu] || CU_COLORS.svakodnevno;
   const has = (id) => r.ing.some((i) => i[0] === id);
-  let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : r.type === 'side' ? 'kasika' : 'main';
+  let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : r.type === 'side' ? 'kasika' : r.type === 'zimnica' ? 'jar' : 'main';
   if (r.type === 'combo') {
     key = r.main === 'fish' ? 'fish' : !r.ing.some((i) => ['bread', 'bread_whole'].includes(i[0])) ? 'kasika' : 'bread';
   } else if (r.type === 'breakfast' || r.type === 'snack') {
@@ -151,7 +160,7 @@ export function dishArt(r, cls = '') {
   }
   const motif = `<g opacity=".22" fill="${c}">${[[14, 14], [146, 14], [14, 86], [146, 86]].map(([x, y]) => `<path d="M${x} ${y - 7}l7 7-7 7-7-7z"/>`).join('')}</g>`;
   return `<svg class="art ${cls}" viewBox="0 0 160 100" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-    <rect width="160" height="100" fill="${bg}"/>${motif}${SHAPES[key](c)}</svg>`;
+    <rect width="160" height="100" fill="${bg}"/>${motif}${SHAPES[key](c, r)}</svg>`;
 }
 
 /** Ćilim (kilim) border strip used in header and section dividers. */
@@ -187,5 +196,6 @@ export const ICON = {
   filter: I('<path d="M4 6h16M7 12h10M10 18h4"/>'),
   book: I('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'),
   flame: I('<path d="M12 3c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5.5.3 2 1.2 3 2.2 3.5C11 9 11 6 12 3z"/><path d="M4 21h16"/>'),
+  jar: I('<path d="M8 3h8v3H8z"/><path d="M7 6h10a1 1 0 0 1 1 1v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7a1 1 0 0 1 1-1z"/><path d="M6 11h12M9 15h6"/>'),
   timer: I('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4"/>'),
 };

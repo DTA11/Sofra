@@ -6,6 +6,7 @@
 //
 // Run after adding or renaming recipes or adding photos, from the repo root:
 //   python3 -m http.server 8765 &   then   node tools/share-pages.mjs
+//   (or without a server:  ROUTE=1 LOCAL=http://sofra.test node tools/share-pages.mjs)
 // Needs Playwright + Chrome (PW = path to the playwright module, CHROME = path to Chrome, both optional).
 import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 
@@ -16,6 +17,18 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 
 const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
 const p = await b.newPage({ viewport: { width: 1200, height: 630 } });
+// ROUTE=1: serve the repo files straight to the browser instead of a local http server (LOCAL is then just a name)
+if (process.env.ROUTE) {
+  const { readFileSync, statSync } = await import('node:fs');
+  const T = { html: 'text/html', js: 'text/javascript', css: 'text/css', svg: 'image/svg+xml', png: 'image/png', webp: 'image/webp', jpg: 'image/jpeg', ttf: 'font/ttf' };
+  await p.route('**/*', (route) => {
+    const u = new URL(route.request().url());
+    if (u.origin !== new URL(LOCAL).origin) return route.abort();
+    let f = '.' + decodeURIComponent(u.pathname);
+    try { if (statSync(f).isDirectory()) f += '/index.html'; return route.fulfill({ body: readFileSync(f), contentType: T[f.split('.').pop()] || 'application/octet-stream' }); }
+    catch { return route.fulfill({ status: 404, body: '' }); }
+  });
+}
 await p.goto(LOCAL + '/tools/blank.html');
 const list = await p.evaluate(async () => {
   const { RECIPES } = await import('/js/data/index.js');

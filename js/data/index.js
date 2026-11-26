@@ -11,6 +11,7 @@ import { EXTRA_RECIPES } from './recipes-extra.js';
 import { SALAD_RECIPES } from './recipes-salads.js';
 import { SIDE_RECIPES } from './recipes-sides.js';
 import { GRILL_RECIPES } from './recipes-grill.js';
+import { ZIM_RECIPES } from './recipes-zimnica.js';
 
 export const SOURCES = {
   lakisic: {
@@ -74,6 +75,7 @@ function derive(r) {
     else if (r.type === 'dessert') meal.add('dessert');
     else if (r.type === 'snack') meal.add('snack');
     else if (r.type === 'side') meal.add('lunch');
+    else if (r.type === 'zimnica') { /* jars for the winter: not a meal */ }
     else ['lunch', 'dinner'].forEach((m) => meal.add(m));
   }
   if (r.noPork && !['breakfast', 'snack'].includes(r.type) && (meal.has('lunch') || meal.has('dinner') || r.type === 'soup' || r.type === 'dessert')) meal.add('iftar');
@@ -167,7 +169,7 @@ function withJufka(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...GRILL_RECIPES, ...COMBO_RECIPES].map(derive).map(withJufka);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...GRILL_RECIPES, ...COMBO_RECIPES, ...ZIM_RECIPES].map(derive).map(withJufka);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

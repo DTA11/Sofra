@@ -104,6 +104,12 @@ const S = {
     grillTitle: 'Roštilj', grillIntro: 'Od mesa do stola: koji komad kupiti, kako ga isjeći i oblikovati, marinade, žar, dimljenje i salamurenje — pa jela sa žara i ono što ide uz njih. Sve se može i u grill-tavi.',
     grillGuides: 'Vodiči za roštilj', grillGuidesN: 'vodiča', grillDishes: 'Jela sa žara', grillSides: 'Prilozi i umaci',
     grillOn: 'Roštilj je uključen u „Šta kuhamo“ — jelovnik stavlja jela sa žara najčešće vikendom i ljeti.', grillOff: 'Roštilj je isključen u „Šta kuhamo“ — jelovnik ne bira jela sa žara.',
+    zimnicaTitle: 'Zimnica', zimRecipesN: 'recepata', zimRecipes: 'Recepti za zimnicu', zimGuides: 'Vodiči za zimnicu', zimCal: 'Kalendar zimnice',
+    zimIntro: 'Šta i kada staviti u tegle: ajvar, turšija, pekmez, kiseli kupus i ostalo — s omjerima, sterilizacijom i čuvanjem. Kad napraviš zimnicu, tegle idu pravo u ostavu, a jelovnik ih koristi za priloge.',
+    zimNow: 'Sada je vrijeme za zimnicu', zimNowT: 'Sada je vrijeme za', zimNothing: 'Ovaj mjesec nema šta u tegle — zimnica se jede.', zimNext: 'Sljedeći mjesec',
+    zimInPantry: 'U ostavi', zimNoJars: 'Još nema tegli u ostavi. Kad napraviš zimnicu, dodirni „Napravljeno — u ostavu“.',
+    zimMade: 'Napravljeno — u ostavu', zimToShop: 'Na spisak', zimShopped: 'Dodano na spisak za kupovinu: {n}', zimAdded: 'U ostavu: +{n} {u} — {x}',
+    zimYield: 'Daje {n} {u}', zimHave: 'sada u ostavi:', zimDoneBtn: 'Gotovo — u ostavu (+{n})',
     grillHint: 'Roštilj: dani s roštiljem najčešće dolaze vikendom i od maja do septembra, zimi radnim danom rijetko. Uz jelo luk, kajmak i ajvar, urnebes ili salata.',
   },
   en: {
@@ -210,6 +216,12 @@ const S = {
     grillTitle: 'Grill', grillIntro: 'From the butcher to the table: which cut to buy, how to cut and shape it, marinades, the fire, smoking and curing — then the dishes off the grill and what goes with them. Everything also works in a grill pan.',
     grillGuides: 'Grill guides', grillGuidesN: 'guides', grillDishes: 'Off the grill', grillSides: 'Sides & sauces',
     grillOn: 'Grill is switched on in “What we cook” — the menu puts grill dishes mostly at the weekend and in summer.', grillOff: 'Grill is switched off in “What we cook” — the menu does not pick grill dishes.',
+    zimnicaTitle: 'Preserves', zimRecipesN: 'recipes', zimRecipes: 'Preserving recipes', zimGuides: 'Preserving guides', zimCal: 'Preserving calendar',
+    zimIntro: 'What to put into jars and when: ajvar, pickles, plum butter, sauerkraut and more — with ratios, sterilising and storage. Once you make a batch the jars go straight into the pantry, and the menu uses them as sides.',
+    zimNow: 'Time to preserve', zimNowT: 'Time to make', zimNothing: 'Nothing to put into jars this month — the preserves get eaten.', zimNext: 'Next month',
+    zimInPantry: 'In the pantry', zimNoJars: 'No jars in the pantry yet. Once you have made a batch, tap “Made — to the pantry”.',
+    zimMade: 'Made — to the pantry', zimToShop: 'To the list', zimShopped: 'Added to the shopping list: {n}', zimAdded: 'To the pantry: +{n} {u} — {x}',
+    zimYield: 'Makes {n} {u}', zimHave: 'now in the pantry:', zimDoneBtn: 'Done — to the pantry (+{n})',
     grillHint: 'Grill: grill days come mostly at the weekend and from May to September, rarely on a winter weekday. Served with onion, kajmak and ajvar, urnebes or a salad.',
   },
 };
@@ -236,7 +248,7 @@ const LISTS = {
   },
   type: {
     main: ['Glavno jelo', 'Main'], soup: ['Čorba / supa', 'Soup'], pie: ['Pita', 'Savoury pie'], salad: ['Salata', 'Salad'],
-    dessert: ['Slatko', 'Sweet'], breakfast: ['Doručak', 'Breakfast'], snack: ['Užina', 'Snack'], combo: ['Složeni doručak', 'Assembled breakfast'], side: ['Uz jelo', 'On the side'],
+    dessert: ['Slatko', 'Sweet'], breakfast: ['Doručak', 'Breakfast'], snack: ['Užina', 'Snack'], combo: ['Složeni doručak', 'Assembled breakfast'], side: ['Uz jelo', 'On the side'], zimnica: ['Zimnica', 'Preserves'],
   },
   sub: {
     kolac: ['Kolači', 'Cakes & slices'], torta: ['Torte', 'Tortes'], sitni: ['Sitni kolači', 'Small cookies'],
@@ -267,7 +279,7 @@ const LISTS = {
     cen: ['češanj', 'češnja', 'češnjeva', 'clove', 'cloves'], glavica: ['glavica', 'glavice', 'glavica', '', ''], sop: ['vezica', 'vezice', 'vezica', 'bunch', 'bunches'],
     prst: ['prstohvat', 'prstohvata', 'prstohvata', 'pinch', 'pinches'], kesica: ['kesica', 'kesice', 'kesica', 'sachet', 'sachets'],
     kriska: ['kriška', 'kriške', 'kriški', 'slice', 'slices'], jufka: ['jufka', 'jufke', 'jufki', 'sheet', 'sheets'], list: ['list', 'lista', 'listova', 'leaf', 'leaves'],
-    zrno: ['zrno', 'zrna', 'zrna', 'corn', 'corns'], saka: ['šaka', 'šake', 'šaka', 'handful', 'handfuls'], '': ['', '', '', '', ''],
+    zrno: ['zrno', 'zrna', 'zrna', 'corn', 'corns'], saka: ['šaka', 'šake', 'šaka', 'handful', 'handfuls'], tegla: ['tegla', 'tegle', 'tegli', 'jar', 'jars'], head: ['glavica', 'glavice', 'glavica', 'head', 'heads'], '': ['', '', '', '', ''],
   },
 };
 

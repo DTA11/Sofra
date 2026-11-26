@@ -27,6 +27,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Kupovni proizvodi (`prod` u ingredients.js): namazi, delikatesa, konzerve, mliječno, pekara, voće, čaj i kafa — dugotrajna zaliha u ostavi; spisak po odjeljcima prodavnice
 - Omiljena jela, kratka priča svakog jela
 - **Roštilj** (#/rostilj, js/data/recipes-grill.js): 7 vodiča (meso, oblikovanje, marinade, salamurenje, žar, dimljenje, prilozi), 16 jela sa žara (`grill: 1`) i umaci (urnebes, jogurt s bijelim lukom), filter „Roštilj“ u Receptima. U „Šta kuhamo“ klizač „Roštilj“ (stil `rostilj`): češće vikendom i ljeti. Roštilj je opcionalna oprema — sve ide i u grill-tavi.
+- **Zimnica** (#/zimnica, js/data/recipes-zimnica.js): kalendar (šta i kad u tegle, po mjesecima), 10 recepata (ajvar, miješana turšija, kisela paprika, pekmez od šljiva, džem od kajsija, slatko od jagoda, domaći paradajz sos, kompot od šljiva, kiseli kupus u glavicama i ribani u teglama) — vrsta `zimnica`, ne ide u planer. Svaki recept ima prinos u teglama (`serves`, `jar` = stavka zimnice u ostavi, `jarMl`, `jarG`); „Napravljeno — u ostavu“ (ili kraj načina kuhanja) dodaje tegle u Ostavu, „Na spisak“ stavlja sastojke na spisak. 5 vodiča (tegle i sterilizacija, omjeri sirćeta/soli/šećera, kiseli kupus, čuvanje, pokvarena tegla) u tools/zimnica-guides/, iste skripte kao roštilj. Na Jelovniku pod „Sada je sezona“ red „Sada je vrijeme za zimnicu“.
 - **Vodiči** (/vodici/ bs, /guides/ en): statične stranice s osnovama kuhanja (prvi: riža — omjer, porcije, greške); recepti s tom namirnicom linkuju vodič. Plan i teme: GUIDES.md
 - **Slatko**: kolači, torte, sitni kolači, orijentalni slatkiši, preračunavanje kalupa
 - **Vojnička kuhinja** (#/vojnicka): kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
@@ -36,7 +37,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 
 ## Slanje recepta (Pošalji)
 Dugme „Pošalji“ na receptu šalje link `/r/<id>/`. Ta mala stranica ima og: oznake (ime, priča, slika 1200×630 iz `share/<id>.jpg`) da Messenger/Viber/WhatsApp pokažu sliku, pa odmah otvara `/#/recipe/<id>`.
-**Nakon novog recepta ili nove fotografije** ponovo napravi stranice i slike: `python3 -m http.server 8765` pa `node tools/share-pages.mjs` (Playwright + Chrome; `PW=` i `CHROME=` za putanje). Recept bez stranice se i dalje otvara (preusmjerenje u netlify.toml), samo bez slike.
+**Nakon novog recepta ili nove fotografije** ponovo napravi stranice i slike: `python3 -m http.server 8765` pa `node tools/share-pages.mjs` (Playwright + Chrome; `PW=` i `CHROME=` za putanje), ili bez servera `ROUTE=1 LOCAL=http://sofra.test node tools/share-pages.mjs`. Recept bez stranice se i dalje otvara (preusmjerenje u netlify.toml), samo bez slike.
 
 ## Struktura
 ```
@@ -54,7 +55,9 @@ js/data/recipes-slo.js    slovenska kuhinja (tekst i količine napisani za Sofru
 js/data/recipes-more.js   Hrvatska, Crna Gora, Sjeverna Makedonija, Albanija i Kosovo
 js/data/recipes-combo.js  složeni doručci bez kuhanja (po osobi)
 js/data/recipes-grill.js  jela sa žara i umaci (Roštilj)
-tools/grill-guides/       tekstovi vodiča za roštilj (bs, en) + build.mjs
+tools/grill-guides/       tekstovi vodiča za roštilj (bs, en) + build.mjs (pravi sve vodiče: roštilj + zimnica)
+tools/zimnica-guides/     tekstovi vodiča za zimnicu (bs, en)
+js/data/recipes-zimnica.js  zimnica: recepti s prinosom u teglama + bilješke za kalendar
 js/data/index.js      izvedeni filteri (posno, bez svinjetine…), izvori, praznični meniji
 sw.js                 offline keš (povećaj VERSION pri svakoj promjeni)
 manifest.webmanifest  PWA manifest
