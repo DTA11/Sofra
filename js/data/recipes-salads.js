@@ -74,7 +74,7 @@ export const SALAD_RECIPES = [
     bs: 'Seljačka salata s bijelim sirom', en: 'Country salad with white cheese',
     ing: [['tomato', 4, 'kom'], ['cucumber', 1, 'kom'], ['pepper', 1, 'kom'], ['onion', 1, 'glavica', n('crveni', 'red')], ['olives', 100, 'g'], ['feta', 250, 'g'], ['oregano', 1, 'kasicica'], ['olive_oil', 4, 'kasika'], ['vinegar', 1, 'kasika'], ['salt', null, ''], ['bread', 4, 'kriska', O]],
     st: [
-      ['Paradajz isijeci na krupne komade, krastavac na polukrugove, papriku i luk na kolutove.', 'Cut the tomatoes into chunks, the cucumber into half-moons and the pepper and onion into rings.'],
+      ['Paradajz isijeci na krupne komade, krastavac na polumjesece, papriku i luk na kolutove.', 'Cut the tomatoes into chunks, the cucumber into half-moons and the pepper and onion into rings.'],
       ['Dodaj masline, malo posoli (sir je slan) i prelij uljem i sirćetom.', 'Add the olives, salt lightly (the cheese is salty) and dress with oil and vinegar.'],
       ['Odozgo stavi sir u jednom komadu ili krupno izlomljen i pospi origanom. Služi s hljebom.', 'Lay the cheese on top in one slab or broken into chunks and sprinkle with oregano. Serve with bread.'],
     ],
@@ -197,8 +197,8 @@ export const SALAD_RECIPES = [
     ing: [['mushrooms', 500, 'g'], ['lettuce', 1, 'glavica'], ['eggs', 4, 'kom'], ['parmesan', 40, 'g'], ['garlic', 2, 'cen'], ['olive_oil', 4, 'kasika'], ['lemon', 1, 'kom'], ['thyme', 1, 'kasicica', O], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Jaja skuhaj 8 minuta, oguli i prepolovi.', 'Boil the eggs for 8 minutes, peel and halve.', 8],
-      ['Gljive isijeci na četvrtine i prži na jakoj vatri na 2 kašike ulja dok ne porumene. Na kraju dodaj bijeli luk i majčinu dušicu, posoli.', 'Quarter the mushrooms and fry over high heat in 2 tbsp oil until browned. Add the garlic and thyme at the end; salt.', 8],
-      ['Salatu natrgaj, prelij ostatkom ulja i sokom limuna, dodaj tople gljive i jaja i izrendaj parmezan odozgo.', 'Tear the lettuce, dress with the rest of the oil and the lemon juice, add the warm mushrooms and eggs and grate parmesan over the top.'],
+      ['Šampinjone isijeci na četvrtine i prži na jakoj vatri na 2 kašike ulja dok ne porumene. Na kraju dodaj bijeli luk i majčinu dušicu, posoli.', 'Quarter the mushrooms and fry over high heat in 2 tbsp oil until browned. Add the garlic and thyme at the end; salt.', 8],
+      ['Salatu natrgaj, prelij ostatkom ulja i sokom limuna, dodaj tople šampinjone i jaja i izrendaj parmezan odozgo.', 'Tear the lettuce, dress with the rest of the oil and the lemon juice, add the warm mushrooms and eggs and grate parmesan over the top.'],
     ],
     story: ['Brza večera za dvadeset minuta: tople gljive i jaja pretvore običnu zelenu salatu u obrok.', 'A twenty-minute supper: warm mushrooms and eggs turn a plain green salad into a meal.'],
     src: T,

@@ -21,7 +21,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Filteri: kuhinja, glavni sastojak, vrsta jela, obrok, vrijeme, oprema (sač/peka, ekspres lonac, rerna, kazan, roštilj), posno, za djecu…
 - Ramazanski / iftar način, praznični meniji (Bajram, iftar, Badnji dan, Božić, Nova godina)
 - **Jufke za pite** (13 pita): zadano domaće jufke — mijesi, odmara, razvlači (koraci se dodaju u recept, količine u tekstu su omjeri pa važe za svaki broj porcija); zamjena „Kupovne“ za one bez vremena. Prekidač na receptu, u načinu kuhanja (1. korak) i u postavkama; vrijedi za sve pite. Ocjena i nutrijenti se uvijek računaju po kupovnoj verziji (`ingShop`), pa se ne mijenjaju s prekidačem.
-- **„Prije nego počnete“**: prozor s kratkim vodičem pri svakom otvaranju aplikacije (prvo Postavke i Ostava, onda Plan i Kupovina; urađeni koraci označeni), dok se ne označi „Ne prikazuj više“ ili dok svi koraci nisu urađeni. Postavke → „Prikaži vodič“ ga vraća. Ne otvara se u načinu kuhanja.
+- **„Prije nego počneš“**: prozor s kratkim vodičem pri svakom otvaranju aplikacije (prvo Postavke i Ostava, onda Plan i Kupovina; urađeni koraci označeni), dok se ne označi „Ne prikazuj više“ ili dok svi koraci nisu urađeni. Postavke → „Prikaži vodič“ ga vraća. Ne otvara se u načinu kuhanja.
 - Način kuhanja: veliki koraci, ekran ostaje upaljen (Wake Lock). Više tajmera odjednom (lista, najkraći prvi, svaki s korakom i prvim riječima koraka, +1 min, ✕; završeni trepću dok se ne sklone). Sljedeći korak: dodir bilo gdje na ekranu (lijeva trećina = nazad), strelice/razmak na tastaturi, i glasom gdje preglednik to podržava (🎤 u zaglavlju: „dalje“, „nazad“, „tajmer“ / „next“, „back“, „timer“).
 - **Doručak bez kuhanja** (#/dorucci): 20 složenih doručaka od kupovnih proizvoda (js/data/recipes-combo.js, vrsta `combo`, količine po osobi); postavka „Doručak bez kuhanja radnim danom“ (pon–pet složeni, vikendom kuhani)
 - Kupovni proizvodi (`prod` u ingredients.js): namazi, delikatesa, konzerve, mliječno, pekara, voće, čaj i kafa — dugotrajna zaliha u ostavi; spisak po odjeljcima prodavnice
@@ -32,6 +32,9 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - **Vodiči** (/vodici/ bs, /guides/ en): statične stranice s osnovama kuhanja (prvi: riža — omjer, porcije, greške); recepti s tom namirnicom linkuju vodič. Plan i teme: GUIDES.md
 - **Slatko**: kolači, torte, sitni kolači, orijentalni slatkiši, preračunavanje kalupa
 - **Vojnička kuhinja** (#/vojnicka): kućna mjera i dugme „Za četu“ (100 porcija) s procjenom kazana
+
+## Lektura
+Bosanski tekst je lektorisan (26. 11. 2026, sofra-v100–v104): ijekavica, isti izrazi svuda (češanj/češnjevi, isijeci/isjeckaj, kašika/kašičica, šaka, prstohvat, luk na rebarca, tava, rerna, tečnost, preljev), jedno ime za svaku namirnicu, bez dvostrukih zagrada u sastojcima, aplikacija se obraća s „ti“. Promjene koje su stvar ukusa su u `LEKTURA.md` (staro → novo, fajl, zašto) za pregled. Opcionalna oprema na receptu: „Roštilj (po želji)“.
 
 ## Privremeno
 - `/foto-prompts/` — pomoćna stranica s Gemini promptovima za fotografije jela (dugme Kopiraj). Link u hamburger meniju ("Foto promptovi"), noindex. Obrisati folder `foto-prompts/`, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml kad su fotografije gotove.

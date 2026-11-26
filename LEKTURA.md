@@ -56,3 +56,5 @@ Ako nešto ne valja, vrati staru verziju ili napiši bolju.
 | slatka paprika / paprika (u marinadama) | slatka aleva paprika / aleva paprika | grill-guides/bs.mjs | da se ne miješa sa svježom paprikom |
 | skrob | škrob | vodici/kako-skuhati-rizu | isto kao „Kukuruzni škrob“ |
 | so važe / važi so | so se mora izvagati / izvaži so | zimnica-guides/bs.mjs | „važiti“ ≠ „vagati“ |
+| polukrugovi | polumjeseci | recipes-*.js | jedan izraz za „half-moons“ |
+| sasvim malo soli / bilješka „veoma malo“ (sutlijaš) | prstohvat soli / „prstohvat“ | recipes-books.js | kako je vlasnik predložio za male količine soli (količina u receptu ista) |

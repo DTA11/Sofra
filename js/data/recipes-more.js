@@ -25,7 +25,7 @@ export const MORE_RECIPES = [
     bs: 'Brodet s palentom', en: 'Brodet (fish stew) with polenta',
     ing: [['fish_white', 1.2, 'kg', n('više vrsta, očišćene, na komade', 'several kinds, cleaned, in pieces')], ['onion', 2, 'glavica'], ['garlic', 3, 'cen'], ['tomato_can', 400, 'g'], ['wine_white', 200, 'ml'], ['vinegar', 1, 'kasika'], ['olive_oil', 100, 'ml'], ['parsley', null, ''], ['salt', null, ''], ['pepper_black', null, ''], ['cornmeal', 250, 'g', n('za palentu', 'for the polenta')]],
     st: [
-      ['Na maslinovom ulju polako pirjaj luk isječen na polukrugove 10 minuta.', 'Gently cook the sliced onion in the olive oil for 10 minutes.', 10],
+      ['Na maslinovom ulju polako pirjaj luk isječen na polumjesece 10 minuta.', 'Gently cook the sliced onion in the olive oil for 10 minutes.', 10],
       ['Dodaj bijeli luk i paradajz, kuhaj 5 minuta pa poslaži ribu, krupnije komade dolje.', 'Add the garlic and tomatoes, cook 5 minutes, then lay in the fish, larger pieces at the bottom.', 5],
       ['Ulij vino, sirće i toliko vode da riba bude skoro pokrivena. Posoli i pobiberi.', 'Pour in the wine, vinegar and enough water to nearly cover the fish. Season.'],
       ['Kuhaj na tihoj vatri 30 minuta bez miješanja — samo protresi lonac povremeno.', 'Simmer for 30 minutes without stirring — just shake the pot now and then.', 30],

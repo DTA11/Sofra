@@ -182,7 +182,7 @@ export const MEAL_RECIPES = [
     ing: [['beans', 250, 'g', n('kuhan ili 2 konzerve', 'cooked, or 2 tins')], ['onion', 1, 'glavica', n('crveni', 'red')], ['oil', 4, 'kasika'], ['vinegar', 2, 'kasika'], ['parsley', null, ''], ['paprika_sweet', 1, 'prst'], ['salt', null, ''], ['pepper_black', null, '']],
     st: [
       ['Kuhan grah ocijedi i ohladi.', 'Drain and cool the cooked beans.'],
-      ['Dodaj luk na tanke polukrugove, ulje, sirće, so, biber i peršun.', 'Add thinly sliced onion, oil, vinegar, salt, pepper and parsley.'],
+      ['Dodaj luk na tanke polumjesece, ulje, sirće, so, biber i peršun.', 'Add thinly sliced onion, oil, vinegar, salt, pepper and parsley.'],
       ['Ostavi 10 minuta da se okusi prožmu, pospi alevom paprikom.', 'Leave for 10 minutes for the flavours to mingle; dust with paprika.', 10],
     ],
     story: ['Posna večera koja se pravi od graha skuhanog za ručak — pametna kuhinja.', 'A lenten supper made from beans cooked for lunch — clever cooking.'],
