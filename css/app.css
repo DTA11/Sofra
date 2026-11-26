@@ -448,10 +448,10 @@ body.standalone .toast { bottom: calc(92px + env(safe-area-inset-bottom)); }
 .feature:first-child svg, .feature:first-child small { color: #fff; }
 .feature:nth-child(2) svg, .feature:nth-child(2) small { color: #3a2205; }
 .zim { background: linear-gradient(180deg, #fff7e6, var(--card)); border: 2px solid #efd9a7; }
-body.standalone .tabbar { left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); max-width: 560px; margin: 0 auto; background: var(--indigo); border: 0; border-radius: 22px; padding: 6px; box-shadow: 0 12px 30px -10px rgba(20,10,5,.55); }
+body.standalone .tabbar { left: 10px; right: 10px; bottom: max(10px, calc(env(safe-area-inset-bottom) - 12px)); /* floats just above the iPhone home bar, not a whole safe area higher */ max-width: 560px; margin: 0 auto; background: var(--indigo); border: 0; border-radius: 22px; padding: 6px; box-shadow: 0 12px 30px -10px rgba(20,10,5,.55); }
 .tabbar a { color: rgba(255,255,255,.62); border-radius: 16px; }
 .tabbar a.on { color: #2a1803; background: var(--saffron); }
-body.standalone { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+body.standalone { padding-bottom: calc(96px + max(10px, calc(env(safe-area-inset-bottom) - 12px))); }
 @media (prefers-color-scheme: dark) { .feat-ic { background: #3a2a1c; } .feat:nth-child(3n+2) .feat-ic { background: #222c45; } .feat:nth-child(3n) .feat-ic { background: #2b3424; } .zim { background: var(--card); border-color: #5a4720; } .cu { color: #e8735f; } }
 
 /* ═════════ coloured top band under the menu (owner: as in the ćilim version) ═════════ */
