@@ -12,6 +12,7 @@ import { SALAD_RECIPES } from './recipes-salads.js';
 import { SIDE_RECIPES } from './recipes-sides.js';
 import { GRILL_RECIPES } from './recipes-grill.js';
 import { ZIM_RECIPES } from './recipes-zimnica.js';
+import { UZINA_RECIPES } from './recipes-uzina.js';
 
 export const SOURCES = {
   lakisic: {
@@ -169,7 +170,7 @@ function withJufka(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...GRILL_RECIPES, ...COMBO_RECIPES, ...ZIM_RECIPES].map(derive).map(withJufka);
+export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...GRILL_RECIPES, ...COMBO_RECIPES, ...ZIM_RECIPES, ...UZINA_RECIPES].map(derive).map(withJufka);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.

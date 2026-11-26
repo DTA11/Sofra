@@ -109,7 +109,7 @@ function defaultServ(r) {
 
 // ───────── routing ─────────
 const routes = {
-  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, vojnicka: viewJNA, holidays: viewHolidays, dorucci: viewCombos, rostilj: viewGrill, zimnica: viewZimnica,
+  home: viewHome, plan: viewPlan, recipes: viewRecipes, recipe: viewRecipe, sweets: viewSweets, jna: viewJNA, vojnicka: viewJNA, holidays: viewHolidays, dorucci: viewCombos, rostilj: viewGrill, zimnica: viewZimnica, uzina: viewUzina,
   pantry: viewPantry, shop: viewShop, settings: viewSettings, cook: viewCook,
 };
 function route() {
@@ -119,8 +119,8 @@ function route() {
   JUF.home = S().jufka !== 'shop';
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
-  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
-  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
+  document.querySelectorAll('.tabbar a').forEach((a) => a.classList.toggle('on', a.dataset.tab === (['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica', 'uzina', 'holidays'].includes(name) ? (name === 'holidays' ? 'plan' : 'recipes') : name)));
+  const navKey = ['recipe', 'jna', 'vojnicka', 'dorucci', 'rostilj', 'zimnica', 'uzina'].includes(name) ? 'recipes' : name === 'holidays' ? 'plan' : (routes[name] ? name : (isStandalone() ? 'plan' : 'home'));
   document.querySelectorAll('[data-nav]').forEach((a) => a.classList.toggle('on', a.dataset.nav === navKey));
   syncInstallButtons();
   { const gk = { settings: 'settings', pantry: 'pantry' }[name]; if (gk && !(S().guide || {})[gk]) { S().guide = { ...S().guide, [gk]: true }; store.save(); } } // quick guide: page visited = step done
@@ -300,7 +300,7 @@ window.addEventListener('appinstalled', () => { install.ask = null; syncInstallB
 
 function roleLabel(x) {
   const st = S(); const ram = st.mode === 'ramazan';
-  if (x.left) return x.role === 'dinner' ? t('leftLunch') : t('leftover');
+  if (x.left) return x.role === 'dinner' ? t('leftLunch') : x.role === 'snack' ? t('snackLeft') : t('leftover');
   if (x.role === 'main') return ram ? t('iftar') : st.meals.lunch === false ? t('dinner') : t('lunch');
   if (x.role === 'breakfast') return ram ? t('sehur') : t('breakfast');
   return t(x.role);
@@ -373,7 +373,7 @@ function viewPlan() {
           <a href="#/recipe/${r.id}" class="dname">${esc(name(r))}</a>
           <span class="meta">${esc(serv)}${x.left ? '' : r.type === 'combo' ? ` · ≈ ${nf(Math.round(nutrition(r).serv.kcal / 10) * 10)} kcal` : ' · ' + fmtTime(r)}</span></div>
         <div class="dact">
-          ${!x.left ? `<button class="icon" aria-label="${t('swap')}" data-act="swapdish" data-i="${i}" data-k="${d.dishes.indexOf(x)}">${ICON.swap}</button>` : ''}
+          ${!x.left || x.role === 'snack' ? `<button class="icon" aria-label="${t('swap')}" data-act="swapdish" data-i="${i}" data-k="${d.dishes.indexOf(x)}">${ICON.swap}</button>` : ''}
           ${!x.left ? `<a class="icon play" aria-label="${t('cook')}" href="#/cook/${r.id}?s=${x.serv}&f=${x.fixed ? 1 : 0}">${ICON.play}</a>` : ''}
         </div>
       </li>`;
@@ -471,6 +471,7 @@ function viewRecipes() {
       <a class="feature hol" href="#/holidays">${ICON.party}<b>${t('holidays')}</b><small>Bajram · Božić · Nova godina</small></a>
       <a class="feature nocook" href="#/dorucci">${ICON.pantry}<b>${t('combosTitle')}</b><small>${RECIPES.filter((r) => r.type === 'combo').length} ${t('combos')}</small></a>
       <a class="feature grill" href="#/rostilj">${ICON.flame}<b>${t('grillTitle')}</b><small>${grillDishes().length} ${t('dishes')} · ${grillGuides().length} ${t('grillGuidesN')}</small></a>
+      <a class="feature uzf" href="#/uzina">${ICON.box}<b>${t('uzinaTitle')}</b><small>${uzinaRecipes().length} ${t('uzinaN')}</small></a>
       <a class="feature zimf" href="#/zimnica">${ICON.jar}<b>${t('zimnicaTitle')}</b><small>${zimRecipes().length} ${t('zimRecipesN')} · ${zimGuides().length} ${t('grillGuidesN')}</small></a>
     </div>
     ${searchBar()}${filterPanel()}
@@ -566,6 +567,17 @@ function addJars(r, n) {
   st.pantry[r.jar] = (Number(st.pantry[r.jar]) || 0) + n;
   store.save();
   toast(t('zimAdded').replace('{n}', n).replace('{u}', jarU(r, n)).replace('{x}', iname(r.jar)));
+}
+// ───────── UŽINA ZA PONIJETI: cold snacks for school and work ─────────
+const uzinaRecipes = () => RECIPES.filter((r) => r.pack);
+function viewUzina() {
+  const st = S();
+  const on = st.meals.snack;
+  return `<section class="band page-band uzband"><a class="backlink" href="#/recipes">${ICON.back} ${t('tabRecipes')}</a><h1 class="display">${t('uzinaTitle')}</h1><p class="lede">${t('uzinaIntro')}</p></section>
+    <div class="banner"><span>${on ? (st.packSnack !== false ? t('uzinaOn') : t('uzinaOnAny')) : t('uzinaOff')}</span> <a href="#/settings">${t('planSettings')} →</a></div>
+    <section class="psec"><h3>🍱 ${t('uzinaLeftT')}</h3><p class="small muted">${t('uzinaLeftD')}</p></section>
+    <h2 class="sec-title">${t('uzinaPack')}</h2>
+    <div class="grid">${uzinaRecipes().map(card).join('')}</div>`;
 }
 function viewCombos() {
   const list = RECIPES.filter((r) => r.type === 'combo');
@@ -866,6 +878,7 @@ function viewSettings() {
       ${st.mode === 'pravoslavni' ? tog('posnoFish', t('fishOk')) : ''}` : ''}</section>
     <section class="set"><h3>${t('meals')}</h3><div class="chips">${['breakfast', 'lunch', 'dinner', 'snack'].map((m) => `<button class="chip ${st.meals[m] ? 'on' : ''}" data-act="meal" data-k="${m}">${t(m)}</button>`).join('')}</div>
       ${tog('dinnerLeft', t('dinnerLeft'))}
+      ${st.meals.snack ? `${tog('packSnack', t('packSnack'))}<p class="small muted">${t('packSnackHint')} <a href="#/uzina">${t('uzinaTitle')} →</a></p>` : ''}
       ${tog('noCookBreakfast', t('noCookBreakfast'))}<p class="small muted">${t('noCookHint')} <a href="#/dorucci">${t('combosTitle')} →</a></p>
       <div class="mix"><span>${t('breakfastMax')}</span>${num('breakfastMax', st.breakfastMax, 5, 120, 5)}<small>min</small></div>
       <div class="mix"><span>${t('dinnerMax')}</span>${num('dinnerMax', st.dinnerMax, 5, 180, 5)}<small>min</small></div></section>

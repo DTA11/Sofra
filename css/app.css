@@ -592,3 +592,7 @@ img.art.photo { max-width: 100%; } /* a 1200 px photo never pushes a box wider t
 .zinfo p { margin: 4px 0; }
 .zimnow { margin: 10px 0 0; }
 @media (prefers-color-scheme: dark) { .zcal .zm.on, .zinfo { background: var(--card); border-color: #5a4720; } .feature.zimf { background: #3a2a1c; color: #f4ebe1; } .feature.zimf small { color: #dccbbb; } .feature.zimf svg { color: #e8a33d; } }
+/* ── Užina za ponijeti ── */
+.feature.uzf { background: #4f6b1f; color: #fff; }
+.feature.uzf svg, .feature.uzf small { color: #f6d9a6; }
+.page-band.uzband { background: #4f6b1f; }

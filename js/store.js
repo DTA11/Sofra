@@ -18,6 +18,7 @@ export function defaults() {
     soup: 1,           // supa before lunch: 0 never · 1 sometimes · 2 always (where it fits)
     sides: true,       // a salad, yoghurt or sauerkraut beside lunch
     meals: { breakfast: true, lunch: true, dinner: true, snack: false },
+    packSnack: true,   // Užina: on weekdays a cold snack to pack (yesterday's leftovers first)
     dinnerLeft: false,
     breakfastMax: 20,
     noCookBreakfast: false, // weekdays: assembled breakfast from shop products

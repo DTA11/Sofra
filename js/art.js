@@ -114,6 +114,13 @@ const SHAPES = {
     <rect x="34" y="60" width="92" height="12" fill="#e2b25e"/><rect x="34" y="72" width="92" height="6" fill="#c98b3d"/>
     <path d="M65 50v28M96 50v28" stroke="#fff" stroke-width="3"/>
     <circle cx="50" cy="55" r="2" fill="${c}"/><circle cx="80" cy="55" r="2" fill="${c}"/><circle cx="110" cy="55" r="2" fill="${c}"/>`,
+  // užina za ponijeti: a lunch box with a sandwich and an apple
+  pack: (c) => `${shadow(80, 90, 52)}
+    <rect x="30" y="44" width="100" height="42" rx="10" fill="${c}"/><rect x="30" y="44" width="100" height="10" rx="5" fill="#000" opacity=".12"/>
+    <rect x="36" y="50" width="88" height="32" rx="7" fill="#fffaf2"/>
+    <path d="M44 74l18-20 18 20z" fill="#e9b868"/><path d="M47 72l15-16 15 16" stroke="#7da33f" stroke-width="3" fill="none"/><path d="M48 75l14-15 14 15" stroke="#f2d33b" stroke-width="2" fill="none"/>
+    <circle cx="100" cy="66" r="11" fill="#c8392b"/><path d="M100 55c1-4 3-6 6-7" stroke="#5a3a1c" stroke-width="2" fill="none"/><path d="M103 54c4-2 7-1 9 1-3 2-6 2-9-1z" fill="#7da33f"/>
+    <circle cx="96" cy="62" r="2.5" fill="#fff" opacity=".5"/>`,
   // zimnica: two jars with a cloth lid; r.color = what is inside
   jar: (c, r = {}) => { const f = r.color || '#c9a43a';
     const one = (x, w, h, y0) => `<rect x="${x}" y="${y0}" width="${w}" height="${h}" rx="9" fill="#fffaf2" opacity=".95"/>
@@ -145,6 +152,8 @@ export function dishArt(r, cls = '') {
   let key = r.type === 'dessert' ? (r.sub || 'kolac') : r.type === 'pie' ? 'pie' : r.type === 'soup' ? 'soup' : r.type === 'salad' ? 'salad' : r.type === 'side' ? 'kasika' : r.type === 'zimnica' ? 'jar' : 'main';
   if (r.type === 'combo') {
     key = r.main === 'fish' ? 'fish' : !r.ing.some((i) => ['bread', 'bread_whole'].includes(i[0])) ? 'kasika' : 'bread';
+  } else if (r.pack) {
+    key = 'pack';
   } else if (r.type === 'breakfast' || r.type === 'snack') {
     key = r.main === 'eggs' ? 'eggs' : ['popara', 'pura-kiselo', 'zobena-kasa', 'griz-mlijeko', 'jogurt-med'].includes(r.id) ? 'kasika'
       : ['hljeb-kajmak-ajvar', 'pain-perdu', 'tost-sir', 'hljeb-pekmez'].includes(r.id) ? 'bread' : r.id === 'pecene-jabuke' ? 'kasika' : r.id === 'cicvara' ? 'eggs' : 'sitni';
@@ -196,6 +205,7 @@ export const ICON = {
   filter: I('<path d="M4 6h16M7 12h10M10 18h4"/>'),
   book: I('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'),
   flame: I('<path d="M12 3c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2.5 1.5-4 2.5-5.5.3 2 1.2 3 2.2 3.5C11 9 11 6 12 3z"/><path d="M4 21h16"/>'),
+  box: I('<rect x="3" y="8" width="18" height="12" rx="3"/><path d="M3 12h18M9 8V6a3 3 0 0 1 6 0v2"/>'),
   jar: I('<path d="M8 3h8v3H8z"/><path d="M7 6h10a1 1 0 0 1 1 1v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7a1 1 0 0 1 1-1z"/><path d="M6 11h12M9 15h6"/>'),
   timer: I('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4"/>'),
 };

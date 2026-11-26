@@ -27,6 +27,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Kupovni proizvodi (`prod` u ingredients.js): namazi, delikatesa, konzerve, mliječno, pekara, voće, čaj i kafa — dugotrajna zaliha u ostavi; spisak po odjeljcima prodavnice
 - Omiljena jela, kratka priča svakog jela
 - **Roštilj** (#/rostilj, js/data/recipes-grill.js): 7 vodiča (meso, oblikovanje, marinade, salamurenje, žar, dimljenje, prilozi), 16 jela sa žara (`grill: 1`) i umaci (urnebes, jogurt s bijelim lukom), filter „Roštilj“ u Receptima. U „Šta kuhamo“ klizač „Roštilj“ (stil `rostilj`): češće vikendom i ljeti. Roštilj je opcionalna oprema — sve ide i u grill-tavi.
+- **Užina za ponijeti** (#/uzina, js/data/recipes-uzina.js): 10 hladnih užina za školu i posao (vrsta `snack`, `pack: 1`) od onoga što jelovnik ionako kupuje (hljeb, sir, jaja, voće, ajvar, pašteta…). Kad je uključen obrok Užina i „Užina za ponijeti radnim danom“ (`st.packSnack`, zadano da), planer pon–pet prvo pakuje jučerašnje ostatke (pita, pohovano, pečena piletina, pljeskavica… — `packLeftOk` u planner.js; jučerašnje jelo dobije porciju više po osobi, u jelovniku piše „Užina od jučer“), inače jednu od hladnih užina; vikendom bilo koju užinu. Kad se jučerašnje jelo zamijeni, ostatak-užina dobije novu užinu.
 - **Zimnica** (#/zimnica, js/data/recipes-zimnica.js): kalendar (šta i kad u tegle, po mjesecima), 10 recepata (ajvar, miješana turšija, kisela paprika, pekmez od šljiva, džem od kajsija, slatko od jagoda, domaći paradajz sos, kompot od šljiva, kiseli kupus u glavicama i ribani u teglama) — vrsta `zimnica`, ne ide u planer. Svaki recept ima prinos u teglama (`serves`, `jar` = stavka zimnice u ostavi, `jarMl`, `jarG`); „Napravljeno — u ostavu“ (ili kraj načina kuhanja) dodaje tegle u Ostavu, „Na spisak“ stavlja sastojke na spisak. 5 vodiča (tegle i sterilizacija, omjeri sirćeta/soli/šećera, kiseli kupus, čuvanje, pokvarena tegla) u tools/zimnica-guides/, iste skripte kao roštilj. Na Jelovniku pod „Sada je sezona“ red „Sada je vrijeme za zimnicu“.
 - **Vodiči** (/vodici/ bs, /guides/ en): statične stranice s osnovama kuhanja (prvi: riža — omjer, porcije, greške); recepti s tom namirnicom linkuju vodič. Plan i teme: GUIDES.md
 - **Slatko**: kolači, torte, sitni kolači, orijentalni slatkiši, preračunavanje kalupa
@@ -57,6 +58,7 @@ js/data/recipes-combo.js  složeni doručci bez kuhanja (po osobi)
 js/data/recipes-grill.js  jela sa žara i umaci (Roštilj)
 tools/grill-guides/       tekstovi vodiča za roštilj (bs, en) + build.mjs (pravi sve vodiče: roštilj + zimnica)
 tools/zimnica-guides/     tekstovi vodiča za zimnicu (bs, en)
+js/data/recipes-uzina.js    užina za ponijeti (hladno, za školu i posao)
 js/data/recipes-zimnica.js  zimnica: recepti s prinosom u teglama + bilješke za kalendar
 js/data/index.js      izvedeni filteri (posno, bez svinjetine…), izvori, praznični meniji
 sw.js                 offline keš (povećaj VERSION pri svakoj promjeni)

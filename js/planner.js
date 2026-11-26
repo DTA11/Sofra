@@ -130,6 +130,10 @@ const BREAKFASTS = () => RECIPES.filter((r) => r.meal.includes('breakfast') && r
 const COMBOS = () => RECIPES.filter((r) => r.type === 'combo');
 const DINNERS = () => RECIPES.filter((r) => r.meal.includes('dinner') && r.type !== 'dessert' && !r.side && !r.supa && (r.light || ['pie', 'salad', 'soup'].includes(r.type)));
 const SNACKS = () => RECIPES.filter((r) => r.type === 'snack');
+const PACKS = () => RECIPES.filter((r) => r.type === 'snack' && r.pack);
+// Yesterday's dish that is good cold in a lunch box: pies, breaded and roast or grilled meat, patties.
+const PACK_LEFT = new Set(['pecena-piletina', 'pljeskavica', 'cevapi', 'cufte-nana-jogurt', 'popeci', 'pileci-batci-zar', 'raznjici-pileci', 'musaka-krompir']);
+export const packLeftOk = (r) => !!r && (r.type === 'pie' || groupOf(r) === 'breaded' || PACK_LEFT.has(r.id));
 export const ROLE_ORDER = { breakfast: 0, soup: 1, main: 2, side: 3, dinner: 4, snack: 5, dessert: 6 };
 // Plan length: one dish, one day, one week or a month (4 weeks).
 export const RANGES = { dish: 1, day: 1, week: 7, month: 28 };
@@ -335,6 +339,8 @@ function pickMeal(role, days, i, start, planId, exclude) {
   }
   if (role === 'snack') {
     Object.assign(ctx, { recent: new Set(), mains: {}, pies: 0, maxTime: 30 });
+    // Užina za ponijeti on weekdays (school, work): cold, nothing new to cook
+    if (st.packSnack !== false && wd < 5) return pick(PACKS(), ctx, weekUsed, {}) || pick(PACKS(), ctx, yesterday, {}) || pick(SNACKS(), ctx, yesterday, {});
     return pick(SNACKS(), ctx, yesterday, {});
   }
   // light dinner: differs from today's lunch, follows the weekly meat rules
@@ -379,9 +385,29 @@ function addMeals(days, start, planId) {
       if (st.dinnerLeft && main && !main.left) { main.serv += st.household; d.dishes.push({ id: main.id, role: 'dinner', serv: st.household, left: true }); }
       else { const r = pickMeal('dinner', days, i, start, planId); if (r) d.dishes.push({ id: r.id, role: 'dinner', serv: st.household }); }
     }
-    if (want.snack) { const r = pickMeal('snack', days, i, start, planId); if (r) d.dishes.push({ id: r.id, role: 'snack', serv: st.household }); }
+    if (want.snack) { const x = packLeftover(days, i, start, planId) || snackFor(days, i, start, planId); if (x) d.dishes.push(x); }
     sortDishes(d);
   });
+}
+const snackFor = (days, i, start, planId, exclude) => { const r = pickMeal('snack', days, i, start, planId, exclude); return r ? { id: r.id, role: 'snack', serv: S().household } : null; };
+/** Weekday užina from yesterday's lunch or dinner (a piece of pie, cold schnitzel…): cook a bit more the day before. */
+function packLeftover(days, i, start, planId) {
+  const st = S();
+  if (st.packSnack === false || i === 0 || !days[i - 1]) return null;
+  const ctx = ctxFor(start, i, days, planId);
+  if (ctx.weekday >= 5 || Math.random() < 0.3) return null;
+  const src = days[i - 1].dishes.find((x) => !x.left && ['main', 'dinner'].includes(x.role) && packLeftOk(R[x.id]) && eligible(R[x.id], ctx));
+  if (!src || days[i].dishes.some((x) => x.id === src.id)) return null;
+  src.serv += st.household;
+  return { id: src.id, role: 'snack', serv: st.household, left: true };
+}
+/** A leftover užina whose dish is no longer cooked the day before gets a fresh snack instead. */
+function relinkSnacks(days, start, planId) {
+  days.forEach((d, k) => d.dishes.forEach((x, j) => {
+    if (x.role !== 'snack' || !x.left) return;
+    const src = k > 0 && days[k - 1].dishes.find((y) => !y.left && y.id === x.id && ['main', 'dinner'].includes(y.role));
+    if (!src) { const nx = snackFor(days, k, start, planId); if (nx) d.dishes[j] = nx; else d.dishes.splice(j, 1); }
+  }));
 }
 
 /** One-tap swap of any dish in the plan. */
@@ -397,7 +423,11 @@ export function swapDish(i, k) {
     const keep = d.dishes.splice(k, 1)[0];
     r = pickMeal(x.role, st.plan.days, i, start, st.plan.id, keep.id);
     d.dishes.splice(k, 0, r ? { id: r.id, role: x.role, serv: st.household } : keep);
-    if (keep.left && r) { const m = d.dishes.find((y) => y.role === 'main'); if (m && m.serv > st.household) m.serv -= st.household; }
+    if (keep.left && r) {
+      // the dish was cooked bigger for these leftovers: back to normal size
+      const m = x.role === 'snack' ? (i > 0 && st.plan.days[i - 1].dishes.find((y) => !y.left && y.id === keep.id && ['main', 'dinner'].includes(y.role))) : d.dishes.find((y) => y.role === 'main');
+      if (m && m.serv > st.household) m.serv -= st.household;
+    }
   } else if (x.role === 'side') {
     const m = d.dishes.find((y) => y.role === 'main');
     const ctx = ctxFor(start, i, st.plan.days, st.plan.id);
@@ -411,6 +441,7 @@ export function swapDish(i, k) {
     if (r) d.dishes[k] = { ...x, id: r.id, serv: x.fixed ? r.serves : x.serv };
   }
   d.cooked = false;
+  relinkSnacks(st.plan.days, start, st.plan.id);
   recordHistory();
   save();
 }
@@ -516,6 +547,7 @@ export function swapDay(i) {
     if (i + 1 < n && nextMain() !== nextBefore) addStarters(days, start, plan.id, i + 1);
   }
   old.cooked = false;
+  relinkSnacks(days, start, plan.id);
   recordHistory();
   save();
 }
@@ -540,7 +572,7 @@ export function markCooked(i) {
       if (!h) return;
       const g = ING[h];
       if (g.prod) return; // store products are long-life stock: they stay until you untick them
-      if (g.z && ['combo', 'side'].includes(R[x.id].type)) return; // a spoon of ajvar or a bowl of turšija doesn't empty a jar
+      if (g.z && (['combo', 'side'].includes(R[x.id].type) || R[x.id].pack)) return; // a spoon of ajvar or a bowl of turšija doesn't empty a jar
       if (g.z) { st.pantry[h] = Math.max(0, (Number(st.pantry[h]) || 1) - 1); if (!st.pantry[h]) delete st.pantry[h]; }
       else if (g.p) delete st.pantry[h];
     }));
