@@ -1,6 +1,6 @@
 # Sofra — plan razvoja
 
-Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v95). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina).
+Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v96). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina), 14 (Način kuhanja).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
 1. ✅ **„Ne volimo“** (urađeno 26. 11. 2026, sofra-v93) — Postavke → „Ne volimo“: 22 grupe (gljive, riba, iznutrice, kupus, grah/leća/slanutak…) + bilo koja namirnica preko polja „Dodaj drugu namirnicu“ (st.dislikes, ID-jevi iz ingredients.js, DISLIKE_GROUPS). Planer (eligible), prilozi i „Prijedlog za danas“ preskaču jela koja ih trebaju (opcionalni sastojci se ne broje); recept ostaje u listi, na njemu piše „Ne volite: …“.
@@ -24,6 +24,9 @@ Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v95). Urađeno: 1 (Ne volimo
 
 12. ✅ **Zimnica** (urađeno 26. 11. 2026, sofra-v94) — stranica #/zimnica (pločica u Receptima, link iz Ostave i s Jelovnika): kalendar po mjesecima, 10 recepata s prinosom u teglama (tegle idu pravo u Ostavu), dugme „Na spisak“, 5 vodiča (/vodici/ + /guides/): tegle i sterilizacija, omjeri, kiseli kupus, čuvanje, pokvarena tegla.
 13. ✅ **Užina za ponijeti** (urađeno 26. 11. 2026, sofra-v95) — #/uzina (pločica u Receptima): 10 hladnih užina; radnim danom planer prvo pakuje jučerašnju pitu, pohovano ili pečeno meso (jelo se kuha za porciju više), postavka „Užina za ponijeti radnim danom“.
+14. ✅ **Način kuhanja** (urađeno 26. 11. 2026, sofra-v96) — više tajmera odjednom (lista s korakom, +1 min), dodir bilo gdje = dalje (lijevo = nazad), glasovne komande „dalje“ / „nazad“ / „tajmer“ (Web Speech, samo gdje preglednik podržava — provjeriti na telefonu).
+
+Odbačeno (vlasnik): dijeljenje jelovnika između telefona, „Kuhaj jednom, jedi tri puta“, izvoz u kalendar.
 
 ## Pravila (podsjetnik)
 Bez država/regija u UI, „Vojnička kuhinja“ (nikad JNA), bez izvora i brendova, nove namirnice u ingredients.js I nutrition.js, ćilim boje, bs (ijekavica) + en, povećati VERSION u sw.js, testirati (Node + Playwright) prije pusha.

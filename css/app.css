@@ -596,3 +596,14 @@ img.art.photo { max-width: 100%; } /* a 1200 px photo never pushes a box wider t
 .feature.uzf { background: #4f6b1f; color: #fff; }
 .feature.uzf svg, .feature.uzf small { color: #f6d9a6; }
 .page-band.uzband { background: #4f6b1f; }
+/* ── cook mode: several timers, tap zones, voice ── */
+.cook .timers { flex-direction: column; gap: 6px; }
+.cook .timer { display: flex; align-items: center; gap: 10px; border-radius: 16px; padding: 8px 8px 8px 16px; text-align: left; }
+.cook .timer .tl { flex: 1; min-width: 0; font: 600 .9rem var(--ui); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cook .timer .tl small { display: block; font-weight: 400; opacity: .8; overflow: hidden; text-overflow: ellipsis; }
+.cook .timer .tt { font: 700 1.35rem var(--ui); font-variant-numeric: tabular-nums; }
+.cook .timer button { border: 0; border-radius: 999px; min-width: 40px; min-height: 40px; background: rgba(0,0,0,.14); color: inherit; font: 700 .9rem var(--ui); cursor: pointer; }
+.cook-body { cursor: pointer; -webkit-user-select: none; user-select: none; }
+.cook .taphint { text-align: center; color: #8f867c; margin: 0 0 8px; }
+.cook header .mic { background: none; border: 1px solid #2f2a26; border-radius: 999px; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; }
+.cook header .mic.on { background: #e9a24b; border-color: #e9a24b; animation: pulse 1.6s infinite; }

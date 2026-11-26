@@ -116,6 +116,7 @@ function route() {
   const [name, arg] = (location.hash.replace(/^#\/?/, '') || (isStandalone() ? 'plan' : 'home')).split('/');
   const fn = routes[name] || (isStandalone() ? viewPlan : viewHome);
   stopWake();
+  if (name !== 'cook') stopVoice();
   JUF.home = S().jufka !== 'shop';
   document.body.classList.toggle('cooking', name === 'cook');
   $('#main').innerHTML = fn(decodeURIComponent(arg || ''));
@@ -694,9 +695,11 @@ function viewCook(arg) {
   cook = cook && cook.id === id ? cook : { id, i: 0, timers: cook ? cook.timers : [] };
   cook.f = f;
   return `<div class="cook">
-    <header><a class="icon" href="javascript:history.back()" aria-label="${t('close')}">${ICON.close}</a><b>${esc(name(r))}</b><span id="wake" class="small"></span></header>
+    <header><a class="icon" href="javascript:history.back()" aria-label="${t('close')}">${ICON.close}</a><b>${esc(name(r))}</b>
+      ${SR ? `<button class="icon mic ${voice.on ? 'on' : ''}" data-act="voice" aria-label="${t('voiceBtn')}" aria-pressed="${voice.on}">🎤</button>` : ''}<span id="wake" class="small"></span></header>
     <div id="timers" class="timers"></div>
     <div class="cook-body" id="cookBody"></div>
+    <p class="taphint small" id="tapHint">‹ ${t('tapBack')} · ${t('tapNext')} ›${SR ? ` · 🎤 ${voice.on ? t('voiceOn') : t('voiceHint')}` : ''}</p>
     <details class="cook-ings"><summary>${t('ingredients')}</summary><ul class="ings">${r.ing.map((i) => ingLine(i, f)).join('')}</ul></details>
     <footer><button class="btn big" data-act="cprev">← ${t('prev')}</button><button class="btn big primary" data-act="cnext">${t('next')} →</button></footer>
   </div>`;
@@ -709,15 +712,20 @@ function renderCookStep() {
   const body = $('#cookBody'); if (!body) return;
   body.innerHTML = `${r.juf && cook.i === 0 ? jufSwitch() : ''}<div class="stepno">${t('step')} ${cook.i + 1} ${t('of')} ${r.st.length}</div>
     <p class="bigstep">${esc(tx(s))}</p>
-    ${s[2] ? `<button class="btn primary big steptimer" data-act="timer" data-m="${s[2]}" data-label="${esc(t('step'))} ${cook.i + 1}">${ICON.timer} ${t('timer')} ${s[2]} min</button>` : ''}`;
+    ${s[2] ? `<button class="btn primary big steptimer" data-act="timer" data-m="${s[2]}" data-key="${cook.id}:${cook.i}" data-label="${esc(stepLabel(r, cook.i))}">${ICON.timer} ${t('timer')} ${s[2]} min</button>` : ''}`;
   markStepTimer();
   const nx = $('[data-act="cnext"]');
   if (nx) nx.textContent = cook.i === r.st.length - 1 ? (isZim(r) ? `✓ ${t('zimDoneBtn').replace('{n}', Math.round(r.serves * cook.f))}` : `✓ ${t('done')}`) : `${t('next')} →`;
 }
+/** Timer label: step number and the first words of the step, so several running timers can be told apart. */
+function stepLabel(r, i) {
+  const words = tx(r.st[i]).replace(/[.,:;(].*$/, '').split(' ').slice(0, 4).join(' ');
+  return `${t('step')} ${i + 1} · ${words}`;
+}
 /** Step timer button: shows "running" while this step's timer is on, so a second tap doesn't start a duplicate. */
 function markStepTimer() {
   const b = $('.steptimer'); if (!b || !cook) return;
-  const on = cook.timers.some((tm) => tm.label === b.dataset.label && tm.end > Date.now());
+  const on = cook.timers.some((tm) => tm.key === b.dataset.key && tm.end > Date.now());
   b.classList.toggle('running', on);
   b.innerHTML = on ? `${ICON.timer} ${t('timerRunning')}` : `${ICON.timer} ${t('timer')} ${b.dataset.m} min`;
 }
@@ -726,15 +734,60 @@ function tickTimers() {
   const draw = () => {
     const el = $('#timers'); if (!el || !cook) return;
     const now = Date.now();
-    el.innerHTML = cook.timers.map((tm, k) => {
+    // several timers at once: soonest first, each with its step; finished ones stay (blinking) until dismissed
+    el.innerHTML = cook.timers.map((tm, k) => [tm, k]).sort((a, b) => a[0].end - b[0].end).map(([tm, k]) => {
       const left = Math.max(0, Math.round((tm.end - now) / 1000));
       if (left === 0 && !tm.rang) { tm.rang = true; ring(); toast(`⏱ ${tm.label}: ${t('timerDone')}`); }
-      const mm = String(Math.floor(left / 60)).padStart(2, '0'), ss = String(left % 60).padStart(2, '0');
-      return `<button class="timer ${left === 0 ? 'done' : ''}" data-act="tdel" data-k="${k}">${esc(tm.label)} · ${mm}:${ss} ✕</button>`;
+      const h = Math.floor(left / 3600), mm = String(Math.floor((left % 3600) / 60)).padStart(2, '0'), ss = String(left % 60).padStart(2, '0');
+      const other = tm.rid && tm.rid !== cook.id && R[tm.rid] ? `<small>${esc(name(R[tm.rid]))}</small>` : '';
+      return `<div class="timer ${left === 0 ? 'done' : ''}"><span class="tl">${esc(tm.label)}${other}</span><b class="tt">${left === 0 ? t('done') : (h ? h + ':' : '') + mm + ':' + ss}</b>
+        ${left ? `<button class="tadd" data-act="tadd" data-k="${k}" aria-label="+1 min">+1</button>` : ''}<button class="tx" data-act="tdel" data-k="${k}" aria-label="${t('close')}">✕</button></div>`;
     }).join('');
     markStepTimer();
   };
   draw(); tickTimers._h = setInterval(draw, 1000);
+}
+// ───────── cook mode: tap anywhere and voice ("dalje" / "nazad") ─────────
+function cookNext() { if (!cook) return; const r = R[cook.id]; if (cook.i < r.st.length - 1) { cook.i++; renderCookStep(); } else { if (isZim(r)) addJars(r, r.serves * cook.f); history.back(); } }
+function cookPrev() { if (cook && cook.i > 0) { cook.i--; renderCookStep(); } }
+function startStepTimer() { const b = $('.steptimer'); if (b) b.click(); }
+// big tap zones: left third of the screen = back, the rest = next (buttons, links, ingredients and timers keep working)
+document.addEventListener('click', (e) => {
+  if (!document.body.classList.contains('cooking') || !e.target.closest('.cook')) return;
+  if (e.target.closest('button, a, input, select, label, summary, details, .timers, .jufsw, header, footer')) return;
+  if (e.clientX < window.innerWidth / 3) cookPrev(); else cookNext();
+});
+document.addEventListener('keydown', (e) => {
+  if (!document.body.classList.contains('cooking') || e.target.closest('input, textarea, select')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); cookNext(); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); cookPrev(); }
+});
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+const voice = { on: false, rec: null };
+const VOICE_NEXT = /(^|\s)(dalje|naprijed|napred|sljede[ćc]i|slede[ćc]i|next|forward)(?=$|[\s.,!?])/iu;
+const VOICE_BACK = /(^|\s)(nazad|natrag|prethodni|back|previous)(?=$|[\s.,!?])/iu;
+const VOICE_TIMER = /(^|\s)(tajmer|timer|tempiraj)(?=$|[\s.,!?])/iu;
+function startVoice() {
+  if (!SR) return;
+  try {
+    const rec = new SR();
+    rec.lang = getLang() === 'bs' ? 'bs-BA' : 'en-GB';
+    rec.continuous = true; rec.interimResults = false; rec.maxAlternatives = 3;
+    rec.onresult = (ev) => {
+      const res = ev.results[ev.results.length - 1];
+      const said = [...res].map((a) => a.transcript).join(' ');
+      if (VOICE_BACK.test(said)) cookPrev(); else if (VOICE_NEXT.test(said)) cookNext(); else if (VOICE_TIMER.test(said)) startStepTimer();
+    };
+    rec.onerror = (ev) => { if (['not-allowed', 'service-not-allowed'].includes(ev.error)) { voice.on = false; toast(t('voiceDenied')); syncVoice(); } };
+    rec.onend = () => { if (voice.on && voice.rec === rec) { try { rec.start(); } catch { /* restarted already */ } } }; // the browser stops after a pause: listen again
+    voice.rec = rec; voice.on = true; rec.start();
+  } catch { voice.on = false; }
+  syncVoice();
+}
+function stopVoice() { voice.on = false; const r = voice.rec; voice.rec = null; if (r) { try { r.abort(); } catch { /* ignore */ } } }
+function syncVoice() {
+  const b = $('.mic'); if (b) { b.classList.toggle('on', voice.on); b.setAttribute('aria-pressed', String(voice.on)); }
+  const h = $('#tapHint'); if (h) h.textContent = `‹ ${t('tapBack')} · ${t('tapNext')} ›${SR ? ` · 🎤 ${voice.on ? t('voiceOn') : t('voiceHint')}` : ''}`;
 }
 function ring() {
   try {
@@ -1149,7 +1202,8 @@ document.addEventListener('click', (e) => {
       });
       break;
     }
-    case 'cnext': { const r = R[cook.id]; if (cook.i < r.st.length - 1) { cook.i++; renderCookStep(); } else { if (isZim(r)) addJars(r, r.serves * cook.f); history.back(); } break; }
+    case 'cnext': cookNext(); break;
+    case 'voice': if (voice.on) { stopVoice(); syncVoice(); } else startVoice(); break;
     case 'jarsin': { const r = R[el.dataset.id]; addJars(r, r.serves * scaleFor(r)); rer(); break; }
     case 'zimshop': {
       const r = R[el.dataset.id]; const f = scaleFor(r); let k = 0;
@@ -1157,9 +1211,10 @@ document.addEventListener('click', (e) => {
         if (!st.shop.extra.some((e) => e.text === text && !e.done)) { st.shop.extra.push({ text, done: false }); k++; } });
       store.save(); toast(t('zimShopped').replace('{n}', k)); break;
     }
-    case 'cprev': if (cook.i > 0) { cook.i--; renderCookStep(); } break;
-    case 'timer': if (cook.timers.some((tm) => tm.label === el.dataset.label && tm.end > Date.now())) break; cook.timers.push({ label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
+    case 'cprev': cookPrev(); break;
+    case 'timer': if (cook.timers.some((tm) => tm.key === el.dataset.key && tm.end > Date.now())) break; cook.timers.push({ key: el.dataset.key, rid: cook.id, label: el.dataset.label, end: Date.now() + Number(el.dataset.m) * 60000 }); tickTimers(); break;
     case 'tdel': cook.timers.splice(Number(el.dataset.k), 1); tickTimers(); break;
+    case 'tadd': { const tm = cook.timers[Number(el.dataset.k)]; if (tm) { tm.end += 60000; tm.rang = false; } tickTimers(); break; }
     case 'jar': { const id = el.dataset.id; const n = Math.max(0, (Number(st.pantry[id]) || 0) + Number(el.dataset.d)); if (n) st.pantry[id] = n; else delete st.pantry[id]; store.save(); rer(); break; }
     case 'send': {
       // a recipe goes as a link to its page; the shopping list (only on this phone) as text
