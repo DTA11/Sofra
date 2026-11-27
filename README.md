@@ -18,6 +18,7 @@ pregledniku na telefonu (`localStorage`). Sigurnosna kopija: *Postavke → Izvez
 - Jedan spisak za kupovinu po odjeljcima prodavnice → WhatsApp / Viber / dijeljenje; kupljeno ide u ostavu
 - Pravi PDF fajl (sedmica: plan + spisak + recepti; samo spisak; jedan recept) — preuzmi, podijeli ili otvori; štampa samo na zahtjev. PDF se pravi u pregledniku (js/pdf.js) s ugrađenim DejaVu fontovima (fonts/, licenca u fonts/LICENSE.txt)
 - Zdravlje: procjena kcal, bjelančevina, masti, ugljikohidrata, vlakana i soli po porciji i na 100 g (js/data/nutrition.js + js/nutrition.js), ocjena A–E po pravilima Nutri-Score 2023, oznake (puno povrća, puno soli…), filter po ocjeni, kcal po danu u planu, opcija „Prednost zdravijim jelima“
+- **Pretraga** (js/search.js) oprašta greške u pisanju: bez kvačica (cufte → ćufte, djuvec/duvec → đuveč), drugi padež ili množina (salate → salata, ćevape → ćevapi, salads → salad), više riječi (sve moraju postojati), a kad nema tačnog pogotka, dozvoljava jedno slovo pogrešno po riječi (srama → sarma) i piše „nema tačnog pogotka, ovo su slična“. Isto u Ostavi i u „Ne volimo“.
 - Filteri: kuhinja, glavni sastojak, vrsta jela, obrok, vrijeme, oprema (sač/peka, ekspres lonac, rerna, kazan, roštilj), posno, za djecu…
 - Ramazanski / iftar način, praznični meniji (Bajram, iftar, Badnji dan, Božić, Nova godina)
 - **Jufke za pite** (13 pita): zadano domaće jufke — mijesi, odmara, razvlači (koraci se dodaju u recept, količine u tekstu su omjeri pa važe za svaki broj porcija); zamjena „Kupovne“ za one bez vremena. Prekidač na receptu, u načinu kuhanja (1. korak) i u postavkama; vrijedi za sve pite. Ocjena i nutrijenti se uvijek računaju po kupovnoj verziji (`ingShop`), pa se ne mijenjaju s prekidačem.
@@ -51,6 +52,7 @@ js/app.js             UI i rute (#/plan, #/recipes, #/recipe/:id, #/cook/:id, #/
 js/planner.js         planer, zamjena dana, spisak za kupovinu, skaliranje
 js/store.js           localStorage, backup/uvoz
 js/i18n.js            bs / en tekstovi
+js/search.js          pretraga bez kvačica, padeža i s jednom greškom
 js/data/ingredients.js  katalog namirnica (odjeljak, sezona, zimnica, kvarljivo)
 js/data/recipes-books.js  recepti po Lakišiću i JNA recepturama (količine i vremena kao u knjizi, tekst nov)
 js/data/recipes-trad.js   ostala jela (tekst i količine napisani za Sofru)

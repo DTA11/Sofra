@@ -1,6 +1,6 @@
 # Sofra — plan razvoja
 
-Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v104). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina), 14 (Način kuhanja), 15 (Lektura).
+Redoslijed je prijedlog (stanje 27. 11. 2026, sofra-v105). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina), 14 (Način kuhanja), 15 (Lektura), 16 (Pretraga).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
 1. ✅ **„Ne volimo“** (urađeno 26. 11. 2026, sofra-v93) — Postavke → „Ne volimo“: 22 grupe (gljive, riba, iznutrice, kupus, grah/leća/slanutak…) + bilo koja namirnica preko polja „Dodaj drugu namirnicu“ (st.dislikes, ID-jevi iz ingredients.js, DISLIKE_GROUPS). Planer (eligible), prilozi i „Prijedlog za danas“ preskaču jela koja ih trebaju (opcionalni sastojci se ne broje); recept ostaje u listi, na njemu piše „Ne volite: …“.
@@ -27,6 +27,7 @@ Redoslijed je prijedlog (stanje 26. 11. 2026, sofra-v104). Urađeno: 1 (Ne volim
 14. ✅ **Način kuhanja** (urađeno 26. 11. 2026, sofra-v96) — više tajmera odjednom (lista s korakom, +1 min), dodir bilo gdje = dalje (lijevo = nazad), glasovne komande „dalje“ / „nazad“ / „tajmer“ (Web Speech, samo gdje preglednik podržava — provjeriti na telefonu).
 
 15. ✅ **Lektura bosanskog teksta** (urađeno 26. 11. 2026, sofra-v100–v104) — svi recepti, sastojci, UI, vodiči za roštilj, zimnicu i rižu: ijekavica, dosljedni izrazi, imena sastojaka bez zagrada, „Roštilj (po želji)“, dugi naslovi se lome u načinu kuhanja. Ocjene svih jela iste. Promjene po ukusu: LEKTURA.md — **čeka pregled izvornog govornika**. Otvoreno: praznični meniji „Slovenska nedjelja“ i „Slovenski Božić“ imaju ime države u UI (pravilo) — preimenovati?; sastojci bez količine (npr. paprika, bijeli luk, mrkva, celer u Saču) se ne računaju u nutrijente.
+16. ✅ **Pretraga koja prašta** (urađeno 27. 11. 2026, sofra-v105) — js/search.js: bez kvačica (cufte → ćufte), padeži i množina (salate → salata), jedna greška po riječi kad nema tačnog pogotka (srama → sarma, s napomenom „ovo su slična“), poruka kad nema ničega; broj rezultata se sad osvježava dok kucaš. Recepti, Slatko, Ostava, „Ne volimo“.
 
 Odbačeno (vlasnik): dijeljenje jelovnika između telefona, „Kuhaj jednom, jedi tri puta“, izvoz u kalendar.
 

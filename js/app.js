@@ -5,6 +5,7 @@ import * as store from './store.js';
 import { liveGuides, GUIDE_INDEX } from './data/guides.js';
 import { ZIM_NOTES } from './data/recipes-zimnica.js';
 import { dishArt, ICON, KILIM } from './art.js';
+import { fold, search, queryWords, textMatch } from './search.js';
 import { nutrition, grams, GRADE_COLORS } from './nutrition.js';
 import { generatePlan, swapDay, swapDish, markCooked, setDayDishes, shoppingList, shopParts, niceQ, panArea, parseISO, seasonalNow, kindOf } from './planner.js';
 
@@ -395,8 +396,23 @@ function viewPlan() {
 }
 
 // ───────── RECIPES ─────────
+// search text of a recipe: names + ingredient names in both languages, folded (no diacritics)
+const HAY = new Map();
+function hayOf(r) {
+  let h = HAY.get(r.id);
+  if (h == null) { h = fold(`${r.bs} ${r.en} ${r.ing.map((i) => { const g = ING[i[0]]; return g ? `${g.bs} ${g.en}` : ''; }).join(' ')}`); HAY.set(r.id, h); }
+  return h;
+}
+// filters first, then the forgiving search (falls back to one typo per word when nothing matches)
+function findRecipes(base) {
+  return search(base.filter((r) => matches(r, ui.filters)), ui.filters.q, hayOf);
+}
+function resultsInfo(res) {
+  const q = ui.filters.q.trim();
+  if (q && !res.list.length) return `<p class="muted small" id="rcount">${t('searchNone').replace('{q}', esc(q))}</p>`;
+  return `<p class="muted small" id="rcount">${res.list.length} ${t('results')}${res.fuzzy ? ` · ${t('searchSimilar')}` : ''}</p>`;
+}
 function matches(r, f) {
-  if (f.q) { const q = f.q.toLowerCase(); if (!(`${r.bs} ${r.en} ${r.ing.map((i) => iname(i[0])).join(' ')}`.toLowerCase().includes(q))) return false; }
   if (f.cu.size && !f.cu.has(r.cu)) return false;
   if (f.reg && r.reg !== f.reg) return false;
   if (f.grade.size && !f.grade.has(nutrition(r).grade)) return false;
@@ -465,7 +481,7 @@ function activeFilterCount() {
   return f.cu.size + f.diet.size + f.grade.size + ['type', 'main', 'meal', 'time', 'eq', 'occ', 'sub', 'reg'].filter((k) => f[k]).length + (f.season ? 1 : 0) + (f.fav ? 1 : 0) + (f.grill ? 1 : 0);
 }
 function viewRecipes() {
-  const list = RECIPES.filter(inRecipes).filter((r) => matches(r, ui.filters));
+  const res = findRecipes(RECIPES.filter(inRecipes)), list = res.list;
   return `<section class="band page-band"><h1 class="display">${t('tabRecipes')}</h1><p class="lede">${RECIPES.filter(inRecipes).length} ${t('dishes')}</p></section>
     <div class="feature-row">
       <a class="feature jna" href="#/vojnicka">${ICON.medal}<b>${t('jnaTitle')}</b><small>${RECIPES.filter((r) => r.cu === 'jna').length} ${t('dishes')}</small></a>
@@ -476,15 +492,15 @@ function viewRecipes() {
       <a class="feature zimf" href="#/zimnica">${ICON.jar}<b>${t('zimnicaTitle')}</b><small>${zimRecipes().length} ${t('zimRecipesN')} · ${zimGuides().length} ${t('grillGuidesN')}</small></a>
     </div>
     ${searchBar()}${filterPanel()}
-    <p class="muted small">${list.length} ${t('results')}</p>
+    ${resultsInfo(res)}
     <div class="grid" id="results">${list.map(card).join('')}</div>`;
 }
 function viewSweets() {
-  const list = RECIPES.filter((r) => r.type === 'dessert').filter((r) => matches(r, ui.filters));
+  const res = findRecipes(RECIPES.filter((r) => r.type === 'dessert')), list = res.list;
   const subs = chipGroup(t('fType'), 'sub', keys('sub').map((k) => [k, L('sub', k)]));
   return `<section class="band page-band sweet"><h1 class="display">${t('tabSweets')}</h1><p class="lede">${t('sweetsIntro')}</p></section>
     ${searchBar()}${filterPanel(subs)}
-    <p class="muted small">${list.length} ${t('results')}</p>
+    ${resultsInfo(res)}
     <div class="grid" id="results">${list.map(card).join('')}</div>`;
 }
 function viewJNA() {
@@ -814,8 +830,9 @@ function viewHolidays() {
 // ───────── PANTRY ─────────
 function viewPantry() {
   const st = S();
-  const q = ui.pantryQ.toLowerCase();
-  const all = Object.values(ING).filter((g) => !q || `${g.bs} ${g.en}`.toLowerCase().includes(q));
+  const q = ui.pantryQ.trim(), qw = queryWords(q);
+  let all = Object.values(ING).filter((g) => textMatch(fold(`${g.bs} ${g.en}`), qw));
+  if (!all.length) all = Object.values(ING).filter((g) => textMatch(fold(`${g.bs} ${g.en}`), qw, true));
   const zim = all.filter((g) => g.z);
   const secs = keys('sec').map((sec) => ({ sec, items: all.filter((g) => g.sec === sec && !g.z && !g.prod) })).filter((s) => s.items.length);
   // store products: long-life stock, grouped by shop section
@@ -1289,8 +1306,10 @@ document.addEventListener('submit', (e) => {
   const f = e.target;
   if (f.dataset.act === 'dislikeadd') {
     e.preventDefault();
-    const v = $('#dislikeText').value.trim().toLowerCase(); if (!v) return;
-    const g = Object.values(ING).find((x) => x.bs.toLowerCase() === v || x.en.toLowerCase() === v) || Object.values(ING).find((x) => !x.st && (x.bs.toLowerCase().startsWith(v) || x.en.toLowerCase().startsWith(v)));
+    const v = fold($('#dislikeText').value); if (!v) return;
+    const vs = queryWords(v).join(' ');
+    const all = Object.values(ING);
+    const g = all.find((x) => fold(x.bs) === v || fold(x.en) === v) || all.find((x) => !x.st && (fold(x.bs).startsWith(vs) || fold(x.en).startsWith(vs)));
     if (!g) { toast(t('dislikesNone')); return; }
     const st = S(); st.dislikes = [...new Set([...(st.dislikes || []), g.id])]; ui.pickIdx = null; store.save(); rerender(); return;
   }
@@ -1304,8 +1323,9 @@ document.addEventListener('input', (e) => {
   if (e.target.id === 'q') {
     ui.filters.q = e.target.value;
     const isSweet = location.hash.startsWith('#/sweets');
-    const list = RECIPES.filter((r) => (isSweet ? r.type === 'dessert' : inRecipes(r))).filter((r) => matches(r, ui.filters));
-    $('#results').innerHTML = list.map(card).join('');
+    const res = findRecipes(RECIPES.filter((r) => (isSweet ? r.type === 'dessert' : inRecipes(r))));
+    $('#results').innerHTML = res.list.map(card).join('');
+    $('#rcount').outerHTML = resultsInfo(res);
   }
   if (e.target.id === 'pq') {
     ui.pantryQ = e.target.value;
