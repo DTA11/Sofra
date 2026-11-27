@@ -10,6 +10,9 @@ Redoslijed je prijedlog (stanje 27. 11. 2026, sofra-v105). Urađeno: 1 (Ne volim
 5. **Ideje za ostatke** — iz jučerašnjeg jela predloži nešto novo (riža → salata, meso → pita, hljeb → popara); veza s „planiranim ostacima“ u planeru.
 6. **„Ekran ostaje upaljen“ na iPhoneu** — Wake Lock u Safariju ponekad ne radi („Ekran se može ugasiti“); dodati rezervno rješenje (npr. nevidljivi video u petlji) i provjeriti na iPhoneu.
 
+## U toku
+- **Novi recepti (150–200)** — zakazani zadatak „Sofra recipe builder“ (28.–30. 11. 2026, 4× dnevno), plan i pravila u RECIPE-PLAN.md: domaća jela, rezanci i ramen, bowl, curry, tacos, Mediteran, klasika, zdravo i brzo, slatko i doručak iz svijeta; novi stil planera „Iz svijeta“.
+
 ## Već planirano
 7. **Vodič #2 „Mjere i porcije“** — isti oblik kao vodič za rižu (kratki odgovor, tabela, porcije po osobi, koraci, greške, ostaci, linkovi na recepte), bs + en.
 8. **Objavljivanje vodiča po rasporedu** — datum objave u js/data/guides.js + zakazani Netlify rebuild (build hook).
