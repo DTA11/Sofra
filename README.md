@@ -54,7 +54,8 @@ js/store.js           localStorage, backup/uvoz
 js/i18n.js            bs / en tekstovi
 js/search.js          pretraga bez kvačica, padeža i s jednom greškom
 js/data/ingredients.js  katalog namirnica (odjeljak, sezona, zimnica, kvarljivo)
-js/data/recipes-books.js  recepti po Lakišiću i JNA recepturama (količine i vremena kao u knjizi, tekst nov)
+js/data/recipes-books.js  recepti po Lakišiću i vojničkim recepturama (količine i vremena kao u knjizi, tekst nov)
+js/data/recipes-books2.js još jela po Lakišiću (serija A, 28. 11. 2026; činjenice iz tools/book-notes.md)
 js/data/recipes-trad.js   ostala jela (tekst i količine napisani za Sofru)
 js/data/recipes-sweet.js  slatko
 js/data/recipes-slo.js    slovenska kuhinja (tekst i količine napisani za Sofru)

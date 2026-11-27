@@ -1,6 +1,6 @@
 # Sofra — plan razvoja
 
-Redoslijed je prijedlog (stanje 27. 11. 2026, sofra-v105). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina), 14 (Način kuhanja), 15 (Lektura), 16 (Pretraga).
+Redoslijed je prijedlog (stanje 28. 11. 2026, sofra-v109, 287 recepata). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina), 14 (Način kuhanja), 15 (Lektura), 16 (Pretraga).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
 1. ✅ **„Ne volimo“** (urađeno 26. 11. 2026, sofra-v93) — Postavke → „Ne volimo“: 22 grupe (gljive, riba, iznutrice, kupus, grah/leća/slanutak…) + bilo koja namirnica preko polja „Dodaj drugu namirnicu“ (st.dislikes, ID-jevi iz ingredients.js, DISLIKE_GROUPS). Planer (eligible), prilozi i „Prijedlog za danas“ preskaču jela koja ih trebaju (opcionalni sastojci se ne broje); recept ostaje u listi, na njemu piše „Ne volite: …“.
@@ -11,12 +11,12 @@ Redoslijed je prijedlog (stanje 27. 11. 2026, sofra-v105). Urađeno: 1 (Ne volim
 6. **„Ekran ostaje upaljen“ na iPhoneu** — Wake Lock u Safariju ponekad ne radi („Ekran se može ugasiti“); dodati rezervno rješenje (npr. nevidljivi video u petlji) i provjeriti na iPhoneu.
 
 ## U toku
-- **Novi recepti (150–200)** — zakazani zadatak „Sofra recipe builder“ (28.–30. 11. 2026, 4× dnevno), plan i pravila u RECIPE-PLAN.md: domaća jela, rezanci i ramen, bowl, curry, tacos, Mediteran, klasika, zdravo i brzo, slatko i doručak iz svijeta; novi stil planera „Iz svijeta“.
+- **Novi recepti (150–200)** — serija po serija u chatu (zakazani zadatak nije mogao biti napravljen iz chata), plan i pravila u RECIPE-PLAN.md; urađeno: serija A (11 jela po Lakišiću, sofra-v109): domaća jela, rezanci i ramen, bowl, curry, tacos, Mediteran, klasika, zdravo i brzo, slatko i doručak iz svijeta; novi stil planera „Iz svijeta“.
 
 ## Već planirano
 7. **Vodič #2 „Mjere i porcije“** — isti oblik kao vodič za rižu (kratki odgovor, tabela, porcije po osobi, koraci, greške, ostaci, linkovi na recepte), bs + en.
 8. **Objavljivanje vodiča po rasporedu** — datum objave u js/data/guides.js + zakazani Netlify rebuild (build hook).
-9. **Fotografije jela** — 31 od 276 gotovo (17 salata dodano 26. 11.). Promptovi: /foto-prompts/ (meni → „Foto promptovi“). Pite: jedan zatvoren komad na tanjiru, puna čaša jogurta na stolu, jedna viljuška, bez začina — tako izgledaju dobro. Kad su sve slike gotove: obrisati foto-prompts/, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml.
+9. **Fotografije jela** — 31 od 287 gotovo (17 salata dodano 26. 11.). Promptovi: /foto-prompts/ (meni → „Foto promptovi“). Pite: jedan zatvoren komad na tanjiru, puna čaša jogurta na stolu, jedna viljuška, bez začina — tako izgledaju dobro. Kad su sve slike gotove: obrisati foto-prompts/, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml.
 10. **Opcije planera na stranici Plan** — „Šta kuhamo“, Bez mesa, Zdravije, obroci, ukućani… kao panel na Planu umjesto zasebne stranice. Vlasnik je rekao „čekaj“ — prvo pitati.
 
 ## Nove ideje

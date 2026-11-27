@@ -58,3 +58,6 @@ Ako nešto ne valja, vrati staru verziju ili napiši bolju.
 | so važe / važi so | so se mora izvagati / izvaži so | zimnica-guides/bs.mjs | „važiti“ ≠ „vagati“ |
 | polukrugovi | polumjeseci | recipes-*.js | jedan izraz za „half-moons“ |
 | sasvim malo soli / bilješka „veoma malo“ (sutlijaš) | prstohvat soli / „prstohvat“ | recipes-books.js | kako je vlasnik predložio za male količine soli (količina u receptu ista) |
+
+## Novi recepti (builder)
+- Serija A (28. 11. 2026, sofra-v109): 11 novih jela po Lakišiću u js/data/recipes-books2.js — novi tekstovi, čekaju pregled izvornog govornika. Imena bez mjesta (npr. knjiga „Bosanska đulbastija“ → kasnije bez „Bosanska“). Gdje knjiga kaže „malo“, količina je procjena (mljeveno meso u čorbi od leće 150 g, kupus u kupus-piti 600 g, paradajz u patlidžan-dolmi 2 kom). Začinska mješavina iz recepta za čorbu od leće je izostavljena (pravilo bez proizvođača). Hadžijski ćevap: „5 listova papira“ zamijenjeno s „po jedan list za svaku porciju“ (porcije se skaliraju).

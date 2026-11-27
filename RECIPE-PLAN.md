@@ -44,4 +44,4 @@ C. **Vojnička kuhinja II** (imena iz tools/book-notes.md, kućne količine, src
 The book files are NOT in the repo (and must never be added). tools/book-notes.md holds facts only (dish, page, servings, amounts, short order of steps). Write all step texts and stories anew in your own words; amounts and times as in the notes; estimates marked as in SOURCES.md.
 
 ## Done
-(none yet)
+- A — 28. 11. 2026: 11 recipes, js/data/recipes-books2.js (sofra-v109; grades: 4×A, 2×B, 4×C, 1×D)

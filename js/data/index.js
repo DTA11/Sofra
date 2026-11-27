@@ -1,5 +1,6 @@
 import { ING } from './ingredients.js';
 import { BOOK_RECIPES } from './recipes-books.js';
+import { BOOK2_RECIPES } from './recipes-books2.js';
 import { TRAD_RECIPES } from './recipes-trad.js';
 import { SWEET_RECIPES } from './recipes-sweet.js';
 import { SWEET2_RECIPES } from './recipes-sweet2.js';
@@ -124,6 +125,8 @@ const JUFKA = {
   gibanica: { a: 1, home: { 1: [
     'Jednu razvučenu jufku stavi u nauljenu tepsiju tako da rubovi vise preko. Drugu ostavi 10 minuta da se malo prosuši, natrgaj je na komade, gužvaj ih, umači u fil i slaži. Rubove donje jufke prebaci preko.',
     'Lay one stretched sheet in an oiled tin with the edges hanging over. Let the second dry for 10 minutes, tear it into pieces, scrunch them, dip in the filling and pack them in. Fold the overhanging edges over the top.'] } },
+  tikvenjaca: { a: 2, home: { 2: ROLL('nadjev', 'the filling') } },
+  'kupus-pita-meso': { a: 3, home: { 3: ROLL('nadjev', 'the filling') } },
   'byrek-spinaq': { a: 2, home: { 2: [
     'Prvu jufku pokapaj uljem i presavij je u nekoliko slojeva veličine tepsije, pokapavajući svaki sloj. Stavi je u nauljenu tepsiju, rasporedi nadjev i pokrij drugom jufkom presavijenom na isti način.',
     'Drizzle the first sheet with oil and fold it into several tin-sized layers, oiling each one. Lay it in an oiled tin, spread the filling and cover with the second sheet folded the same way.'] } },
@@ -170,7 +173,7 @@ function withJufka(r) {
   return r;
 }
 
-export const RECIPES = [...BOOK_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...GRILL_RECIPES, ...COMBO_RECIPES, ...ZIM_RECIPES, ...UZINA_RECIPES].map(derive).map(withJufka);
+export const RECIPES = [...BOOK_RECIPES, ...BOOK2_RECIPES, ...TRAD_RECIPES, ...SWEET_RECIPES, ...SWEET2_RECIPES, ...MEAL_RECIPES, ...SLO_RECIPES, ...MORE_RECIPES, ...EXTRA_RECIPES, ...SALAD_RECIPES, ...SIDE_RECIPES, ...GRILL_RECIPES, ...COMBO_RECIPES, ...ZIM_RECIPES, ...UZINA_RECIPES].map(derive).map(withJufka);
 export const R = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 
 // Holiday menus. alt = used instead when "bez svinjetine" is on.
