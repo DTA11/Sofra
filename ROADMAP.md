@@ -29,6 +29,14 @@ Redoslijed je prijedlog (stanje 27. 11. 2026, sofra-v105). Urađeno: 1 (Ne volim
 15. ✅ **Lektura bosanskog teksta** (urađeno 26. 11. 2026, sofra-v100–v104) — svi recepti, sastojci, UI, vodiči za roštilj, zimnicu i rižu: ijekavica, dosljedni izrazi, imena sastojaka bez zagrada, „Roštilj (po želji)“, dugi naslovi se lome u načinu kuhanja. Ocjene svih jela iste. Promjene po ukusu: LEKTURA.md — **čeka pregled izvornog govornika**. Otvoreno: praznični meniji „Slovenska nedjelja“ i „Slovenski Božić“ imaju ime države u UI (pravilo) — preimenovati?; sastojci bez količine (npr. paprika, bijeli luk, mrkva, celer u Saču) se ne računaju u nutrijente.
 16. ✅ **Pretraga koja prašta** (urađeno 27. 11. 2026, sofra-v105) — js/search.js: bez kvačica (cufte → ćufte), padeži i množina (salate → salata), jedna greška po riječi kad nema tačnog pogotka (srama → sarma, s napomenom „ovo su slična“), poruka kad nema ničega; broj rezultata se sad osvježava dok kucaš. Recepti, Slatko, Ostava, „Ne volimo“.
 
+## KI (čeka novu pretplatu — ne razvijati prije toga)
+Ista vrsta Gemini Workera kao na Baby Card Printables (Cloudflare Worker drži Google AI Studio ključ, Gemini Flash-Lite besplatno; posebna ruta ili poseban Worker s malim dnevnim limitom, npr. 30/dan, da ne troši limit druge stranice). Pravilo: KI bira samo između postojećih recepata, ne izmišlja nove (lektura, ocjene, nutrijenti i pravila — bez država, brendova, izvora — ostaju tačni). Aplikacija radi i offline; KI dugmad samo uz internet. Besplatni nivo: Google može koristiti zahtjeve — ne slati ništa lično.
+17. **„Šta mogu skuhati od ovoga?“ s fotografijom** (proširuje #3) — slika frižidera/pulta ili tekst („imam piletinu, tikvice, pavlaku“) → Gemini vraća listu namirnica (ID-jevi iz ingredients.js) → obični kod u aplikaciji sortira recepte po tome koliko fali (+ Ostava).
+18. **„Pitaj kuhara“ u načinu kuhanja** — pitanje tekstom ili 🎤 („nemam pavlake, čime zamijeniti?“, „meso je deblje, koliko duže?“); šalje se trenutni recept i korak, kratak odgovor na bs/en.
+19. **Pretraga po opisu** — „nešto lagano s piletinom za 20 minuta“, „šta djeca vole bez mesa“; samo kad obična pretraga ne nađe ništa; Gemini dobije listu imena recepata i vrati ID-jeve.
+20. **Ideje za ostatke s KI** (proširuje #5) — „ostalo mi je riže i pola piletine“ → 2–3 jela iz Sofre.
+21. **Račun iz prodavnice → Ostava** — fotografija računa, stavke se označe u Ostavi (bez brendova, mapiranje na namirnice).
+
 Odbačeno (vlasnik): dijeljenje jelovnika između telefona, „Kuhaj jednom, jedi tri puta“, izvoz u kalendar.
 
 ## Pravila (podsjetnik)
