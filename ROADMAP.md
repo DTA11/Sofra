@@ -16,7 +16,7 @@ Redoslijed je prijedlog (stanje 28. 11. 2026, sofra-v110, 287 recepata, 45 fotog
 ## Već planirano
 7. **Vodič #2 „Mjere i porcije“** — isti oblik kao vodič za rižu (kratki odgovor, tabela, porcije po osobi, koraci, greške, ostaci, linkovi na recepte), bs + en.
 8. **Objavljivanje vodiča po rasporedu** — datum objave u js/data/guides.js + zakazani Netlify rebuild (build hook).
-9. **Fotografije jela** — 45 od 287 gotovo (17 salata dodano 26. 11., 14 glavnih jela 28. 11.). Promptovi: /foto-prompts/ (meni → „Foto promptovi“). Pite: jedan zatvoren komad na tanjiru, puna čaša jogurta na stolu, jedna viljuška, bez začina — tako izgledaju dobro. Kad su sve slike gotove: obrisati foto-prompts/, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml.
+9. **Fotografije jela** — 45 od 287 gotovo (17 salata dodano 26. 11., 14 glavnih jela 28. 11.). Promptovi: /foto-prompts/ (meni → „Foto promptovi“). Pite: jedan zatvoren komad na tanjiru, puna čaša jogurta na stolu, jedna viljuška, bez začina — tako izgledaju dobro. Od 28. 11. ambijenti su raznovrsni (vlasnik): stara seoska kuhinja oko 1960. sa šporetom na drva, jelo još na šporetu s podignutim poklopcem, ruka s krpom vadi tepsiju iz stare rerne, ognjište sa žarom, stara krušna peć, niska sofra, prozor stare kuće; moderna kuhinja samo za evropska i svakodnevna jela; vojnička jela uz poljsku kuhinju. BASE dozvoljava jednu ruku (bez lica). Dodano 15 jela bez prompta (serija A + 4 supe). Kad su sve slike gotove: obrisati foto-prompts/, link u index.html, ključ photoPrompts u i18n.js i blok u netlify.toml.
 10. **Opcije planera na stranici Plan** — „Šta kuhamo“, Bez mesa, Zdravije, obroci, ukućani… kao panel na Planu umjesto zasebne stranice. Vlasnik je rekao „čekaj“ — prvo pitati.
 
 ## Nove ideje
