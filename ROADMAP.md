@@ -1,6 +1,6 @@
 # Sofra — plan razvoja
 
-Redoslijed je prijedlog (stanje 28. 11. 2026, sofra-v113, 287 recepata, 55 fotografija). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina), 14 (Način kuhanja), 15 (Lektura), 16 (Pretraga).
+Redoslijed je prijedlog (stanje 28. 11. 2026, sofra-v114, 287 recepata, 55 fotografija). Urađeno: 1 (Ne volimo), 11 (Roštilj), 12 (Zimnica), 13 (Užina), 14 (Način kuhanja), 15 (Lektura), 16 (Pretraga).
 
 ## Sljedeće (preporuka: 1 i 2 prvo)
 1. ✅ **„Ne volimo“** (urađeno 26. 11. 2026, sofra-v93) — Postavke → „Ne volimo“: 22 grupe (gljive, riba, iznutrice, kupus, grah/leća/slanutak…) + bilo koja namirnica preko polja „Dodaj drugu namirnicu“ (st.dislikes, ID-jevi iz ingredients.js, DISLIKE_GROUPS). Planer (eligible), prilozi i „Prijedlog za danas“ preskaču jela koja ih trebaju (opcionalni sastojci se ne broje); recept ostaje u listi, na njemu piše „Ne volite: …“.
